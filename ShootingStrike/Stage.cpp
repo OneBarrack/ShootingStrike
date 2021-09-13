@@ -32,7 +32,6 @@ void Stage::Initialize()
 	State_Back = new StageBackground;
 	State_Back->Initialize();
 
-
 	m_pEffect = new HammerEffect;
 	m_pEffect->Initialize();
 
