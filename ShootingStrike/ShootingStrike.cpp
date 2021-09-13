@@ -3,8 +3,11 @@
 
 #include "framework.h"
 #include "ShootingStrike.h"
+#include "MainUpdate.h"
 
 #define MAX_LOADSTRING 100
+
+HWND g_hWnd;
 
 // 전역 변수:
 HINSTANCE hInst;                                // 현재 인스턴스입니다.
@@ -41,14 +44,29 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_SHOOTINGSTRIKE));
 
     MSG msg;
+    msg.message = NULL;
 
-    // 기본 메시지 루프입니다:
-    while (GetMessage(&msg, nullptr, 0, 0))
+    MainUpdate Main;
+    Main.Initialize();
+
+    ULONGLONG Time = GetTickCount64();
+
+    while ( msg.message != WM_QUIT )
     {
-        if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+        if ( PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE) )
         {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
+        }
+        else
+        {
+            if ( Time < GetTickCount64() )
+            {
+                Time = GetTickCount64();
+
+                Main.Update();
+                Main.Render();
+            }
         }
     }
 
@@ -97,7 +115,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+   HWND hWnd = g_hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
       CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
 
    if (!hWnd)

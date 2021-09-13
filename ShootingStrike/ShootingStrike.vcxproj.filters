@@ -13,24 +13,234 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="헤더 파일\Headers">
+      <UniqueIdentifier>{2e00e6d7-251f-437a-8499-edc1a9a86bc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Include">
+      <UniqueIdentifier>{c681da71-f3fc-4007-bdf3-b856e8a7dae1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\00. MainUpdate">
+      <UniqueIdentifier>{08e81586-ead6-45c2-9171-529d8b4a552b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\01. Scene">
+      <UniqueIdentifier>{1d15cc55-adef-4b55-97f3-6b8cf741a378}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object">
+      <UniqueIdentifier>{617e0790-208e-460d-bf44-7a68a7e8dffc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\99. Manager">
+      <UniqueIdentifier>{9c79a535-5672-4b5c-a36f-1ad636bcef4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\01. Scene\Logo">
+      <UniqueIdentifier>{a708ec20-f527-4489-b799-b81f029b09fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\01. Scene\Menu">
+      <UniqueIdentifier>{e0973894-bf6a-4381-aa6f-fe7df8f583da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\01. Scene\Stage">
+      <UniqueIdentifier>{b507db3a-14c7-490f-8c7f-136b7defed51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\Bullet">
+      <UniqueIdentifier>{d95c88be-601b-4f1e-b79a-1cbc9876ff6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\Enemy">
+      <UniqueIdentifier>{c0e63a1f-3628-4ddd-bb60-09be792524e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\Player">
+      <UniqueIdentifier>{017d8965-ebf7-4e42-b56b-645c38c538fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\99. Manager\InputManager">
+      <UniqueIdentifier>{110bde82-76b7-4c68-9ed8-ba84002a662e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\99. Manager\ObjectFactory">
+      <UniqueIdentifier>{18d3f5ed-9fe1-4b8b-970e-ba497ff56b9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\99. Manager\ObjectManager">
+      <UniqueIdentifier>{9efebf04-4f33-4df2-ba28-95f20fff3156}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\99. Manager\Pattern">
+      <UniqueIdentifier>{c09d6bf7-b750-41ad-a719-7481e42f44e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\99. Manager\SceneManager">
+      <UniqueIdentifier>{fe7c68c7-bc42-4ea9-b628-9a1ccc5b7c93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\99. Manager\Pattern\Prototype">
+      <UniqueIdentifier>{d7a61e3d-65e1-4c8c-ac43-9140dcd389fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\99. Manager\RenderManager">
+      <UniqueIdentifier>{e022f11f-fd53-4c99-978b-7f556084be21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\99. Manager\MathManager">
+      <UniqueIdentifier>{0e34eb04-836d-4dc4-9134-326cd7b6fc62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\99. Manager\CollisionManager">
+      <UniqueIdentifier>{87e0d02c-bcd9-4841-bdac-90c41c56369b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\99. Manager\Bitmap">
+      <UniqueIdentifier>{2cacc77a-878d-42e8-a562-79840f5a2119}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\Enemy\EnemyHole">
+      <UniqueIdentifier>{00d208e7-fffc-4b98-b4ea-3f9e7eb0caa9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\Player\HammerEffect">
+      <UniqueIdentifier>{11323c40-e9da-462d-9d76-b8ded6cfe284}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\01. Scene\BackGround">
+      <UniqueIdentifier>{b4e8c854-9fd4-4052-84f5-3c332d752a86}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="framework.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource.h">
+    <ClInclude Include="Headers.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="ShootingStrike.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>헤더 파일\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>헤더 파일\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>헤더 파일\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>헤더 파일\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Constant.h">
+      <Filter>헤더 파일\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Define.h">
+      <Filter>헤더 파일\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Struct.h">
+      <Filter>헤더 파일\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Enum.h">
+      <Filter>헤더 파일\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="MainUpdate.h">
+      <Filter>소스 파일\00. MainUpdate</Filter>
+    </ClInclude>
+    <ClInclude Include="Logo.h">
+      <Filter>소스 파일\01. Scene\Logo</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>소스 파일\01. Scene\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage.h">
+      <Filter>소스 파일\01. Scene\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>소스 파일\02. Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>소스 파일\02. Object\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>소스 파일\02. Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>소스 파일\02. Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>소스 파일\01. Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>소스 파일\99. Manager\InputManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectFactory.h">
+      <Filter>소스 파일\99. Manager\ObjectFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectManager.h">
+      <Filter>소스 파일\99. Manager\ObjectManager</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>소스 파일\99. Manager\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Prototype.h">
+      <Filter>소스 파일\99. Manager\Pattern\Prototype</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderManager.h">
+      <Filter>소스 파일\99. Manager\RenderManager</Filter>
+    </ClInclude>
+    <ClInclude Include="MathManager.h">
+      <Filter>소스 파일\99. Manager\MathManager</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionManager.h">
+      <Filter>소스 파일\99. Manager\CollisionManager</Filter>
+    </ClInclude>
+    <ClInclude Include="StageBackground.h">
+      <Filter>소스 파일\01. Scene\BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="Bitmap.h">
+      <Filter>소스 파일\99. Manager\Bitmap</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyHole.h">
+      <Filter>소스 파일\02. Object\Enemy\EnemyHole</Filter>
+    </ClInclude>
+    <ClInclude Include="HammerEffect.h">
+      <Filter>소스 파일\02. Object\Player\HammerEffect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ShootingStrike.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainUpdate.cpp">
+      <Filter>소스 파일\00. MainUpdate</Filter>
+    </ClCompile>
+    <ClCompile Include="Logo.cpp">
+      <Filter>소스 파일\01. Scene\Logo</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>소스 파일\01. Scene\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage.cpp">
+      <Filter>소스 파일\01. Scene\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>소스 파일\02. Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>소스 파일\02. Object\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>소스 파일\02. Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>소스 파일\02. Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>소스 파일\01. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>소스 파일\99. Manager\InputManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectManager.cpp">
+      <Filter>소스 파일\99. Manager\ObjectManager</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>소스 파일\99. Manager\SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Prototype.cpp">
+      <Filter>소스 파일\99. Manager\Pattern\Prototype</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderManager.cpp">
+      <Filter>소스 파일\99. Manager\RenderManager</Filter>
+    </ClCompile>
+    <ClCompile Include="MathManager.cpp">
+      <Filter>소스 파일\99. Manager\MathManager</Filter>
+    </ClCompile>
+    <ClCompile Include="StageBackground.cpp">
+      <Filter>소스 파일\01. Scene\BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="Bitmap.cpp">
+      <Filter>소스 파일\99. Manager\Bitmap</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyHole.cpp">
+      <Filter>소스 파일\02. Object\Enemy\EnemyHole</Filter>
+    </ClCompile>
+    <ClCompile Include="HammerEffect.cpp">
+      <Filter>소스 파일\02. Object\Player\HammerEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
