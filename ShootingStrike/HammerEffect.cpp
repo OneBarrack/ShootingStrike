@@ -1,6 +1,6 @@
 #include "HammerEffect.h"
 #include "ObjectManager.h"
-
+#include "BitmapManager.h"
 
 HammerEffect::HammerEffect()
 {
@@ -26,7 +26,7 @@ void HammerEffect::Initialize()
 
 	Offset = Vector3(41.0f, -39.0f);
 
-	strKey = "Effect";
+	ObjectKey = eObjectKey::HAMMEREFFECT;
 
 	Active = true;
 	Time = GetTickCount64();
@@ -56,7 +56,7 @@ void HammerEffect::Render(HDC _hdc)
 		TransInfo.Position.y - (TransInfo.Scale.y / 2) + Offset.y,
 		TransInfo.Scale.x,
 		TransInfo.Scale.y,
-		ImageList[strKey]->GetMemDC(),
+		BitmapManager::GetInstance()->GetMemDC(eImageKey::EFFECT),
 		TransInfo.Scale.x * Frame,
 		TransInfo.Scale.y * 0,
 		TransInfo.Scale.x,

@@ -1,4 +1,5 @@
 #include "StageBackground.h"
+#include "BitmapManager.h"
 
 StageBackground::StageBackground()
 {
@@ -17,7 +18,7 @@ void StageBackground::Initialize()
 	TransInfo.Direction = Vector3(0.0f, 0.0f);
 	TransInfo.Scale = Vector3(0.0f, 0.0f);
 
-	strKey = "Bullet";
+	ObjectKey = eObjectKey::BULLET;
 	Active = false;
 }
 
@@ -33,7 +34,7 @@ void StageBackground::Render(HDC _hdc)
 		0, 0,
 		WindowsWidth,
 		WindowsHeight,
-		ImageList["BackGround"]->GetMemDC(),
+		BitmapManager::GetInstance()->GetMemDC(eImageKey::BACKGROUND),
 		0, 0,
 		SRCCOPY);
 }

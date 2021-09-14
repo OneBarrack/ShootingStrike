@@ -25,25 +25,25 @@ private:
 	list<Object*> EnableList;
 	vector<Object*> EnemyList;
 	vector<Object*> BulletList;
-	map<string, list<Object*>> DisableList;
+	map<eObjectKey, list<Object*>> DisableList;
 public:
 	// ** 초기화
 	void Initialize();
 
 	// ** 객체 생성
-	Object* CreateObject(string _Key);
+	Object* CreateObject(eObjectKey _Key);
 
 	// ** 컨테이너에서 객체를 찾음
-	void FindObject(string _Key);
+	void FindObject(eObjectKey _Key);
 
 	// ** 객체 생성
-	Object* CreateObject(string _Key, Vector3 _Position);
+	Object* CreateObject(eObjectKey _Key, Vector3 _Position);
 
 	// ** 컨테이너에서 객체를 찾음
-	void FindObject(string _Key, Vector3 _Position);
+	void FindObject(eObjectKey _Key, Vector3 _Position);
 
 	// ** 객체 추가.
-	void AddObject(string _strKey);
+	void AddObject(eObjectKey _strKey);
 
 	// ** 사용후 더이상 사용하지 않는 오브젝트 회수
 	void RecallObject(Object* _Object);
@@ -61,7 +61,7 @@ public:
 
 	// ** map 컨테이너를 사용하고있는 ObjectList를 반환.
 	list<Object*>* GetEnableList() { return &EnableList; }
-	map<string, list<Object*>>* GetDisableList() { return &DisableList; }
+	map<eObjectKey, list<Object*>>* GetDisableList() { return &DisableList; }
 
 	
 	vector<Object*>* GetBulletList() { return &BulletList; }
@@ -72,9 +72,9 @@ public:
 
 
 	// ** map 컨테이너를 사용하고있는 ObjectList에 포함된 list 를 탐색하여 반환.
-	list<Object*>* FindList(string _Key) 
+	list<Object*>* FindList(eObjectKey _Key)
 	{
-		map<string, list<Object*>>::iterator iter = DisableList.find(_Key);
+		map<eObjectKey, list<Object*>>::iterator iter = DisableList.find(_Key);
 
 		// ** 존재하지 않는 key값에는 nullptr를 반환.
 		if (iter == DisableList.end())

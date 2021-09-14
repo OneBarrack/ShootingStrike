@@ -1,7 +1,7 @@
 #include "Player.h"
 #include "InputManager.h"
 #include "ObjectManager.h"
-
+#include "BitmapManager.h"
 #include "Bullet.h"
 
 
@@ -23,7 +23,7 @@ void Player::Initialize()
 	Collider.Position = Vector3(TransInfo.Position.x, TransInfo.Position.y - 20.0f);
 	Collider.Scale = Vector3(120.0f, 60.0f);
 
-	strKey = "Hammer";
+	ObjectKey = eObjectKey::PLAYER;
 	Active = false;
 
 	Speed = 3.0f;
@@ -61,7 +61,7 @@ void Player::Render(HDC _hdc)
 		TransInfo.Position.y - (TransInfo.Scale.y / 2) + Offset.y,
 		TransInfo.Scale.x,
 		TransInfo.Scale.y,
-		ImageList[strKey]->GetMemDC(),
+		BitmapManager::GetInstance()->GetMemDC(eImageKey::HAMMER),
 		TransInfo.Scale.x * Frame,
 		0,
 		TransInfo.Scale.x,

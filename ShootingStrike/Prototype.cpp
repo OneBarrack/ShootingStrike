@@ -20,14 +20,14 @@ void Prototype::CreatePrototype()
 {
 	Transform TransInfo;
 
-	PrototypeList["Player"] = new Player(TransInfo);
-	PrototypeList["Enemy"] = new Enemy(TransInfo);
-	PrototypeList["Bullet"] = new Bullet(TransInfo);
+	PrototypeList[eObjectKey::PLAYER] = new Player(TransInfo);
+	PrototypeList[eObjectKey::ENEMY]  = new Enemy(TransInfo);
+	PrototypeList[eObjectKey::BULLET] = new Bullet(TransInfo);
 }
 
-Object* Prototype::FindPrototypeObject(string _Key)
+Object* Prototype::FindPrototypeObject(eObjectKey _Key)
 {
-	map<string, Object*>::iterator iter = PrototypeList.find(_Key);
+	map<eObjectKey, Object*>::iterator iter = PrototypeList.find(_Key);
 
 	if (iter == PrototypeList.end())
 	{

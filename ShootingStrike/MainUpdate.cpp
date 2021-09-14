@@ -20,7 +20,7 @@ void MainUpdate::Initialize()
 {
 	m_hdc = GetDC(g_hWnd);
 
-	SceneManager::GetInstance()->SetScene(SCENEID::LOGO);
+	SceneManager::GetInstance()->SetScene(eSCENEID::LOGO);
 }
 
 void MainUpdate::Update()

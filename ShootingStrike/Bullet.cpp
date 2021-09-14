@@ -19,7 +19,7 @@ void Bullet::Initialize()
 	TransInfo.Direction = Vector3(1.0f, 0.0f);
 	TransInfo.Scale = Vector3(30.0f, 30.0f);
 
-	strKey = "Bullet";
+	ObjectKey = eObjectKey::BULLET;
 	Active = false;
 
 	Speed = 3.0f;

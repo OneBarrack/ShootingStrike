@@ -7,25 +7,25 @@
 SceneManager* SceneManager::Instance = nullptr;
 
 
-void SceneManager::SetScene(SCENEID _SceneID)
+void SceneManager::SetScene(eSCENEID _SceneID)
 {
 	::Safe_Delete(pSceneState);
 	
 	switch (_SceneID)
 	{
-	case SCENEID::LOGO:
+	case eSCENEID::LOGO:
 		pSceneState = new Logo;
 		break;
 
-	case SCENEID::MENU:
+	case eSCENEID::MENU:
 		pSceneState = new Menu;
 		break;
 
-	case SCENEID::STAGE:
+	case eSCENEID::STAGE:
 		pSceneState = new Stage;
 		break;
 
-	case SCENEID::EXIT:
+	case eSCENEID::EXIT:
 		exit(NULL);
 		break;
 	}

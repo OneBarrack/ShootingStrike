@@ -1,5 +1,6 @@
 #include "EnemyHole.h"
 #include "Enemy.h"
+#include "BitmapManager.h"
 
 EnemyHole::EnemyHole()
 {
@@ -23,7 +24,7 @@ void EnemyHole::Initialize()
 	Offset = Vector3(149.0f, 0.0f);
 
 	Active = false;
-	strKey = "Hole";
+	ObjectKey = eObjectKey::ENEMYHOLE;
 
 	Speed = 0.0f;
 
@@ -47,7 +48,7 @@ void EnemyHole::Render(HDC _hdc)
 		int(TransInfo.Position.y - (TransInfo.Scale.y / 2)),
 		int(TransInfo.Scale.x),
 		int(TransInfo.Scale.y),
-		ImageList[strKey]->GetMemDC(),
+		BitmapManager::GetInstance()->GetMemDC(eImageKey::HOLE),
 		0, 0,
 		int(TransInfo.Scale.x),
 		int(TransInfo.Scale.y),

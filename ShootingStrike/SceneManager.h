@@ -17,7 +17,7 @@ public:
 private:
 	Scene* pSceneState;
 public:
-	void SetScene(SCENEID _SceneID);
+	void SetScene(eSCENEID _SceneID);
 	void Update();
 	void Render(HDC _hdc);
 	void Release();

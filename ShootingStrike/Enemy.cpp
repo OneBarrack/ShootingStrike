@@ -1,5 +1,5 @@
 #include "Enemy.h"
-
+#include "BitmapManager.h"
 
 Enemy::Enemy()
 {
@@ -22,7 +22,7 @@ void Enemy::Initialize()
 	Offset = Vector3(149.0f, 0.0f);
 
 	Active = false;
-	strKey = "Mole";
+	ObjectKey = eObjectKey::ENEMY;
 	
 	Speed = 1.5f;
 }
@@ -42,7 +42,7 @@ void Enemy::Render(HDC _hdc)
 		int(TransInfo.Position.y + (TransInfo.Scale.x / 2) - Offset.y - 50),
 		int(TransInfo.Scale.x),
 		int(Offset.y),
-		ImageList[strKey]->GetMemDC(),
+		BitmapManager::GetInstance()->GetMemDC(eImageKey::MOLE),
 		0, 0,
 		int(TransInfo.Scale.x),
 		int(Offset.y),

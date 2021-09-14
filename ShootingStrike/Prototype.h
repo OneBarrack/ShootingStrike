@@ -5,10 +5,10 @@ class Object;
 class Prototype
 {
 private:
-	map<string, Object*> PrototypeList;
+	map<eObjectKey, Object*> PrototypeList;
 public:
 	void CreatePrototype();
-	Object* FindPrototypeObject(string _Key);
+	Object* FindPrototypeObject(eObjectKey _Key);
 public:
 	Prototype();
 	~Prototype();

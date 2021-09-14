@@ -7,7 +7,7 @@
 #include "ObjectFactory.h"
 #include "CollisionManager.h"
 #include "StageBackground.h"
-
+#include "BitmapManager.h"
 
 Stage::Stage() : m_pPlayer(nullptr)
 {
@@ -71,8 +71,6 @@ void Stage::Initialize()
 			EnemyList->push_back(pObj);
 		}
 	}
-
-	ImageList = Object::GetImageList();
 }
 
 void Stage::Update()
@@ -156,24 +154,24 @@ void Stage::Update()
 
 void Stage::Render(HDC _hdc)
 {
-	State_Back->Render(ImageList["Buffer"]->GetMemDC());
+	State_Back->Render(BitmapManager::GetInstance()->GetMemDC(eImageKey::BUFFER));
 
 	
 	for (vector<Object*>::iterator iter = EnemyList->begin();
 		iter != EnemyList->end(); ++iter)
-		(*iter)->Render(ImageList["Buffer"]->GetMemDC());
+		(*iter)->Render(BitmapManager::GetInstance()->GetMemDC(eImageKey::BUFFER));
 	
 
 	for (vector<Object*>::iterator iter = BulletList->begin();
 		iter != BulletList->end(); ++iter)
-		(*iter)->Render(ImageList["Buffer"]->GetMemDC());
+		(*iter)->Render(BitmapManager::GetInstance()->GetMemDC(eImageKey::BUFFER));
 
 
 	if (m_pEffect->GetActive())
-		m_pEffect->Render(ImageList["Buffer"]->GetMemDC());
+		m_pEffect->Render(BitmapManager::GetInstance()->GetMemDC(eImageKey::BUFFER));
 
 
-	m_pPlayer->Render(ImageList["Buffer"]->GetMemDC());
+	m_pPlayer->Render(BitmapManager::GetInstance()->GetMemDC(eImageKey::BUFFER));
 
 
 
@@ -181,7 +179,7 @@ void Stage::Render(HDC _hdc)
 		0, 0,
 		WindowsWidth,
 		WindowsHeight,
-		ImageList["Buffer"]->GetMemDC(),
+		BitmapManager::GetInstance()->GetMemDC(eImageKey::BUFFER),
 		0, 0, 
 		SRCCOPY);
 }

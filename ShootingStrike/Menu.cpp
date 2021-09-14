@@ -19,7 +19,7 @@ void Menu::Initialize()
 void Menu::Update()
 {
 	if (GetAsyncKeyState('S'))
-		SceneManager::GetInstance()->SetScene(SCENEID::STAGE);
+		SceneManager::GetInstance()->SetScene(eSCENEID::STAGE);
 }
 
 void Menu::Render(HDC _hdc)

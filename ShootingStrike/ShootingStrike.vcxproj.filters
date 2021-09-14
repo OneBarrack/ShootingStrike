@@ -76,9 +76,6 @@
     <Filter Include="소스 파일\99. Manager\CollisionManager">
       <UniqueIdentifier>{87e0d02c-bcd9-4841-bdac-90c41c56369b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\99. Manager\Bitmap">
-      <UniqueIdentifier>{2cacc77a-878d-42e8-a562-79840f5a2119}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\02. Object\Enemy\EnemyHole">
       <UniqueIdentifier>{00d208e7-fffc-4b98-b4ea-3f9e7eb0caa9}</UniqueIdentifier>
     </Filter>
@@ -87,6 +84,12 @@
     </Filter>
     <Filter Include="소스 파일\01. Scene\BackGround">
       <UniqueIdentifier>{b4e8c854-9fd4-4052-84f5-3c332d752a86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\99. Manager\BitmapManager">
+      <UniqueIdentifier>{2cacc77a-878d-42e8-a562-79840f5a2119}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\99. Manager\BitmapManager\Bitmap">
+      <UniqueIdentifier>{30bf864a-8414-4126-a710-8c77057ee1d5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -171,14 +174,17 @@
     <ClInclude Include="StageBackground.h">
       <Filter>소스 파일\01. Scene\BackGround</Filter>
     </ClInclude>
-    <ClInclude Include="Bitmap.h">
-      <Filter>소스 파일\99. Manager\Bitmap</Filter>
-    </ClInclude>
     <ClInclude Include="EnemyHole.h">
       <Filter>소스 파일\02. Object\Enemy\EnemyHole</Filter>
     </ClInclude>
     <ClInclude Include="HammerEffect.h">
       <Filter>소스 파일\02. Object\Player\HammerEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="Bitmap.h">
+      <Filter>소스 파일\99. Manager\BitmapManager\Bitmap</Filter>
+    </ClInclude>
+    <ClInclude Include="BitmapManager.h">
+      <Filter>소스 파일\99. Manager\BitmapManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -233,14 +239,17 @@
     <ClCompile Include="StageBackground.cpp">
       <Filter>소스 파일\01. Scene\BackGround</Filter>
     </ClCompile>
-    <ClCompile Include="Bitmap.cpp">
-      <Filter>소스 파일\99. Manager\Bitmap</Filter>
-    </ClCompile>
     <ClCompile Include="EnemyHole.cpp">
       <Filter>소스 파일\02. Object\Enemy\EnemyHole</Filter>
     </ClCompile>
     <ClCompile Include="HammerEffect.cpp">
       <Filter>소스 파일\02. Object\Player\HammerEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="Bitmap.cpp">
+      <Filter>소스 파일\99. Manager\BitmapManager\Bitmap</Filter>
+    </ClCompile>
+    <ClCompile Include="BitmapManager.cpp">
+      <Filter>소스 파일\99. Manager\BitmapManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

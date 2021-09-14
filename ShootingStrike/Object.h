@@ -12,12 +12,10 @@ protected:
 	Transform Collider;
 	Vector3 Offset;
 
-	string strKey;
+	eObjectKey ObjectKey;
 	bool Active;
 	float Speed;
 
-	// ** 출력 이미지 보관
-	static map<string, Bitmap*> ImageList;
 	//Object* Target;
 public:
 	virtual void Initialize()PURE;
@@ -27,14 +25,8 @@ public:
 
 	virtual Object* Clone()PURE;
 public:
-	// ** map으로 생성된 Image 보관 컨테이너틑 Setting
-	static void SetImageList(const map<string, Bitmap*>& _ImageList) { ImageList = _ImageList; }
-
-	// ** map으로 생성된 Image 보관 컨테이너틑 out
-	static map<string, Bitmap*> GetImageList() { return ImageList; }
-
 	// ** 이미지를 출력하는데 사용하는 Key 값을 out
-	string GetKey() const { return strKey; }
+	eObjectKey GetKey() const { return ObjectKey; }
 
 	// ** 좌표를 Setting (Vector3)
 	void SetPosition(Vector3 _position) { TransInfo.Position = _position; }

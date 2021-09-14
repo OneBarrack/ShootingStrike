@@ -12,8 +12,6 @@ private:
 	vector<Object*>* EnemyList;
 	vector<Object*>* BulletList;
 
-	map<string, Bitmap*> ImageList;
-
 	// ** 타일 생성 개수
 	int TileWidthCnt;
 	int TileHeightCnt;

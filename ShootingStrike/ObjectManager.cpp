@@ -13,7 +13,7 @@ void ObjectManager::Initialize()
 	PrototypeObject->CreatePrototype();
 }
 
-Object* ObjectManager::CreateObject(string _Key)
+Object* ObjectManager::CreateObject(eObjectKey _Key)
 {
 	// ** 새로운 객체를 생성해주어야 한다. 생성은 원형 객체를 복사생성하는 방식으로 생성할 것이다.
 	// ** 그러려면 먼저 원형객체가 존재하는지 찾는다.
@@ -34,10 +34,10 @@ Object* ObjectManager::CreateObject(string _Key)
 }
 
 // ** Prototype 생성 후 작업
-void ObjectManager::FindObject(string _Key)
+void ObjectManager::FindObject(eObjectKey _Key)
 {
 	// ** DisableList에 생성하려는 오브젝트가 있는지 확인.
-	map<string, list<Object*>>::iterator iter = DisableList.find(_Key);
+	map<eObjectKey, list<Object*>>::iterator iter = DisableList.find(_Key);
 
 	// ** 없으면.....
 	if (iter == DisableList.end() || iter->second.empty())
@@ -61,7 +61,7 @@ void ObjectManager::FindObject(string _Key)
 	}
 }
 
-Object* ObjectManager::CreateObject(string _Key, Vector3 _Position)
+Object* ObjectManager::CreateObject(eObjectKey _Key, Vector3 _Position)
 {
 	// ** 새로운 객체를 생성해주어야 한다. 생성은 원형 객체를 복사생성하는 방식으로 생성할 것이다.
 	// ** 그러려면 먼저 원형객체가 존재하는지 찾는다.
@@ -83,10 +83,10 @@ Object* ObjectManager::CreateObject(string _Key, Vector3 _Position)
 }
 
 // ** Prototype 생성 후 작업
-void ObjectManager::FindObject(string _Key, Vector3 _Position)
+void ObjectManager::FindObject(eObjectKey _Key, Vector3 _Position)
 {
 	// ** DisableList에 생성하려는 오브젝트가 있는지 확인.
-	map<string, list<Object*>>::iterator iter = DisableList.find(_Key);
+	map<eObjectKey, list<Object*>>::iterator iter = DisableList.find(_Key);
 
 	// ** 없으면.....
 	if (iter == DisableList.end() || iter->second.empty())
@@ -112,10 +112,10 @@ void ObjectManager::FindObject(string _Key, Vector3 _Position)
 	}
 }
 
-void ObjectManager::AddObject(string _strKey)
+void ObjectManager::AddObject(eObjectKey _strKey)
 {
 	// ** 키값으로 탐색후 탐색이 완료된 결과물을 반환.
-	map<string, list<Object*>>::iterator Disableiter = DisableList.find(_strKey);
+	map<eObjectKey, list<Object*>>::iterator Disableiter = DisableList.find(_strKey);
 
 	for (int i = 0; i < 5; ++i)
 	{
@@ -142,7 +142,7 @@ void ObjectManager::AddObject(string _strKey)
 
 void ObjectManager::RecallObject(Object* _Object)
 {
-	map<string, list<Object*>>::iterator iter = DisableList.find(_Object->GetKey());
+	map<eObjectKey, list<Object*>>::iterator iter = DisableList.find(_Object->GetKey());
 
 	// ** 만약 결과물이 존재하지 않는다면....
 	if (iter == DisableList.end())
@@ -191,7 +191,7 @@ void ObjectManager::Release()
 	// ** 안전한 삭제.
 	::Safe_Delete(pPlayer);
 
-	for (map<string, list<Object*>>::iterator iter = DisableList.begin();
+	for (map<eObjectKey, list<Object*>>::iterator iter = DisableList.begin();
 		iter != DisableList.end(); ++iter)
 	{
 		for (list<Object*>::iterator iter2 = iter->second.begin();
