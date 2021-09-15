@@ -10,6 +10,7 @@ enum class eSCENEID
 
 enum class eObjectKey
 {
+	BACKGROUND	,
 	PLAYER		,
 	ENEMY		,
 	ENEMYHOLE	,
@@ -26,4 +27,18 @@ enum class eImageKey
 	HOLE		,
 	EFFECT		,
 	KEYMAX		,
+};
+
+enum class eObjectStatus
+{
+	ACTIVATED	,
+	DEACTIVATED	,
+	DESTROYED	,
+};
+
+enum class eCollisionType
+{
+	NONE	,
+	ELLIPSE	,
+	RECT	,
 };

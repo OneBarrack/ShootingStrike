@@ -12,6 +12,7 @@ public:
 	virtual int Update()override;
 	virtual void Render(HDC _hdc)override;
 	virtual void Release()override;
+	virtual void OnCollision(Object* _pObject)override;
 
 	virtual Object* Clone()override { return new HammerEffect(*this); }
 public:

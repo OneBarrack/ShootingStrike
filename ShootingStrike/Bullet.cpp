@@ -19,8 +19,9 @@ void Bullet::Initialize()
 	TransInfo.Direction = Vector3(1.0f, 0.0f);
 	TransInfo.Scale = Vector3(30.0f, 30.0f);
 
-	ObjectKey = eObjectKey::BULLET;
-	Active = false;
+	Key = eObjectKey::BULLET;
+	Status = eObjectStatus::ACTIVATED;
+	CollisionType = eCollisionType::ELLIPSE;
 
 	Speed = 3.0f;
 
@@ -55,4 +56,8 @@ void Bullet::Render(HDC _hdc)
 void Bullet::Release()
 {
 
+}
+
+void Bullet::OnCollision(Object* _pObject)
+{
 }

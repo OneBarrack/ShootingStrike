@@ -23,8 +23,9 @@ void Player::Initialize()
 	Collider.Position = Vector3(TransInfo.Position.x, TransInfo.Position.y - 20.0f);
 	Collider.Scale = Vector3(120.0f, 60.0f);
 
-	ObjectKey = eObjectKey::PLAYER;
-	Active = false;
+	Key = eObjectKey::PLAYER;
+	Status = eObjectStatus::ACTIVATED;
+	CollisionType = eCollisionType::RECT;
 
 	Speed = 3.0f;
 
@@ -72,6 +73,10 @@ void Player::Render(HDC _hdc)
 void Player::Release()
 {
 	
+}
+
+void Player::OnCollision(Object* _pObject)
+{
 }
 
 void Player::Jump()

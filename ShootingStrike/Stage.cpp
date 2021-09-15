@@ -6,7 +6,7 @@
 #include "HammerEffect.h"
 #include "ObjectFactory.h"
 #include "CollisionManager.h"
-#include "StageBackground.h"
+#include "Background.h"
 #include "BitmapManager.h"
 
 Stage::Stage() : m_pPlayer(nullptr)
@@ -29,7 +29,7 @@ void Stage::Initialize()
 	// ** 오브젝트 매니저에서 몬스터 리스트를 받아옴. (포인터로...)
 	EnemyList = ObjectManager::GetInstance()->GetEnemyList();
 	
-	State_Back = new StageBackground;
+	State_Back = new Background;
 	State_Back->Initialize();
 
 	m_pEffect = new HammerEffect;
@@ -71,109 +71,109 @@ void Stage::Initialize()
 			EnemyList->push_back(pObj);
 		}
 	}
+
+
+	/////
+	ObjectManager::GetInstance()->TakeObject(eObjectKey::BACKGROUND);
+	m_pEffect = ObjectManager::GetInstance()->TakeObject(eObjectKey::HAMMEREFFECT);
+
+	for ( int y = 0; y < TileHeightCnt; ++y )
+	{
+		for ( int x = 0; x < TileWidthCnt; ++x )
+		{
+			Object* pObj = ObjectManager::GetInstance()->TakeObject(eObjectKey::ENEMYHOLE);
+			pObj->Initialize();
+
+			pObj->SetPosition(
+				(Center.x - ((TileWidthCnt / 2) * pObj->GetScale().x)) + pObj->GetScale().x * x,
+				(Center.y - ((TileHeightCnt / 2) * pObj->GetScale().y)) + pObj->GetScale().y * y);
+
+			EnemyList->push_back(pObj);
+		}
+	}
 }
 
 void Stage::Update()
 {
-	m_pPlayer->Update();
-
-	if (m_pEffect->GetActive())
-		m_pEffect->Update();
-
 	if (((Player*)m_pPlayer)->GetSwing())
 	{
-		m_pEffect->SetActive(true);
+		m_pEffect->SetStatus(eObjectStatus::ACTIVATED);
 		m_pEffect->Initialize();
 	}
 
-	/*
-	for (vector<Object*>::iterator iter = EnemyList->begin();
-		iter != EnemyList->end(); )
+	// ** EnableList 내 Object 순회
+	auto enableList = ObjectManager::GetInstance()->GetEnableList();
+	for ( auto ListIter1 = enableList->begin(); ListIter1 != enableList->end(); ++ListIter1 )
 	{
-		int Result = (*iter)->Update();
-
-		if (CollisionManager::EllipseCollision(
-			m_pPlayer->GetColliderTransform(),
-			(*iter)->GetColliderTransform()))
+		for ( auto ObjIter1 = ListIter1->second.begin(); ObjIter1 != ListIter1->second.end(); )
 		{
-			if (((Player*)m_pPlayer)->GetSwing())
-				Result = 1;
-		}
-
-		if (Result == 1)
-			iter = EnemyList->erase(iter);
-		else
-			++iter;
-	}
-	*/
-
-	for (vector<Object*>::iterator iter = EnemyList->begin();
-		iter != EnemyList->end(); ++iter)
-		(*iter)->Update();
-
-
-
-	// ** 총알 리스트의 progress
-	for (vector<Object*>::iterator iter = BulletList->begin();
-		iter != BulletList->end(); )
-	{
-		// ** 총알이 화면 밖을 넘어가게 되면 reutrn 1 을 반환 하고, 
-		// ** iResult == 1이면 총알은 삭제됨.
-		int iResult = (*iter)->Update();
-
-		// ** Enemy 리스트의 progress
-		for (vector<Object*>::iterator iter2 = EnemyList->begin();
-			iter2 != EnemyList->end(); )
-		{
-			// ** 충돌 처리
-			if (CollisionManager::EllipseCollision((*iter), (*iter2)))
+			// ** 전체 Object간 충돌체크
+			auto ListIter2 = ListIter1;
+			for ( ++ListIter2; ListIter2 != enableList->end(); ++ListIter2 )
 			{
-				// ** 몬스터 삭제
-				iter2 = EnemyList->erase(iter2);
-
-				// ** 삭제할 오브젝트로 지정한뒤
-				iResult = 1;
-
-				// ** 현재 반복문을 탈출.
-				// ** 이유 : 총알 1개에 오브젝 1개를 삭제하기 위함. 
-				break;
-
-				//** break 가 안되면 총알이 생성된 시점에에서 충돌체가 여러개일때 모두 충돌후 삭제됨.
+				for ( auto ObjIter2 = ListIter2->second.begin(); ObjIter2 != ListIter2->second.end(); ++ObjIter2 )
+				{
+					// 전체 충돌에 대한 처리 필요
+					if ( CollisionManager::IsCollision(*ObjIter1, *ObjIter2) )
+					{
+						// 충돌 트리거 발동
+						(*ObjIter1)->OnCollision(*ObjIter2);
+						(*ObjIter2)->OnCollision(*ObjIter1);
+					}
+				}
 			}
-			else
-				++iter2;
+		
+			// ** Status를 체크하여 Update 또는 Recall 해준다
+			switch ( (*ObjIter1)->GetStatus() )
+			{
+				case eObjectStatus::DESTROYED:
+					ObjectManager::GetInstance()->RecallObject(*ObjIter1++);
+					break;
+				case eObjectStatus::ACTIVATED:
+					(*ObjIter1)->Update();
+					[[fallthrough]];
+				default:
+					++ObjIter1;
+					break;
+			}
 		}
-
-		// ** 총알을 삭제하는 구간.
-		if (iResult == 1)
-			iter = BulletList->erase(iter);
-		else
-			++iter;
 	}
 }
 
 void Stage::Render(HDC _hdc)
 {
-	State_Back->Render(BitmapManager::GetInstance()->GetMemDC(eImageKey::BUFFER));
+	//State_Back->Render(BitmapManager::GetInstance()->GetMemDC(eImageKey::BUFFER));
 
-	
-	for (vector<Object*>::iterator iter = EnemyList->begin();
-		iter != EnemyList->end(); ++iter)
-		(*iter)->Render(BitmapManager::GetInstance()->GetMemDC(eImageKey::BUFFER));
-	
+	//
+	//for (vector<Object*>::iterator iter = EnemyList->begin();
+	//	iter != EnemyList->end(); ++iter)
+	//	(*iter)->Render(BitmapManager::GetInstance()->GetMemDC(eImageKey::BUFFER));
+	//
 
-	for (vector<Object*>::iterator iter = BulletList->begin();
-		iter != BulletList->end(); ++iter)
-		(*iter)->Render(BitmapManager::GetInstance()->GetMemDC(eImageKey::BUFFER));
-
-
-	if (m_pEffect->GetActive())
-		m_pEffect->Render(BitmapManager::GetInstance()->GetMemDC(eImageKey::BUFFER));
+	//for (vector<Object*>::iterator iter = BulletList->begin();
+	//	iter != BulletList->end(); ++iter)
+	//	(*iter)->Render(BitmapManager::GetInstance()->GetMemDC(eImageKey::BUFFER));
 
 
-	m_pPlayer->Render(BitmapManager::GetInstance()->GetMemDC(eImageKey::BUFFER));
+	//if (m_pEffect->GetActive())
+	//	m_pEffect->Render(BitmapManager::GetInstance()->GetMemDC(eImageKey::BUFFER));
 
 
+	//m_pPlayer->Render(BitmapManager::GetInstance()->GetMemDC(eImageKey::BUFFER));
+
+	map<eObjectKey, list<Object*>>* enableList = ObjectManager::GetInstance()->GetEnableList();
+	for ( map<eObjectKey, list<Object*>>::iterator iter = enableList->begin();
+		iter != enableList->end(); ++iter )
+	{
+		for ( list<Object*>::iterator iter2 = iter->second.begin();
+			iter2 != iter->second.end(); ++iter2 )
+		{
+			if ( (*iter2)->GetStatus() == eObjectStatus::ACTIVATED )
+			{
+				(*iter2)->Render(BitmapManager::GetInstance()->GetMemDC(eImageKey::BUFFER));				
+			}			
+		}
+	}
 
 	BitBlt(_hdc,
 		0, 0,

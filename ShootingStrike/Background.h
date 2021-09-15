@@ -1,19 +1,20 @@
 #pragma once
 #include "Object.h"
 
-class StageBackground : public Object
+class Background : public Object
 {
 public:
 	virtual void Initialize()override;
 	virtual int Update()override;
 	virtual void Render(HDC _hdc)override;
 	virtual void Release()override;
+	virtual void OnCollision(Object* _pObject)override;
 
 	virtual Object* Clone()
 	{
-		return new StageBackground(*this);
+		return new Background(*this);
 	};
 public:
-	StageBackground();
-	virtual ~StageBackground();
+	Background();
+	virtual ~Background();
 };

@@ -19,6 +19,7 @@ public:
 	HDC GetMemDC(eImageKey _Key);
 
 private:
+	// imageKey enum값을 Key로 가지는 Bitmap List
 	map<eImageKey, Bitmap*> ImageList;
 
 public:

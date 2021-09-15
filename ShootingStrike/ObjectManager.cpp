@@ -33,34 +33,6 @@ Object* ObjectManager::CreateObject(eObjectKey _Key)
 	}
 }
 
-// ** Prototype 생성 후 작업
-void ObjectManager::FindObject(eObjectKey _Key)
-{
-	// ** DisableList에 생성하려는 오브젝트가 있는지 확인.
-	map<eObjectKey, list<Object*>>::iterator iter = DisableList.find(_Key);
-
-	// ** 없으면.....
-	if (iter == DisableList.end() || iter->second.empty())
-	{
-		Object* pObject = CreateObject(_Key);
-
-		if (pObject == nullptr)
-			return;
-
-		// ** DisableList 삽입
-		EnableList.push_back(pObject);
-	}
-	else
-	{
-		Object* pObject = iter->second.front();
-		pObject->Initialize();
-
-		// ** DisableList 삽입
-		EnableList.push_back(pObject);
-		iter->second.pop_front();
-	}
-}
-
 Object* ObjectManager::CreateObject(eObjectKey _Key, Vector3 _Position)
 {
 	// ** 새로운 객체를 생성해주어야 한다. 생성은 원형 객체를 복사생성하는 방식으로 생성할 것이다.
@@ -82,85 +54,108 @@ Object* ObjectManager::CreateObject(eObjectKey _Key, Vector3 _Position)
 	}
 }
 
-// ** Prototype 생성 후 작업
-void ObjectManager::FindObject(eObjectKey _Key, Vector3 _Position)
+void ObjectManager::AddObject(map<eObjectKey, list<Object*>>& _TargetList, Object* _pObject)
 {
+	// ** 키값으로 탐색후 탐색이 완료된 결과물을 반환.
+	map<eObjectKey, list<Object*>>::iterator ListIter = _TargetList.find(_pObject->GetKey());
+
+	// ** 만약 결과물이 존재하지 않는다면....
+	if ( ListIter == _TargetList.end() )
+	{
+		// ** 새로운 리스트를 생성.
+		list<Object*> TempList;
+
+		TempList.push_back(_pObject);
+
+		// ** 오브젝트가 추가된 리스트를 맵에 삽입.
+		_TargetList.insert(make_pair(_pObject->GetKey(), TempList));
+	}
+	// ** 결과물이 존재 한다면...
+	else
+	{
+		// ** 해당 리스트에 오브젝트를 추가
+		ListIter->second.push_back(_pObject);
+	}
+}
+
+// ** 컨테이너에서 객체를 찾아서 반환. 없다면 Prototype 생성 후 반환
+Object* ObjectManager::TakeObject(eObjectKey _Key)
+{
+	Object* pObject = nullptr;
+
+	// ** DisableList에 생성하려는 오브젝트가 있는지 확인.
+	map<eObjectKey, list<Object*>>::iterator iter = DisableList.find(_Key);
+
+	// ** 없으면..
+	if ( iter == DisableList.end() || iter->second.empty() )
+	{
+		// ** Object를 새로 생성하여 EnableList에 추가
+		pObject = CreateObject(_Key);
+		if ( pObject != nullptr )
+		{
+			AddObject(EnableList, pObject);
+		}
+	}
+	// ** 있으면..
+	else
+	{
+		// ** DisableList의 앞 Object를 추출.
+		pObject = iter->second.front();
+		pObject->Initialize();
+
+		// ** 추출한 Object를 EnableList에 추가 후 DisableList에서 삭제
+		AddObject(EnableList, pObject);
+		iter->second.pop_front();
+	}
+
+	return pObject;
+}
+
+// ** 컨테이너에서 객체를 찾아서 반환. 없다면 Prototype 생성 후 반환
+Object* ObjectManager::TakeObject(eObjectKey _Key, Vector3 _Position)
+{
+	Object* pObject = nullptr;
+
 	// ** DisableList에 생성하려는 오브젝트가 있는지 확인.
 	map<eObjectKey, list<Object*>>::iterator iter = DisableList.find(_Key);
 
 	// ** 없으면.....
 	if (iter == DisableList.end() || iter->second.empty())
 	{
-		Object* pObject = CreateObject(_Key, _Position);
-
-		if (pObject == nullptr)
-			return;
-
-		// ** DisableList 삽입
-		EnableList.push_back(pObject);
+		// ** Object를 새로 생성하여 EnableList에 추가
+		pObject = CreateObject(_Key, _Position);
+		if ( pObject != nullptr )
+		{
+			AddObject(EnableList, pObject);
+		}
 	}
+	// ** 있으면..
 	else
 	{
-		Object* pObject = iter->second.front();
+		// ** DisableList의 앞 Object를 추출.
+		pObject = iter->second.front();
 		pObject->Initialize();
 		pObject->SetPosition(_Position);
 
-		// ** DisableList 삽입
-		EnableList.push_back(pObject);
-
+		// ** 추출한 Object를 EnableList에 추가 후 DisableList에서 삭제
+		AddObject(EnableList, pObject);
 		iter->second.pop_front();
 	}
+
+	return pObject;
 }
 
-void ObjectManager::AddObject(eObjectKey _strKey)
+void ObjectManager::RecallObject(Object* _pObject)
 {
-	// ** 키값으로 탐색후 탐색이 완료된 결과물을 반환.
-	map<eObjectKey, list<Object*>>::iterator Disableiter = DisableList.find(_strKey);
+	// ** 키값으로 Enable ObjectList를 탐색하여 리스트 내 해당 Object 공간 삭제.
+	list<Object*>& ObjectList = EnableList.find(_pObject->GetKey())->second;
+	ObjectList.erase(find(ObjectList.begin(), ObjectList.end(), _pObject));
 
-	for (int i = 0; i < 5; ++i)
-	{
-		//** Object 객체를 생성. 
-		Object* pObj = ObjectFactory<Enemy>::CreateObject();
-
-		// ** 만약 결과물이 존재하지 않는다면....
-		if (Disableiter == DisableList.end())
-		{
-			// ** 새로운 리스트를 생성.
-			list<Object*> TempList;
-
-			TempList.push_back(pObj);
-
-			// ** 오브젝트가 추가된 리스트를 맵에 삽입.
-			DisableList.insert(make_pair(_strKey, TempList));
-		}
-		// ** 결과물이 존재 한다면...
-		else
-			// ** 해당 리스트에 오브젝트를 추가
-			Disableiter->second.push_back(pObj);
-	}
+	// ** 해당 Object를 DisableList에 추가.
+	AddObject(DisableList, _pObject);	
 }
 
-void ObjectManager::RecallObject(Object* _Object)
-{
-	map<eObjectKey, list<Object*>>::iterator iter = DisableList.find(_Object->GetKey());
-
-	// ** 만약 결과물이 존재하지 않는다면....
-	if (iter == DisableList.end())
-	{
-		// ** 새로운 리스트를 생성.
-		list<Object*> TempList;
-
-		TempList.push_back(_Object);
-
-		// ** 오브젝트가 추가된 리스트를 맵에 삽입.
-		DisableList.insert(make_pair(_Object->GetKey(), TempList));
-	}
-	// ** 결과물이 존재 한다면...
-	else
-		// ** 해당 리스트에 오브젝트를 추가
-		iter->second.push_back(_Object);
-}
-
+// _Debug_ : map에서 찾을수있게
 Object* ObjectManager::GetTarget(Vector3 _Pos)
 {
 	// ** 멀티맵을 만든다. Key = 거리, value = Object
@@ -203,10 +198,14 @@ void ObjectManager::Release()
 	}
 	DisableList.clear();
 
-	for (list<Object*>::iterator iter = EnableList.begin();
-		iter != EnableList.end(); ++iter)
+	for ( map<eObjectKey, list<Object*>>::iterator iter = EnableList.begin();
+		iter != EnableList.end(); ++iter )
 	{
-		::Safe_Delete((*iter));
+		for ( list<Object*>::iterator iter2 = iter->second.begin();
+			iter2 != iter->second.end(); ++iter2 )
+		{
+			::Safe_Delete((*iter2));
+		}
 	}
 	EnableList.clear();
 }

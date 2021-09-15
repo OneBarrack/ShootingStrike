@@ -22,66 +22,47 @@ private:
 	Object* pPlayer;
 
 	// ** 오브젝트 리스트
-	list<Object*> EnableList;
 	vector<Object*> EnemyList;
 	vector<Object*> BulletList;
+	map<eObjectKey, list<Object*>> EnableList;
 	map<eObjectKey, list<Object*>> DisableList;
+
 public:
 	// ** 초기화
-	void Initialize();
+	void Initialize();	
 
-	// ** 객체 생성
-	Object* CreateObject(eObjectKey _Key);
-
-	// ** 컨테이너에서 객체를 찾음
-	void FindObject(eObjectKey _Key);
-
-	// ** 객체 생성
-	Object* CreateObject(eObjectKey _Key, Vector3 _Position);
-
-	// ** 컨테이너에서 객체를 찾음
-	void FindObject(eObjectKey _Key, Vector3 _Position);
-
-	// ** 객체 추가.
-	void AddObject(eObjectKey _strKey);
-
+	// ** 컨테이너에서 객체를 찾아서 반환. 없다면 Prototype 생성 후 반환
+	Object* TakeObject(eObjectKey _Key);
+	Object* TakeObject(eObjectKey _Key, Vector3 _Position);
+	
 	// ** 사용후 더이상 사용하지 않는 오브젝트 회수
-	void RecallObject(Object* _Object);
+	void RecallObject(Object* _pObject);
 
 	// ** 현재 타겟의 위치를 갖는다.
 	Object* GetTarget(Vector3 _Pos);
 
-
 	void Release();
+
+private:
+	// ** 객체 생성
+	Object* CreateObject(eObjectKey _Key);
+	Object* CreateObject(eObjectKey _Key, Vector3 _Position);
+
+	// ** 객체 추가.
+	void AddObject(map<eObjectKey, list<Object*>>& _TargetList, Object* _pObject);
 public:
 	// ** 플레이어를 반환.
 	Object* GetPlayer() { return pPlayer; }
 	void SetPlayer(Object* _pPlayer) { pPlayer = _pPlayer; }
 
-
 	// ** map 컨테이너를 사용하고있는 ObjectList를 반환.
-	list<Object*>* GetEnableList() { return &EnableList; }
+	map<eObjectKey, list<Object*>>* GetEnableList() { return &EnableList; }
 	map<eObjectKey, list<Object*>>* GetDisableList() { return &DisableList; }
-
-	
+		
 	vector<Object*>* GetBulletList() { return &BulletList; }
 	vector<Object*>* GetEnemyList() { return &EnemyList; }
 
 	void AddBullet(Vector3 _vPos);
-
-
-
-	// ** map 컨테이너를 사용하고있는 ObjectList에 포함된 list 를 탐색하여 반환.
-	list<Object*>* FindList(eObjectKey _Key)
-	{
-		map<eObjectKey, list<Object*>>::iterator iter = DisableList.find(_Key);
-
-		// ** 존재하지 않는 key값에는 nullptr를 반환.
-		if (iter == DisableList.end())
-			return nullptr;
-
-		return &iter->second;
-	}
 private:
 	ObjectManager() : pPlayer(nullptr) { }
 public:

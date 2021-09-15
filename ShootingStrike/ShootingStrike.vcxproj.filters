@@ -82,14 +82,14 @@
     <Filter Include="소스 파일\02. Object\Player\HammerEffect">
       <UniqueIdentifier>{11323c40-e9da-462d-9d76-b8ded6cfe284}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\01. Scene\BackGround">
-      <UniqueIdentifier>{b4e8c854-9fd4-4052-84f5-3c332d752a86}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\99. Manager\BitmapManager">
       <UniqueIdentifier>{2cacc77a-878d-42e8-a562-79840f5a2119}</UniqueIdentifier>
     </Filter>
     <Filter Include="소스 파일\99. Manager\BitmapManager\Bitmap">
       <UniqueIdentifier>{30bf864a-8414-4126-a710-8c77057ee1d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\BackGround">
+      <UniqueIdentifier>{b4e8c854-9fd4-4052-84f5-3c332d752a86}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -171,8 +171,8 @@
     <ClInclude Include="CollisionManager.h">
       <Filter>소스 파일\99. Manager\CollisionManager</Filter>
     </ClInclude>
-    <ClInclude Include="StageBackground.h">
-      <Filter>소스 파일\01. Scene\BackGround</Filter>
+    <ClInclude Include="Background.h">
+      <Filter>소스 파일\02. Object\BackGround</Filter>
     </ClInclude>
     <ClInclude Include="EnemyHole.h">
       <Filter>소스 파일\02. Object\Enemy\EnemyHole</Filter>
@@ -236,8 +236,8 @@
     <ClCompile Include="MathManager.cpp">
       <Filter>소스 파일\99. Manager\MathManager</Filter>
     </ClCompile>
-    <ClCompile Include="StageBackground.cpp">
-      <Filter>소스 파일\01. Scene\BackGround</Filter>
+    <ClCompile Include="Background.cpp">
+      <Filter>소스 파일\02. Object\BackGround</Filter>
     </ClCompile>
     <ClCompile Include="EnemyHole.cpp">
       <Filter>소스 파일\02. Object\Enemy\EnemyHole</Filter>
@@ -250,6 +250,9 @@
     </ClCompile>
     <ClCompile Include="BitmapManager.cpp">
       <Filter>소스 파일\99. Manager\BitmapManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionManager.cpp">
+      <Filter>소스 파일\99. Manager\CollisionManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

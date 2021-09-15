@@ -21,9 +21,10 @@ void Enemy::Initialize()
 
 	Offset = Vector3(149.0f, 0.0f);
 
-	Active = false;
-	ObjectKey = eObjectKey::ENEMY;
-	
+	Status = eObjectStatus::ACTIVATED;
+	Key = eObjectKey::ENEMY;
+	CollisionType = eCollisionType::ELLIPSE;
+
 	Speed = 1.5f;
 }
 
@@ -52,4 +53,8 @@ void Enemy::Render(HDC _hdc)
 void Enemy::Release()
 {
 
+}
+
+void Enemy::OnCollision(Object* _pObject)
+{
 }

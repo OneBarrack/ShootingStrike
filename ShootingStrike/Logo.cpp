@@ -22,7 +22,7 @@ void Logo::Initialize()
 	ObjectManager::GetInstance()->Initialize();
 
 	ObjectManager::GetInstance()->SetPlayer(
-		ObjectFactory<Player>::CreateObject() );
+		ObjectManager::GetInstance()->TakeObject(eObjectKey::PLAYER));
 
 	BitmapManager::GetInstance()->Initialize();
 }

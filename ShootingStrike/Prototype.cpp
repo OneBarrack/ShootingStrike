@@ -1,9 +1,11 @@
 #include "Prototype.h"
 
+#include "Background.h"
 #include "Player.h"
 #include "Bullet.h"
 #include "Enemy.h"
-
+#include "EnemyHole.h"
+#include "HammerEffect.h"
 
 Prototype::Prototype()
 {
@@ -20,9 +22,12 @@ void Prototype::CreatePrototype()
 {
 	Transform TransInfo;
 
-	PrototypeList[eObjectKey::PLAYER] = new Player(TransInfo);
-	PrototypeList[eObjectKey::ENEMY]  = new Enemy(TransInfo);
-	PrototypeList[eObjectKey::BULLET] = new Bullet(TransInfo);
+	PrototypeList[eObjectKey::BACKGROUND]	= new Background;
+	PrototypeList[eObjectKey::PLAYER]		= new Player;
+	PrototypeList[eObjectKey::ENEMY]		= new Enemy;
+	PrototypeList[eObjectKey::ENEMYHOLE]	= new EnemyHole;
+	PrototypeList[eObjectKey::BULLET]		= new Bullet;
+	PrototypeList[eObjectKey::HAMMEREFFECT]	= new HammerEffect;
 }
 
 Object* Prototype::FindPrototypeObject(eObjectKey _Key)

@@ -26,9 +26,10 @@ void HammerEffect::Initialize()
 
 	Offset = Vector3(41.0f, -39.0f);
 
-	ObjectKey = eObjectKey::HAMMEREFFECT;
+	Key = eObjectKey::HAMMEREFFECT;
+	Status = eObjectStatus::ACTIVATED;
+	CollisionType = eCollisionType::RECT;
 
-	Active = true;
 	Time = GetTickCount64();
 }
 
@@ -36,7 +37,7 @@ int HammerEffect::Update()
 {
 	if (Frame >= 8)
 	{
-		Active = false;
+		Status = eObjectStatus::DEACTIVATED;
 		Frame = 0;
 	}
 
@@ -67,5 +68,9 @@ void HammerEffect::Render(HDC _hdc)
 void HammerEffect::Release()
 {
 
+}
+
+void HammerEffect::OnCollision(Object* _pObject)
+{
 }
 

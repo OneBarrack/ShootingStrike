@@ -1,6 +1,7 @@
 #include "EnemyHole.h"
 #include "Enemy.h"
 #include "BitmapManager.h"
+#include "ObjectManager.h"
 
 EnemyHole::EnemyHole()
 {
@@ -23,13 +24,15 @@ void EnemyHole::Initialize()
 
 	Offset = Vector3(149.0f, 0.0f);
 
-	Active = false;
-	ObjectKey = eObjectKey::ENEMYHOLE;
+	Status = eObjectStatus::ACTIVATED;
+	Key = eObjectKey::ENEMYHOLE;
+	CollisionType = eCollisionType::RECT;
 
 	Speed = 0.0f;
 
-	EnemyMole = new Enemy;
+	EnemyMole = ObjectManager::GetInstance()->TakeObject(eObjectKey::ENEMY);;
 	EnemyMole->Initialize();
+	EnemyMole->SetStatus(eObjectStatus::DEACTIVATED);
 }
 
 //Transform& _TrnasPos
@@ -37,6 +40,11 @@ int EnemyHole::Update()
 {
 	EnemyMole->SetPosition(TransInfo.Position.x, TransInfo.Position.y);
 	EnemyMole->Update();
+
+	if ( GetAsyncKeyState(VK_RETURN) )
+	{
+		Status = eObjectStatus::DESTROYED;
+	}
 
 	return 0;
 }
@@ -60,4 +68,8 @@ void EnemyHole::Render(HDC _hdc)
 void EnemyHole::Release()
 {
 
+}
+
+void EnemyHole::OnCollision(Object* _pObject)
+{
 }
