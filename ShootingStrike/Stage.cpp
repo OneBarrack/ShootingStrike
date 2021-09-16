@@ -97,70 +97,18 @@ void Stage::Update()
 {
 	if (((Player*)m_pPlayer)->GetSwing())
 	{
-		m_pEffect->SetStatus(eObjectStatus::ACTIVATED);
 		m_pEffect->Initialize();
+		m_pEffect->SetStatus(eObjectStatus::ACTIVATED);
 	}
 
-	// ** EnableList 내 Object 순회
-	auto enableList = ObjectManager::GetInstance()->GetEnableList();
-	for ( auto ListIter1 = enableList->begin(); ListIter1 != enableList->end(); ++ListIter1 )
-	{
-		for ( auto ObjIter1 = ListIter1->second.begin(); ObjIter1 != ListIter1->second.end(); )
-		{
-			// ** 전체 Object간 충돌체크
-			auto ListIter2 = ListIter1;
-			for ( ++ListIter2; ListIter2 != enableList->end(); ++ListIter2 )
-			{
-				for ( auto ObjIter2 = ListIter2->second.begin(); ObjIter2 != ListIter2->second.end(); ++ObjIter2 )
-				{
-					// 전체 충돌에 대한 처리 필요
-					if ( CollisionManager::IsCollision(*ObjIter1, *ObjIter2) )
-					{
-						// 충돌 트리거 발동
-						(*ObjIter1)->OnCollision(*ObjIter2);
-						(*ObjIter2)->OnCollision(*ObjIter1);
-					}
-				}
-			}
-		
-			// ** Status를 체크하여 Update 또는 Recall 해준다
-			switch ( (*ObjIter1)->GetStatus() )
-			{
-				case eObjectStatus::DESTROYED:
-					ObjectManager::GetInstance()->RecallObject(*ObjIter1++);
-					break;
-				case eObjectStatus::ACTIVATED:
-					(*ObjIter1)->Update();
-					[[fallthrough]];
-				default:
-					++ObjIter1;
-					break;
-			}
-		}
-	}
+	// ** 모든 활성화 오브젝트 간 충돌 검사
+	CheckCollisionForAll();
+	UpdateForAll();
 }
 
 void Stage::Render(HDC _hdc)
 {
-	//State_Back->Render(BitmapManager::GetInstance()->GetMemDC(eImageKey::BUFFER));
-
-	//
-	//for (vector<Object*>::iterator iter = EnemyList->begin();
-	//	iter != EnemyList->end(); ++iter)
-	//	(*iter)->Render(BitmapManager::GetInstance()->GetMemDC(eImageKey::BUFFER));
-	//
-
-	//for (vector<Object*>::iterator iter = BulletList->begin();
-	//	iter != BulletList->end(); ++iter)
-	//	(*iter)->Render(BitmapManager::GetInstance()->GetMemDC(eImageKey::BUFFER));
-
-
-	//if (m_pEffect->GetActive())
-	//	m_pEffect->Render(BitmapManager::GetInstance()->GetMemDC(eImageKey::BUFFER));
-
-
-	//m_pPlayer->Render(BitmapManager::GetInstance()->GetMemDC(eImageKey::BUFFER));
-
+	// ** Buffer MemDC에 모두 그린 후 memDC를 hdc와 스왑시켜 그린다
 	map<eObjectKey, list<Object*>>* enableList = ObjectManager::GetInstance()->GetEnableList();
 	for ( map<eObjectKey, list<Object*>>::iterator iter = enableList->begin();
 		iter != enableList->end(); ++iter )
@@ -187,4 +135,59 @@ void Stage::Render(HDC _hdc)
 void Stage::Release()
 {
 
+}
+
+void Stage::CheckCollisionForAll()
+{
+	auto EnableList = ObjectManager::GetInstance()->GetEnableList();
+	for ( auto ListIter1 = EnableList->begin(); ListIter1 != EnableList->end(); ++ListIter1 )
+	{
+		for ( auto ObjIter1 = ListIter1->second.begin(); ObjIter1 != ListIter1->second.end(); ++ObjIter1 )
+		{
+			if ( (*ObjIter1)->GetCollisionType() == eCollisionType::NONE )
+				continue;
+
+			// ** 전체 Object간 충돌체크
+			auto ListIter2 = ListIter1;
+			for ( ++ListIter2; ListIter2 != EnableList->end(); ++ListIter2 )
+			{
+				for ( auto ObjIter2 = ListIter2->second.begin(); ObjIter2 != ListIter2->second.end(); ++ObjIter2 )
+				{
+					if ( (*ObjIter2)->GetCollisionType() == eCollisionType::NONE )
+						continue;
+
+					if ( CollisionManager::IsCollision(*ObjIter1, *ObjIter2) )
+					{
+						// 충돌 트리거 발동
+						(*ObjIter1)->OnCollision(*ObjIter2);
+						(*ObjIter2)->OnCollision(*ObjIter1);
+					}
+				}
+			}
+		}
+	}
+}
+
+void Stage::UpdateForAll()
+{
+	auto enableList = ObjectManager::GetInstance()->GetEnableList();
+	for ( auto ListIter1 = enableList->begin(); ListIter1 != enableList->end(); ++ListIter1 )
+	{
+		for ( auto ObjIter1 = ListIter1->second.begin(); ObjIter1 != ListIter1->second.end(); )
+		{
+			// ** Status를 체크하여 Update 또는 Recall 해준다
+			switch ( (*ObjIter1)->GetStatus() )
+			{
+				case eObjectStatus::DESTROYED:
+					ObjectManager::GetInstance()->RecallObject(*ObjIter1++);
+					break;
+				case eObjectStatus::ACTIVATED:
+					(*ObjIter1)->Update();
+					[[fallthrough]];
+				default:
+					++ObjIter1;
+					break;
+			}
+		}
+	}
 }

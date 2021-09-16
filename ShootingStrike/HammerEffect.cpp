@@ -27,7 +27,7 @@ void HammerEffect::Initialize()
 	Offset = Vector3(41.0f, -39.0f);
 
 	Key = eObjectKey::HAMMEREFFECT;
-	Status = eObjectStatus::ACTIVATED;
+	Status = eObjectStatus::DEACTIVATED;
 	CollisionType = eCollisionType::RECT;
 
 	Time = GetTickCount64();

@@ -1,5 +1,13 @@
 #pragma once
 
+enum class InputKeyStatus
+{
+	NONE,
+	DOWN,
+	PRESSED,
+	UP,
+};
+
 enum class eSCENEID
 {
 	LOGO ,
@@ -33,6 +41,7 @@ enum class eObjectStatus
 {
 	ACTIVATED	,
 	DEACTIVATED	,
+	INVISIBLE	,
 	DESTROYED	,
 };
 

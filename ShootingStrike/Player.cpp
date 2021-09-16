@@ -45,7 +45,7 @@ int Player::Update()
 	TransInfo.Position = InputManager::GetInstance()->GetMousePosition();
 	Collider.Position = InputManager::GetInstance()->GetMousePosition();
 
-	DWORD dwKey = InputManager::GetInstance()->GetKey();
+	DWORD dwKey = InputManager::GetInstance()->GetKeyInfo().Key;
 
 	if (dwKey & KEY_LBUTTON)
 		Frame = 1;

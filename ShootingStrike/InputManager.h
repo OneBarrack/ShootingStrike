@@ -1,6 +1,12 @@
 #pragma once
 #include "Headers.h"
 
+struct InputKeyInfo
+{
+	DWORD Key;
+	InputKeyStatus KeyStatus;
+};
+
 class InputManager
 {
 private:
@@ -8,15 +14,17 @@ private:
 public:
 	static InputManager* GetInstance()
 	{
-		if (Instance == nullptr)
+		if ( Instance == nullptr )
 			Instance = new InputManager;
 
 		return Instance;
 	}
 private:
 	DWORD Key;
+	DWORD OldKey;
+	InputKeyInfo KeyInfo;
 public:
-	DWORD GetKey() const { return Key; }
+	InputKeyInfo GetKeyInfo() const { return KeyInfo; }
 
 	Vector3 GetMousePosition()
 	{
@@ -33,7 +41,10 @@ public:
 
 	void CheckKey();
 private:
-	InputManager() : Key(0) {}
+	void SetupKey();
+	void SetupKeyInfo();
+private:
+	InputManager();
 public:
 	~InputManager() {}
 };
