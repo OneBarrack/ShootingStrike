@@ -57,40 +57,40 @@ void Stage::Initialize()
 
 	Vector3 Center = Vector3(WindowsWidth / 2.0f, WindowsHeight / 2.0f);
 
-	for (int y = 0; y < TileHeightCnt; ++y)
-	{
-		for (int x = 0; x < TileWidthCnt; ++x)
-		{
-			Object* pObj = new EnemyHole;
-			pObj->Initialize();
+	//for (int y = 0; y < TileHeightCnt; ++y)
+	//{
+	//	for (int x = 0; x < TileWidthCnt; ++x)
+	//	{
+	//		Object* pObj = new EnemyHole;
+	//		pObj->Initialize();
 
-			pObj->SetPosition(
-				(Center.x - ((TileWidthCnt / 2) * pObj->GetScale().x )) + pObj->GetScale().x * x,
-				(Center.y - ((TileHeightCnt / 2) * pObj->GetScale().y)) + pObj->GetScale().y * y);
+	//		pObj->SetPosition(
+	//			(Center.x - ((TileWidthCnt / 2) * pObj->GetScale().x )) + pObj->GetScale().x * x,
+	//			(Center.y - ((TileHeightCnt / 2) * pObj->GetScale().y)) + pObj->GetScale().y * y);
 
-			EnemyList->push_back(pObj);
-		}
-	}
+	//		EnemyList->push_back(pObj);
+	//	}
+	//}
 
 
 	/////
 	ObjectManager::GetInstance()->TakeObject(eObjectKey::BACKGROUND);
 	m_pEffect = ObjectManager::GetInstance()->TakeObject(eObjectKey::HAMMEREFFECT);
 
-	for ( int y = 0; y < TileHeightCnt; ++y )
-	{
-		for ( int x = 0; x < TileWidthCnt; ++x )
-		{
-			Object* pObj = ObjectManager::GetInstance()->TakeObject(eObjectKey::ENEMYHOLE);
-			pObj->Initialize();
+	//for ( int y = 0; y < TileHeightCnt; ++y )
+	//{
+	//	for ( int x = 0; x < TileWidthCnt; ++x )
+	//	{
+	//		Object* pObj = ObjectManager::GetInstance()->TakeObject(eObjectKey::ENEMYHOLE);
+	//		pObj->Initialize();
 
-			pObj->SetPosition(
-				(Center.x - ((TileWidthCnt / 2) * pObj->GetScale().x)) + pObj->GetScale().x * x,
-				(Center.y - ((TileHeightCnt / 2) * pObj->GetScale().y)) + pObj->GetScale().y * y);
+	//		pObj->SetPosition(
+	//			(Center.x - ((TileWidthCnt / 2) * pObj->GetScale().x)) + pObj->GetScale().x * x,
+	//			(Center.y - ((TileHeightCnt / 2) * pObj->GetScale().y)) + pObj->GetScale().y * y);
 
-			EnemyList->push_back(pObj);
-		}
-	}
+	//		EnemyList->push_back(pObj);
+	//	}
+	//}
 }
 
 void Stage::Update()

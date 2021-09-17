@@ -28,13 +28,16 @@ enum class eObjectKey
 
 enum class eImageKey
 {	
-	BUFFER		,
-	BACKGROUND	,
-	HAMMER		,
-	MOLE		,
-	HOLE		,
-	EFFECT		,
-	KEYMAX		,
+	BUFFER		  ,
+	BACKGROUND	  ,
+	SIDEBACKGROUND,
+	PLAYER		  ,
+	STAGEBACK	  ,
+	HAMMER		  ,
+	MOLE		  ,
+	HOLE		  ,
+	EFFECT		  ,
+	KEYMAX		  ,
 };
 
 enum class eObjectStatus
