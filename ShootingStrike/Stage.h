@@ -24,10 +24,12 @@ public:
 
 private:
 	// ** 모든 활성화 오브젝트 간 충돌 검사
-	void CheckCollisionForAll();
+	void CheckCollisionForAllObjects();
 
 	// ** 모든 오버젝트의 Status를 체크하여 Update 또는 Recall 처리
-	void UpdateForAll();
+	void UpdateForAllObjects();
+
+	void RenderForAllObjects(HDC _hdc);
 
 public:
 	Stage();

@@ -88,8 +88,20 @@
     <Filter Include="소스 파일\99. Manager\BitmapManager\Bitmap">
       <UniqueIdentifier>{30bf864a-8414-4126-a710-8c77057ee1d5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\02. Object\BackGround">
+    <Filter Include="소스 파일\99. Manager\Pattern\Pattern">
+      <UniqueIdentifier>{9558d99b-7520-432f-b392-5342b447f826}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\99. Manager\Pattern\Pattern\Bridge">
+      <UniqueIdentifier>{11f12c14-ac01-42f3-9da8-ce3908b85872}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\Bullet\BulletBridge">
+      <UniqueIdentifier>{a4b78cb0-a5bf-4706-b5a7-e7af4f32812f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\Background">
       <UniqueIdentifier>{b4e8c854-9fd4-4052-84f5-3c332d752a86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\Background\BackgroundBridge">
+      <UniqueIdentifier>{ddc7b3dd-8676-4d8e-a0fe-21ccff021c79}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -171,9 +183,6 @@
     <ClInclude Include="CollisionManager.h">
       <Filter>소스 파일\99. Manager\CollisionManager</Filter>
     </ClInclude>
-    <ClInclude Include="Background.h">
-      <Filter>소스 파일\02. Object\BackGround</Filter>
-    </ClInclude>
     <ClInclude Include="EnemyHole.h">
       <Filter>소스 파일\02. Object\Enemy\EnemyHole</Filter>
     </ClInclude>
@@ -185,6 +194,21 @@
     </ClInclude>
     <ClInclude Include="BitmapManager.h">
       <Filter>소스 파일\99. Manager\BitmapManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Background.h">
+      <Filter>소스 파일\02. Object\Background</Filter>
+    </ClInclude>
+    <ClInclude Include="Bridge.h">
+      <Filter>소스 파일\99. Manager\Pattern\Pattern\Bridge</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletBridge.h">
+      <Filter>소스 파일\02. Object\Bullet\BulletBridge</Filter>
+    </ClInclude>
+    <ClInclude Include="BackgroundBridge.h">
+      <Filter>소스 파일\02. Object\Background\BackgroundBridge</Filter>
+    </ClInclude>
+    <ClInclude Include="StageBackground.h">
+      <Filter>소스 파일\02. Object\Background\BackgroundBridge</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -236,9 +260,6 @@
     <ClCompile Include="MathManager.cpp">
       <Filter>소스 파일\99. Manager\MathManager</Filter>
     </ClCompile>
-    <ClCompile Include="Background.cpp">
-      <Filter>소스 파일\02. Object\BackGround</Filter>
-    </ClCompile>
     <ClCompile Include="EnemyHole.cpp">
       <Filter>소스 파일\02. Object\Enemy\EnemyHole</Filter>
     </ClCompile>
@@ -253,6 +274,21 @@
     </ClCompile>
     <ClCompile Include="CollisionManager.cpp">
       <Filter>소스 파일\99. Manager\CollisionManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Background.cpp">
+      <Filter>소스 파일\02. Object\Background</Filter>
+    </ClCompile>
+    <ClCompile Include="Bridge.cpp">
+      <Filter>소스 파일\99. Manager\Pattern\Pattern\Bridge</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletBridge.cpp">
+      <Filter>소스 파일\02. Object\Bullet\BulletBridge</Filter>
+    </ClCompile>
+    <ClCompile Include="BackgroundBridge.cpp">
+      <Filter>소스 파일\02. Object\Background\BackgroundBridge</Filter>
+    </ClCompile>
+    <ClCompile Include="StageBackground.cpp">
+      <Filter>소스 파일\02. Object\Background\BackgroundBridge</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

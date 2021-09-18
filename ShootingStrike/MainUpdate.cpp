@@ -25,9 +25,9 @@ void MainUpdate::Initialize()
 
 void MainUpdate::Update()
 {
-	SceneManager::GetInstance()->Update();
-
 	InputManager::GetInstance()->CheckKeyInputStatus();
+
+	SceneManager::GetInstance()->Update();
 }
 
 void MainUpdate::Render()
@@ -37,5 +37,5 @@ void MainUpdate::Render()
 
 void MainUpdate::Release()
 {
-	
+	SceneManager::GetInstance()->Release();
 }

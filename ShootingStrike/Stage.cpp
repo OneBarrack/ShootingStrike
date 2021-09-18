@@ -29,8 +29,7 @@ void Stage::Initialize()
 	// ** 오브젝트 매니저에서 몬스터 리스트를 받아옴. (포인터로...)
 	EnemyList = ObjectManager::GetInstance()->GetEnemyList();
 	
-	State_Back = new Background;
-	State_Back->Initialize();
+	State_Back = ObjectManager::GetInstance()->TakeObject(eObjectKey::BACKGROUND);
 
 	m_pEffect = new HammerEffect;
 	m_pEffect->Initialize();
@@ -73,8 +72,7 @@ void Stage::Initialize()
 	//}
 
 
-	/////
-	ObjectManager::GetInstance()->TakeObject(eObjectKey::BACKGROUND);
+	/////	
 	m_pEffect = ObjectManager::GetInstance()->TakeObject(eObjectKey::HAMMEREFFECT);
 
 	//for ( int y = 0; y < TileHeightCnt; ++y )
@@ -102,34 +100,13 @@ void Stage::Update()
 	}
 
 	// ** 모든 활성화 오브젝트 간 충돌 검사
-	CheckCollisionForAll();
-	UpdateForAll();
+	CheckCollisionForAllObjects();
+	UpdateForAllObjects();
 }
 
 void Stage::Render(HDC _hdc)
 {
-	// ** Buffer MemDC에 모두 그린 후 memDC를 hdc와 스왑시켜 그린다
-	map<eObjectKey, list<Object*>>* enableList = ObjectManager::GetInstance()->GetEnableList();
-	for ( map<eObjectKey, list<Object*>>::iterator iter = enableList->begin();
-		iter != enableList->end(); ++iter )
-	{
-		for ( list<Object*>::iterator iter2 = iter->second.begin();
-			iter2 != iter->second.end(); ++iter2 )
-		{
-			if ( (*iter2)->GetStatus() == eObjectStatus::ACTIVATED )
-			{
-				(*iter2)->Render(BitmapManager::GetInstance()->GetMemDC(eImageKey::BUFFER));				
-			}			
-		}
-	}
-
-	BitBlt(_hdc,
-		0, 0,
-		WindowsWidth,
-		WindowsHeight,
-		BitmapManager::GetInstance()->GetMemDC(eImageKey::BUFFER),
-		0, 0, 
-		SRCCOPY);
+	RenderForAllObjects(_hdc);
 }
 
 void Stage::Release()
@@ -137,7 +114,7 @@ void Stage::Release()
 
 }
 
-void Stage::CheckCollisionForAll()
+void Stage::CheckCollisionForAllObjects()
 {
 	auto EnableList = ObjectManager::GetInstance()->GetEnableList();
 	for ( auto ListIter1 = EnableList->begin(); ListIter1 != EnableList->end(); ++ListIter1 )
@@ -168,7 +145,7 @@ void Stage::CheckCollisionForAll()
 	}
 }
 
-void Stage::UpdateForAll()
+void Stage::UpdateForAllObjects()
 {
 	auto enableList = ObjectManager::GetInstance()->GetEnableList();
 	for ( auto ListIter1 = enableList->begin(); ListIter1 != enableList->end(); ++ListIter1 )
@@ -190,4 +167,30 @@ void Stage::UpdateForAll()
 			}
 		}
 	}
+}
+
+void Stage::RenderForAllObjects(HDC _hdc)
+{
+	// ** Buffer MemDC에 모두 그린 후 memDC를 hdc와 스왑시켜 그린다
+	map<eObjectKey, list<Object*>>* enableList = ObjectManager::GetInstance()->GetEnableList();
+	for ( map<eObjectKey, list<Object*>>::iterator iter = enableList->begin();
+		iter != enableList->end(); ++iter )
+	{
+		for ( list<Object*>::iterator iter2 = iter->second.begin();
+			iter2 != iter->second.end(); ++iter2 )
+		{
+			if ( (*iter2)->GetStatus() == eObjectStatus::ACTIVATED )
+			{
+				(*iter2)->Render(BitmapManager::GetInstance()->GetMemDC(eImageKey::BUFFER));
+			}
+		}
+	}
+
+	BitBlt(_hdc,
+		0, 0,
+		WindowsWidth,
+		WindowsHeight,
+		BitmapManager::GetInstance()->GetMemDC(eImageKey::BUFFER),
+		0, 0,
+		SRCCOPY);
 }

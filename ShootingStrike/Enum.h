@@ -57,7 +57,6 @@ enum class eObjectStatus
 {
 	ACTIVATED	,
 	DEACTIVATED	,
-	INVISIBLE	,
 	DESTROYED	,
 };
 

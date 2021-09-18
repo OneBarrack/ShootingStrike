@@ -139,9 +139,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BackgroundBridge.h" />
     <ClInclude Include="Bitmap.h" />
     <ClInclude Include="BitmapManager.h" />
+    <ClInclude Include="Bridge.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="BulletBridge.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="Constant.h" />
     <ClInclude Include="Define.h" />
@@ -168,13 +171,17 @@
     <ClInclude Include="ShootingStrike.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="Background.h" />
+    <ClInclude Include="StageBackground.h" />
     <ClInclude Include="Struct.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BackgroundBridge.cpp" />
     <ClCompile Include="Bitmap.cpp" />
     <ClCompile Include="BitmapManager.cpp" />
+    <ClCompile Include="Bridge.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="BulletBridge.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyHole.cpp" />
@@ -194,6 +201,7 @@
     <ClCompile Include="ShootingStrike.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="Background.cpp" />
+    <ClCompile Include="StageBackground.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ShootingStrike.rc" />
