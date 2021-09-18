@@ -13,7 +13,7 @@ InputManager::InputManager()
 	AddKey(eInputKey::KEY_RIGHT, VK_RIGHT);	
 	AddKey(eInputKey::KEY_RIGHT, 'D');
 	AddKey(eInputKey::KEY_ESCAPE, VK_ESCAPE);
-	AddKey(eInputKey::KEY_SPACE, VK_ESCAPE);
+	AddKey(eInputKey::KEY_SPACE, VK_SPACE);
 	AddKey(eInputKey::KEY_ENTER, VK_RETURN);
 	AddKey(eInputKey::KEY_LBUTTON, VK_LBUTTON);
 }

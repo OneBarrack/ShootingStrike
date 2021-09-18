@@ -17,7 +17,7 @@ Bullet::~Bullet()
 void Bullet::Initialize()
 {
 	TransInfo.Position = Vector3(0.0f, 0.0f);
-	TransInfo.Direction = Vector3(1.0f, 0.0f);
+	TransInfo.Direction = Vector3(0.0f, -1.0f);
 	TransInfo.Scale = Vector3(30.0f, 30.0f);
 
 	Key = eObjectKey::BULLET;
@@ -34,28 +34,21 @@ void Bullet::Update()
 	if ( pBridgeObject )
 		pBridgeObject->Update(TransInfo);
 
-	Target = ObjectManager::GetInstance()->GetTarget(TransInfo.Position);
+	//Target = ObjectManager::GetInstance()->GetTarget(TransInfo.Position);
 
-	if (Target)
-		TransInfo.Direction = MathManager::GetDirection(TransInfo.Position, Target->GetPosition());	
+	//if (Target)
+	//	TransInfo.Direction = MathManager::GetDirection(TransInfo.Position, Target->GetPosition());	
 
-	TransInfo.Position.x += TransInfo.Direction.x * Speed;
-	TransInfo.Position.y += TransInfo.Direction.y * Speed;
-
-	if ( TransInfo.Position.x >= (WindowsWidth - 100) )
-		return;
+	if ( IsOutOfScreen() )
+	{
+		Status = eObjectStatus::DESTROYED;		
+	}
 }
 
 void Bullet::Render(HDC _hdc)
 {
 	if ( pBridgeObject )
 		pBridgeObject->Render(_hdc);
-
-	Ellipse(_hdc,
-		int(TransInfo.Position.x - (TransInfo.Scale.x / 2)),
-		int(TransInfo.Position.y - (TransInfo.Scale.x / 2)),
-		int(TransInfo.Position.x + (TransInfo.Scale.x / 2)),
-		int(TransInfo.Position.y + (TransInfo.Scale.x / 2)));
 }
 
 void Bullet::Release()
@@ -69,4 +62,13 @@ void Bullet::Release()
 
 void Bullet::OnCollision(Object* _pObject)
 {
+}
+
+bool Bullet::IsOutOfScreen()
+{
+	if ( TransInfo.Position.x < -100 || WindowsWidth + 100 < TransInfo.Position.x ||
+		TransInfo.Position.y < -100 || WindowsHeight + 100 < TransInfo.Position.y )
+		return true;
+
+	return false;
 }

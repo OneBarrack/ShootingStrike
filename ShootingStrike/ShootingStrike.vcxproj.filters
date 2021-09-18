@@ -103,6 +103,9 @@
     <Filter Include="소스 파일\99. Manager\Pattern\Bridge">
       <UniqueIdentifier>{11f12c14-ac01-42f3-9da8-ce3908b85872}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\02. Object\Bullet\BulletBridge\NormalBullet">
+      <UniqueIdentifier>{09746b99-22f4-4a3b-a8be-d60afb0ca26b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers.h">
@@ -210,6 +213,9 @@
     <ClInclude Include="StageBackground.h">
       <Filter>소스 파일\02. Object\Background\BackgroundBridge\StageBackground</Filter>
     </ClInclude>
+    <ClInclude Include="NormalBullet.h">
+      <Filter>소스 파일\02. Object\Bullet\BulletBridge\NormalBullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ShootingStrike.cpp">
@@ -289,6 +295,9 @@
     </ClCompile>
     <ClCompile Include="StageBackground.cpp">
       <Filter>소스 파일\02. Object\Background\BackgroundBridge\StageBackground</Filter>
+    </ClCompile>
+    <ClCompile Include="NormalBullet.cpp">
+      <Filter>소스 파일\02. Object\Bullet\BulletBridge\NormalBullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -54,7 +54,7 @@ public:
 	Transform GetColliderTransform() { return Collider; }
 
 	// ** BridgeObject¸¦ Setting
-	void SetBridge(Bridge* _pBridge) { pBridgeObject = _pBridge; }
+	void SetBridgeObject(Bridge* _pBridge) { pBridgeObject = _pBridge; }
 
 	// ** ÁÂÇ¥¸¦ Setting (Vector3)
 	void SetPosition(Vector3 _position) { TransInfo.Position = _position; }

@@ -2,8 +2,8 @@
 #include "InputManager.h"
 #include "ObjectManager.h"
 #include "BitmapManager.h"
-#include "Bullet.h"
-
+#include "Bridge.h"
+#include "NormalBullet.h"
 
 Player::Player()
 {
@@ -45,12 +45,13 @@ void Player::Update()
 	TransInfo.Position = InputManager::GetInstance()->GetMousePosition();
 	Collider.Position = InputManager::GetInstance()->GetMousePosition();
 
-	eKeyInputStatus KeyStatus = InputManager::GetInstance()->GetKeyStatus(eInputKey::KEY_UP);
+	eKeyInputStatus KeyStatus = InputManager::GetInstance()->GetKeyStatus(eInputKey::KEY_SPACE);
 
-	if ( KeyStatus == eKeyInputStatus::PRESSED )
-		Frame = 1;
-	else
-		Frame = 0;
+	if ( KeyStatus == eKeyInputStatus::DOWN )
+	{
+		Bridge* pBridge = new NormalBullet;
+		ObjectManager::GetInstance()->TakeObject(eObjectKey::BULLET, TransInfo.Position, pBridge);
+	}
 
 	return;
 }

@@ -16,6 +16,9 @@ public:
 public:
 	void SetTarget(Object* _Target) { Target = _Target; }
 
+private:
+	bool IsOutOfScreen();
+
 public:
 	Bullet();
 	Bullet(const Transform& _rTransInfo) : Object(_rTransInfo) { }

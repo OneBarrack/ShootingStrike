@@ -169,6 +169,18 @@ void Stage::UpdateForAllObjects()
 			}
 		}
 	}
+
+	static ULONGLONG Time = GetTickCount64();
+	if ( Time + 1000 < GetTickCount64() )
+	{
+		auto temp = ObjectManager::GetInstance()->GetEnableList();
+		auto temp2 = temp->find(eObjectKey::BULLET);
+		if ( temp2 != temp->end() )
+		{
+			cout << temp2->second.size() << endl;
+		}
+		Time = GetTickCount64();
+	}
 }
 
 void Stage::RenderForAllObjects(HDC _hdc)

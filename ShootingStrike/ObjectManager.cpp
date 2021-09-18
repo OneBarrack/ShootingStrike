@@ -13,7 +13,7 @@ void ObjectManager::Initialize()
 	PrototypeObject->CreatePrototype();
 }
 
-Object* ObjectManager::CreateObject(eObjectKey _Key, Bridge* _pBridge)
+Object* ObjectManager::CreateObject(eObjectKey _Key)
 {
 	// ** 새로운 객체를 생성해주어야 한다. 생성은 원형 객체를 복사생성하는 방식으로 생성할 것이다.
 	// ** 그러려면 먼저 원형객체가 존재하는지 찾는다.
@@ -29,19 +29,11 @@ Object* ObjectManager::CreateObject(eObjectKey _Key, Bridge* _pBridge)
 		Object* pObject = pProtoObject->Clone();
 		pObject->Initialize();
 
-		if ( _pBridge )
-		{
-			_pBridge->SetObject(pObject);
-			_pBridge->Initialize();
-
-			(pObject)->SetBridge(_pBridge);
-		}
-
 		return pObject;
 	}
 }
 
-Object* ObjectManager::CreateObject(eObjectKey _Key, Vector3 _Position, Bridge* _pBridge)
+Object* ObjectManager::CreateObject(eObjectKey _Key, Vector3 _Position)
 {
 	// ** 새로운 객체를 생성해주어야 한다. 생성은 원형 객체를 복사생성하는 방식으로 생성할 것이다.
 	// ** 그러려면 먼저 원형객체가 존재하는지 찾는다.
@@ -57,14 +49,6 @@ Object* ObjectManager::CreateObject(eObjectKey _Key, Vector3 _Position, Bridge* 
 		Object* pObject = pProtoObject->Clone();
 		pObject->Initialize();
 		pObject->SetPosition(_Position);
-
-		if ( _pBridge )
-		{
-			_pBridge->SetObject(pObject);
-			_pBridge->Initialize();
-
-			(pObject)->SetBridge(_pBridge);
-		}
 
 		return pObject;
 	}
@@ -106,7 +90,7 @@ Object* ObjectManager::TakeObject(eObjectKey _Key, Bridge* _pBridge)
 	if ( iter == DisableList.end() || iter->second.empty() )
 	{
 		// ** Object를 새로 생성하여 EnableList에 추가
-		pObject = CreateObject(_Key, _pBridge);
+		pObject = CreateObject(_Key);
 		if ( pObject != nullptr )
 		{
 			AddObject(EnableList, pObject);
@@ -117,11 +101,20 @@ Object* ObjectManager::TakeObject(eObjectKey _Key, Bridge* _pBridge)
 	{
 		// ** DisableList의 앞 Object를 추출.
 		pObject = iter->second.front();
-		pObject->Initialize();
+		pObject->Initialize();		
 
 		// ** 추출한 Object를 EnableList에 추가 후 DisableList에서 삭제
 		AddObject(EnableList, pObject);
 		iter->second.pop_front();
+	}
+	
+	// ** Bridge가 존재한다면 연결해준다
+	if ( _pBridge )
+	{
+		_pBridge->SetObject(pObject);
+		_pBridge->Initialize();
+
+		(pObject)->SetBridgeObject(_pBridge);
 	}
 
 	return pObject;
@@ -139,7 +132,7 @@ Object* ObjectManager::TakeObject(eObjectKey _Key, Vector3 _Position, Bridge* _p
 	if (iter == DisableList.end() || iter->second.empty())
 	{
 		// ** Object를 새로 생성하여 EnableList에 추가
-		pObject = CreateObject(_Key, _Position, _pBridge);
+		pObject = CreateObject(_Key, _Position);
 		if ( pObject != nullptr )
 		{
 			AddObject(EnableList, pObject);
@@ -158,6 +151,14 @@ Object* ObjectManager::TakeObject(eObjectKey _Key, Vector3 _Position, Bridge* _p
 		iter->second.pop_front();
 	}
 
+	if ( _pBridge )
+	{
+		_pBridge->SetObject(pObject);
+		_pBridge->Initialize();
+
+		(pObject)->SetBridgeObject(_pBridge);
+	}
+
 	return pObject;
 }
 
@@ -165,7 +166,7 @@ void ObjectManager::RecallObject(Object* _pObject)
 {
 	// ** 해당 Object Release
 	_pObject->Release();
-
+	
 	// ** 키값으로 Enable ObjectList를 탐색하여 리스트 내 해당 Object 공간 삭제.
 	list<Object*>& ObjectList = EnableList.find(_pObject->GetKey())->second;
 	ObjectList.erase(find(ObjectList.begin(), ObjectList.end(), _pObject));
@@ -227,10 +228,4 @@ void ObjectManager::Release()
 		}
 	}
 	EnableList.clear();
-}
-
-void ObjectManager::AddBullet(Vector3 _vPos)
-{
-	BulletList.push_back(
-		ObjectFactory<Bullet>::CreateObject(_vPos));
 }

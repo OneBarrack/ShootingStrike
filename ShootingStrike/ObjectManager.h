@@ -46,8 +46,8 @@ public:
 
 private:
 	// ** 按眉 积己
-	Object* CreateObject(eObjectKey _Key, Bridge* _pBridge = nullptr);
-	Object* CreateObject(eObjectKey _Key, Vector3 _Position, Bridge* _pBridge = nullptr);
+	Object* CreateObject(eObjectKey _Key);
+	Object* CreateObject(eObjectKey _Key, Vector3 _Position);
 
 	// ** 按眉 眠啊.
 	void AddObject(map<eObjectKey, list<Object*>>& _TargetList, Object* _pObject);
@@ -62,8 +62,6 @@ public:
 		
 	vector<Object*>* GetBulletList() { return &BulletList; }
 	vector<Object*>* GetEnemyList() { return &EnemyList; }
-
-	void AddBullet(Vector3 _vPos);
 private:
 	ObjectManager() : pPlayer(nullptr) { }
 public:
