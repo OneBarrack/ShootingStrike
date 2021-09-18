@@ -2,76 +2,77 @@
 
 InputManager* InputManager::Instance = nullptr;
 
-InputManager::InputManager() :
-	Key(0),
-	OldKey(0)
+InputManager::InputManager()
 {
-	KeyInfo.Key = 0;
-	KeyInfo.KeyStatus = InputKeyStatus::NONE;
+	AddKey(eInputKey::KEY_UP, VK_UP);
+	AddKey(eInputKey::KEY_UP, 'W');
+	AddKey(eInputKey::KEY_DOWN, VK_DOWN);		
+	AddKey(eInputKey::KEY_DOWN, 'S');
+	AddKey(eInputKey::KEY_LEFT, VK_LEFT);		
+	AddKey(eInputKey::KEY_LEFT, 'A');
+	AddKey(eInputKey::KEY_RIGHT, VK_RIGHT);	
+	AddKey(eInputKey::KEY_RIGHT, 'D');
+	AddKey(eInputKey::KEY_ESCAPE, VK_ESCAPE);
+	AddKey(eInputKey::KEY_SPACE, VK_ESCAPE);
+	AddKey(eInputKey::KEY_ENTER, VK_RETURN);
+	AddKey(eInputKey::KEY_LBUTTON, VK_LBUTTON);
 }
 
-void InputManager::CheckKey()
+void InputManager::AddKey(eInputKey _Key, DWORD _dwKey)
 {
-	SetupKey();
-	SetupKeyInfo();
+	SameKeyList[_Key].push_back(_dwKey);
 }
 
-void InputManager::SetupKey()
+void InputManager::CheckKeyInputStatus()
 {
-	Key = 0;
+	for ( auto KeyList : SameKeyList )
+	{		
+		eInputKey Key = KeyList.first;
+		vector<DWORD> SameKeys = KeyList.second;
 
-	if ( GetAsyncKeyState(VK_UP) || GetAsyncKeyState('W') )
-		Key |= KEY_UP;
-
-	if ( GetAsyncKeyState(VK_DOWN) || GetAsyncKeyState('S') )
-		Key |= KEY_DOWN;
-
-	if ( GetAsyncKeyState(VK_LEFT) || GetAsyncKeyState('A') )
-		Key |= KEY_LEFT;
-
-	if ( GetAsyncKeyState(VK_RIGHT) || GetAsyncKeyState('D') )
-		Key |= KEY_RIGHT;
-
-	if ( GetAsyncKeyState(VK_ESCAPE) )
-		Key |= KEY_ESCAPE;
-
-	if ( GetAsyncKeyState(VK_SPACE) )
-		Key |= KEY_SPACE;
-
-	if ( GetAsyncKeyState(VK_RETURN) )
-		Key |= KEY_ENTER;
-
-	if ( GetAsyncKeyState(VK_LBUTTON) )
-		Key |= KEY_LBUTTON;
+		SetKeyStatus(KeyInfo[Key], IsKeyPressed(SameKeys));
+	}
 }
 
-void InputManager::SetupKeyInfo()
+bool InputManager::IsKeyPressed(vector<DWORD> _SameKeys)
 {
-	if ( Key == OldKey )
+	for ( DWORD Key : _SameKeys )
 	{
-		if ( Key == 0 )
+		DWORD KeyState = GetAsyncKeyState(Key);
+
+		if ( KeyState & 0x8000 )
 		{
-			KeyInfo.Key = 0;
-			KeyInfo.KeyStatus = InputKeyStatus::NONE;
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void InputManager::SetKeyStatus(eKeyInputStatus& _KeyStatus, bool _IsKeyPressed)
+{
+	if ( _IsKeyPressed )
+	{
+		if ( _KeyStatus == eKeyInputStatus::DOWN ||
+			_KeyStatus == eKeyInputStatus::PRESSED )
+		{
+			_KeyStatus = eKeyInputStatus::PRESSED;
 		}
 		else
 		{
-			KeyInfo.KeyStatus = InputKeyStatus::PRESSED;
+			_KeyStatus = eKeyInputStatus::DOWN;
 		}
 	}
 	else
 	{
-		if ( Key == 0 )
+		if ( _KeyStatus == eKeyInputStatus::DOWN ||
+			_KeyStatus == eKeyInputStatus::PRESSED )
 		{
-			KeyInfo.Key = OldKey;
-			KeyInfo.KeyStatus = InputKeyStatus::UP;
+			_KeyStatus = eKeyInputStatus::UP;
 		}
 		else
 		{
-			KeyInfo.Key = Key;
-			KeyInfo.KeyStatus = InputKeyStatus::DOWN;
+			_KeyStatus = eKeyInputStatus::NONE;
 		}
 	}
-
-	OldKey = Key;
 }

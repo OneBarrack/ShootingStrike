@@ -1,12 +1,6 @@
 #pragma once
 #include "Headers.h"
 
-struct InputKeyInfo
-{
-	DWORD Key;
-	InputKeyStatus KeyStatus;
-};
-
 class InputManager
 {
 private:
@@ -20,11 +14,18 @@ public:
 		return Instance;
 	}
 private:
-	DWORD Key;
-	DWORD OldKey;
-	InputKeyInfo KeyInfo;
+	// ** 같은 기능을 하는 Key들을 모아놓은 List
+	map<eInputKey, vector<DWORD>> SameKeyList;
+
+	// ** Key에 대한 입력 정보가 담겨있음
+	map<eInputKey, eKeyInputStatus> KeyInfo;
+
 public:
-	InputKeyInfo GetKeyInfo() const { return KeyInfo; }
+	// ** InputKey에 대한 입력 정보 체크
+	void CheckKeyInputStatus();
+
+	// ** 해당 Key에 대한 입력 정보 반환
+	eKeyInputStatus GetKeyStatus(eInputKey _Key) { return KeyInfo[_Key]; }
 
 	Vector3 GetMousePosition()
 	{
@@ -39,10 +40,14 @@ public:
 		return Vector3((float)ptMouse.x, (float)ptMouse.y);
 	}
 
-	void CheckKey();
 private:
-	void SetupKey();
-	void SetupKeyInfo();
+	// ** 같은 기능을 하는 Key 중 하나라도 눌렀는지 확인하는 함수
+	bool IsKeyPressed(vector<DWORD> _SameKeys);
+
+	// ** Key에 대한 현재 입력상태 세팅
+	void SetKeyStatus(eKeyInputStatus& _KeyStatus, bool _IsKeyPressed);
+
+	void AddKey(eInputKey _Key, DWORD _dwKey);
 private:
 	InputManager();
 public:

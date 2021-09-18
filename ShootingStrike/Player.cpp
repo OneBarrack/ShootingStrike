@@ -45,12 +45,12 @@ int Player::Update()
 	TransInfo.Position = InputManager::GetInstance()->GetMousePosition();
 	Collider.Position = InputManager::GetInstance()->GetMousePosition();
 
-	DWORD dwKey = InputManager::GetInstance()->GetKeyInfo().Key;
+	eKeyInputStatus KeyStatus = InputManager::GetInstance()->GetKeyStatus(eInputKey::KEY_UP);
 
-	//if (dwKey & KEY_LBUTTON)
-	//	Frame = 1;
-	//else
-	//	Frame = 0;
+	if ( KeyStatus == eKeyInputStatus::PRESSED )
+		Frame = 1;
+	else
+		Frame = 0;
 
 	return 0;
 }

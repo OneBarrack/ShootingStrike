@@ -27,7 +27,7 @@ void MainUpdate::Update()
 {
 	SceneManager::GetInstance()->Update();
 
-	InputManager::GetInstance()->CheckKey();
+	InputManager::GetInstance()->CheckKeyInputStatus();
 }
 
 void MainUpdate::Render()

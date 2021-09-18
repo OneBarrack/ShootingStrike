@@ -1,11 +1,24 @@
 #pragma once
 
-enum class InputKeyStatus
+enum class eInputKey
 {
-	NONE,
-	DOWN,
-	PRESSED,
-	UP,
+	KEY_UP		,
+	KEY_DOWN	,
+	KEY_LEFT	,
+	KEY_RIGHT	,
+	KEY_ESCAPE	,
+	KEY_SPACE	,
+	KEY_ENTER	,
+	KEY_LBUTTON	, // ** 마우스 좌측 키 입력 확인.
+	KEY_MAX		, // ** 총 Key 개수.
+};
+
+enum class eKeyInputStatus
+{
+	NONE	,
+	DOWN	,
+	PRESSED	,
+	UP		,
 };
 
 enum class eSCENEID
