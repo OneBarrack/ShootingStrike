@@ -40,7 +40,7 @@ void Player::Initialize()
 	Offset = Vector3(95.0f, -85.0f);
 }
 
-int Player::Update()
+void Player::Update()
 {
 	TransInfo.Position = InputManager::GetInstance()->GetMousePosition();
 	Collider.Position = InputManager::GetInstance()->GetMousePosition();
@@ -52,7 +52,7 @@ int Player::Update()
 	else
 		Frame = 0;
 
-	return 0;
+	return;
 }
 
 void Player::Render(HDC _hdc)

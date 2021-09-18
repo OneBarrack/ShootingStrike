@@ -88,12 +88,6 @@
     <Filter Include="소스 파일\99. Manager\BitmapManager\Bitmap">
       <UniqueIdentifier>{30bf864a-8414-4126-a710-8c77057ee1d5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\99. Manager\Pattern\Pattern">
-      <UniqueIdentifier>{9558d99b-7520-432f-b392-5342b447f826}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\99. Manager\Pattern\Pattern\Bridge">
-      <UniqueIdentifier>{11f12c14-ac01-42f3-9da8-ce3908b85872}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\02. Object\Bullet\BulletBridge">
       <UniqueIdentifier>{a4b78cb0-a5bf-4706-b5a7-e7af4f32812f}</UniqueIdentifier>
     </Filter>
@@ -102,6 +96,12 @@
     </Filter>
     <Filter Include="소스 파일\02. Object\Background\BackgroundBridge">
       <UniqueIdentifier>{ddc7b3dd-8676-4d8e-a0fe-21ccff021c79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\Background\BackgroundBridge\StageBackground">
+      <UniqueIdentifier>{fe407649-c2f8-4647-9472-42983cb27aa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\99. Manager\Pattern\Bridge">
+      <UniqueIdentifier>{11f12c14-ac01-42f3-9da8-ce3908b85872}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -199,7 +199,7 @@
       <Filter>소스 파일\02. Object\Background</Filter>
     </ClInclude>
     <ClInclude Include="Bridge.h">
-      <Filter>소스 파일\99. Manager\Pattern\Pattern\Bridge</Filter>
+      <Filter>소스 파일\99. Manager\Pattern\Bridge</Filter>
     </ClInclude>
     <ClInclude Include="BulletBridge.h">
       <Filter>소스 파일\02. Object\Bullet\BulletBridge</Filter>
@@ -208,7 +208,7 @@
       <Filter>소스 파일\02. Object\Background\BackgroundBridge</Filter>
     </ClInclude>
     <ClInclude Include="StageBackground.h">
-      <Filter>소스 파일\02. Object\Background\BackgroundBridge</Filter>
+      <Filter>소스 파일\02. Object\Background\BackgroundBridge\StageBackground</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -279,7 +279,7 @@
       <Filter>소스 파일\02. Object\Background</Filter>
     </ClCompile>
     <ClCompile Include="Bridge.cpp">
-      <Filter>소스 파일\99. Manager\Pattern\Pattern\Bridge</Filter>
+      <Filter>소스 파일\99. Manager\Pattern\Bridge</Filter>
     </ClCompile>
     <ClCompile Include="BulletBridge.cpp">
       <Filter>소스 파일\02. Object\Bullet\BulletBridge</Filter>
@@ -288,7 +288,7 @@
       <Filter>소스 파일\02. Object\Background\BackgroundBridge</Filter>
     </ClCompile>
     <ClCompile Include="StageBackground.cpp">
-      <Filter>소스 파일\02. Object\Background\BackgroundBridge</Filter>
+      <Filter>소스 파일\02. Object\Background\BackgroundBridge\StageBackground</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

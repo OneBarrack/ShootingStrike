@@ -36,7 +36,7 @@ void EnemyHole::Initialize()
 }
 
 //Transform& _TrnasPos
-int EnemyHole::Update()
+void EnemyHole::Update()
 {
 	EnemyMole->SetPosition(TransInfo.Position.x, TransInfo.Position.y);
 	EnemyMole->Update();
@@ -45,8 +45,6 @@ int EnemyHole::Update()
 	{
 		Status = eObjectStatus::DESTROYED;
 	}
-
-	return 0;
 }
 
 void EnemyHole::Render(HDC _hdc)

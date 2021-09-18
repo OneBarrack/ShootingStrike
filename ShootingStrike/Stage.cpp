@@ -6,7 +6,7 @@
 #include "HammerEffect.h"
 #include "ObjectFactory.h"
 #include "CollisionManager.h"
-#include "Background.h"
+#include "StageBackground.h"
 #include "BitmapManager.h"
 
 Stage::Stage() : m_pPlayer(nullptr)
@@ -29,7 +29,9 @@ void Stage::Initialize()
 	// ** 오브젝트 매니저에서 몬스터 리스트를 받아옴. (포인터로...)
 	EnemyList = ObjectManager::GetInstance()->GetEnemyList();
 	
-	State_Back = ObjectManager::GetInstance()->TakeObject(eObjectKey::BACKGROUND);
+	Bridge* pBridge = new StageBackground;
+	Background = ObjectManager::GetInstance()->TakeObject(eObjectKey::BACKGROUND, pBridge);
+
 
 	m_pEffect = new HammerEffect;
 	m_pEffect->Initialize();

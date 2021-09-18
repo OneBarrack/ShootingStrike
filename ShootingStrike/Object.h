@@ -1,10 +1,14 @@
 #pragma once
 #include "Headers.h"
 
+class Bridge;
 class Bitmap;
 class Object
 {
 protected:
+	// ** Bridge Object
+	Bridge* pBridgeObject;
+
 	// ** 오브젝트의 기본 Transform
 	Transform TransInfo;
 
@@ -20,7 +24,7 @@ protected:
 	//Object* Target;
 public:
 	virtual void Initialize()PURE;
-	virtual int Update()PURE;
+	virtual void Update()PURE;
 	virtual void Render(HDC _hdc)PURE;
 	virtual void Release()PURE;
 	virtual void OnCollision(Object* _pObject)PURE;
@@ -49,11 +53,17 @@ public:
 	Vector3 GetColliderPosition() { return Collider.Position; }
 	Transform GetColliderTransform() { return Collider; }
 
+	// ** BridgeObject를 Setting
+	void SetBridge(Bridge* _pBridge) { pBridgeObject = _pBridge; }
+
 	// ** 좌표를 Setting (Vector3)
 	void SetPosition(Vector3 _position) { TransInfo.Position = _position; }
 
 	// ** 좌표를 Setting (_x, _y)
 	void SetPosition(float _x, float _y) { TransInfo.Position.x = _x; TransInfo.Position.y = _y; }
+
+	// ** Scale을 Setting (Vector3)
+	void SetScale(Vector3 _Scale) { TransInfo.Scale = _Scale; }
 
 	// ** 충돌체를 Setting
 	void SetColliderPosition(float _x, float _y) { Collider.Position.x = _x; Collider.Position.y = _y; }

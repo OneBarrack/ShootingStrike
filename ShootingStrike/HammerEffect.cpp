@@ -33,7 +33,7 @@ void HammerEffect::Initialize()
 	Time = GetTickCount64();
 }
 
-int HammerEffect::Update()
+void HammerEffect::Update()
 {
 	if (Frame >= 8)
 	{
@@ -46,8 +46,6 @@ int HammerEffect::Update()
 		Time = GetTickCount64();
 		Frame++;
 	}
-
-    return 0;
 }
 
 void HammerEffect::Render(HDC _hdc)

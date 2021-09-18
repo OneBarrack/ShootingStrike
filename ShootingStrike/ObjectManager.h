@@ -3,6 +3,7 @@
 
 class Object;
 class Prototype;
+class Bridge;
 class ObjectManager
 {
 private:
@@ -32,8 +33,8 @@ public:
 	void Initialize();	
 
 	// ** 컨테이너에서 객체를 찾아서 반환. 없다면 Prototype 생성 후 반환
-	Object* TakeObject(eObjectKey _Key);
-	Object* TakeObject(eObjectKey _Key, Vector3 _Position);
+	Object* TakeObject(eObjectKey _Key, Bridge* _pBridge = nullptr);
+	Object* TakeObject(eObjectKey _Key, Vector3 _Position, Bridge* _pBridge = nullptr);
 	
 	// ** 사용후 더이상 사용하지 않는 오브젝트 회수
 	void RecallObject(Object* _pObject);
@@ -45,8 +46,8 @@ public:
 
 private:
 	// ** 객체 생성
-	Object* CreateObject(eObjectKey _Key);
-	Object* CreateObject(eObjectKey _Key, Vector3 _Position);
+	Object* CreateObject(eObjectKey _Key, Bridge* _pBridge = nullptr);
+	Object* CreateObject(eObjectKey _Key, Vector3 _Position, Bridge* _pBridge = nullptr);
 
 	// ** 객체 추가.
 	void AddObject(map<eObjectKey, list<Object*>>& _TargetList, Object* _pObject);

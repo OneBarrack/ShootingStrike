@@ -1,6 +1,7 @@
 #include "Bullet.h"
 #include "ObjectManager.h"
 #include "MathManager.h"
+#include "Bridge.h"
 
 Bullet::Bullet()
 {
@@ -28,8 +29,11 @@ void Bullet::Initialize()
 	Target = ObjectManager::GetInstance()->GetTarget(TransInfo.Position);
 }
 
-int Bullet::Update()
+void Bullet::Update()
 {
+	if ( pBridgeObject )
+		pBridgeObject->Update(TransInfo);
+
 	Target = ObjectManager::GetInstance()->GetTarget(TransInfo.Position);
 
 	if (Target)
@@ -38,14 +42,15 @@ int Bullet::Update()
 	TransInfo.Position.x += TransInfo.Direction.x * Speed;
 	TransInfo.Position.y += TransInfo.Direction.y * Speed;
 
-	if (TransInfo.Position.x >= (WindowsWidth - 100))
-		return 1;
-
-	return 0;
+	if ( TransInfo.Position.x >= (WindowsWidth - 100) )
+		return;
 }
 
 void Bullet::Render(HDC _hdc)
 {
+	if ( pBridgeObject )
+		pBridgeObject->Render(_hdc);
+
 	Ellipse(_hdc,
 		int(TransInfo.Position.x - (TransInfo.Scale.x / 2)),
 		int(TransInfo.Position.y - (TransInfo.Scale.x / 2)),
@@ -55,7 +60,11 @@ void Bullet::Render(HDC _hdc)
 
 void Bullet::Release()
 {
-
+	if ( pBridgeObject )
+	{
+		pBridgeObject->Release();
+		::Safe_Delete(pBridgeObject);
+	}
 }
 
 void Bullet::OnCollision(Object* _pObject)

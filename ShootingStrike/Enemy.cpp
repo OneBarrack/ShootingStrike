@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "Bridge.h"
 #include "BitmapManager.h"
 
 Enemy::Enemy()
@@ -28,16 +29,22 @@ void Enemy::Initialize()
 	Speed = 1.5f;
 }
 
-int Enemy::Update()
+void Enemy::Update()
 {
+	if ( pBridgeObject )
+		pBridgeObject->Update(TransInfo);
+
 	if( !(Offset.y >= 94) )
 		Offset.y += 2.5f;
 
-	return 0;
+	return;
 }
 
 void Enemy::Render(HDC _hdc)
 {
+	if ( pBridgeObject )
+		pBridgeObject->Render(_hdc);
+
 	TransparentBlt(_hdc, // ** 최종 출력 위치
 		int(TransInfo.Position.x - (TransInfo.Scale.x / 2)),
 		int(TransInfo.Position.y + (TransInfo.Scale.x / 2) - Offset.y - 50),
@@ -52,7 +59,11 @@ void Enemy::Render(HDC _hdc)
 
 void Enemy::Release()
 {
-
+	if ( pBridgeObject )
+	{
+		pBridgeObject->Release();
+		::Safe_Delete(pBridgeObject);
+	}
 }
 
 void Enemy::OnCollision(Object* _pObject)

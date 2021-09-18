@@ -13,14 +13,14 @@ void ObjectManager::Initialize()
 	PrototypeObject->CreatePrototype();
 }
 
-Object* ObjectManager::CreateObject(eObjectKey _Key)
+Object* ObjectManager::CreateObject(eObjectKey _Key, Bridge* _pBridge)
 {
 	// ** 새로운 객체를 생성해주어야 한다. 생성은 원형 객체를 복사생성하는 방식으로 생성할 것이다.
 	// ** 그러려면 먼저 원형객체가 존재하는지 찾는다.
 	Object* pProtoObject = PrototypeObject->FindPrototypeObject(_Key);
 
 	// ** 원형객체가 없다면....
-	if (pProtoObject == nullptr)
+	if ( pProtoObject == nullptr )
 		return nullptr;
 	// ** 원형 객체가 있다면...
 	else
@@ -29,18 +29,26 @@ Object* ObjectManager::CreateObject(eObjectKey _Key)
 		Object* pObject = pProtoObject->Clone();
 		pObject->Initialize();
 
+		if ( _pBridge )
+		{
+			_pBridge->SetObject(pObject);
+			_pBridge->Initialize();
+
+			(pObject)->SetBridge(_pBridge);
+		}
+
 		return pObject;
 	}
 }
 
-Object* ObjectManager::CreateObject(eObjectKey _Key, Vector3 _Position)
+Object* ObjectManager::CreateObject(eObjectKey _Key, Vector3 _Position, Bridge* _pBridge)
 {
 	// ** 새로운 객체를 생성해주어야 한다. 생성은 원형 객체를 복사생성하는 방식으로 생성할 것이다.
 	// ** 그러려면 먼저 원형객체가 존재하는지 찾는다.
 	Object* pProtoObject = PrototypeObject->FindPrototypeObject(_Key);
 
 	// ** 원형객체가 없다면....
-	if (pProtoObject == nullptr)
+	if ( pProtoObject == nullptr )
 		return nullptr;
 	// ** 원형 객체가 있다면...
 	else
@@ -49,6 +57,14 @@ Object* ObjectManager::CreateObject(eObjectKey _Key, Vector3 _Position)
 		Object* pObject = pProtoObject->Clone();
 		pObject->Initialize();
 		pObject->SetPosition(_Position);
+
+		if ( _pBridge )
+		{
+			_pBridge->SetObject(pObject);
+			_pBridge->Initialize();
+
+			(pObject)->SetBridge(_pBridge);
+		}
 
 		return pObject;
 	}
@@ -79,7 +95,7 @@ void ObjectManager::AddObject(map<eObjectKey, list<Object*>>& _TargetList, Objec
 }
 
 // ** 컨테이너에서 객체를 찾아서 반환. 없다면 Prototype 생성 후 반환
-Object* ObjectManager::TakeObject(eObjectKey _Key)
+Object* ObjectManager::TakeObject(eObjectKey _Key, Bridge* _pBridge)
 {
 	Object* pObject = nullptr;
 
@@ -90,7 +106,7 @@ Object* ObjectManager::TakeObject(eObjectKey _Key)
 	if ( iter == DisableList.end() || iter->second.empty() )
 	{
 		// ** Object를 새로 생성하여 EnableList에 추가
-		pObject = CreateObject(_Key);
+		pObject = CreateObject(_Key, _pBridge);
 		if ( pObject != nullptr )
 		{
 			AddObject(EnableList, pObject);
@@ -112,7 +128,7 @@ Object* ObjectManager::TakeObject(eObjectKey _Key)
 }
 
 // ** 컨테이너에서 객체를 찾아서 반환. 없다면 Prototype 생성 후 반환
-Object* ObjectManager::TakeObject(eObjectKey _Key, Vector3 _Position)
+Object* ObjectManager::TakeObject(eObjectKey _Key, Vector3 _Position, Bridge* _pBridge)
 {
 	Object* pObject = nullptr;
 
@@ -123,7 +139,7 @@ Object* ObjectManager::TakeObject(eObjectKey _Key, Vector3 _Position)
 	if (iter == DisableList.end() || iter->second.empty())
 	{
 		// ** Object를 새로 생성하여 EnableList에 추가
-		pObject = CreateObject(_Key, _Position);
+		pObject = CreateObject(_Key, _Position, _pBridge);
 		if ( pObject != nullptr )
 		{
 			AddObject(EnableList, pObject);
@@ -147,10 +163,13 @@ Object* ObjectManager::TakeObject(eObjectKey _Key, Vector3 _Position)
 
 void ObjectManager::RecallObject(Object* _pObject)
 {
+	// ** 해당 Object Release
+	_pObject->Release();
+
 	// ** 키값으로 Enable ObjectList를 탐색하여 리스트 내 해당 Object 공간 삭제.
 	list<Object*>& ObjectList = EnableList.find(_pObject->GetKey())->second;
 	ObjectList.erase(find(ObjectList.begin(), ObjectList.end(), _pObject));
-
+	
 	// ** 해당 Object를 DisableList에 추가.
 	AddObject(DisableList, _pObject);	
 }

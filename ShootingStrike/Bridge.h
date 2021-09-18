@@ -9,7 +9,7 @@ protected:
 	Object* RealObject;
 public:
 	virtual void Initialize()PURE;
-	virtual int Update(Transform& _rTransInfo)PURE;
+	virtual void Update(Transform& _rTransInfo)PURE;
 	virtual void Render(HDC _hdc)PURE;
 	virtual void Release()PURE;
 public:

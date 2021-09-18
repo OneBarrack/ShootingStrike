@@ -6,7 +6,7 @@ class Object;
 class Stage : public Scene
 {
 private:
-	Object* State_Back;
+	Object* Background;
 	Object* m_pPlayer;
 	Object* m_pEffect;
 	vector<Object*>* EnemyList;
