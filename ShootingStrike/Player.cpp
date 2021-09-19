@@ -102,7 +102,7 @@ void Player::Update()
 	}
 
 	// ** Direction 저장
-	TransInfo.Direction = MathManager::GetDirection(TransInfo.Position, OldPosition);
+	TransInfo.Direction = MathManager::GetDirection(OldPosition, TransInfo.Position);
 
 	// ** 직전 위치 정보 저장
 	OldPosition = TransInfo.Position;
