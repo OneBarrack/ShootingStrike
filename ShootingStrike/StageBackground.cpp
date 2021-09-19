@@ -38,41 +38,43 @@ void StageBackground::Render(HDC _hdc)
 		SRCCOPY);
 
 	TransparentBlt(_hdc,
-		(WindowsWidth / 2) - (StageBkgScale.x / 2),
-		0,
-		StageBkgScale.x,
-		WindowsHeight,
+		(int)((WindowsWidth / 2) - (StageBkgScale.x / 2)),
+		(int)0,
+		(int)StageBkgScale.x,
+		(int)WindowsHeight,
 		BitmapManager::GetInstance()->GetMemDC(eImageKey::STAGEBACK),
-		0,
-		StageBkgScale.y - WindowsHeight - StageBkgOffset,
-		StageBkgScale.x,
-		WindowsHeight,
+		(int)0,
+		(int)(StageBkgScale.y - WindowsHeight - StageBkgOffset),
+		(int)StageBkgScale.x,
+		(int)WindowsHeight,
 		RGB(255, 0, 255));
+
+	// StageClude x 간격 230 y 간격 190 // 0~24,  % 5 = x ,  / 5 = y
 
 	Vector3 SideScale = Vector3(600.0f, 800.0f);
 	// Side Background
 	TransparentBlt(_hdc,
-		0,
-		0,
-		SideBkgOffset,
-		WindowsHeight,
-		BitmapManager::GetInstance()->GetMemDC(eImageKey::SIDEBACKGROUND),
-		0,
-		0,
-		SideBkgScale.x / 2,
-		WindowsHeight,
+		(int)0,
+		(int)0,
+		(int)SideBkgOffset,
+		(int)WindowsHeight,
+		BitmapManager::GetInstance()->GetMemDC(eImageKey::STAGESIDEBACK),
+		(int)0,
+		(int)0,
+		(int)SideBkgScale.x / 2,
+		(int)WindowsHeight,
 		RGB(255, 0, 255));
 
 	TransparentBlt(_hdc,
-		WindowsWidth - SideBkgOffset,
-		0,
-		SideBkgOffset,
-		WindowsHeight,
-		BitmapManager::GetInstance()->GetMemDC(eImageKey::SIDEBACKGROUND),
-		SideBkgScale.x / 2,
-		0,
-		SideBkgScale.x / 2,
-		WindowsHeight,
+		(int)(WindowsWidth - SideBkgOffset),
+		(int)0,
+		(int)SideBkgOffset,
+		(int)WindowsHeight,
+		BitmapManager::GetInstance()->GetMemDC(eImageKey::STAGESIDEBACK),
+		(int)SideBkgScale.x / 2,
+		(int)0,
+		(int)SideBkgScale.x / 2,
+		(int)WindowsHeight,
 		RGB(255, 0, 255));
 }
 

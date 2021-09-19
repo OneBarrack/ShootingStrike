@@ -1,5 +1,6 @@
 #include "NormalBullet.h"
 #include "Object.h"
+#include "BitmapManager.h"
 
 NormalBullet::NormalBullet()
 {
@@ -31,24 +32,25 @@ void NormalBullet::Update(Transform& _rTransInfo)
 
 void NormalBullet::Render(HDC _hdc)
 {
-	/*
-	TransparentBlt(_hdc, // ** 최종 출력 위치
-		int(TransInfo.Position.x - (TransInfo.Scale.x / 2)),
-		int(TransInfo.Position.y + (TransInfo.Scale.x / 2) - Offset.y - 50),
-		int(TransInfo.Scale.x),
-		int(Offset.y),
-		ImageList[Drawkey]->GetMemDC(),
-		0, 0,
-		int(TransInfo.Scale.x),
-		int(Offset.y),
-		RGB(255, 0, 255));
-	*/
+	Vector3 ImageScale = Vector3(230.0f, 230.0f);
 
-	Ellipse(_hdc,
+	TransparentBlt(_hdc, // ** 최종 출력 위치
+		(int)(RootObject->GetPosition().x - 5),
+		(int)(RootObject->GetPosition().y - 5),
+		10,
+		10,
+		BitmapManager::GetInstance()->GetMemDC(eImageKey::PROJECTILE),
+		ImageScale.x,
+		0,
+		(int)(ImageScale.x),
+		(int)(ImageScale.y),
+		RGB(255, 0, 255));
+
+	/*Ellipse(_hdc,
 		int(RootObject->GetPosition().x - (RootObject->GetScale().x / 2)),
 		int(RootObject->GetPosition().y - (RootObject->GetScale().y / 2)),
 		int(RootObject->GetPosition().x + (RootObject->GetScale().x / 2)),
-		int(RootObject->GetPosition().y + (RootObject->GetScale().y / 2)));
+		int(RootObject->GetPosition().y + (RootObject->GetScale().y / 2)));*/
 }
 
 void NormalBullet::Release()

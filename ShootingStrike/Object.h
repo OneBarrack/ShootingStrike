@@ -53,6 +53,8 @@ public:
 	Vector3 GetColliderPosition() { return Collider.Position; }
 	Transform GetColliderTransform() { return Collider; }
 
+	bool CheckKeyInputStatus(eInputKey _InputKey, eKeyInputStatus _Status);
+
 	// ** BridgeObject¸¦ Setting
 	void SetBridgeObject(Bridge* _pBridge) { pBridgeObject = _pBridge; }
 

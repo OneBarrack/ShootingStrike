@@ -91,16 +91,13 @@ void Stage::Initialize()
 	//		EnemyList->push_back(pObj);
 	//	}
 	//}
+
+	static_cast<Player*>(m_pPlayer)->SetStatus(eObjectStatus::ACTIVATED);	
+	//static_cast<Player*>(m_pPlayer)->Spawn();
 }
 
 void Stage::Update()
 {
-	if (((Player*)m_pPlayer)->GetSwing())
-	{
-		m_pEffect->Initialize();
-		m_pEffect->SetStatus(eObjectStatus::ACTIVATED);
-	}
-
 	// ** 모든 활성화 오브젝트 간 충돌 검사
 	CheckCollisionForAllObjects();
 	UpdateForAllObjects();

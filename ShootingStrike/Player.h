@@ -1,15 +1,20 @@
 #pragma once
 #include "Object.h"
 
+
 class Player : public Object
 {
 private:
-	bool bJump;
-	bool Drop;
-	float JumpSpeed;
-	float OldPositionY;
-	float JumpTime;
+	int HP;
+
+	bool bSpawing;
+	bool bAttacking;
+	bool bTakeDamage;
+	bool bDied;
+
 	int Frame;
+
+	Vector3 OldPosition;
 public:
 	virtual void Initialize()override;
 	virtual void Update()override;
@@ -18,11 +23,27 @@ public:
 	virtual void OnCollision(Object* _pObject)override;
 
 	virtual Object* Clone()override { return new Player(*this); }
+
 public:
-	bool GetJumpState() const { return bJump; }
-	void Jump();
-	void JumpOff() { bJump = false; }
-	int GetSwing() { return Frame; }
+	// ** Spawn / ReSpawn
+	void Spawn() { bSpawing = true; };
+
+	// ** 데미지를 받음
+	void TakeDamage();
+
+	// ** 죽음
+	void Die() { bDied = true; };
+
+private:
+	// ** 플레이어가 화면 밖으로 나가지 않도록 처리 (우선 스테이지 배경 크기 수치 입력)
+	void CheckPositionInsideScreen();
+
+	// ** 플레이어의 캐릭터가 생성되는 애니메이션 동작. 
+	// ** 발생조건 : 최초 스타트 / 죽은 후 다시 살아나는 상황
+	bool RenderSpawn(HDC _hdc);
+
+	// ** 플레이어의 이동방향에 따른 기체 애니메이션 동작. 
+	void RenderPlayer(HDC _hdc);
 
 public:
 	Player();
