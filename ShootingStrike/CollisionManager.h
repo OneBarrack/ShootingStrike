@@ -18,5 +18,9 @@ public:
 	static bool EllipseRectCollision(Object* _pEllipseObj, Object* _pRectObj);
 
 	// ** 점이 원 안에 있는지
-	static bool IsPointInCircle(float _Cx, float _Cy, float _Cr, float _Px, float _Py);	
+	static bool IsPointInCircle(float _Cx, float _Cy, float _Cr, float _Px, float _Py);
+	static bool IsPointInCircle(Vector3 _CirclePos, float _Cr, Vector3 _PointPos);
+
+	// ** 점이 사각형 안에 있는지
+	static bool IsPointInRect(RECT _Rect, Vector3 _PointPos);
 };

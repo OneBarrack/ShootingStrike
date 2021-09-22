@@ -21,13 +21,14 @@ void Player::Initialize()
 	TransInfo.Position = Vector3(WindowsWidth / 2, WindowsHeight / 2);
 	TransInfo.Scale = Vector3(42.0f, 47.0f);
 
-	Collider.Position = Vector3(TransInfo.Position.x, TransInfo.Position.y);
-	Collider.Scale = Vector3(42.0f, 47.0f);
+	Collider.Position = TransInfo.Position;
+	Collider.Scale = TransInfo.Scale;
 
 	Key = eObjectKey::PLAYER;
 	Status = eObjectStatus::DEACTIVATED;
 	CollisionType = eCollisionType::RECT;
 	OldPosition = TransInfo.Position;
+	bGenerateCollisionEvent = true;
 
 	HP = 3;
 
@@ -47,58 +48,49 @@ void Player::Update()
 {
 	Frame++;
 
-	if ( bDied )
-	{
-		
-	}
-
-	if ( HP <= 0 )
+	// ** 스폰 중
+	if ( bSpawing )
 		return;
 
-	if ( bSpawing )
+	// ** 체력이 0 이하일 시 Die
+	if ( HP <= 0 )
 	{
-		
+		bDied = true;
+		return;
 	}
-	else if ( bAttacking )
-	{
 
+	// ** 공격중
+	if ( bAttacking )
+	{
+		// ...
+	}
+
+	if ( CheckKeyInputStatus(eInputKey::KEY_LEFT, eKeyInputStatus::PRESSED) )
+	{
+		TransInfo.Position.x -= 3;
+	}
+	if ( CheckKeyInputStatus(eInputKey::KEY_UP, eKeyInputStatus::PRESSED) )
+	{
+		TransInfo.Position.y -= 3;
+	}
+	if ( CheckKeyInputStatus(eInputKey::KEY_RIGHT, eKeyInputStatus::PRESSED) )
+	{
+		TransInfo.Position.x += 3;
+	}
+	if ( CheckKeyInputStatus(eInputKey::KEY_DOWN, eKeyInputStatus::PRESSED) )
+	{
+		TransInfo.Position.y += 3;
+	}
+
+	// ** 미사일 발사
+	if ( CheckKeyInputStatus(eInputKey::KEY_SPACE, eKeyInputStatus::DOWN) )
+	{
+		Bridge* pBridge = new NormalBullet;
+		ObjectManager::GetInstance()->TakeObject(eObjectKey::BULLET, TransInfo.Position, pBridge);
 	}
 	else
 	{
-		//TransInfo.Position = InputManager::GetInstance()->GetMousePosition();
-		//Collider.Position = InputManager::GetInstance()->GetMousePosition();
-		// ** _DEBUG_
-		if ( CheckKeyInputStatus(eInputKey::KEY_ENTER, eKeyInputStatus::DOWN) )
-		{
-			Spawn();
-		}
-
-		if ( CheckKeyInputStatus(eInputKey::KEY_LEFT, eKeyInputStatus::PRESSED) )
-		{
-			TransInfo.Position.x -= 3;
-		}
-		if ( CheckKeyInputStatus(eInputKey::KEY_UP, eKeyInputStatus::PRESSED) )
-		{
-			TransInfo.Position.y -= 3;
-		}
-		if ( CheckKeyInputStatus(eInputKey::KEY_RIGHT, eKeyInputStatus::PRESSED) )
-		{
-			TransInfo.Position.x += 3;
-		}
-		if ( CheckKeyInputStatus(eInputKey::KEY_DOWN, eKeyInputStatus::PRESSED) )
-		{
-			TransInfo.Position.y += 3;
-		}
-
-		if ( CheckKeyInputStatus(eInputKey::KEY_SPACE, eKeyInputStatus::DOWN) )
-		{
-			Bridge* pBridge = new NormalBullet;
-			ObjectManager::GetInstance()->TakeObject(eObjectKey::BULLET, TransInfo.Position, pBridge);
-		}
-		else
-		{
-			bAttacking = false;
-		}
+		bAttacking = false;
 	}
 
 	// ** Direction 저장
@@ -193,7 +185,7 @@ bool Player::RenderSpawn(HDC _hdc)
 		(int)(TransInfo.Position.y - TransInfo.Scale.y / 2),
 		(int)TransInfo.Scale.x,
 		(int)TransInfo.Scale.y,
-		BitmapManager::GetInstance()->GetMemDC(eImageKey::PLAYER),
+		BitmapManager::GetInstance()->GetImage(eImageKey::PLAYER)->GetMemDC(),
 		(int)ImagePosition.x,
 		(int)ImagePosition.y,
 		(int)TransInfo.Scale.x,
@@ -224,7 +216,7 @@ void Player::RenderPlayer(HDC _hdc)
 		(int)TransInfo.Position.y - (int)TransInfo.Scale.y / 2,
 		(int)TransInfo.Scale.x,
 		(int)TransInfo.Scale.y,
-		BitmapManager::GetInstance()->GetMemDC(eImageKey::PLAYER),
+		BitmapManager::GetInstance()->GetImage(eImageKey::PLAYER)->GetMemDC(),
 		(int)ImagePosition.x,
 		(int)ImagePosition.y,
 		(int)TransInfo.Scale.x,

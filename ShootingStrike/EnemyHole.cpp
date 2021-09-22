@@ -27,6 +27,7 @@ void EnemyHole::Initialize()
 	Status = eObjectStatus::ACTIVATED;
 	Key = eObjectKey::ENEMYHOLE;
 	CollisionType = eCollisionType::RECT;
+	bGenerateCollisionEvent = true;
 
 	Speed = 0.0f;
 
@@ -54,7 +55,7 @@ void EnemyHole::Render(HDC _hdc)
 		int(TransInfo.Position.y - (TransInfo.Scale.y / 2)),
 		int(TransInfo.Scale.x),
 		int(TransInfo.Scale.y),
-		BitmapManager::GetInstance()->GetMemDC(eImageKey::HOLE),
+		BitmapManager::GetInstance()->GetImage(eImageKey::HOLE)->GetMemDC(),
 		0, 0,
 		int(TransInfo.Scale.x),
 		int(TransInfo.Scale.y),

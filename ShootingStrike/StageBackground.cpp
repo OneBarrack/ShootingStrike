@@ -33,7 +33,7 @@ void StageBackground::Render(HDC _hdc)
 		0, 0,
 		WindowsWidth,
 		WindowsHeight,
-		BitmapManager::GetInstance()->GetMemDC(eImageKey::BACKGROUND),
+		BitmapManager::GetInstance()->GetImage(eImageKey::BACKGROUND)->GetMemDC(),
 		0, 0,
 		SRCCOPY);
 
@@ -42,13 +42,13 @@ void StageBackground::Render(HDC _hdc)
 		(int)0,
 		(int)StageBkgScale.x,
 		(int)WindowsHeight,
-		BitmapManager::GetInstance()->GetMemDC(eImageKey::STAGEBACK),
+		BitmapManager::GetInstance()->GetImage(eImageKey::STAGEBACK)->GetMemDC(),
 		(int)0,
 		(int)(StageBkgScale.y - WindowsHeight - StageBkgOffset),
 		(int)StageBkgScale.x,
 		(int)WindowsHeight,
 		RGB(255, 0, 255));
-
+	
 	// StageClude x 간격 230 y 간격 190 // 0~24,  % 5 = x ,  / 5 = y
 
 	Vector3 SideScale = Vector3(600.0f, 800.0f);
@@ -58,7 +58,7 @@ void StageBackground::Render(HDC _hdc)
 		(int)0,
 		(int)SideBkgOffset,
 		(int)WindowsHeight,
-		BitmapManager::GetInstance()->GetMemDC(eImageKey::STAGESIDEBACK),
+		BitmapManager::GetInstance()->GetImage(eImageKey::STAGESIDEBACK)->GetMemDC(),
 		(int)0,
 		(int)0,
 		(int)SideBkgScale.x / 2,
@@ -70,7 +70,7 @@ void StageBackground::Render(HDC _hdc)
 		(int)0,
 		(int)SideBkgOffset,
 		(int)WindowsHeight,
-		BitmapManager::GetInstance()->GetMemDC(eImageKey::STAGESIDEBACK),
+		BitmapManager::GetInstance()->GetImage(eImageKey::STAGESIDEBACK)->GetMemDC(),
 		(int)SideBkgScale.x / 2,
 		(int)0,
 		(int)SideBkgScale.x / 2,

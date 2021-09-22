@@ -39,11 +39,11 @@ void NormalBullet::Render(HDC _hdc)
 		(int)(RootObject->GetPosition().y - 5),
 		10,
 		10,
-		BitmapManager::GetInstance()->GetMemDC(eImageKey::PROJECTILE),
-		ImageScale.x,
+		BitmapManager::GetInstance()->GetImage(eImageKey::PROJECTILE)->GetMemDC(),
+		(int)ImageScale.x,
 		0,
-		(int)(ImageScale.x),
-		(int)(ImageScale.y),
+		(int)ImageScale.x,
+		(int)ImageScale.y,
 		RGB(255, 0, 255));
 
 	/*Ellipse(_hdc,

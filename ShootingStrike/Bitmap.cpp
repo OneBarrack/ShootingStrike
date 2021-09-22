@@ -12,7 +12,7 @@ Bitmap::~Bitmap()
 }
 
 
-Bitmap* Bitmap::LoadBmp(LPCWSTR _FileName)
+Bitmap* Bitmap::LoadBmp(const LPCWSTR _FileName)
 {
 	hdc = GetDC(g_hWnd);
 	MemDC = CreateCompatibleDC(hdc);

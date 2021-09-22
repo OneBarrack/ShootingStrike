@@ -21,6 +21,7 @@ void Background::Initialize()
 	Key = eObjectKey::BACKGROUND;
 	Status = eObjectStatus::ACTIVATED;
 	CollisionType = eCollisionType::NONE;
+	bGenerateCollisionEvent = false;
 
 	pBridgeObject = nullptr;
 }

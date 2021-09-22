@@ -2,7 +2,6 @@
 #include "Headers.h"
 
 class Bridge;
-class Bitmap;
 class Object
 {
 protected:
@@ -21,7 +20,8 @@ protected:
 	eCollisionType CollisionType;
 	float Speed;
 
-	//Object* Target;
+	// ** 모든 오브젝트에 대한 충돌 체크가 필요한 오브젝트인지
+	bool bGenerateCollisionEvent;
 public:
 	virtual void Initialize()PURE;
 	virtual void Update()PURE;
@@ -53,25 +53,37 @@ public:
 	Vector3 GetColliderPosition() { return Collider.Position; }
 	Transform GetColliderTransform() { return Collider; }
 
+	// ** 오든 오브젝트에 대한 충돌 체크가 필요한지 확인
+	bool IsGeneratedCollisionEvent() { return bGenerateCollisionEvent; }
+
+	// ** 키 입력 상태 반환
 	bool CheckKeyInputStatus(eInputKey _InputKey, eKeyInputStatus _Status);
 
 	// ** BridgeObject를 Setting
 	void SetBridgeObject(Bridge* _pBridge) { pBridgeObject = _pBridge; }
 
 	// ** 좌표를 Setting (Vector3)
-	void SetPosition(Vector3 _position) { TransInfo.Position = _position; }
-
-	// ** 좌표를 Setting (_x, _y)
+	void SetPosition(Vector3 _position) { TransInfo.Position = _position; }	
 	void SetPosition(float _x, float _y) { TransInfo.Position.x = _x; TransInfo.Position.y = _y; }
 
 	// ** Scale을 Setting (Vector3)
 	void SetScale(Vector3 _Scale) { TransInfo.Scale = _Scale; }
+	void SetScale(float _x, float _y) { TransInfo.Scale.x = _x; TransInfo.Scale.y = _y; }
 
-	// ** 충돌체를 Setting
+	// ** 충돌체 Position Setting
+	void SetColliderPosition(Vector3 _position) { Collider.Position = _position; }
 	void SetColliderPosition(float _x, float _y) { Collider.Position.x = _x; Collider.Position.y = _y; }
 
+	// ** 충돌체 Scale Setting
+	void SetColliderScale(Vector3 _Scale) { Collider.Scale = _Scale; }
+	void SetColliderScale(float _x, float _y) { Collider.Scale.x = _x; Collider.Scale.y = _y; }
+
 	// ** 오브젝트의 활성화 상태 Setting 
-	void SetStatus(const eObjectStatus& _Status) { Status = _Status; }
+	void SetStatus(const eObjectStatus& _Status);
+
+	// ** 모든 오브젝트에 대한 충돌 체크 필요여부 Setting
+	void SetGenerateCollisionEvent(bool _GenerateCollisionEvent) { bGenerateCollisionEvent = _GenerateCollisionEvent; }
+
 public:
 	Object();
 	Object(const Transform& _rTransInfo) : TransInfo(_rTransInfo) { }

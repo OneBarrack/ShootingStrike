@@ -8,7 +8,7 @@ Menu::Menu()
 
 Menu::~Menu()
 {
-
+	Release();
 }
 
 void Menu::Initialize()

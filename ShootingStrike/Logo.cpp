@@ -6,6 +6,7 @@
 #include "ObjectManager.h"
 #include "ObjectFactory.h"
 #include "BitmapManager.h"
+#include "Button.h"
 
 Logo::Logo()
 {
@@ -14,7 +15,7 @@ Logo::Logo()
 
 Logo::~Logo()
 {
-
+	Release();
 }
 
 void Logo::Initialize()
@@ -25,16 +26,32 @@ void Logo::Initialize()
 		ObjectManager::GetInstance()->TakeObject(eObjectKey::PLAYER));
 
 	BitmapManager::GetInstance()->Initialize();
+	
+	pPlayButton = ObjectManager::GetInstance()->TakeObject(eObjectKey::BUTTON);
+	Transform PlayButtonTransInfo;
+	pPlayButton->SetPosition(WindowsWidth * 0.5f, WindowsHeight * 0.75f);
+	pPlayButton->SetScale(150.0f, 70.0f);
+	pPlayButton->SetColliderPosition(pPlayButton->GetPosition());
+	pPlayButton->SetColliderScale(pPlayButton->GetScale());
+	static_cast<Button*>(pPlayButton)->SetImage(BitmapManager::GetInstance()->GetImage(eImageKey::PLAYBUTTON));
 }
 
 void Logo::Update()
 {
-	if (GetAsyncKeyState('A'))
-		SceneManager::GetInstance()->SetScene(eSCENEID::MENU);
+	pPlayButton->Update();
+
+	if ( static_cast<Button*>(pPlayButton)->OnClick() )
+	{	
+		// ** MENU 구현 필요. 임시로 Stage로 바로 넘어감
+		//SceneManager::GetInstance()->SetScene(eSCENEID::MENU);
+
+		SceneManager::GetInstance()->SetScene(eSCENEID::STAGE);
+	}
 }
 
 void Logo::Render(HDC _hdc)
 {
+	// ** 배경
 	Vector3 ImageScale = Vector3(1915.0f, 720.0f);
 	int speed = 1;
 
@@ -53,6 +70,7 @@ void Logo::Render(HDC _hdc)
 		bCross = false;
 	}
 
+
 	if ( !bCross )
 	{
 		BitBlt(_hdc,
@@ -60,7 +78,7 @@ void Logo::Render(HDC _hdc)
 			0,
 			WindowsWidth,
 			WindowsHeight,
-			BitmapManager::GetInstance()->GetMemDC(eImageKey::LOGOBACK),
+			BitmapManager::GetInstance()->GetImage(eImageKey::LOGOBACK)->GetMemDC(),
 			Offset1,
 			0,
 			SRCCOPY);
@@ -72,7 +90,7 @@ void Logo::Render(HDC _hdc)
 			0,
 			WindowsWidth - Offset2,
 			WindowsHeight,
-			BitmapManager::GetInstance()->GetMemDC(eImageKey::LOGOBACK),
+			BitmapManager::GetInstance()->GetImage(eImageKey::LOGOBACK)->GetMemDC(),
 			Offset1,
 			0,
 			SRCCOPY);
@@ -82,13 +100,31 @@ void Logo::Render(HDC _hdc)
 			0,
 			Offset2,
 			WindowsHeight,
-			BitmapManager::GetInstance()->GetMemDC(eImageKey::LOGOBACK),
+			BitmapManager::GetInstance()->GetImage(eImageKey::LOGOBACK)->GetMemDC(),
 			0,
 			0,
 			SRCCOPY);		
 	}
 	Offset1 += speed;
 	Offset2 += speed;
+
+	// ** 로고
+	Vector3 LogoScale = Vector3(923.0f, 350.0f);
+	TransparentBlt(_hdc,
+		(int)(WindowsWidth * 0.5f - LogoScale.x * 0.5f),
+		(int)(WindowsHeight * 0.3f - LogoScale.y * 0.5f),
+		(int)LogoScale.x,
+		(int)LogoScale.y,
+		BitmapManager::GetInstance()->GetImage(eImageKey::LOGO)->GetMemDC(),
+		0,
+		0,
+		(int)LogoScale.x,
+		(int)LogoScale.y,
+		RGB(255, 0, 255));
+
+	// ** 버튼
+	pPlayButton->Render(_hdc);
+
 	/// gif돌리기
 	//412 232
 	//static int Frame = 0;
@@ -119,10 +155,14 @@ void Logo::Render(HDC _hdc)
 	//	}
 	//}
 
-	//++Frame;
+	//++Frame;	
 }
 
 void Logo::Release()
 {
-
+	if ( pPlayButton )
+	{
+		pPlayButton->Release();
+		ObjectManager::GetInstance()->RecallObject(pPlayButton);
+	}
 }

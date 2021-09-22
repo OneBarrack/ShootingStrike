@@ -9,7 +9,7 @@
 #include "StageBackground.h"
 #include "BitmapManager.h"
 
-Stage::Stage() : m_pPlayer(nullptr)
+Stage::Stage() : pPlayer(nullptr)
 {
 
 }
@@ -21,79 +21,21 @@ Stage::~Stage()
 
 void Stage::Initialize()
 {
-	m_pPlayer = ObjectManager::GetInstance()->GetPlayer();
+	pPlayer = ObjectManager::GetInstance()->GetPlayer();
 
+	/*
 	// ** 오브젝트 매니저에서 총알 리스트를 받아옴. (포인터로...)
 	BulletList = ObjectManager::GetInstance()->GetBulletList();
 
 	// ** 오브젝트 매니저에서 몬스터 리스트를 받아옴. (포인터로...)
 	EnemyList = ObjectManager::GetInstance()->GetEnemyList();
-	
-	Bridge* pBridge = new StageBackground;
-	Background = ObjectManager::GetInstance()->TakeObject(eObjectKey::BACKGROUND, pBridge);
-
-
-	m_pEffect = new HammerEffect;
-	m_pEffect->Initialize();
-
-	TileHeightCnt = 4;
-	TileWidthCnt = 4;
-	/*
-	// ** 적 생성
-	for (int i = 0; i < 8; ++i)
-	{
-		Object* pObj = new Enemy;
-		pObj->Initialize();
-
-		Vector3 RandomPos = Vector3(
-			float(rand() % (WindowsWidth - 120) + 60),
-			float(rand() % (WindowsHeight - 120) + 60));
-
-		pObj->SetPosition(RandomPos.x, RandomPos.y);
-		pObj->SetColliderPosition(RandomPos.x, RandomPos.y);
-
-		EnemyList->push_back(pObj);
-	}
 	*/
 
-	Vector3 Center = Vector3(WindowsWidth / 2.0f, WindowsHeight / 2.0f);
+	Bridge* pBridge = new StageBackground;
+	pBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::BACKGROUND, pBridge);
 
-	//for (int y = 0; y < TileHeightCnt; ++y)
-	//{
-	//	for (int x = 0; x < TileWidthCnt; ++x)
-	//	{
-	//		Object* pObj = new EnemyHole;
-	//		pObj->Initialize();
-
-	//		pObj->SetPosition(
-	//			(Center.x - ((TileWidthCnt / 2) * pObj->GetScale().x )) + pObj->GetScale().x * x,
-	//			(Center.y - ((TileHeightCnt / 2) * pObj->GetScale().y)) + pObj->GetScale().y * y);
-
-	//		EnemyList->push_back(pObj);
-	//	}
-	//}
-
-
-	/////	
-	m_pEffect = ObjectManager::GetInstance()->TakeObject(eObjectKey::HAMMEREFFECT);
-
-	//for ( int y = 0; y < TileHeightCnt; ++y )
-	//{
-	//	for ( int x = 0; x < TileWidthCnt; ++x )
-	//	{
-	//		Object* pObj = ObjectManager::GetInstance()->TakeObject(eObjectKey::ENEMYHOLE);
-	//		pObj->Initialize();
-
-	//		pObj->SetPosition(
-	//			(Center.x - ((TileWidthCnt / 2) * pObj->GetScale().x)) + pObj->GetScale().x * x,
-	//			(Center.y - ((TileHeightCnt / 2) * pObj->GetScale().y)) + pObj->GetScale().y * y);
-
-	//		EnemyList->push_back(pObj);
-	//	}
-	//}
-
-	static_cast<Player*>(m_pPlayer)->SetStatus(eObjectStatus::ACTIVATED);	
-	//static_cast<Player*>(m_pPlayer)->Spawn();
+	static_cast<Player*>(pPlayer)->SetStatus(eObjectStatus::ACTIVATED);
+	static_cast<Player*>(pPlayer)->Spawn();	
 }
 
 void Stage::Update()
@@ -110,7 +52,11 @@ void Stage::Render(HDC _hdc)
 
 void Stage::Release()
 {
-
+	if ( pBackground )
+	{
+		pBackground->Release();
+		ObjectManager::GetInstance()->RecallObject(pBackground);	
+	}
 }
 
 void Stage::CheckCollisionForAllObjects()
@@ -120,7 +66,7 @@ void Stage::CheckCollisionForAllObjects()
 	{
 		for ( auto ObjIter1 = ListIter1->second.begin(); ObjIter1 != ListIter1->second.end(); ++ObjIter1 )
 		{
-			if ( (*ObjIter1)->GetCollisionType() == eCollisionType::NONE )
+			if ( (*ObjIter1)->IsGeneratedCollisionEvent() == false )
 				continue;
 
 			// ** 전체 Object간 충돌체크
@@ -129,7 +75,7 @@ void Stage::CheckCollisionForAllObjects()
 			{
 				for ( auto ObjIter2 = ListIter2->second.begin(); ObjIter2 != ListIter2->second.end(); ++ObjIter2 )
 				{
-					if ( (*ObjIter2)->GetCollisionType() == eCollisionType::NONE )
+					if ( (*ObjIter2)->IsGeneratedCollisionEvent() == false )
 						continue;
 
 					if ( CollisionManager::IsCollision(*ObjIter1, *ObjIter2) )
@@ -192,16 +138,8 @@ void Stage::RenderForAllObjects(HDC _hdc)
 		{
 			if ( (*iter2)->GetStatus() == eObjectStatus::ACTIVATED )
 			{
-				(*iter2)->Render(BitmapManager::GetInstance()->GetMemDC(eImageKey::BUFFER));
+				(*iter2)->Render(_hdc);
 			}
 		}
 	}
-
-	BitBlt(_hdc,
-		0, 0,
-		WindowsWidth,
-		WindowsHeight,
-		BitmapManager::GetInstance()->GetMemDC(eImageKey::BUFFER),
-		0, 0,
-		SRCCOPY);
 }

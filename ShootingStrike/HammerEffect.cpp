@@ -29,6 +29,7 @@ void HammerEffect::Initialize()
 	Key = eObjectKey::HAMMEREFFECT;
 	Status = eObjectStatus::DEACTIVATED;
 	CollisionType = eCollisionType::RECT;
+	bGenerateCollisionEvent = true;
 
 	Time = GetTickCount64();
 }
@@ -55,7 +56,7 @@ void HammerEffect::Render(HDC _hdc)
 		(int)TransInfo.Position.y - (int)(TransInfo.Scale.y / 2) + (int)Offset.y,
 		(int)TransInfo.Scale.x,
 		(int)TransInfo.Scale.y,
-		BitmapManager::GetInstance()->GetMemDC(eImageKey::EFFECT),
+		BitmapManager::GetInstance()->GetImage(eImageKey::EFFECT)->GetMemDC(),
 		(int)TransInfo.Scale.x * Frame,
 		(int)TransInfo.Scale.y * 0,
 		(int)TransInfo.Scale.x,

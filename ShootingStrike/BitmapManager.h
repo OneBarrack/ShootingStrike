@@ -16,7 +16,7 @@ public:
 
 public:
 	void Initialize();
-	HDC GetMemDC(eImageKey _Key);
+	Bitmap* GetImage(const eImageKey _Key);
 
 private:
 	// imageKey enum값을 Key로 가지는 Bitmap List

@@ -6,6 +6,7 @@
 #include "Enemy.h"
 #include "EnemyHole.h"
 #include "HammerEffect.h"
+#include "Button.h"
 
 Prototype::Prototype()
 {
@@ -27,7 +28,8 @@ void Prototype::CreatePrototype()
 	PrototypeList[eObjectKey::ENEMY]		= new Enemy;
 	PrototypeList[eObjectKey::ENEMYHOLE]	= new EnemyHole;
 	PrototypeList[eObjectKey::BULLET]		= new Bullet;
-	PrototypeList[eObjectKey::HAMMEREFFECT]	= new HammerEffect;
+	PrototypeList[eObjectKey::HAMMEREFFECT] = new HammerEffect;
+	PrototypeList[eObjectKey::BUTTON]		= new Button;
 }
 
 Object* Prototype::FindPrototypeObject(eObjectKey _Key)

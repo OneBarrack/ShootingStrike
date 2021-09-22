@@ -106,6 +106,12 @@
     <Filter Include="소스 파일\02. Object\Bullet\BulletBridge\NormalBullet">
       <UniqueIdentifier>{09746b99-22f4-4a3b-a8be-d60afb0ca26b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\02. Object\UI">
+      <UniqueIdentifier>{7f7f33b5-986d-4fe2-bb5e-5a2973de84f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\UI\Button">
+      <UniqueIdentifier>{f8dfcd95-a908-4a3f-8ee8-807cca4cb3c9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers.h">
@@ -216,6 +222,9 @@
     <ClInclude Include="NormalBullet.h">
       <Filter>소스 파일\02. Object\Bullet\BulletBridge\NormalBullet</Filter>
     </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>소스 파일\02. Object\UI\Button</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ShootingStrike.cpp">
@@ -298,6 +307,9 @@
     </ClCompile>
     <ClCompile Include="NormalBullet.cpp">
       <Filter>소스 파일\02. Object\Bullet\BulletBridge\NormalBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>소스 파일\02. Object\UI\Button</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

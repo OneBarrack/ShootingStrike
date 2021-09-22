@@ -83,11 +83,26 @@ bool CollisionManager::IsPointInCircle(float _Cx, float _Cy, float _Cr, float _P
 	return (Distance < _Cr);
 }
 
+bool CollisionManager::IsPointInCircle(Vector3 _CirclePos, float _Cr, Vector3 _PointPos)
+{
+	float DeltaX = _CirclePos.x - _PointPos.x;
+	float DeltaY = _CirclePos.y - _PointPos.y;
+	float Distance = sqrt(DeltaX * DeltaX + DeltaY * DeltaY);
+
+	return (Distance < _Cr);
+}
+
+bool CollisionManager::IsPointInRect(RECT _Rect, Vector3 _PointPos)
+{
+	return (_Rect.left < _PointPos.x && _PointPos.x < _Rect.right &&
+		_Rect.top < _PointPos.y && _PointPos.y < _Rect.bottom);
+}
+
 bool CollisionManager::EllipseRectCollision(Object* _pEllipseObj, Object* _pRectObj)
 {	
 	float EllipseX	  = _pEllipseObj->GetPosition().x;
 	float EllipseY    = _pEllipseObj->GetPosition().y;
-	float Radius      = _pEllipseObj->GetScale().x;
+	float Radius      = _pEllipseObj->GetScale().x / 2;
 	RECT RectCollider = _pRectObj->GetCollider();
 	
 	//** 가로 세로 위치에 원이 존재한다면

@@ -32,6 +32,7 @@ enum class eSCENEID
 enum class eObjectKey
 {
 	BACKGROUND	,
+	BUTTON		,
 	PLAYER		,
 	ENEMY		,
 	ENEMYHOLE	,
@@ -43,10 +44,12 @@ enum class eImageKey
 {	
 	BUFFER		  ,
 	BACKGROUND	  ,
+	LOGO		  ,
 	LOGOBACK	  ,
 	STAGEBACK	  ,
 	STAGESIDEBACK ,
 	STAGECLOUD	  ,
+	PLAYBUTTON	  ,
 	PLAYER		  ,
 	PROJECTILE	  ,
 	HAMMER		  ,

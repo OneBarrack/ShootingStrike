@@ -6,8 +6,10 @@ class Object;
 class Stage : public Scene
 {
 private:
-	Object* Background;
-	Object* m_pPlayer;
+	Object* pBackground;	
+	Object* pPlayer;
+	
+	/*
 	Object* m_pEffect;
 	vector<Object*>* EnemyList;
 	vector<Object*>* BulletList;
@@ -15,6 +17,7 @@ private:
 	// ** 타일 생성 개수
 	int TileWidthCnt;
 	int TileHeightCnt;
+	*/
 
 public:
 	virtual void Initialize()override;

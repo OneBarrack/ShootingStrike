@@ -10,10 +10,7 @@ public:
 	virtual void Release()override;
 	virtual void OnCollision(Object* _pObject)override;
 
-	virtual Object* Clone()
-	{
-		return new Background(*this);
-	};
+	virtual Object* Clone() { return new Background(*this); };
 public:
 	Background();
 	virtual ~Background();
