@@ -5,6 +5,8 @@
 class Player : public Object
 {
 private:
+	Bitmap* pPlayerImage;
+
 	int HP;
 
 	bool bSpawing;

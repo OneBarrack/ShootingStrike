@@ -28,7 +28,7 @@ void Button::Initialize()
 	
 	bGenerateCollisionEvent = false;
 	
-	pImage = nullptr;
+	pButtonImage = nullptr;
 	ButtonState = eButtonState::NORMAL;
 	ButtonOffset = 0;
 	bOnClick = false;
@@ -68,7 +68,7 @@ void Button::Update()
 
 void Button::Render(HDC _hdc)
 {
-	if ( !pImage )
+	if ( !pButtonImage )
 		return;
 
 	TransparentBlt(_hdc, // ** 최종 출력 위치
@@ -76,7 +76,7 @@ void Button::Render(HDC _hdc)
 		int(TransInfo.Position.y - (TransInfo.Scale.y * 0.5f)),
 		int(TransInfo.Scale.x),
 		int(TransInfo.Scale.y),
-		pImage->GetMemDC(),
+		pButtonImage->GetMemDC(),
 		int(TransInfo.Scale.x * static_cast<int>(ButtonState)),
 		0,
 		int(TransInfo.Scale.x),

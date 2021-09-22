@@ -97,9 +97,6 @@
     <Filter Include="소스 파일\02. Object\Background\BackgroundBridge">
       <UniqueIdentifier>{ddc7b3dd-8676-4d8e-a0fe-21ccff021c79}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\02. Object\Background\BackgroundBridge\StageBackground">
-      <UniqueIdentifier>{fe407649-c2f8-4647-9472-42983cb27aa5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\99. Manager\Pattern\Bridge">
       <UniqueIdentifier>{11f12c14-ac01-42f3-9da8-ce3908b85872}</UniqueIdentifier>
     </Filter>
@@ -111,6 +108,9 @@
     </Filter>
     <Filter Include="소스 파일\02. Object\UI\Button">
       <UniqueIdentifier>{f8dfcd95-a908-4a3f-8ee8-807cca4cb3c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\Background\BackgroundBridge\SceneBackground">
+      <UniqueIdentifier>{fe407649-c2f8-4647-9472-42983cb27aa5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -217,13 +217,16 @@
       <Filter>소스 파일\02. Object\Background\BackgroundBridge</Filter>
     </ClInclude>
     <ClInclude Include="StageBackground.h">
-      <Filter>소스 파일\02. Object\Background\BackgroundBridge\StageBackground</Filter>
+      <Filter>소스 파일\02. Object\Background\BackgroundBridge\SceneBackground</Filter>
     </ClInclude>
     <ClInclude Include="NormalBullet.h">
       <Filter>소스 파일\02. Object\Bullet\BulletBridge\NormalBullet</Filter>
     </ClInclude>
     <ClInclude Include="Button.h">
       <Filter>소스 파일\02. Object\UI\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="LogoBackground.h">
+      <Filter>소스 파일\02. Object\Background\BackgroundBridge\SceneBackground</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -303,13 +306,16 @@
       <Filter>소스 파일\02. Object\Background\BackgroundBridge</Filter>
     </ClCompile>
     <ClCompile Include="StageBackground.cpp">
-      <Filter>소스 파일\02. Object\Background\BackgroundBridge\StageBackground</Filter>
+      <Filter>소스 파일\02. Object\Background\BackgroundBridge\SceneBackground</Filter>
     </ClCompile>
     <ClCompile Include="NormalBullet.cpp">
       <Filter>소스 파일\02. Object\Bullet\BulletBridge\NormalBullet</Filter>
     </ClCompile>
     <ClCompile Include="Button.cpp">
       <Filter>소스 파일\02. Object\UI\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="LogoBackground.cpp">
+      <Filter>소스 파일\02. Object\Background\BackgroundBridge\SceneBackground</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

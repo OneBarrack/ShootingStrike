@@ -18,6 +18,8 @@ Player::~Player()
 
 void Player::Initialize()
 {
+	pPlayerImage = BitmapManager::GetInstance()->GetImage(eImageKey::PLAYER);
+
 	TransInfo.Position = Vector3(WindowsWidth / 2, WindowsHeight / 2);
 	TransInfo.Scale = Vector3(42.0f, 47.0f);
 
@@ -170,6 +172,8 @@ void Player::CheckPositionInsideScreen()
 
 bool Player::RenderSpawn(HDC _hdc)
 {
+	if ( !pPlayerImage ) return false;
+
 	// ** 화면 아래에서부터 일정 위치까지 서서히 올라오도록 그림	
 	static float MovePositionY = WindowsHeight + 30;
 
@@ -185,7 +189,7 @@ bool Player::RenderSpawn(HDC _hdc)
 		(int)(TransInfo.Position.y - TransInfo.Scale.y / 2),
 		(int)TransInfo.Scale.x,
 		(int)TransInfo.Scale.y,
-		BitmapManager::GetInstance()->GetImage(eImageKey::PLAYER)->GetMemDC(),
+		pPlayerImage->GetMemDC(),
 		(int)ImagePosition.x,
 		(int)ImagePosition.y,
 		(int)TransInfo.Scale.x,
@@ -204,6 +208,8 @@ bool Player::RenderSpawn(HDC _hdc)
 
 void Player::RenderPlayer(HDC _hdc)
 {
+	if ( !pPlayerImage ) return;
+
 	Vector3 ImagePosition = Vector3(0.0f, TransInfo.Scale.y * (Frame % 2 + 1));
 
 	// ** Direction으로 방향을 체크하여 해당하는 이미지 포지션 적용
@@ -216,7 +222,7 @@ void Player::RenderPlayer(HDC _hdc)
 		(int)TransInfo.Position.y - (int)TransInfo.Scale.y / 2,
 		(int)TransInfo.Scale.x,
 		(int)TransInfo.Scale.y,
-		BitmapManager::GetInstance()->GetImage(eImageKey::PLAYER)->GetMemDC(),
+		pPlayerImage->GetMemDC(),
 		(int)ImagePosition.x,
 		(int)ImagePosition.y,
 		(int)TransInfo.Scale.x,

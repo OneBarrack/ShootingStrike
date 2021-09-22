@@ -11,7 +11,7 @@ class Button : public Object
 	};
 
 private:
-	Bitmap* pImage;
+	Bitmap* pButtonImage;
 	bool bExistHoverImage;
 	bool bExistPressedImage;
 	eButtonState ButtonState;
@@ -28,7 +28,7 @@ public:
 	virtual Object* Clone() { return new Button(*this);	};
 public:
 	// ** 이미지 세팅
-	void SetImage(Bitmap* _pImage) { pImage = _pImage; }
+	void SetImage(Bitmap* _pImage) { pButtonImage = _pImage; }
 
 	// ** 클릭 되었는지
 	bool OnClick() { return bOnClick; }

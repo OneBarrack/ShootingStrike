@@ -11,9 +11,17 @@ StageBackground::~StageBackground()
 
 void StageBackground::Initialize()
 {
+	// ** 좌우 Border line을 그리기 위한 배경
+	pBkgImageForBorderLine = BitmapManager::GetInstance()->GetImage(eImageKey::BACKGROUND);
+
+	// ** Stage background
+	pStageBkgImage = BitmapManager::GetInstance()->GetImage(eImageKey::STAGEBACK);
 	StageBkgScale  = Vector3(600.f, 5527.0f);
-	SideBkgScale   = Vector3(600.0f, 800.0f);
 	StageBkgOffset = 0.0f;
+
+	// ** Stage side background
+	pStageSideBkgImage = BitmapManager::GetInstance()->GetImage(eImageKey::STAGESIDEBACK);
+	SideBkgScale   = Vector3(600.0f, 800.0f);
 	SideBkgOffset  = 336.0f;
 }
 
@@ -29,16 +37,39 @@ void StageBackground::Update(Transform& _rTransInfo)
 
 void StageBackground::Render(HDC _hdc)
 {
+	// ** Background for borderLine (센터 좌우 검은 경계선을 나타내기 위해 배경에 그려둠)
+	if ( pBkgImageForBorderLine )
+		RenderBkgForBorderLine(_hdc);
+
+	// ** Stage main background
+	if ( pStageBkgImage )
+		RenderStageBkg(_hdc);
+
+	// ** Stage side background
+	if ( pStageSideBkgImage )
+		RenderStageSideBkg(_hdc);
+}
+
+void StageBackground::Release()
+{
+
+}
+
+void StageBackground::RenderBkgForBorderLine(HDC _hdc)
+{
 	BitBlt(_hdc,
 		0, 0,
 		WindowsWidth,
 		WindowsHeight,
-		BitmapManager::GetInstance()->GetImage(eImageKey::BACKGROUND)->GetMemDC(),
+		pBkgImageForBorderLine->GetMemDC(),
 		0, 0,
 		SRCCOPY);
+}
 
+void StageBackground::RenderStageBkg(HDC _hdc)
+{
 	TransparentBlt(_hdc,
-		(int)((WindowsWidth / 2) - (StageBkgScale.x / 2)),
+		(int)((WindowsWidth * 0.5f) - (StageBkgScale.x * 0.5f)),
 		(int)0,
 		(int)StageBkgScale.x,
 		(int)WindowsHeight,
@@ -48,11 +79,10 @@ void StageBackground::Render(HDC _hdc)
 		(int)StageBkgScale.x,
 		(int)WindowsHeight,
 		RGB(255, 0, 255));
-	
-	// StageClude x 간격 230 y 간격 190 // 0~24,  % 5 = x ,  / 5 = y
+}
 
-	Vector3 SideScale = Vector3(600.0f, 800.0f);
-	// Side Background
+void StageBackground::RenderStageSideBkg(HDC _hdc)
+{	
 	TransparentBlt(_hdc,
 		(int)0,
 		(int)0,
@@ -61,7 +91,7 @@ void StageBackground::Render(HDC _hdc)
 		BitmapManager::GetInstance()->GetImage(eImageKey::STAGESIDEBACK)->GetMemDC(),
 		(int)0,
 		(int)0,
-		(int)SideBkgScale.x / 2,
+		(int)SideBkgScale.x * 0.5f,
 		(int)WindowsHeight,
 		RGB(255, 0, 255));
 
@@ -71,14 +101,9 @@ void StageBackground::Render(HDC _hdc)
 		(int)SideBkgOffset,
 		(int)WindowsHeight,
 		BitmapManager::GetInstance()->GetImage(eImageKey::STAGESIDEBACK)->GetMemDC(),
-		(int)SideBkgScale.x / 2,
+		(int)SideBkgScale.x * 0.5f,
 		(int)0,
-		(int)SideBkgScale.x / 2,
+		(int)SideBkgScale.x * 0.5f,
 		(int)WindowsHeight,
 		RGB(255, 0, 255));
-}
-
-void StageBackground::Release()
-{
-
 }
