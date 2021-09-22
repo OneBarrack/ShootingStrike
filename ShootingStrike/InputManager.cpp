@@ -4,43 +4,42 @@ InputManager* InputManager::Instance = nullptr;
 
 InputManager::InputManager()
 {
-	AddKey(eInputKey::KEY_UP, VK_UP);
-	AddKey(eInputKey::KEY_UP, 'W');
-	AddKey(eInputKey::KEY_DOWN, VK_DOWN);		
-	AddKey(eInputKey::KEY_DOWN, 'S');
-	AddKey(eInputKey::KEY_LEFT, VK_LEFT);		
-	AddKey(eInputKey::KEY_LEFT, 'A');
-	AddKey(eInputKey::KEY_RIGHT, VK_RIGHT);	
-	AddKey(eInputKey::KEY_RIGHT, 'D');
-	AddKey(eInputKey::KEY_ESCAPE, VK_ESCAPE);
-	AddKey(eInputKey::KEY_SPACE, VK_SPACE);
-	AddKey(eInputKey::KEY_ENTER, VK_RETURN);
-	AddKey(eInputKey::KEY_LBUTTON, VK_LBUTTON);
+	// ** Key_MAX 크기만큼 사이즈 할당
+	OverlapKeyList.resize(static_cast<int>(eInputKey::KEY_MAX));
+	KeyInfo.resize(static_cast<int>(eInputKey::KEY_MAX));
+	
+	AddOverlapKey(eInputKey::KEY_UP, VK_UP);
+	AddOverlapKey(eInputKey::KEY_UP, 'W');
+	AddOverlapKey(eInputKey::KEY_DOWN, VK_DOWN);
+	AddOverlapKey(eInputKey::KEY_DOWN, 'S');
+	AddOverlapKey(eInputKey::KEY_LEFT, VK_LEFT);
+	AddOverlapKey(eInputKey::KEY_LEFT, 'A');
+	AddOverlapKey(eInputKey::KEY_RIGHT, VK_RIGHT);	
+	AddOverlapKey(eInputKey::KEY_RIGHT, 'D');
+	AddOverlapKey(eInputKey::KEY_ESCAPE, VK_ESCAPE);
+	AddOverlapKey(eInputKey::KEY_SPACE, VK_SPACE);
+	AddOverlapKey(eInputKey::KEY_ENTER, VK_RETURN);
+	AddOverlapKey(eInputKey::KEY_LBUTTON, VK_LBUTTON);
 }
 
-void InputManager::AddKey(eInputKey _Key, DWORD _dwKey)
+void InputManager::AddOverlapKey(eInputKey _Key, DWORD _dwKey)
 {
-	SameKeyList[_Key].push_back(_dwKey);
+	OverlapKeyList[static_cast<int>(_Key)].push_back(_dwKey);
 }
 
 void InputManager::CheckKeyInputStatus()
 {
-	for ( auto KeyList : SameKeyList )
-	{		
-		eInputKey Key = KeyList.first;
-		vector<DWORD> SameKeys = KeyList.second;
-
-		SetKeyStatus(KeyInfo[Key], IsKeyPressed(SameKeys));
+	for ( int Key = 0; Key < static_cast<int>(eInputKey::KEY_MAX); ++Key )
+	{
+		SetKeyStatus(KeyInfo[Key], IsKeyPressed(OverlapKeyList[Key]));
 	}
 }
 
-bool InputManager::IsKeyPressed(vector<DWORD> _SameKeys)
+bool InputManager::IsKeyPressed(vector<DWORD> _OverlapKeys)
 {
-	for ( DWORD Key : _SameKeys )
+	for ( DWORD Key : _OverlapKeys )
 	{
-		DWORD KeyState = GetAsyncKeyState(Key);
-
-		if ( KeyState & 0x8000 )
+		if ( GetAsyncKeyState(Key) & 0x8000 )
 		{
 			return true;
 		}

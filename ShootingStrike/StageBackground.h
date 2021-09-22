@@ -4,6 +4,7 @@
 class StageBackground : public BackgroundBridge
 {
 private:
+	// ** Stage Background
 	Vector3 StageBkgScale;
 	Vector3 SideBkgScale;
 	float StageBkgOffset;
