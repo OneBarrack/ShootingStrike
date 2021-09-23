@@ -39,8 +39,8 @@ public:
 	// ** 사용후 더이상 사용하지 않는 오브젝트 회수
 	void RecallObject(Object* _pObject);
 
-	// ** 현재 타겟의 위치를 갖는다.
-	Object* GetTarget(Vector3 _Pos);
+	// ** ObjectKey에 해당하는 Object List를 반환
+	list<Object*> GetObjectList(eObjectKey _ObjectKey);
 
 	void Release();
 

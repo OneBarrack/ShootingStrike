@@ -51,8 +51,8 @@ void EnemyHole::Update()
 void EnemyHole::Render(HDC _hdc)
 {
 	TransparentBlt(_hdc, // ** 최종 출력 위치
-		int(TransInfo.Position.x - (TransInfo.Scale.x / 2)),
-		int(TransInfo.Position.y - (TransInfo.Scale.y / 2)),
+		int(TransInfo.Position.x - (TransInfo.Scale.x * 0.5f)),
+		int(TransInfo.Position.y - (TransInfo.Scale.y * 0.5f)),
 		int(TransInfo.Scale.x),
 		int(TransInfo.Scale.y),
 		BitmapManager::GetInstance()->GetImage(eImageKey::HOLE)->GetMemDC(),

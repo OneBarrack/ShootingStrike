@@ -4,7 +4,9 @@
 class Bullet : public Object
 {
 private:
-	Object* Target;
+	Object* Owner;
+	int Damage;
+
 public:
 	virtual void Initialize()override;
 	virtual void Update()override;
@@ -13,8 +15,14 @@ public:
 	virtual void OnCollision(Object* _pObject)override;
 
 	virtual Object* Clone()override { return new Bullet(*this); }
+
 public:
-	void SetTarget(Object* _Target) { Target = _Target; }
+	void SetOwner(Object* _Owner) { Owner = _Owner; }
+	void SetDamage(const int _Damage) { Damage = _Damage; }
+	void SetDirection(Vector3 _Direction) { TransInfo.Direction = _Direction; }
+
+	Object* GetOwner() { return Owner; }
+	int GetDamage() { return Damage; }
 
 private:
 	bool IsOutOfScreen();

@@ -14,8 +14,8 @@ bool CollisionManager::IsCollision(Object* _pObj1, Object* _pObj2)
 
 bool CollisionManager::EllipseCollision(Object* _pObj1, Object* _pObj2)
 {
-	// ** 플레이어의 반지름과 Target의 반지름의 합을 구함.
-	float RadiusSum = (_pObj1->GetScale().x / 2) + (_pObj2->GetScale().x / 2);
+	// ** 플레이어 충돌체 반지름과 Target 충돌체 반지름의 합을 구함.
+	float RadiusSum = (_pObj1->GetColliderScale().x * 0.5f) + (_pObj2->GetColliderScale().x * 0.5f);
 
 	// ** 거리를 구하는 공식
 	// ** 먼저 기준 Object와 Target Object의 x, y 값을 구함.
@@ -25,8 +25,8 @@ bool CollisionManager::EllipseCollision(Object* _pObj1, Object* _pObj2)
 	//**  /  | y
 	//** /___|
 	//**   x
-	float DeltaX = _pObj1->GetPosition().x - _pObj2->GetPosition().x;
-	float DeltaY = _pObj1->GetPosition().y - _pObj2->GetPosition().y;
+	float DeltaX = _pObj1->GetColliderPosition().x - _pObj2->GetColliderPosition().x;
+	float DeltaY = _pObj1->GetColliderPosition().y - _pObj2->GetColliderPosition().y;
 	float Distance = sqrt((DeltaX * DeltaX) + (DeltaY * DeltaY));
 
 	return (RadiusSum > Distance);
@@ -35,7 +35,7 @@ bool CollisionManager::EllipseCollision(Object* _pObj1, Object* _pObj2)
 bool CollisionManager::EllipseCollision(const Transform& _Temp, const Transform& _Dest)
 {
 	// ** 플레이어의 반지름과 Target의 반지름의 합을 구함.
-	float RadiusSum = (_Temp.Scale.x / 2) + (_Dest.Scale.x / 2);
+	float RadiusSum = (_Temp.Scale.x * 0.5f) + (_Dest.Scale.x * 0.5f);
 
 	// ** 거리를 구하는 공식
 	// ** 먼저 기준 Object와 Target Object의 x, y 값을 구함.
@@ -62,10 +62,13 @@ bool CollisionManager::RectCollision(Object* _pObj1, Object* _pObj2)
 	//**   |_______| y
 	//**         x ↑
 	//**         vector V2(x, y)
-	return ((_pObj1->GetPosition().x + (_pObj1->GetScale().x / 2)) > (_pObj2->GetPosition().x - (_pObj2->GetScale().x / 2)) &&
-		(_pObj1->GetPosition().y + (_pObj1->GetScale().y / 2)) > (_pObj2->GetPosition().y - (_pObj2->GetScale().y / 2)) &&
-		(_pObj1->GetPosition().x - (_pObj1->GetScale().x / 2)) < (_pObj2->GetPosition().x + (_pObj2->GetScale().x / 2)) &&
-		(_pObj1->GetPosition().y - (_pObj1->GetScale().y / 2)) < (_pObj2->GetPosition().y + (_pObj2->GetScale().y / 2)));
+	
+	//return ((_pObj1->GetColliderPosition().x + (_pObj1->GetColliderScale().x * 0.5f)) > (_pObj2->GetColliderPosition().x - (_pObj2->GetColliderScale().x * 0.5f)) &&
+	//	(_pObj1->GetColliderPosition().y + (_pObj1->GetColliderScale().y * 0.5f)) > (_pObj2->GetColliderPosition().y - (_pObj2->GetColliderScale().y * 0.5f)) &&
+	//	(_pObj1->GetColliderPosition().x - (_pObj1->GetColliderScale().x * 0.5f)) < (_pObj2->GetColliderPosition().x + (_pObj2->GetColliderScale().x * 0.5f)) &&
+	//	(_pObj1->GetColliderPosition().y - (_pObj1->GetColliderScale().y * 0.5f)) < (_pObj2->GetColliderPosition().y + (_pObj2->GetColliderScale().y * 0.5f)));
+
+	return RectCollision(_pObj1->GetCollider(), _pObj2->GetCollider());
 }
 
 bool CollisionManager::RectCollision(RECT _R1, RECT _R2)
@@ -100,9 +103,9 @@ bool CollisionManager::IsPointInRect(RECT _Rect, Vector3 _PointPos)
 
 bool CollisionManager::EllipseRectCollision(Object* _pEllipseObj, Object* _pRectObj)
 {	
-	float EllipseX	  = _pEllipseObj->GetPosition().x;
-	float EllipseY    = _pEllipseObj->GetPosition().y;
-	float Radius      = _pEllipseObj->GetScale().x / 2;
+	float EllipseX	  = _pEllipseObj->GetColliderPosition().x;
+	float EllipseY    = _pEllipseObj->GetColliderPosition().y;
+	float Radius      = _pEllipseObj->GetColliderScale().x * 0.5f;
 	RECT RectCollider = _pRectObj->GetCollider();
 	
 	//** 가로 세로 위치에 원이 존재한다면

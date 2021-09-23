@@ -15,6 +15,10 @@ NormalBullet::~NormalBullet()
 
 void NormalBullet::Initialize()
 {
+	pBulletImage = BitmapManager::GetInstance()->GetImage(eImageKey::PROJECTILE);
+	BulletImageScale = Vector3(230.0f, 230.0f);
+	BulletRenderScale = Vector3(10.0f, 10.0f);
+
 	Speed = 3.0f;
 
 	DrawKey = "NormalBullet";
@@ -32,28 +36,26 @@ void NormalBullet::Update(Transform& _rTransInfo)
 
 void NormalBullet::Render(HDC _hdc)
 {
-	Vector3 ImageScale = Vector3(230.0f, 230.0f);
-
-	TransparentBlt(_hdc, // ** 최종 출력 위치
-		(int)(RootObject->GetPosition().x - 5),
-		(int)(RootObject->GetPosition().y - 5),
-		10,
-		10,
-		BitmapManager::GetInstance()->GetImage(eImageKey::PROJECTILE)->GetMemDC(),
-		(int)ImageScale.x,
-		0,
-		(int)ImageScale.x,
-		(int)ImageScale.y,
-		RGB(255, 0, 255));
-
-	/*Ellipse(_hdc,
-		int(RootObject->GetPosition().x - (RootObject->GetScale().x / 2)),
-		int(RootObject->GetPosition().y - (RootObject->GetScale().y / 2)),
-		int(RootObject->GetPosition().x + (RootObject->GetScale().x / 2)),
-		int(RootObject->GetPosition().y + (RootObject->GetScale().y / 2)));*/
+	if ( pBulletImage )
+		RenderBullet(_hdc);
 }
 
 void NormalBullet::Release()
 {
 
+}
+
+void NormalBullet::RenderBullet(HDC _hdc)
+{
+	TransparentBlt(_hdc, // ** 최종 출력 위치
+		(int)(pOwner->GetPosition().x - (BulletRenderScale.x * 0.5f)),
+		(int)(pOwner->GetPosition().y - (BulletRenderScale.y * 0.5f)),
+		(int)BulletRenderScale.x,
+		(int)BulletRenderScale.y,
+		pBulletImage->GetMemDC(),
+		(int)BulletImageScale.x,
+		0,
+		(int)BulletImageScale.x,
+		(int)BulletImageScale.y,
+		RGB(255, 0, 255));
 }

@@ -14,10 +14,10 @@ Object::~Object()
 RECT Object::GetCollider()
 {	
 	return RECT{
-		LONG(Collider.Position.x - (Collider.Scale.x / 2)) ,
-		LONG(Collider.Position.y - (Collider.Scale.y / 2)) ,
-		LONG(Collider.Position.x + (Collider.Scale.x / 2)) ,
-		LONG(Collider.Position.y + (Collider.Scale.y / 2)) };
+		LONG(Collider.Position.x - (Collider.Scale.x * 0.5f)) ,
+		LONG(Collider.Position.y - (Collider.Scale.y * 0.5f)) ,
+		LONG(Collider.Position.x + (Collider.Scale.x * 0.5f)) ,
+		LONG(Collider.Position.y + (Collider.Scale.y * 0.5f)) };
 }
 
 bool Object::CheckKeyInputStatus(eInputKey _InputKey, eKeyInputStatus _Status)

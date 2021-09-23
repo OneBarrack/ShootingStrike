@@ -5,6 +5,7 @@
 #include "Bridge.h"
 #include "NormalBullet.h"
 #include "MathManager.h"
+#include "SpawnManager.h"
 
 Player::Player()
 {
@@ -20,7 +21,7 @@ void Player::Initialize()
 {
 	pPlayerImage = BitmapManager::GetInstance()->GetImage(eImageKey::PLAYER);
 
-	TransInfo.Position = Vector3(WindowsWidth / 2, WindowsHeight / 2);
+	TransInfo.Position = Vector3(WindowsWidth * 0.5f, WindowsHeight * 0.5f);
 	TransInfo.Scale = Vector3(42.0f, 47.0f);
 
 	Collider.Position = TransInfo.Position;
@@ -33,6 +34,9 @@ void Player::Initialize()
 	bGenerateCollisionEvent = true;
 
 	HP = 3;
+	Damage = 1;
+	Power = 1;
+	FireType = eBulletFireType::Normal;
 
 	bSpawing = false;
 	bAttacking = false;
@@ -67,6 +71,12 @@ void Player::Update()
 		// ...
 	}
 
+	// _Debug_
+	if ( CheckKeyInputStatus(eInputKey::KEY_ENTER, eKeyInputStatus::DOWN) )
+	{
+		Power++;
+	}
+
 	if ( CheckKeyInputStatus(eInputKey::KEY_LEFT, eKeyInputStatus::PRESSED) )
 	{
 		TransInfo.Position.x -= 3;
@@ -87,8 +97,7 @@ void Player::Update()
 	// ** 미사일 발사
 	if ( CheckKeyInputStatus(eInputKey::KEY_SPACE, eKeyInputStatus::DOWN) )
 	{
-		Bridge* pBridge = new NormalBullet;
-		ObjectManager::GetInstance()->TakeObject(eObjectKey::BULLET, TransInfo.Position, pBridge);
+		Fire(FireType, Power, Damage);
 	}
 	else
 	{
@@ -100,6 +109,10 @@ void Player::Update()
 
 	// ** 직전 위치 정보 저장
 	OldPosition = TransInfo.Position;
+
+	// ** 충돌체 갱신
+	Collider.Position = TransInfo.Position;
+	Collider.Scale = TransInfo.Scale;
 
 	// ** 플레이어가 화면 밖으로 나가지 않도록 처리	
 	CheckPositionInsideScreen();
@@ -135,11 +148,53 @@ void Player::Render(HDC _hdc)
 	RenderPlayer(_hdc);	
 }
 
-void Player::TakeDamage()
+void Player::Fire(eBulletFireType _FireType, int _Power, int _Damage)
 {
+	Bridge* pBridge = nullptr;
+
+	switch ( _FireType )
+	{
+		case eBulletFireType::Normal:
+		{
+			// ** Power 수치만큼 총알 숫자를 늘리고, 총알 간 간격에 대한 각도를 설정하여
+			// ** 부채꼴 형태로 발사되도록 한다.
+			// ** 
+			int angleGap = 10;
+			int startAngle = 90 - ((angleGap * 0.5 * (_Power - 1)));
+			
+			for ( int i = 0; i < _Power; ++i )
+			{
+				int angle = startAngle + (angleGap * i);
+				Vector3 BulletDirection(cosf(angle * PI / 180), -sinf(angle * PI / 180));
+
+				SpawnManager::SpawnBullet(this, TransInfo.Position, BulletDirection, new NormalBullet, _Damage);
+			}
+			break;
+		} 		
+		case eBulletFireType::Guide:
+			break;
+		default:
+			break;
+	}	
+}
+
+void Player::ApplyDamage(Object* _pTarget, int _Damage)
+{
+	// ** ... 데미지를 가할 때의 동작
+
+	TakeDamage(_Damage);
+}
+
+void Player::TakeDamage(int _Damage)
+{
+	HP -= _Damage;
 	bTakeDamage = true;
 
-	return;
+	if ( HP <= 0 )
+	{
+		HP = 0;
+		bDied = true;
+	}
 }
 
 void Player::CheckPositionInsideScreen()
@@ -148,9 +203,9 @@ void Player::CheckPositionInsideScreen()
 	float StageScaleX = 600.0f;
 	
 	RECT ScreenRect;
-	ScreenRect.left   = (LONG)((WindowsWidth / 2) - (StageScaleX / 2));
+	ScreenRect.left   = (LONG)((WindowsWidth * 0.5f) - (StageScaleX * 0.5f));
 	ScreenRect.top	  = 0;
-	ScreenRect.right  = (LONG)((WindowsWidth / 2) + (StageScaleX / 2));
+	ScreenRect.right  = (LONG)((WindowsWidth * 0.5f) + (StageScaleX * 0.5f));
 	ScreenRect.bottom = WindowsHeight;
 		
 	// ** 좌
@@ -181,12 +236,12 @@ bool Player::RenderSpawn(HDC _hdc)
 	float StopPositionY = WindowsHeight - 100;
 	Vector3 ImagePosition = Vector3(42.0f, 0.0f);
 
-	TransInfo.Position.x = WindowsWidth / 2;
+	TransInfo.Position.x = WindowsWidth * 0.5f;
 	TransInfo.Position.y = MovePositionY;
 
 	TransparentBlt(_hdc, 
-		(int)(TransInfo.Position.x - TransInfo.Scale.x / 2),
-		(int)(TransInfo.Position.y - TransInfo.Scale.y / 2),
+		(int)(TransInfo.Position.x - TransInfo.Scale.x * 0.5f),
+		(int)(TransInfo.Position.y - TransInfo.Scale.y * 0.5f),
 		(int)TransInfo.Scale.x,
 		(int)TransInfo.Scale.y,
 		pPlayerImage->GetMemDC(),
@@ -218,8 +273,8 @@ void Player::RenderPlayer(HDC _hdc)
 	else									 ImagePosition.x = 42.0f; // ** None(Center)
 
 	TransparentBlt(_hdc,
-		(int)TransInfo.Position.x - (int)TransInfo.Scale.x / 2,
-		(int)TransInfo.Position.y - (int)TransInfo.Scale.y / 2,
+		(int)TransInfo.Position.x - (int)(TransInfo.Scale.x * 0.5f),
+		(int)TransInfo.Position.y - (int)(TransInfo.Scale.y * 0.5f),
 		(int)TransInfo.Scale.x,
 		(int)TransInfo.Scale.y,
 		pPlayerImage->GetMemDC(),

@@ -1,13 +1,15 @@
 #pragma once
 #include "Object.h"
 
-
 class Player : public Object
 {
 private:
-	Bitmap* pPlayerImage;
+	Bitmap* pPlayerImage;	
 
 	int HP;
+	int Damage;
+	int Power;
+	eBulletFireType FireType;
 
 	bool bSpawing;
 	bool bAttacking;
@@ -28,10 +30,16 @@ public:
 
 public:
 	// ** Spawn / ReSpawn
-	void Spawn() { bSpawing = true; };
+	void SpawnPlayer() { bSpawing = true; };
+
+	// ** 미사일 발사
+	void Fire(eBulletFireType _FireType, int _Power, int _Damage);
+
+	// ** 데미지를 입힘
+	void ApplyDamage(Object* _pTarget, int _Damage);
 
 	// ** 데미지를 받음
-	void TakeDamage();
+	void TakeDamage(int _Damage);
 
 	// ** 죽음
 	void Die() { bDied = true; };

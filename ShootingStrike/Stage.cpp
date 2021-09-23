@@ -35,7 +35,7 @@ void Stage::Initialize()
 	pBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::BACKGROUND, pBridge);
 
 	static_cast<Player*>(pPlayer)->SetStatus(eObjectStatus::ACTIVATED);
-	static_cast<Player*>(pPlayer)->Spawn();	
+	static_cast<Player*>(pPlayer)->SpawnPlayer();	
 }
 
 void Stage::Update()

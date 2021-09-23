@@ -76,12 +76,6 @@
     <Filter Include="소스 파일\99. Manager\CollisionManager">
       <UniqueIdentifier>{87e0d02c-bcd9-4841-bdac-90c41c56369b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\02. Object\Enemy\EnemyHole">
-      <UniqueIdentifier>{00d208e7-fffc-4b98-b4ea-3f9e7eb0caa9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02. Object\Player\HammerEffect">
-      <UniqueIdentifier>{11323c40-e9da-462d-9d76-b8ded6cfe284}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\99. Manager\BitmapManager">
       <UniqueIdentifier>{2cacc77a-878d-42e8-a562-79840f5a2119}</UniqueIdentifier>
     </Filter>
@@ -109,7 +103,19 @@
     <Filter Include="소스 파일\02. Object\UI\Button">
       <UniqueIdentifier>{f8dfcd95-a908-4a3f-8ee8-807cca4cb3c9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\02. Object\Background\BackgroundBridge\SceneBackground">
+    <Filter Include="소스 파일\02. Object\Animation">
+      <UniqueIdentifier>{3e425bb0-e637-4ad1-bd09-0cc5ab84388e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\99. Manager\SpawnManager">
+      <UniqueIdentifier>{d2286836-24a7-4923-a1b0-31bfe4a3f91d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\Bullet\BulletBridge\GuideBullet">
+      <UniqueIdentifier>{94f3f3fe-d352-4ce5-afe8-a7652214cd27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\Background\BackgroundBridge\LogoBackground">
+      <UniqueIdentifier>{9b931869-e593-4f6b-8fb1-e41d47767851}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\Background\BackgroundBridge\StageBackground">
       <UniqueIdentifier>{fe407649-c2f8-4647-9472-42983cb27aa5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -192,12 +198,6 @@
     <ClInclude Include="CollisionManager.h">
       <Filter>소스 파일\99. Manager\CollisionManager</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyHole.h">
-      <Filter>소스 파일\02. Object\Enemy\EnemyHole</Filter>
-    </ClInclude>
-    <ClInclude Include="HammerEffect.h">
-      <Filter>소스 파일\02. Object\Player\HammerEffect</Filter>
-    </ClInclude>
     <ClInclude Include="Bitmap.h">
       <Filter>소스 파일\99. Manager\BitmapManager\Bitmap</Filter>
     </ClInclude>
@@ -217,7 +217,7 @@
       <Filter>소스 파일\02. Object\Background\BackgroundBridge</Filter>
     </ClInclude>
     <ClInclude Include="StageBackground.h">
-      <Filter>소스 파일\02. Object\Background\BackgroundBridge\SceneBackground</Filter>
+      <Filter>소스 파일\02. Object\Background\BackgroundBridge\StageBackground</Filter>
     </ClInclude>
     <ClInclude Include="NormalBullet.h">
       <Filter>소스 파일\02. Object\Bullet\BulletBridge\NormalBullet</Filter>
@@ -225,8 +225,14 @@
     <ClInclude Include="Button.h">
       <Filter>소스 파일\02. Object\UI\Button</Filter>
     </ClInclude>
+    <ClInclude Include="SpawnManager.h">
+      <Filter>소스 파일\99. Manager\SpawnManager</Filter>
+    </ClInclude>
+    <ClInclude Include="GuideBullet.h">
+      <Filter>소스 파일\02. Object\Bullet\BulletBridge\GuideBullet</Filter>
+    </ClInclude>
     <ClInclude Include="LogoBackground.h">
-      <Filter>소스 파일\02. Object\Background\BackgroundBridge\SceneBackground</Filter>
+      <Filter>소스 파일\02. Object\Background\BackgroundBridge\LogoBackground</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -278,12 +284,6 @@
     <ClCompile Include="MathManager.cpp">
       <Filter>소스 파일\99. Manager\MathManager</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyHole.cpp">
-      <Filter>소스 파일\02. Object\Enemy\EnemyHole</Filter>
-    </ClCompile>
-    <ClCompile Include="HammerEffect.cpp">
-      <Filter>소스 파일\02. Object\Player\HammerEffect</Filter>
-    </ClCompile>
     <ClCompile Include="Bitmap.cpp">
       <Filter>소스 파일\99. Manager\BitmapManager\Bitmap</Filter>
     </ClCompile>
@@ -306,7 +306,7 @@
       <Filter>소스 파일\02. Object\Background\BackgroundBridge</Filter>
     </ClCompile>
     <ClCompile Include="StageBackground.cpp">
-      <Filter>소스 파일\02. Object\Background\BackgroundBridge\SceneBackground</Filter>
+      <Filter>소스 파일\02. Object\Background\BackgroundBridge\StageBackground</Filter>
     </ClCompile>
     <ClCompile Include="NormalBullet.cpp">
       <Filter>소스 파일\02. Object\Bullet\BulletBridge\NormalBullet</Filter>
@@ -314,8 +314,14 @@
     <ClCompile Include="Button.cpp">
       <Filter>소스 파일\02. Object\UI\Button</Filter>
     </ClCompile>
+    <ClCompile Include="SpawnManager.cpp">
+      <Filter>소스 파일\99. Manager\SpawnManager</Filter>
+    </ClCompile>
+    <ClCompile Include="GuideBullet.cpp">
+      <Filter>소스 파일\02. Object\Bullet\BulletBridge\GuideBullet</Filter>
+    </ClCompile>
     <ClCompile Include="LogoBackground.cpp">
-      <Filter>소스 파일\02. Object\Background\BackgroundBridge\SceneBackground</Filter>
+      <Filter>소스 파일\02. Object\Background\BackgroundBridge\LogoBackground</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

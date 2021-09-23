@@ -1,7 +1,7 @@
 #pragma once
 #include "BulletBridge.h"
 
-class NormalBullet : public BulletBridge
+class GuideBullet : public BulletBridge
 {
 private:
 	// ** Bullet
@@ -16,10 +16,12 @@ public:
 	virtual void Release()override;
 
 private:
+	void CalcGuideDirection(Transform& _rTransInfo);
+	Object* FindTarget(Vector3 _Pos);
 	void RenderBullet(HDC _hdc);
 
 public:
-	NormalBullet();
-	virtual ~NormalBullet();
+	GuideBullet();
+	virtual ~GuideBullet();
 };
 

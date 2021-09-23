@@ -35,9 +35,7 @@ enum class eObjectKey
 	BUTTON		,
 	PLAYER		,
 	ENEMY		,
-	ENEMYHOLE	,
 	BULLET		,
-	HAMMEREFFECT,
 };
 
 enum class eImageKey
@@ -52,9 +50,7 @@ enum class eImageKey
 	PLAYBUTTON	  ,
 	PLAYER		  ,
 	PROJECTILE	  ,
-	HAMMER		  ,
 	MOLE		  ,
-	HOLE		  ,
 	EFFECT		  ,
 	KEYMAX		  ,
 };
@@ -71,4 +67,10 @@ enum class eCollisionType
 	NONE	,
 	ELLIPSE	,
 	RECT	,
+};
+
+enum class eBulletFireType
+{
+	Normal	,
+	Guide	,
 };

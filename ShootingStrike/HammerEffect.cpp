@@ -52,8 +52,8 @@ void HammerEffect::Update()
 void HammerEffect::Render(HDC _hdc)
 {
 	TransparentBlt(_hdc, // ** 최종 출력 위치
-		(int)TransInfo.Position.x - (int)(TransInfo.Scale.x / 2) + (int)Offset.x,
-		(int)TransInfo.Position.y - (int)(TransInfo.Scale.y / 2) + (int)Offset.y,
+		(int)TransInfo.Position.x - (int)(TransInfo.Scale.x * 0.5f) + (int)Offset.x,
+		(int)TransInfo.Position.y - (int)(TransInfo.Scale.y * 0.5f) + (int)Offset.y,
 		(int)TransInfo.Scale.x,
 		(int)TransInfo.Scale.y,
 		BitmapManager::GetInstance()->GetImage(eImageKey::EFFECT)->GetMemDC(),

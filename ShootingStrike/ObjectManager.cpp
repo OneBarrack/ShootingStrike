@@ -111,7 +111,7 @@ Object* ObjectManager::TakeObject(eObjectKey _Key, Bridge* _pBridge)
 	// ** Bridge가 존재한다면 연결해준다
 	if ( _pBridge )
 	{
-		_pBridge->SetObject(pObject);
+		_pBridge->SetOwner(pObject);
 		_pBridge->Initialize();
 
 		(pObject)->SetBridgeObject(_pBridge);
@@ -153,7 +153,7 @@ Object* ObjectManager::TakeObject(eObjectKey _Key, Vector3 _Position, Bridge* _p
 
 	if ( _pBridge )
 	{
-		_pBridge->SetObject(pObject);
+		_pBridge->SetOwner(pObject);
 		_pBridge->Initialize();
 
 		(pObject)->SetBridgeObject(_pBridge);
@@ -175,30 +175,15 @@ void ObjectManager::RecallObject(Object* _pObject)
 	AddObject(DisableList, _pObject);	
 }
 
-// _Debug_ : map에서 찾을수있게
-Object* ObjectManager::GetTarget(Vector3 _Pos)
+list<Object*> ObjectManager::GetObjectList(eObjectKey _ObjectKey)
 {
-	// ** 멀티맵을 만든다. Key = 거리, value = Object
-	multimap<float, Object*> FindTargetList;
+	list<Object*> ResultList;
 
+	auto FindIter = EnableList.find(_ObjectKey);
+	if ( FindIter != EnableList.end() )
+		ResultList = FindIter->second;
 
-	// ** 모든 적 유닛리스트를 돌면서 확인한다.
-	for (vector<Object*>::iterator iter = EnemyList.begin();
-		iter != EnemyList.end(); ++iter)
-	{
-		// ** 멀티맵에 Current 와 Target 의 거리를 구해서 추가한다.
-		FindTargetList.insert(
-			make_pair(
-			MathManager::GetDistance(_Pos, (*iter)->GetPosition()),	// ** Key
-			(*iter)));	// ** Value
-	}
-
-	// ** 만약에 리스트에 아무것도 없다면....
-	if (FindTargetList.empty())
-		return nullptr;
-
-	// ** 모든 오브젝트의 추가작업이 끝나면 가장 첫번째에 있는 오브젝트를 반환한다.
-	return FindTargetList.begin()->second;
+	return ResultList;
 }
 
 void ObjectManager::Release()

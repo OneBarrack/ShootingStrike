@@ -48,10 +48,10 @@ public:
 	Vector3 GetScale() { return TransInfo.Scale; }
 
 	// ** 충돌체를 out.
-	RECT GetCollider();
-	
-	Vector3 GetColliderPosition() { return Collider.Position; }
+	RECT GetCollider();	
 	Transform GetColliderTransform() { return Collider; }
+	Vector3 GetColliderPosition() { return Collider.Position; }
+	Vector3 GetColliderScale() { return Collider.Scale; }
 
 	// ** 오든 오브젝트에 대한 충돌 체크가 필요한지 확인
 	bool IsGeneratedCollisionEvent() { return bGenerateCollisionEvent; }

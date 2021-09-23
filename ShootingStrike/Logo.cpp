@@ -20,13 +20,12 @@ Logo::~Logo()
 
 void Logo::Initialize()
 {
+	BitmapManager::GetInstance()->Initialize();
 	ObjectManager::GetInstance()->Initialize();
 
 	ObjectManager::GetInstance()->SetPlayer(
 		ObjectManager::GetInstance()->TakeObject(eObjectKey::PLAYER));
-
-	BitmapManager::GetInstance()->Initialize();
-	
+		
 	pPlayButton = ObjectManager::GetInstance()->TakeObject(eObjectKey::BUTTON);
 	Transform PlayButtonTransInfo;
 	pPlayButton->SetPosition(WindowsWidth * 0.5f, WindowsHeight * 0.75f);

@@ -6,14 +6,18 @@ class Bridge
 {
 protected:
 	string DrawKey;
-	Object* RootObject;
+	Object* pOwner;
+
 public:
 	virtual void Initialize()PURE;
 	virtual void Update(Transform& _rTransInfo)PURE;
 	virtual void Render(HDC _hdc)PURE;
 	virtual void Release()PURE;
+
 public:
-	void SetObject(Object* _pObject) { RootObject = _pObject; }
+	void SetOwner(Object* _pObject) { pOwner = _pObject; }
+	Object* GetOwner() { return pOwner; }
+
 public:
 	Bridge();
 	virtual ~Bridge();

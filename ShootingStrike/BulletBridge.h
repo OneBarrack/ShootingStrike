@@ -5,6 +5,7 @@ class BulletBridge : public Bridge
 {
 protected:
 	float Speed;
+
 public:
 	virtual void Initialize()PURE;
 	virtual void Update(Transform& _rTransInfo)PURE;

@@ -13,7 +13,7 @@ public:
 
 		if ( _pBridge )
 		{
-			_pBridge->SetObject(pObj);
+			_pBridge->SetOwner(pObj);
 			_pBridge->Initialize();
 
 			((T*)pObj)->SetBridge(_pBridge);
@@ -30,7 +30,7 @@ public:
 
 		if ( _pBridge )
 		{
-			_pBridge->SetObject(pObj);
+			_pBridge->SetOwner(pObj);
 			_pBridge->Initialize();
 
 			((T*)pObj)->SetBridge(_pBridge);

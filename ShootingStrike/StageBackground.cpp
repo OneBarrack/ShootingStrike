@@ -91,7 +91,7 @@ void StageBackground::RenderStageSideBkg(HDC _hdc)
 		BitmapManager::GetInstance()->GetImage(eImageKey::STAGESIDEBACK)->GetMemDC(),
 		(int)0,
 		(int)0,
-		(int)SideBkgScale.x * 0.5f,
+		(int)(SideBkgScale.x * 0.5f),
 		(int)WindowsHeight,
 		RGB(255, 0, 255));
 
@@ -101,9 +101,9 @@ void StageBackground::RenderStageSideBkg(HDC _hdc)
 		(int)SideBkgOffset,
 		(int)WindowsHeight,
 		BitmapManager::GetInstance()->GetImage(eImageKey::STAGESIDEBACK)->GetMemDC(),
-		(int)SideBkgScale.x * 0.5f,
+		(int)(SideBkgScale.x * 0.5f),
 		(int)0,
-		(int)SideBkgScale.x * 0.5f,
+		(int)(SideBkgScale.x * 0.5f),
 		(int)WindowsHeight,
 		RGB(255, 0, 255));
 }

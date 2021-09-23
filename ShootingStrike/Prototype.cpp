@@ -26,9 +26,7 @@ void Prototype::CreatePrototype()
 	PrototypeList[eObjectKey::BACKGROUND]	= new Background;
 	PrototypeList[eObjectKey::PLAYER]		= new Player;
 	PrototypeList[eObjectKey::ENEMY]		= new Enemy;
-	PrototypeList[eObjectKey::ENEMYHOLE]	= new EnemyHole;
 	PrototypeList[eObjectKey::BULLET]		= new Bullet;
-	PrototypeList[eObjectKey::HAMMEREFFECT] = new HammerEffect;
 	PrototypeList[eObjectKey::BUTTON]		= new Button;
 }
 
