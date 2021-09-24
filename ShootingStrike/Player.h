@@ -45,9 +45,6 @@ public:
 	void Die() { bDied = true; };
 
 private:
-	// ** 플레이어가 화면 밖으로 나가지 않도록 처리 (우선 스테이지 배경 크기 수치 입력)
-	void CheckPositionInsideScreen();
-
 	// ** 플레이어의 캐릭터가 생성되는 애니메이션 동작. 
 	// ** 발생조건 : 최초 스타트 / 죽은 후 다시 살아나는 상황
 	bool RenderSpawn(HDC _hdc);

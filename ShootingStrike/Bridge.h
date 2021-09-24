@@ -1,7 +1,7 @@
 #pragma once
 #include "Headers.h"
+#include "Object.h"
 
-class Object;
 class Bridge
 {
 protected:
@@ -10,7 +10,7 @@ protected:
 
 public:
 	virtual void Initialize()PURE;
-	virtual void Update(Transform& _rTransInfo)PURE;
+	virtual void Update()PURE;
 	virtual void Render(HDC _hdc)PURE;
 	virtual void Release()PURE;
 

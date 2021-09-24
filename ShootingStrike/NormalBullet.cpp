@@ -17,20 +17,20 @@ void NormalBullet::Initialize()
 {
 	pBulletImage = BitmapManager::GetInstance()->GetImage(eImageKey::PROJECTILE);
 	BulletImageScale = Vector3(230.0f, 230.0f);
-	BulletRenderScale = Vector3(10.0f, 10.0f);
-
-	Speed = 3.0f;
-
+	
 	DrawKey = "NormalBullet";
 }
 
-void NormalBullet::Update(Transform& _rTransInfo)
+void NormalBullet::Update()
 {
-	_rTransInfo.Position.x += _rTransInfo.Direction.x * Speed;
-	_rTransInfo.Position.y += _rTransInfo.Direction.y * Speed;
+	TransInfo = pOwner->GetTransInfo();
+	Speed = pOwner->GetSpeed();
 
-	//if (_rTransInfo.Position.x >= (WindowsWidth - 100))
-		//return 1;
+	TransInfo.Position.x += TransInfo.Direction.x * Speed;
+	TransInfo.Position.y += TransInfo.Direction.y * Speed;
+
+	pOwner->SetTransInfo(TransInfo);
+	pOwner->SetSpeed(Speed);
 }
 
 
@@ -48,10 +48,10 @@ void NormalBullet::Release()
 void NormalBullet::RenderBullet(HDC _hdc)
 {
 	TransparentBlt(_hdc, // ** 최종 출력 위치
-		(int)(pOwner->GetPosition().x - (BulletRenderScale.x * 0.5f)),
-		(int)(pOwner->GetPosition().y - (BulletRenderScale.y * 0.5f)),
-		(int)BulletRenderScale.x,
-		(int)BulletRenderScale.y,
+		(int)(pOwner->GetPosition().x - (TransInfo.Scale.x * 0.5f)),
+		(int)(pOwner->GetPosition().y - (TransInfo.Scale.y * 0.5f)),
+		(int)TransInfo.Scale.x,
+		(int)TransInfo.Scale.y,
 		pBulletImage->GetMemDC(),
 		(int)BulletImageScale.x,
 		0,

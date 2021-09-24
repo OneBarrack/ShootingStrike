@@ -18,14 +18,22 @@ void StageBackground::Initialize()
 	pStageBkgImage = BitmapManager::GetInstance()->GetImage(eImageKey::STAGEBACK);
 	StageBkgScale  = Vector3(600.f, 5527.0f);
 	StageBkgOffset = 0.0f;
-
+	
 	// ** Stage side background
 	pStageSideBkgImage = BitmapManager::GetInstance()->GetImage(eImageKey::STAGESIDEBACK);
 	SideBkgScale   = Vector3(600.0f, 800.0f);
 	SideBkgOffset  = 336.0f;
+
+	// ** Owner Position, Scale 세팅
+	Vector3 OwnerScale;
+	OwnerScale.x = StageBkgScale.x < WindowsWidth ? StageBkgScale.x : WindowsWidth;
+	OwnerScale.y = StageBkgScale.y < WindowsHeight ? StageBkgScale.y : WindowsHeight;
+	
+	pOwner->SetPosition(Vector3(WindowsWidth * 0.5f, WindowsHeight * 0.5f));
+	pOwner->SetScale(OwnerScale);
 }
 
-void StageBackground::Update(Transform& _rTransInfo)
+void StageBackground::Update()
 {
 	// ** 화면의 끝과 Image의 끝이 만나는지 체크, 아직 만나지 않았다면 Offset 증가
 	if ( StageBkgOffset < StageBkgScale.y - WindowsHeight )

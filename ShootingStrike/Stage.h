@@ -29,6 +29,9 @@ private:
 	// ** 모든 활성화 오브젝트 간 충돌 검사
 	void CheckCollisionForAllObjects();
 
+	// ** 오브젝트가 Stage 내부를 벗어났는지 체크
+	void CheckPositionInsideStage(Object* _pObject);
+
 	// ** 모든 오버젝트의 Status를 체크하여 Update 또는 Recall 처리
 	void UpdateForAllObjects();
 

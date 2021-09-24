@@ -71,11 +71,12 @@ void Player::Update()
 		// ...
 	}
 
-	// _Debug_
+	#ifdef GAME_DEBUG_MODE
 	if ( CheckKeyInputStatus(eInputKey::KEY_ENTER, eKeyInputStatus::DOWN) )
 	{
 		Power++;
 	}
+	#endif // GAME_DEBUG_MODE
 
 	if ( CheckKeyInputStatus(eInputKey::KEY_LEFT, eKeyInputStatus::PRESSED) )
 	{
@@ -111,11 +112,7 @@ void Player::Update()
 	OldPosition = TransInfo.Position;
 
 	// ** 충돌체 갱신
-	Collider.Position = TransInfo.Position;
-	Collider.Scale = TransInfo.Scale;
-
-	// ** 플레이어가 화면 밖으로 나가지 않도록 처리	
-	CheckPositionInsideScreen();
+	Collider = TransInfo;
 
 	return;
 }
@@ -156,18 +153,28 @@ void Player::Fire(eBulletFireType _FireType, int _Power, int _Damage)
 	{
 		case eBulletFireType::Normal:
 		{
-			// ** Power 수치만큼 총알 숫자를 늘리고, 총알 간 간격에 대한 각도를 설정하여
+			// ** Power 수치만큼 총알 숫자를 늘리고, 상방 기준 총알 간 간격에 대한 각도를 설정하여
 			// ** 부채꼴 형태로 발사되도록 한다.
-			// ** 
+			// ** angleGap : 총알간 간격 각도
 			int angleGap = 10;
-			int startAngle = 90 - ((angleGap * 0.5 * (_Power - 1)));
+			int startAngle = 90 - static_cast<int>(angleGap * 0.5 * (_Power - 1));
 			
 			for ( int i = 0; i < _Power; ++i )
 			{
+				// ** 상방 기준 현재 각도
 				int angle = startAngle + (angleGap * i);
-				Vector3 BulletDirection(cosf(angle * PI / 180), -sinf(angle * PI / 180));
 
-				SpawnManager::SpawnBullet(this, TransInfo.Position, BulletDirection, new NormalBullet, _Damage);
+				// ** Bullet의 TransInfo 설정
+				Transform BulletTransInfo;
+				BulletTransInfo.Position  = TransInfo.Position;
+				BulletTransInfo.Scale	  = Vector3(10.0f, 10.0f);
+				BulletTransInfo.Direction = Vector3(cosf(angle * PI / 180), -sinf(angle * PI / 180));
+				
+				// ** Bullet의 Speed 설정
+				float BulletSpeed = 3.0f;
+
+				// ** Bullet Spawn
+				SpawnManager::SpawnBullet(this, BulletTransInfo, new NormalBullet, BulletSpeed, _Damage);
 			}
 			break;
 		} 		
@@ -195,34 +202,6 @@ void Player::TakeDamage(int _Damage)
 		HP = 0;
 		bDied = true;
 	}
-}
-
-void Player::CheckPositionInsideScreen()
-{
-	float Offset = 22.0f;
-	float StageScaleX = 600.0f;
-	
-	RECT ScreenRect;
-	ScreenRect.left   = (LONG)((WindowsWidth * 0.5f) - (StageScaleX * 0.5f));
-	ScreenRect.top	  = 0;
-	ScreenRect.right  = (LONG)((WindowsWidth * 0.5f) + (StageScaleX * 0.5f));
-	ScreenRect.bottom = WindowsHeight;
-		
-	// ** 좌
-	if ( (LONG)TransInfo.Position.x < ScreenRect.left + Offset )
-		TransInfo.Position.x = ScreenRect.left + Offset;
-
-	// ** 우
-	if ( (LONG)TransInfo.Position.x > ScreenRect.right - Offset )
-		TransInfo.Position.x = ScreenRect.right - Offset;
-
-	// ** 상
-	if ( (LONG)TransInfo.Position.y < Offset )
-		TransInfo.Position.y = Offset;
-
-	// ** 하
-	if ( (LONG)TransInfo.Position.y > WindowsHeight - Offset )
-		TransInfo.Position.y = WindowsHeight - Offset;
 }
 
 bool Player::RenderSpawn(HDC _hdc)

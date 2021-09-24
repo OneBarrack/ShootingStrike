@@ -90,6 +90,60 @@ void Stage::CheckCollisionForAllObjects()
 	}
 }
 
+void Stage::CheckPositionInsideStage(Object* _pObject)
+{
+	// ** Object의 Position과 Stage의 바운더리를 받아온다
+	Vector3 ObjectPosition = _pObject->GetPosition();
+	RectF ScreenRect(
+		pBackground->GetPosition().x - (pBackground->GetScale().x * 0.5f),
+		pBackground->GetPosition().y - (pBackground->GetScale().y * 0.5f),
+		pBackground->GetPosition().x + (pBackground->GetScale().x * 0.5f),
+		pBackground->GetPosition().y + (pBackground->GetScale().y * 0.5f));	
+
+	float Offset = 0.0f;
+	switch ( _pObject->GetKey() )
+	{
+		case eObjectKey::PLAYER:
+			// ** 테두리 경계선 기준에 몸체가 잘리지 않게 하기 위한 Offset 값
+			Offset = 22.0f;
+
+			// ** 좌
+			if ( ObjectPosition.x < ScreenRect.Left + Offset )
+				ObjectPosition.x = ScreenRect.Left + Offset;
+			// ** 우
+			if ( ObjectPosition.x > ScreenRect.Right - Offset )
+				ObjectPosition.x = ScreenRect.Right - Offset;
+			// ** 상
+			if ( ObjectPosition.y < ScreenRect.Top - Offset )
+				ObjectPosition.y = ScreenRect.Top - Offset;
+			// ** 하
+			if ( ObjectPosition.y > ScreenRect.Bottom - Offset )
+				ObjectPosition.y = ScreenRect.Bottom - Offset;
+
+			// ** 계산된 Position을 다시 플레이어에 세팅
+			_pObject->SetPosition(ObjectPosition);
+			break;			
+		case eObjectKey::ENEMY:
+			[[fallthrough]];
+		case eObjectKey::BULLET:
+			// ** Stage 바운더리를 넓힐 여유분 길이의 Offset
+			Offset = 0.0f;
+
+			// ** Stage 바운더리를 Offset 만큼 넓힌다
+			ScreenRect.Left   -= Offset;
+			ScreenRect.Top    -= Offset;
+			ScreenRect.Right  += Offset;
+			ScreenRect.Bottom += Offset;
+
+			// ** Stage의 바운더리 내 Object Position이 위치하지 않으면 Destroy
+			if ( !CollisionManager::IsPointInRect(ScreenRect, ObjectPosition) )
+				_pObject->SetStatus(eObjectStatus::DESTROYED);
+			break;
+		default:
+			break;
+	}	
+}
+
 void Stage::UpdateForAllObjects()
 {
 	auto enableList = ObjectManager::GetInstance()->GetEnableList();
@@ -103,8 +157,9 @@ void Stage::UpdateForAllObjects()
 				case eObjectStatus::DESTROYED:
 					ObjectManager::GetInstance()->RecallObject(*ObjIter1++);
 					break;
-				case eObjectStatus::ACTIVATED:
-					(*ObjIter1)->Update();
+				case eObjectStatus::ACTIVATED:					
+					(*ObjIter1)->Update(); // ** Update			
+					CheckPositionInsideStage(*ObjIter1); // ** 오브젝트가 Stage 내부를 벗어났는지 체크
 					[[fallthrough]];
 				default:
 					++ObjIter1;
@@ -113,6 +168,7 @@ void Stage::UpdateForAllObjects()
 		}
 	}
 
+	#ifdef GAME_DEBUG_MODE
 	static ULONGLONG Time = GetTickCount64();
 	if ( Time + 1000 < GetTickCount64() )
 	{
@@ -124,6 +180,7 @@ void Stage::UpdateForAllObjects()
 		}
 		Time = GetTickCount64();
 	}
+	#endif // GAME_DEBUG_MODE
 }
 
 void Stage::RenderForAllObjects(HDC _hdc)

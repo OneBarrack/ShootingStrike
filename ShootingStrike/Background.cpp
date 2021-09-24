@@ -29,7 +29,7 @@ void Background::Initialize()
 void Background::Update()
 {
 	if ( pBridgeObject )
-		pBridgeObject->Update(TransInfo);
+		pBridgeObject->Update();
 }
 
 void Background::Render(HDC _hdc)

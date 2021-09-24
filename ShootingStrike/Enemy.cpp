@@ -43,7 +43,7 @@ void Enemy::Initialize()
 void Enemy::Update()
 {
 	if ( pBridgeObject )
-		pBridgeObject->Update(TransInfo);
+		pBridgeObject->Update();
 
 	// ** 스폰 중
 	if ( bSpawing )
@@ -75,8 +75,7 @@ void Enemy::Update()
 	OldPosition = TransInfo.Position;
 
 	// ** 충돌체 갱신
-	Collider.Position = TransInfo.Position;
-	Collider.Scale = TransInfo.Scale;
+	Collider = TransInfo;
 
 	return;
 }

@@ -101,6 +101,12 @@ bool CollisionManager::IsPointInRect(RECT _Rect, Vector3 _PointPos)
 		_Rect.top < _PointPos.y && _PointPos.y < _Rect.bottom);
 }
 
+bool CollisionManager::IsPointInRect(RectF _Rect, Vector3 _PointPos)
+{
+	return (_Rect.Left < _PointPos.x&& _PointPos.x < _Rect.Right&&
+		_Rect.Top < _PointPos.y&& _PointPos.y < _Rect.Bottom);
+}
+
 bool CollisionManager::EllipseRectCollision(Object* _pEllipseObj, Object* _pRectObj)
 {	
 	float EllipseX	  = _pEllipseObj->GetColliderPosition().x;

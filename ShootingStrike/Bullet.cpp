@@ -18,7 +18,7 @@ Bullet::~Bullet()
 
 void Bullet::Initialize()
 {
-	Owner = nullptr;
+	pOwner = nullptr;
 
 	TransInfo.Position = Vector3(0.0f, 0.0f);
 	TransInfo.Direction = Vector3(0.0f, -1.0f);
@@ -38,12 +38,10 @@ void Bullet::Initialize()
 void Bullet::Update()
 {
 	if ( pBridgeObject )
-		pBridgeObject->Update(TransInfo);	
-
-	if ( IsOutOfScreen() )
-	{
-		Status = eObjectStatus::DESTROYED;		
-	}
+		pBridgeObject->Update();
+	
+	// ** 충돌체 갱신
+	Collider = TransInfo;
 }
 
 void Bullet::Render(HDC _hdc)
@@ -65,25 +63,16 @@ void Bullet::OnCollision(Object* _pObject)
 {
 	if ( pBridgeObject )
 	{		
-		if ( Owner->GetKey() == _pObject->GetKey() )
+		if ( pOwner->GetKey() == _pObject->GetKey() )
 			return;
 
 		// ** Bullet의 주체 Object의 데미지를 충돌된 Object에 전달
-		switch ( Owner->GetKey() )
+		switch ( pOwner->GetKey() )
 		{
-			case eObjectKey::PLAYER: static_cast<Player*>(Owner)->ApplyDamage(_pObject, Damage); break;
-			case eObjectKey::ENEMY: static_cast<Enemy*>(Owner)->ApplyDamage(_pObject, Damage);	break;
+			case eObjectKey::PLAYER: static_cast<Player*>(pOwner)->ApplyDamage(_pObject, Damage); break;
+			case eObjectKey::ENEMY: static_cast<Enemy*>(pOwner)->ApplyDamage(_pObject, Damage);	break;
 			default: 
 				break;
 		}
 	}
-}
-
-bool Bullet::IsOutOfScreen()
-{
-	if ( TransInfo.Position.x < -100 || WindowsWidth + 100 < TransInfo.Position.x ||
-		TransInfo.Position.y < -100 || WindowsHeight + 100 < TransInfo.Position.y )
-		return true;
-
-	return false;
 }

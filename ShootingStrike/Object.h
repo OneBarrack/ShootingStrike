@@ -32,7 +32,7 @@ public:
 	virtual Object* Clone()PURE;
 
 public:
-	// ** 이미지를 출력하는데 사용하는 Key 값을 out
+	// ** 오브젝트의 Key 값을 out
 	eObjectKey GetKey() const { return Key; }
 
 	// ** 오브젝트의 활성화 상태 반환
@@ -41,17 +41,26 @@ public:
 	// ** 오브젝트의 충돌체 타입 반환
 	eCollisionType GetCollisionType() const { return CollisionType; }
 
+	// ** Transform 정보를 out
+	Transform GetTransInfo() { return TransInfo; }
+
 	// ** 좌표를 Vector3로 out
 	Vector3 GetPosition() { return TransInfo.Position; }
 
 	// ** 크기를 Vector3로 out
 	Vector3 GetScale() { return TransInfo.Scale; }
 
+	// ** 방향를 Vector3로 out
+	Vector3 GetDirection() { return TransInfo.Direction; }
+
 	// ** 충돌체를 out.
 	RECT GetCollider();	
 	Transform GetColliderTransform() { return Collider; }
 	Vector3 GetColliderPosition() { return Collider.Position; }
 	Vector3 GetColliderScale() { return Collider.Scale; }
+
+	// ** 오브젝트의 속도 반환
+	float GetSpeed() { return Speed; }
 
 	// ** 오든 오브젝트에 대한 충돌 체크가 필요한지 확인
 	bool IsGeneratedCollisionEvent() { return bGenerateCollisionEvent; }
@@ -62,13 +71,20 @@ public:
 	// ** BridgeObject를 Setting
 	void SetBridgeObject(Bridge* _pBridge) { pBridgeObject = _pBridge; }
 
+	// ** Transform 정보를 Setting (Transform)
+	void SetTransInfo(Transform _TransInfo) { TransInfo = _TransInfo; }
+
 	// ** 좌표를 Setting (Vector3)
-	void SetPosition(Vector3 _position) { TransInfo.Position = _position; }	
+	void SetPosition(Vector3 _Position) { TransInfo.Position = _Position; }	
 	void SetPosition(float _x, float _y) { TransInfo.Position.x = _x; TransInfo.Position.y = _y; }
 
 	// ** Scale을 Setting (Vector3)
 	void SetScale(Vector3 _Scale) { TransInfo.Scale = _Scale; }
 	void SetScale(float _x, float _y) { TransInfo.Scale.x = _x; TransInfo.Scale.y = _y; }
+
+	// ** 좌표를 Setting (Vector3)
+	void SetDirection(Vector3 _Direction) { TransInfo.Direction = _Direction; }
+	void SetDirection(float _x, float _y) { TransInfo.Direction.x = _x; TransInfo.Direction.y = _y; }
 
 	// ** 충돌체 Position Setting
 	void SetColliderPosition(Vector3 _position) { Collider.Position = _position; }
@@ -80,6 +96,9 @@ public:
 
 	// ** 오브젝트의 활성화 상태 Setting 
 	void SetStatus(const eObjectStatus& _Status);
+
+	// ** 오브젝트의 속도 Setting
+	void SetSpeed(float _Speed) { Speed = _Speed; }
 
 	// ** 모든 오브젝트에 대한 충돌 체크 필요여부 Setting
 	void SetGenerateCollisionEvent(bool _GenerateCollisionEvent) { bGenerateCollisionEvent = _GenerateCollisionEvent; }

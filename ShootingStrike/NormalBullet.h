@@ -7,11 +7,10 @@ private:
 	// ** Bullet
 	Bitmap* pBulletImage;
 	Vector3 BulletImageScale;
-	Vector3 BulletRenderScale;
 
 public:
 	virtual void Initialize()override;
-	virtual void Update(Transform& _rTransInfo)override;
+	virtual void Update()override;
 	virtual void Render(HDC _hdc)override;
 	virtual void Release()override;
 

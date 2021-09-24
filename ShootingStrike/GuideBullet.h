@@ -7,17 +7,20 @@ private:
 	// ** Bullet
 	Bitmap* pBulletImage;
 	Vector3 BulletImageScale;
-	Vector3 BulletRenderScale;
 
 public:
 	virtual void Initialize()override;
-	virtual void Update(Transform& _rTransInfo)override;
+	virtual void Update()override;
 	virtual void Render(HDC _hdc)override;
 	virtual void Release()override;
 
 private:
-	void CalcGuideDirection(Transform& _rTransInfo);
+	// ** 유도 미사일의 Direction 계산
+	void CalcGuideDirection(Vector3 _Pos, Vector3& _rDirection);
+
+	// ** 가장 가까운 적 탐색
 	Object* FindTarget(Vector3 _Pos);
+
 	void RenderBullet(HDC _hdc);
 
 public:

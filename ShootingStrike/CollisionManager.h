@@ -23,4 +23,5 @@ public:
 
 	// ** 점이 사각형 안에 있는지
 	static bool IsPointInRect(RECT _Rect, Vector3 _PointPos);
+	static bool IsPointInRect(RectF _Rect, Vector3 _PointPos);
 };

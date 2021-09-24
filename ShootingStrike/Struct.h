@@ -21,3 +21,21 @@ struct Transform
 	Vector3 Scale;
 	Vector3 Direction;
 };
+
+struct PointF
+{
+	float x, y;
+
+	PointF(float _x, float  _y) : x(_x), y(_y) {}
+};
+
+struct RectF
+{
+	float Left;
+	float Top;
+	float Right;
+	float Bottom;
+
+	RectF(float _Left, float _Top, float _Right, float _Bottom) : 
+		Left(_Left), Top(_Top), Right(_Right), Bottom(_Bottom) {}
+};

@@ -19,19 +19,27 @@ void GuideBullet::Initialize()
 {
 	pBulletImage = BitmapManager::GetInstance()->GetImage(eImageKey::PROJECTILE);
 	BulletImageScale = Vector3(230.0f, 230.0f);
-	BulletRenderScale = Vector3(10.0f, 10.0f);
+
+	pBulletImage = BitmapManager::GetInstance()->GetImage(eImageKey::PROJECTILE);
+	BulletImageScale = Vector3(230.0f, 230.0f);
 
 	Speed = 3.0f;
 
 	DrawKey = "NormalBullet";
 }
 
-void GuideBullet::Update(Transform& _rTransInfo)
+void GuideBullet::Update()
 {
-	CalcGuideDirection(_rTransInfo);
+	TransInfo = pOwner->GetTransInfo();
+	Speed = pOwner->GetSpeed();
 
-	_rTransInfo.Position.x += _rTransInfo.Direction.x * Speed;
-	_rTransInfo.Position.y += _rTransInfo.Direction.y * Speed;
+	CalcGuideDirection(TransInfo.Position, TransInfo.Direction);
+
+	TransInfo.Position.x += TransInfo.Direction.x * Speed;
+	TransInfo.Position.y += TransInfo.Direction.y * Speed;
+
+	pOwner->SetTransInfo(TransInfo);
+	pOwner->SetSpeed(Speed);
 }
 
 
@@ -46,12 +54,14 @@ void GuideBullet::Release()
 
 }
 
-void GuideBullet::CalcGuideDirection(Transform& _rTransInfo)
+void GuideBullet::CalcGuideDirection(Vector3 _Pos, Vector3& _rDirection)
 {
-	Object* Target = FindTarget(_rTransInfo.Position);
+	// ** 가장 가까운 적 탐색
+	Object* Target = FindTarget(_Pos);
 
+	// ** 찾았다면 해당 적 방향으로 Direction 갱신
 	if ( Target )
-		_rTransInfo.Direction = MathManager::GetDirection(_rTransInfo.Position, Target->GetPosition());
+		_rDirection = MathManager::GetDirection(_Pos, Target->GetPosition());
 }
 
 Object* GuideBullet::FindTarget(Vector3 _Pos)
@@ -94,14 +104,14 @@ Object* GuideBullet::FindTarget(Vector3 _Pos)
 void GuideBullet::RenderBullet(HDC _hdc)
 {
 	TransparentBlt(_hdc, // ** 최종 출력 위치
-		(int)(pOwner->GetPosition().x - (BulletRenderScale.x * 0.5f)),
-		(int)(pOwner->GetPosition().y - (BulletRenderScale.y * 0.5f)),
-		(int)BulletRenderScale.x,
-		(int)BulletRenderScale.y,
+		(int)(pOwner->GetPosition().x - (TransInfo.Scale.x * 0.5f)),
+		(int)(pOwner->GetPosition().y - (TransInfo.Scale.y * 0.5f)),
+		(int)TransInfo.Scale.x,
+		(int)TransInfo.Scale.y,
 		pBulletImage->GetMemDC(),
-		(int)BulletImageScale.x,
+		(int)TransInfo.Scale.x,
 		0,
-		(int)BulletImageScale.x,
-		(int)BulletImageScale.y,
+		(int)TransInfo.Scale.x,
+		(int)TransInfo.Scale.y,
 		RGB(255, 0, 255));
 }
