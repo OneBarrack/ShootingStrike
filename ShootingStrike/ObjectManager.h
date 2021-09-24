@@ -23,8 +23,6 @@ private:
 	Object* pPlayer;
 
 	// ** 오브젝트 리스트
-	vector<Object*> EnemyList;
-	vector<Object*> BulletList;
 	map<eObjectKey, list<Object*>> EnableList;
 	map<eObjectKey, list<Object*>> DisableList;
 
@@ -59,9 +57,7 @@ public:
 	// ** map 컨테이너를 사용하고있는 ObjectList를 반환.
 	map<eObjectKey, list<Object*>>* GetEnableList() { return &EnableList; }
 	map<eObjectKey, list<Object*>>* GetDisableList() { return &DisableList; }
-		
-	vector<Object*>* GetBulletList() { return &BulletList; }
-	vector<Object*>* GetEnemyList() { return &EnemyList; }
+
 private:
 	ObjectManager() : pPlayer(nullptr) { }
 public:

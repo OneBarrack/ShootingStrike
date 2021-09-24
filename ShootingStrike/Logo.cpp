@@ -26,8 +26,7 @@ void Logo::Initialize()
 	ObjectManager::GetInstance()->SetPlayer(
 		ObjectManager::GetInstance()->TakeObject(eObjectKey::PLAYER));
 		
-	pPlayButton = ObjectManager::GetInstance()->TakeObject(eObjectKey::BUTTON);
-	Transform PlayButtonTransInfo;
+	pPlayButton = ObjectManager::GetInstance()->TakeObject(eObjectKey::BUTTON);	
 	pPlayButton->SetPosition(WindowsWidth * 0.5f, WindowsHeight * 0.75f);
 	pPlayButton->SetScale(150.0f, 70.0f);
 	pPlayButton->SetColliderPosition(pPlayButton->GetPosition());
