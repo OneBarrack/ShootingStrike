@@ -25,7 +25,7 @@ void MainUpdate::Initialize()
 
 void MainUpdate::Update()
 {
-	InputManager::GetInstance()->CheckKeyInputStatus();
+	InputManager::GetInstance()->InitKeyInfo();
 
 	SceneManager::GetInstance()->Update();
 }

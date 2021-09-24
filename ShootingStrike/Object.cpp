@@ -20,9 +20,9 @@ RECT Object::GetCollider()
 		LONG(Collider.Position.y + (Collider.Scale.y * 0.5f)) };
 }
 
-bool Object::CheckKeyInputStatus(eInputKey _InputKey, eKeyInputStatus _Status)
+bool Object::CheckKeyInputStatus(eInputKey _InputKey, eKeyInputState _Status)
 {
-	return (InputManager::GetInstance()->GetKeyStatus(_InputKey) == _Status);
+	return (InputManager::GetInstance()->GetKeyState(_InputKey) == _Status);
 	
 }
 

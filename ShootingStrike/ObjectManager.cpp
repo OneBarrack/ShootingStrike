@@ -151,6 +151,7 @@ Object* ObjectManager::TakeObject(eObjectKey _Key, Vector3 _Position, Bridge* _p
 		iter->second.pop_front();
 	}
 
+	// ** Bridge가 존재한다면 연결해준다
 	if ( _pBridge )
 	{
 		_pBridge->SetOwner(pObject);

@@ -66,7 +66,7 @@ public:
 	bool IsGeneratedCollisionEvent() { return bGenerateCollisionEvent; }
 
 	// ** 키 입력 상태 반환
-	bool CheckKeyInputStatus(eInputKey _InputKey, eKeyInputStatus _Status);
+	bool CheckKeyInputStatus(eInputKey _InputKey, eKeyInputState _Status);
 
 	// ** BridgeObject를 Setting
 	void SetBridgeObject(Bridge* _pBridge) { pBridgeObject = _pBridge; }

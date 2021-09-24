@@ -72,31 +72,31 @@ void Player::Update()
 	}
 
 	#ifdef GAME_DEBUG_MODE
-	if ( CheckKeyInputStatus(eInputKey::KEY_ENTER, eKeyInputStatus::DOWN) )
+	if ( CheckKeyInputState(eInputKey::KEY_ENTER, eKeyInputState::DOWN) )
 	{
 		Power++;
 	}
 	#endif // GAME_DEBUG_MODE
 
-	if ( CheckKeyInputStatus(eInputKey::KEY_LEFT, eKeyInputStatus::PRESSED) )
+	if ( CheckKeyInputState(eInputKey::KEY_LEFT, eKeyInputState::PRESSED) )
 	{
 		TransInfo.Position.x -= 3;
 	}
-	if ( CheckKeyInputStatus(eInputKey::KEY_UP, eKeyInputStatus::PRESSED) )
+	if ( CheckKeyInputState(eInputKey::KEY_UP, eKeyInputState::PRESSED) )
 	{
 		TransInfo.Position.y -= 3;
 	}
-	if ( CheckKeyInputStatus(eInputKey::KEY_RIGHT, eKeyInputStatus::PRESSED) )
+	if ( CheckKeyInputState(eInputKey::KEY_RIGHT, eKeyInputState::PRESSED) )
 	{
 		TransInfo.Position.x += 3;
 	}
-	if ( CheckKeyInputStatus(eInputKey::KEY_DOWN, eKeyInputStatus::PRESSED) )
+	if ( CheckKeyInputState(eInputKey::KEY_DOWN, eKeyInputState::PRESSED) )
 	{
 		TransInfo.Position.y += 3;
 	}
 
 	// ** 미사일 발사
-	if ( CheckKeyInputStatus(eInputKey::KEY_SPACE, eKeyInputStatus::DOWN) )
+	if ( CheckKeyInputState(eInputKey::KEY_SPACE, eKeyInputState::DOWN) )
 	{
 		Fire(FireType, Power, Damage);
 	}
@@ -104,7 +104,7 @@ void Player::Update()
 	{
 		bAttacking = false;
 	}
-
+	
 	// ** Direction 저장
 	TransInfo.Direction = MathManager::GetDirection(OldPosition, TransInfo.Position);
 
@@ -112,7 +112,7 @@ void Player::Update()
 	OldPosition = TransInfo.Position;
 
 	// ** 충돌체 갱신
-	Collider = TransInfo;
+	Collider = TransInfo;	
 
 	return;
 }

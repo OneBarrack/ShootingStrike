@@ -13,7 +13,7 @@ enum class eInputKey
 	KEY_MAX		, // ** ÃÑ Key °³¼ö.
 };
 
-enum class eKeyInputStatus
+enum class eKeyInputState
 {
 	NONE	,
 	DOWN	,

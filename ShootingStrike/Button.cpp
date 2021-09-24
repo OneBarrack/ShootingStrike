@@ -42,12 +42,12 @@ void Button::Update()
 	if ( CollisionManager::IsPointInRect(GetCollider(), MousePos))
 	{
 		// ** 누르는 중
-		if ( CheckKeyInputStatus(eInputKey::KEY_LBUTTON, eKeyInputStatus::PRESSED) )
+		if ( CheckKeyInputStatus(eInputKey::KEY_LBUTTON, eKeyInputState::PRESSED) )
 		{
 			ButtonState = eButtonState::PRESSED;
 		}
 		// ** 눌렀다 뗀 시점(클릭 완료된 시점)
-		else if ( CheckKeyInputStatus(eInputKey::KEY_LBUTTON, eKeyInputStatus::UP) )
+		else if ( CheckKeyInputStatus(eInputKey::KEY_LBUTTON, eKeyInputState::UP) )
 		{
 			ButtonState = eButtonState::NORMAL;
 			bOnClick = true;
@@ -62,8 +62,6 @@ void Button::Update()
 	{
 		ButtonState = eButtonState::NORMAL;
 	}
-
-	cout << MousePos.x << " " << MousePos.y << endl;
 }
 
 void Button::Render(HDC _hdc)

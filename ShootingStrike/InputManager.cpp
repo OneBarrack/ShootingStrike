@@ -1,5 +1,7 @@
 #include "InputManager.h"
 
+#define CheckKeyInputState(_Key, _State) (InputManager::GetInstance()->GetKeyState(_Key) == _State)
+
 InputManager* InputManager::Instance = nullptr;
 
 InputManager::InputManager()
@@ -27,12 +29,25 @@ void InputManager::AddOverlapKey(eInputKey _Key, DWORD _dwKey)
 	OverlapKeyList[static_cast<int>(_Key)].push_back(_dwKey);
 }
 
-void InputManager::CheckKeyInputStatus()
+void InputManager::InitKeyInfo()
 {
 	for ( int Key = 0; Key < static_cast<int>(eInputKey::KEY_MAX); ++Key )
 	{
-		SetKeyStatus(KeyInfo[Key], IsKeyPressed(OverlapKeyList[Key]));
+		SetKeyState(KeyInfo[Key], IsKeyPressed(OverlapKeyList[Key]));
 	}
+}
+
+Vector3 InputManager::GetMousePosition()
+{
+	POINT ptMouse;
+
+	// ** 마우스 좌표를 받아옴.
+	GetCursorPos(&ptMouse);
+
+	// ** 마우스 좌표를 현재 윈도우창의 좌표로 변경.
+	ScreenToClient(g_hWnd, &ptMouse);
+
+	return Vector3((float)ptMouse.x, (float)ptMouse.y);
 }
 
 bool InputManager::IsKeyPressed(vector<DWORD> _OverlapKeys)
@@ -48,30 +63,30 @@ bool InputManager::IsKeyPressed(vector<DWORD> _OverlapKeys)
 	return false;
 }
 
-void InputManager::SetKeyStatus(eKeyInputStatus& _KeyStatus, bool _IsKeyPressed)
+void InputManager::SetKeyState(eKeyInputState& _KeyState, bool _IsKeyPressed)
 {
 	if ( _IsKeyPressed )
 	{
-		if ( _KeyStatus == eKeyInputStatus::DOWN ||
-			_KeyStatus == eKeyInputStatus::PRESSED )
+		if ( _KeyState == eKeyInputState::DOWN ||
+			_KeyState == eKeyInputState::PRESSED )
 		{
-			_KeyStatus = eKeyInputStatus::PRESSED;
+			_KeyState = eKeyInputState::PRESSED;
 		}
 		else
 		{
-			_KeyStatus = eKeyInputStatus::DOWN;
+			_KeyState = eKeyInputState::DOWN;
 		}
 	}
 	else
 	{
-		if ( _KeyStatus == eKeyInputStatus::DOWN ||
-			_KeyStatus == eKeyInputStatus::PRESSED )
+		if ( _KeyState == eKeyInputState::DOWN ||
+			_KeyState == eKeyInputState::PRESSED )
 		{
-			_KeyStatus = eKeyInputStatus::UP;
+			_KeyState = eKeyInputState::UP;
 		}
 		else
 		{
-			_KeyStatus = eKeyInputStatus::NONE;
+			_KeyState = eKeyInputState::NONE;
 		}
 	}
 }

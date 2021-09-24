@@ -17,6 +17,7 @@ public:
 		return Instance;
 	}
 private:
+	// ** Prototype
 	Prototype* PrototypeObject;
 
 	// ** 플레이어
