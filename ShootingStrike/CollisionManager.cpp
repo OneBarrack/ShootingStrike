@@ -68,7 +68,7 @@ bool CollisionManager::RectCollision(Object* _pObj1, Object* _pObj2)
 	//	(_pObj1->GetColliderPosition().x - (_pObj1->GetColliderScale().x * 0.5f)) < (_pObj2->GetColliderPosition().x + (_pObj2->GetColliderScale().x * 0.5f)) &&
 	//	(_pObj1->GetColliderPosition().y - (_pObj1->GetColliderScale().y * 0.5f)) < (_pObj2->GetColliderPosition().y + (_pObj2->GetColliderScale().y * 0.5f)));
 
-	return RectCollision(_pObj1->GetCollider(), _pObj2->GetCollider());
+	return RectCollision(_pObj1->GetColliderF(), _pObj2->GetColliderF());
 }
 
 bool CollisionManager::RectCollision(RECT _R1, RECT _R2)
@@ -77,6 +77,11 @@ bool CollisionManager::RectCollision(RECT _R1, RECT _R2)
 		_R2.left < _R1.right&& _R2.top < _R1.bottom);
 }
 
+bool CollisionManager::RectCollision(RectF _R1, RectF _R2)
+{
+	return (_R1.Left < _R2.Right&& _R1.Top < _R2.Bottom&&
+		_R2.Left < _R1.Right&& _R2.Top < _R1.Bottom);
+}
 bool CollisionManager::IsPointInCircle(float _Cx, float _Cy, float _Cr, float _Px, float _Py)
 {
 	float DeltaX = _Cx - _Px;
@@ -112,7 +117,7 @@ bool CollisionManager::EllipseRectCollision(Object* _pEllipseObj, Object* _pRect
 	float EllipseX	  = _pEllipseObj->GetColliderPosition().x;
 	float EllipseY    = _pEllipseObj->GetColliderPosition().y;
 	float Radius      = _pEllipseObj->GetColliderScale().x * 0.5f;
-	RECT RectCollider = _pRectObj->GetCollider();
+	RectF RectCollider = _pRectObj->GetColliderF();
 	
 	//** 가로 세로 위치에 원이 존재한다면
 	//** 원의 반지름만큼 사각형을 확장하여 원의 중심이 확장한 사각형 내부에 있는지 확인
@@ -127,20 +132,20 @@ bool CollisionManager::EllipseRectCollision(Object* _pEllipseObj, Object* _pRect
 	//**       |        |
 	//**          ↑↑
 
-	if ( (RectCollider.left <= (LONG)EllipseX && (LONG)EllipseX <= RectCollider.right) ||
-		(RectCollider.top <= (LONG)EllipseY && (LONG)EllipseY <= RectCollider.bottom) )
+	if ( (RectCollider.Left <= EllipseX && EllipseX <= RectCollider.Right) ||
+		(RectCollider.Top <= EllipseY && EllipseY <= RectCollider.Bottom) )
 	{
 		// ** 원의 반지름만큼 확장한 사각형
-		RECT ExpRectCollider = { 
-			RectCollider.left - (LONG)Radius,
-			RectCollider.top - (LONG)Radius,
-			RectCollider.right + (LONG)Radius,
-			RectCollider.bottom + (LONG)Radius
+		RectF ExpRectCollider = { 
+			RectCollider.Left - Radius,
+			RectCollider.Top - Radius,
+			RectCollider.Right + Radius,
+			RectCollider.Bottom + Radius
 		};
 
 		// ** 확장한 사각형 안에 원의 중심이 들어있다면 충돌
-		if ( (ExpRectCollider.left < (LONG)EllipseX && (LONG)EllipseX < ExpRectCollider.right) &&
-			(ExpRectCollider.top < (LONG)EllipseY && (LONG)EllipseY < ExpRectCollider.bottom) )
+		if ( (ExpRectCollider.Left < EllipseX && EllipseX < ExpRectCollider.Right) &&
+			(ExpRectCollider.Top < EllipseY && EllipseY < ExpRectCollider.Bottom) )
 		{
 			return true;
 		}
@@ -161,10 +166,10 @@ bool CollisionManager::EllipseRectCollision(Object* _pEllipseObj, Object* _pRect
 		//**   ↑              ↑
 
 		// ** 사각형의 좌상단 포인트가 원 안에 있다면 충돌
-		if ( IsPointInCircle(EllipseX, EllipseY, Radius, (float)RectCollider.left, (float)RectCollider.top)   ||
-			IsPointInCircle(EllipseX, EllipseY, Radius, (float)RectCollider.left, (float)RectCollider.bottom) ||
-			IsPointInCircle(EllipseX, EllipseY, Radius, (float)RectCollider.right, (float)RectCollider.top)   ||
-			IsPointInCircle(EllipseX, EllipseY, Radius, (float)RectCollider.right, (float)RectCollider.bottom) )
+		if ( IsPointInCircle(EllipseX, EllipseY, Radius, RectCollider.Left, RectCollider.Top)   ||
+			IsPointInCircle(EllipseX, EllipseY, Radius, RectCollider.Left, RectCollider.Bottom) ||
+			IsPointInCircle(EllipseX, EllipseY, Radius, RectCollider.Right, RectCollider.Top)   ||
+			IsPointInCircle(EllipseX, EllipseY, Radius, RectCollider.Right, RectCollider.Bottom) )
 		{
 			return true;
 		}

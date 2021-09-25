@@ -1,5 +1,4 @@
 #include "SceneManager.h"
-
 #include "RenderManager.h"
 #include "Logo.h"
 #include "Menu.h"
@@ -37,12 +36,13 @@ void SceneManager::SetScene(eSCENEID _SceneID)
 void SceneManager::Update()
 {
 	pSceneState->Update();
+	
 }
 
 void SceneManager::Render(HDC _hdc)
 {
 	pSceneState->Render(RenderManager::GetInstance()->GetBufferDC());
-	RenderManager::GetInstance()->Render(_hdc);
+	RenderManager::GetInstance()->Render(_hdc);	
 }
 
 void SceneManager::Release()

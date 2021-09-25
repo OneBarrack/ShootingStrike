@@ -54,7 +54,8 @@ public:
 	Vector3 GetDirection() { return TransInfo.Direction; }
 
 	// ** 충돌체를 out.
-	RECT GetCollider();	
+	RECT GetColliderL();
+	RectF GetColliderF();
 	Transform GetColliderTransform() { return Collider; }
 	Vector3 GetColliderPosition() { return Collider.Position; }
 	Vector3 GetColliderScale() { return Collider.Scale; }
@@ -85,6 +86,8 @@ public:
 	// ** 좌표를 Setting (Vector3)
 	void SetDirection(Vector3 _Direction) { TransInfo.Direction = _Direction; }
 	void SetDirection(float _x, float _y) { TransInfo.Direction.x = _x; TransInfo.Direction.y = _y; }
+
+	void SetCollider(Transform _Collider) { Collider = _Collider; }
 
 	// ** 충돌체 Position Setting
 	void SetColliderPosition(Vector3 _position) { Collider.Position = _position; }

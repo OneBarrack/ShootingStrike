@@ -30,6 +30,13 @@ private:
 public:
 	// ** 초기화
 	void Initialize();	
+	void Update();
+	void Render(HDC _hdc);
+	void Release();
+
+	// ** 플레이어를 반환.
+	Object* GetPlayer() { return pPlayer; }
+	void SetPlayer(Object* _pPlayer) { pPlayer = _pPlayer; }
 
 	// ** 컨테이너에서 객체를 찾아서 반환. 없다면 Prototype 생성 후 반환
 	Object* TakeObject(eObjectKey _Key, Bridge* _pBridge = nullptr);
@@ -38,10 +45,12 @@ public:
 	// ** 사용후 더이상 사용하지 않는 오브젝트 회수
 	void RecallObject(Object* _pObject);
 
-	// ** ObjectKey에 해당하는 Object List를 반환
-	list<Object*> GetObjectList(eObjectKey _ObjectKey);
+	// ** map 컨테이너를 사용하고있는 ObjectList를 반환.
+	map<eObjectKey, list<Object*>>* GetEnableList() { return &EnableList; }
+	map<eObjectKey, list<Object*>>* GetDisableList() { return &DisableList; }	
 
-	void Release();
+	// ** ObjectKey에 해당하는 Object List를 반환
+	list<Object*> GetObjectList(eObjectKey _ObjectKey);	
 
 private:
 	// ** 객체 생성
@@ -50,14 +59,9 @@ private:
 
 	// ** 객체 추가.
 	void AddObject(map<eObjectKey, list<Object*>>& _TargetList, Object* _pObject);
-public:
-	// ** 플레이어를 반환.
-	Object* GetPlayer() { return pPlayer; }
-	void SetPlayer(Object* _pPlayer) { pPlayer = _pPlayer; }
 
-	// ** map 컨테이너를 사용하고있는 ObjectList를 반환.
-	map<eObjectKey, list<Object*>>* GetEnableList() { return &EnableList; }
-	map<eObjectKey, list<Object*>>* GetDisableList() { return &DisableList; }
+	// ** 모든 활성화 오브젝트 간 충돌 검사
+	void CheckCollision();
 
 private:
 	ObjectManager() : pPlayer(nullptr) { }

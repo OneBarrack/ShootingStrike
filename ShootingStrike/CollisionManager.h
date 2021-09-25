@@ -13,6 +13,7 @@ public:
 	// ** 사각형 충돌
 	static bool RectCollision(Object* _pObj1, Object* _pObj2);
 	static bool RectCollision(RECT _R1, RECT _R2);
+	static bool RectCollision(RectF _R1, RectF _R2);
 
 	// ** 원과 사각형 충돌
 	static bool EllipseRectCollision(Object* _pEllipseObj, Object* _pRectObj);

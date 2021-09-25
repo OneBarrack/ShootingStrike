@@ -11,13 +11,22 @@ Object::~Object()
 
 }
 
-RECT Object::GetCollider()
+RECT Object::GetColliderL()
 {	
 	return RECT{
-		LONG(Collider.Position.x - (Collider.Scale.x * 0.5f)) ,
-		LONG(Collider.Position.y - (Collider.Scale.y * 0.5f)) ,
-		LONG(Collider.Position.x + (Collider.Scale.x * 0.5f)) ,
-		LONG(Collider.Position.y + (Collider.Scale.y * 0.5f)) };
+		LONG(Collider.Position.x - (Collider.Scale.x * 0.5f)),
+		LONG(Collider.Position.y - (Collider.Scale.y * 0.5f)),
+		LONG(Collider.Position.x + (Collider.Scale.x * 0.5f)),
+		LONG(Collider.Position.y + (Collider.Scale.y * 0.5f))};
+}
+
+RectF Object::GetColliderF()
+{
+	return RectF{
+		Collider.Position.x - (Collider.Scale.x * 0.5f),
+		Collider.Position.y - (Collider.Scale.y * 0.5f),
+		Collider.Position.x + (Collider.Scale.x * 0.5f),
+		Collider.Position.y + (Collider.Scale.y * 0.5f)};
 }
 
 bool Object::CheckKeyInputStatus(eInputKey _InputKey, eKeyInputState _Status)

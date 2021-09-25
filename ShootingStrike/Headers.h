@@ -5,6 +5,8 @@
 #include <map>
 #include <list>
 #include <vector>
+#include <stack>
+#include <queue>
 #include <string>
 #include <cassert>
 

@@ -27,7 +27,7 @@ void Prototype::CreatePrototype()
 	PrototypeList[eObjectKey::PLAYER]		= new Player;
 	PrototypeList[eObjectKey::ENEMY]		= new Enemy;
 	PrototypeList[eObjectKey::BULLET]		= new Bullet;
-	PrototypeList[eObjectKey::BUTTON]		= new Button;
+	PrototypeList[eObjectKey::UI_BUTTON]	= new Button;
 }
 
 Object* Prototype::FindPrototypeObject(eObjectKey _Key)

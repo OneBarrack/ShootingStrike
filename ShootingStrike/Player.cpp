@@ -36,7 +36,7 @@ void Player::Initialize()
 	HP = 3;
 	Damage = 1;
 	Power = 1;
-	FireType = eBulletFireType::Normal;
+	FireType = eBulletFireType::NORMAL;
 
 	bSpawing = false;
 	bAttacking = false;
@@ -151,7 +151,7 @@ void Player::Fire(eBulletFireType _FireType, int _Power, int _Damage)
 
 	switch ( _FireType )
 	{
-		case eBulletFireType::Normal:
+		case eBulletFireType::NORMAL:
 		{
 			// ** Power 수치만큼 총알 숫자를 늘리고, 상방 기준 총알 간 간격에 대한 각도를 설정하여
 			// ** 부채꼴 형태로 발사되도록 한다.

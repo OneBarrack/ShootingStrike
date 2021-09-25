@@ -22,7 +22,7 @@ void Button::Initialize()
 	Collider.Position = TransInfo.Position;
 	Collider.Scale = TransInfo.Scale;
 
-	Key = eObjectKey::BUTTON;
+	Key = eObjectKey::UI_BUTTON;
 	Status = eObjectStatus::ACTIVATED;
 	CollisionType = eCollisionType::RECT;
 	
@@ -39,7 +39,7 @@ void Button::Update()
 	Vector3 MousePos = InputManager::GetInstance()->GetMousePosition();
 
 	// ** 마우스가 버튼 이미지 위에 위치 하는지
-	if ( CollisionManager::IsPointInRect(GetCollider(), MousePos))
+	if ( CollisionManager::IsPointInRect(GetColliderL(), MousePos))
 	{
 		// ** 누르는 중
 		if ( CheckKeyInputStatus(eInputKey::KEY_LBUTTON, eKeyInputState::PRESSED) )

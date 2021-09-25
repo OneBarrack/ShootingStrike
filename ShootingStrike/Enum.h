@@ -32,7 +32,7 @@ enum class eSCENEID
 enum class eObjectKey
 {
 	BACKGROUND	,
-	BUTTON		,
+	UI_BUTTON	,
 	PLAYER		,
 	ENEMY		,
 	BULLET		,
@@ -71,6 +71,6 @@ enum class eCollisionType
 
 enum class eBulletFireType
 {
-	Normal	,
+	NORMAL	,
 	Guide	,
 };
