@@ -31,11 +31,12 @@ enum class eSCENEID
 
 enum class eObjectKey
 {
-	BACKGROUND	,
-	UI_BUTTON	,
-	PLAYER		,
-	ENEMY		,
-	BULLET		,
+	BACKGROUND		,
+	UI_BUTTON		,
+	PLAYER			,
+	ENEMY			,
+	BULLET			,
+	SIDE_BACKGROUND	,
 };
 
 enum class eImageKey

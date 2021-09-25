@@ -7,11 +7,13 @@
 #include "ObjectFactory.h"
 #include "CollisionManager.h"
 #include "StageBackground.h"
+#include "StageSideBackground.h"
 #include "BitmapManager.h"
 
 Stage::Stage() 
 	: pPlayer(nullptr)
 	, pBackground(nullptr)
+	, pSideBackground(nullptr)
 {
 
 }
@@ -29,6 +31,10 @@ void Stage::Initialize()
 	// ** Background
 	Bridge* pBridge = new StageBackground;
 	pBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::BACKGROUND, pBridge);
+
+	// ** Side Background
+	pBridge = new StageSideBackground;
+	pSideBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::SIDE_BACKGROUND, pBridge);
 
 	// ** Spawn Player
 	static_cast<Player*>(pPlayer)->SetStatus(eObjectStatus::ACTIVATED);

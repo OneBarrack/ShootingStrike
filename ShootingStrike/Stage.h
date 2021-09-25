@@ -6,7 +6,8 @@ class Object;
 class Stage : public Scene
 {
 private:
-	Object* pBackground;	
+	Object* pBackground;
+	Object* pSideBackground;
 	Object* pPlayer;
 
 public:

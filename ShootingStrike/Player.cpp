@@ -124,6 +124,8 @@ void Player::Update()
 	// ** 충돌체 갱신
 	Collider = TransInfo;	
 
+	cout << TransInfo.Position.x << " " << TransInfo.Position.y << endl;
+
 	return;
 }
 

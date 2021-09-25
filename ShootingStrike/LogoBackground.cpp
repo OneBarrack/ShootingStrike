@@ -34,14 +34,6 @@ void LogoBackground::Initialize()
 	LogoScale = Vector3(923.0f, 350.0f);
 	LogoPosition = Vector3((WindowsWidth * 0.5f) - (LogoScale.x * 0.5f),
 							(WindowsHeight * 0.3f) - (LogoScale.y * 0.5f));
-
-	// ** Owner Position, Scale ¼¼ÆÃ
-	Vector3 OwnerScale;
-	OwnerScale.x = LogoBkgScale.x < WindowsWidth ? LogoBkgScale.x : WindowsWidth;
-	OwnerScale.y = LogoBkgScale.y < WindowsHeight ? LogoBkgScale.y : WindowsHeight;
-
-	pOwner->SetPosition(Vector3(WindowsWidth * 0.5f, WindowsHeight * 0.5f));
-	pOwner->SetScale(OwnerScale);
 }
 
 void LogoBackground::Update()

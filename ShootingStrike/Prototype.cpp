@@ -23,11 +23,13 @@ void Prototype::CreatePrototype()
 {
 	Transform TransInfo;
 
-	PrototypeList[eObjectKey::BACKGROUND]	= new Background;
-	PrototypeList[eObjectKey::PLAYER]		= new Player;
-	PrototypeList[eObjectKey::ENEMY]		= new Enemy;
-	PrototypeList[eObjectKey::BULLET]		= new Bullet;
-	PrototypeList[eObjectKey::UI_BUTTON]	= new Button;
+	PrototypeList[eObjectKey::BACKGROUND]		= new Background;
+	PrototypeList[eObjectKey::PLAYER]			= new Player;
+	PrototypeList[eObjectKey::ENEMY]			= new Enemy;
+	PrototypeList[eObjectKey::BULLET]			= new Bullet;
+	PrototypeList[eObjectKey::UI_BUTTON]		= new Button;
+
+	PrototypeList[eObjectKey::SIDE_BACKGROUND]  = PrototypeList[eObjectKey::BACKGROUND];
 }
 
 Object* Prototype::FindPrototypeObject(eObjectKey _Key)
