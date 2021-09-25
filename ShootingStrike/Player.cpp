@@ -8,13 +8,23 @@
 #include "SpawnManager.h"
 
 Player::Player()
+	: pPlayerImage(nullptr)
+	, HP(0)
+	, Damage(0)
+	, Power(0)
+	, FireType(eBulletFireType::NORMAL)
+	, bSpawing(false)
+	, bAttacking(false)
+	, bTakeDamage(false)
+	, bDied(false)
+	, Frame(0)
+	, OldPosition(Vector3())
 {
-
 }
 
 Player::~Player()
 {
-
+	Release();
 }
 
 void Player::Initialize()

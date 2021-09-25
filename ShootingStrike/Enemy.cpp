@@ -4,13 +4,21 @@
 #include "MathManager.h"
 
 Enemy::Enemy()
+	: pEnemyImage(nullptr)
+	, HP(0)
+	, bSpawing(false)
+	, bAttacking(false)
+	, bTakeDamage(false)
+	, bDied(false)
+	, Frame(0)
+	, OldPosition(Vector3())
 {
 
 }
 
 Enemy::~Enemy()
 {
-
+	Release();
 }
 
 void Enemy::Initialize()

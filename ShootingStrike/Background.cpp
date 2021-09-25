@@ -8,7 +8,7 @@ Background::Background()
 
 Background::~Background()
 {
-
+	Release();
 }
 
 

@@ -9,7 +9,9 @@
 #include "StageBackground.h"
 #include "BitmapManager.h"
 
-Stage::Stage() : pPlayer(nullptr)
+Stage::Stage() 
+	: pPlayer(nullptr)
+	, pBackground(nullptr)
 {
 
 }
@@ -21,11 +23,14 @@ Stage::~Stage()
 
 void Stage::Initialize()
 {
+	// ** Player
 	pPlayer = ObjectManager::GetInstance()->GetPlayer();
 
+	// ** Background
 	Bridge* pBridge = new StageBackground;
 	pBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::BACKGROUND, pBridge);
 
+	// ** Spawn Player
 	static_cast<Player*>(pPlayer)->SetStatus(eObjectStatus::ACTIVATED);
 	static_cast<Player*>(pPlayer)->SpawnPlayer();	
 }

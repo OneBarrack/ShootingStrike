@@ -2,6 +2,10 @@
 
 
 Bitmap::Bitmap()
+	: hdc(NULL)
+	, MemDC(NULL)
+	, hBitmap(NULL)
+	, OldBitmap(NULL)
 {
 
 }

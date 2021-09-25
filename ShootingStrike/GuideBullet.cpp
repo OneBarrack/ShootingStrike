@@ -4,14 +4,16 @@
 #include "BitmapManager.h"
 #include "MathManager.h"
 
-GuideBullet::GuideBullet()
+GuideBullet::GuideBullet() 
+	: pBulletImage(nullptr)
+	, BulletImageScale(Vector3())
 {
 
 }
 
 GuideBullet::~GuideBullet()
 {
-
+	Release();
 }
 
 

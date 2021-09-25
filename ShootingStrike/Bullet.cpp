@@ -6,13 +6,15 @@
 #include "Enemy.h"
 
 Bullet::Bullet()
+	: pOwner(nullptr)
+	, Damage(0)
 {
 
 }
 
 Bullet::~Bullet()
 {
-
+	Release();
 }
 
 

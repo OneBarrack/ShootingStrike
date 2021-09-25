@@ -3,6 +3,12 @@
 #include "CollisionManager.h"
 
 Button::Button()
+	: pButtonImage(nullptr)
+	, bExistHoverImage(false)
+	, bExistPressedImage(false)
+	, ButtonState(eButtonState::NORMAL)
+	, ButtonOffset(0)
+	, bOnClick(false)
 {
 
 }

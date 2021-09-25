@@ -1,7 +1,16 @@
 #include "Object.h"
 #include "InputManager.h"
 
-Object::Object() : pBridgeObject(nullptr)
+Object::Object()
+	: pBridgeObject(nullptr)
+	, TransInfo(Transform())
+	, Collider(Transform())
+	, Offset(Vector3())
+	// , Key(eObjectKey)
+	, Status(eObjectStatus::ACTIVATED)
+	, CollisionType(eCollisionType::NONE)
+	, Speed(0.0f)
+	, bGenerateCollisionEvent(false)
 {
 
 }

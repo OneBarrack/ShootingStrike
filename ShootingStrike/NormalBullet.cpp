@@ -2,14 +2,16 @@
 #include "Object.h"
 #include "BitmapManager.h"
 
-NormalBullet::NormalBullet()
+NormalBullet::NormalBullet() 
+	: pBulletImage(nullptr)
+	, BulletImageScale(Vector3())
 {
 
 }
 
 NormalBullet::~NormalBullet()
 {
-
+	Release();
 }
 
 

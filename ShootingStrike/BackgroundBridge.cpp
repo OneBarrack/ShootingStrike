@@ -2,10 +2,8 @@
 
 BackgroundBridge::BackgroundBridge()
 {
-
 }
 
 BackgroundBridge::~BackgroundBridge()
 {
-
 }

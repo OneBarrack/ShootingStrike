@@ -1,12 +1,22 @@
 #include "LogoBackground.h"
 #include "BitmapManager.h"
 
-LogoBackground::LogoBackground()
+LogoBackground::LogoBackground() 
+	: pLogoBkgImage(nullptr)
+	, LogoBkgScale(Vector3())
+	, LoopOffset1(0)
+	, LoopOffset2(0)
+	, ScrollSpeed(0)
+	, bAttachBkg(false)
+	, pLogoImage(nullptr)
+	, LogoPosition(Vector3())
+	, LogoScale(Vector3())
 {
 }
 
 LogoBackground::~LogoBackground()
 {
+	Release();
 }
 
 void LogoBackground::Initialize()

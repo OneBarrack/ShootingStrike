@@ -3,8 +3,6 @@
 
 class BackgroundBridge : public Bridge
 {
-protected:
-	float Speed;
 public:
 	virtual void Initialize()PURE;
 	virtual void Update()PURE;

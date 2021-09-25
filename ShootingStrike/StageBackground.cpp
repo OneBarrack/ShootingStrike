@@ -1,12 +1,20 @@
 #include "StageBackground.h"
 #include "BitmapManager.h"
 
-StageBackground::StageBackground()
+StageBackground::StageBackground() 
+	: pBkgImageForBorderLine(nullptr)
+	, pStageBkgImage(nullptr)
+	, StageBkgScale(Vector3())
+	, StageBkgOffset(0.0f)
+	, pStageSideBkgImage(nullptr)
+	, SideBkgScale(Vector3())
+	, SideBkgOffset(0.0f)
 {
 }
 
 StageBackground::~StageBackground()
 {
+	Release();
 }
 
 void StageBackground::Initialize()

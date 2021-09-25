@@ -6,6 +6,7 @@
 
 
 MainUpdate::MainUpdate()
+	: m_hdc(NULL)
 {
 
 }
