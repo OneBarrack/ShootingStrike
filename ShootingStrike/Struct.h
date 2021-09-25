@@ -23,7 +23,14 @@ struct Transform
 	Vector3 Scale;
 	Vector3 Direction;
 
-	Transform() : Position(Vector3()), Scale(Vector3()), Direction(Vector3()) {}
+	Transform() : 
+		Position(Vector3()), Scale(Vector3()), Direction(Vector3()) {}
+
+	Transform(Vector3 _Position, Vector3 _Scale) : 
+		Position(_Position), Scale(_Scale), Direction(Vector3()) {}
+
+	Transform(Vector3 _Position, Vector3 _Scale, Vector3 _Direction) :
+		Position(_Position), Scale(_Scale), Direction(_Direction) {}
 
 	Transform(float _Px, float _Py, float _Sx, float _Sy) :
 		Position(Vector3(_Px, _Py)), Scale(Vector3(_Sx, _Sy)), Direction(Vector3())	{}

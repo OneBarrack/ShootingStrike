@@ -2,12 +2,12 @@
 #include "Scene.h"
 
 class Object;
-class Button;
 class Logo : public Scene
 {
 private:
 	Object* pBackground;
-	Button* pPlayButton;
+	Object* pLogoTitle;
+	Object* pPlayButton;
 
 public:
 	virtual void Initialize()override;

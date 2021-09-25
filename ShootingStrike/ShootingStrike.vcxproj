@@ -158,6 +158,7 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Logo.h" />
     <ClInclude Include="LogoBackground.h" />
+    <ClInclude Include="LogoTitle.h" />
     <ClInclude Include="MainUpdate.h" />
     <ClInclude Include="MathManager.h" />
     <ClInclude Include="Menu.h" />
@@ -179,7 +180,6 @@
     <ClInclude Include="StageSideBackground.h" />
     <ClInclude Include="Struct.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="UIManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BackgroundBridge.cpp" />
@@ -196,6 +196,7 @@
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Logo.cpp" />
     <ClCompile Include="LogoBackground.cpp" />
+    <ClCompile Include="LogoTitle.cpp" />
     <ClCompile Include="MainUpdate.cpp" />
     <ClCompile Include="MathManager.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -213,7 +214,6 @@
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="StageBackground.cpp" />
     <ClCompile Include="StageSideBackground.cpp" />
-    <ClCompile Include="UIManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ShootingStrike.rc" />

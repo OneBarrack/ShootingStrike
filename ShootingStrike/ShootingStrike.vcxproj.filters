@@ -97,12 +97,6 @@
     <Filter Include="소스 파일\02. Object\Bullet\BulletBridge\GuideBullet">
       <UniqueIdentifier>{94f3f3fe-d352-4ce5-afe8-a7652214cd27}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\02. Object\Background\BackgroundBridge\LogoBackground">
-      <UniqueIdentifier>{9b931869-e593-4f6b-8fb1-e41d47767851}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02. Object\Background\BackgroundBridge\StageBackground">
-      <UniqueIdentifier>{fe407649-c2f8-4647-9472-42983cb27aa5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\04. Helper">
       <UniqueIdentifier>{bcb0b951-8abe-4f9d-a038-d32d24a6da28}</UniqueIdentifier>
     </Filter>
@@ -124,8 +118,11 @@
     <Filter Include="소스 파일\02. Object\Enemy\EnemyBridge">
       <UniqueIdentifier>{74083bfc-8fdf-4e8c-bc03-04ec1453f38f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\99. Manager\UIManager">
-      <UniqueIdentifier>{43149e40-e497-4f0c-8b3e-ebfe80cc6b42}</UniqueIdentifier>
+    <Filter Include="소스 파일\02. Object\Background\BackgroundBridge\Logo">
+      <UniqueIdentifier>{9b931869-e593-4f6b-8fb1-e41d47767851}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\Background\BackgroundBridge\Stage">
+      <UniqueIdentifier>{fe407649-c2f8-4647-9472-42983cb27aa5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -226,7 +223,7 @@
       <Filter>소스 파일\02. Object\Background\BackgroundBridge</Filter>
     </ClInclude>
     <ClInclude Include="StageBackground.h">
-      <Filter>소스 파일\02. Object\Background\BackgroundBridge\StageBackground</Filter>
+      <Filter>소스 파일\02. Object\Background\BackgroundBridge\Stage</Filter>
     </ClInclude>
     <ClInclude Include="NormalBullet.h">
       <Filter>소스 파일\02. Object\Bullet\BulletBridge\NormalBullet</Filter>
@@ -241,16 +238,16 @@
       <Filter>소스 파일\02. Object\Bullet\BulletBridge\GuideBullet</Filter>
     </ClInclude>
     <ClInclude Include="LogoBackground.h">
-      <Filter>소스 파일\02. Object\Background\BackgroundBridge\LogoBackground</Filter>
+      <Filter>소스 파일\02. Object\Background\BackgroundBridge\Logo</Filter>
     </ClInclude>
     <ClInclude Include="EnemyBridge.h">
       <Filter>소스 파일\02. Object\Enemy\EnemyBridge</Filter>
     </ClInclude>
-    <ClInclude Include="UIManager.h">
-      <Filter>소스 파일\99. Manager\UIManager</Filter>
-    </ClInclude>
     <ClInclude Include="StageSideBackground.h">
-      <Filter>소스 파일\02. Object\Background\BackgroundBridge\StageBackground</Filter>
+      <Filter>소스 파일\02. Object\Background\BackgroundBridge\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="LogoTitle.h">
+      <Filter>소스 파일\02. Object\Background\BackgroundBridge\Logo</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -324,7 +321,7 @@
       <Filter>소스 파일\02. Object\Background\BackgroundBridge</Filter>
     </ClCompile>
     <ClCompile Include="StageBackground.cpp">
-      <Filter>소스 파일\02. Object\Background\BackgroundBridge\StageBackground</Filter>
+      <Filter>소스 파일\02. Object\Background\BackgroundBridge\Stage</Filter>
     </ClCompile>
     <ClCompile Include="NormalBullet.cpp">
       <Filter>소스 파일\02. Object\Bullet\BulletBridge\NormalBullet</Filter>
@@ -339,16 +336,16 @@
       <Filter>소스 파일\02. Object\Bullet\BulletBridge\GuideBullet</Filter>
     </ClCompile>
     <ClCompile Include="LogoBackground.cpp">
-      <Filter>소스 파일\02. Object\Background\BackgroundBridge\LogoBackground</Filter>
+      <Filter>소스 파일\02. Object\Background\BackgroundBridge\Logo</Filter>
     </ClCompile>
     <ClCompile Include="EnemyBridge.cpp">
       <Filter>소스 파일\02. Object\Enemy\EnemyBridge</Filter>
     </ClCompile>
-    <ClCompile Include="UIManager.cpp">
-      <Filter>소스 파일\99. Manager\UIManager</Filter>
-    </ClCompile>
     <ClCompile Include="StageSideBackground.cpp">
-      <Filter>소스 파일\02. Object\Background\BackgroundBridge\StageBackground</Filter>
+      <Filter>소스 파일\02. Object\Background\BackgroundBridge\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="LogoTitle.cpp">
+      <Filter>소스 파일\02. Object\Background\BackgroundBridge\Logo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -12,11 +12,6 @@ private:
 	int ScrollSpeed;
 	bool bAttachBkg;
 
-	// ** Logo
-	Bitmap* pLogoImage;
-	Vector3 LogoPosition;
-	Vector3 LogoScale;
-
 public:
 	virtual void Initialize()override;
 	virtual void Update()override;
@@ -26,9 +21,6 @@ public:
 private:
 	// ** Draw Logo background
 	void RenderLogoBkg(HDC _hdc);
-
-	// ** Draw Logo
-	void RenderLogo(HDC _hdc);
 
 public:
 	LogoBackground();

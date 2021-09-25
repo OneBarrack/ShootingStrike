@@ -3,6 +3,12 @@
 
 class Background : public Object
 {
+//	enum class Image
+//
+//private:
+//	Bitmap* pImage;
+//	Vector3 Scale;
+
 public:
 	virtual void Initialize()override;
 	virtual void Update()override;

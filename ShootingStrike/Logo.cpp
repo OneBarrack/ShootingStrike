@@ -3,14 +3,15 @@
 #include "ObjectManager.h"
 #include "ObjectFactory.h"
 #include "BitmapManager.h"
-#include "UIManager.h"
 #include "LogoBackground.h"
+#include "LogoTitle.h"
 #include "Player.h"
 #include "Enemy.h"
 #include "Button.h"
 
 Logo::Logo() 
 	: pBackground(nullptr)
+	, pLogoTitle(nullptr)
 	, pPlayButton(nullptr)
 {
 
@@ -33,16 +34,24 @@ void Logo::Initialize()
 	Bridge* pBridge = new LogoBackground;
 	pBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::BACKGROUND, pBridge);
 
+	// ** Logo
+	pBridge = new LogoTitle;
+	pLogoTitle = ObjectManager::GetInstance()->TakeObject(eObjectKey::BACKGROUND, pBridge);
+
 	// ** Play Button
-	Transform PlayButtonTransInfo(WindowsWidth * 0.5f, WindowsHeight * 0.75f, 150.0f, 70.0f);
-	pPlayButton = UIManager::MakeButton(PlayButtonTransInfo, PlayButtonTransInfo, eImageKey::PLAYBUTTON);
+	pPlayButton = ObjectManager::GetInstance()->TakeObject(eObjectKey::UI_BUTTON);
+	static_cast<Button*>(pPlayButton)->SetImage(BitmapManager::GetInstance()->GetImage(eImageKey::PLAYBUTTON));	
+	
+	Transform PlayButtonTransInfo = Transform(WindowsWidth * 0.5f, WindowsHeight * 0.75f, 150.0f, 70.0f);
+	pPlayButton->SetTransInfo(PlayButtonTransInfo);
+	pPlayButton->SetCollider(PlayButtonTransInfo);
 }
 
 void Logo::Update()
 {
 	ObjectManager::GetInstance()->Update();
 
-	if ( pPlayButton->OnClick() )
+	if ( static_cast<Button*>(pPlayButton)->OnClick() )
 	{	
 		// ** MENU 구현 필요. 임시로 Stage로 바로 넘어감
 		//SceneManager::GetInstance()->SetScene(eSCENEID::MENU);
