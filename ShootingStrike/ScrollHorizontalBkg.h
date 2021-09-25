@@ -1,15 +1,12 @@
 #pragma once
 #include "BackgroundBridge.h"
 
-class LogoBackground : public BackgroundBridge
+class ScrollHorizontalBkg : public BackgroundBridge
 {
 private:
-	// ** Logo Background
-	Bitmap* pLogoBkgImage;
-	Vector3 LogoBkgScale;
+	bool bLoopScroll;
 	int LoopOffset1;
 	int LoopOffset2;
-	int ScrollSpeed;
 	bool bAttachBkg;
 
 public:
@@ -18,12 +15,11 @@ public:
 	virtual void Render(HDC _hdc)override;
 	virtual void Release()override;
 
-private:
-	// ** Draw Logo background
-	void RenderLogoBkg(HDC _hdc);
+	bool IsLoopScroll() { return bLoopScroll; }
+	void SetLoopScroll(bool _bLoopScroll) { bLoopScroll = _bLoopScroll; }
 
 public:
-	LogoBackground();
-	virtual ~LogoBackground();
+	ScrollHorizontalBkg();
+	virtual ~ScrollHorizontalBkg();
 };
 

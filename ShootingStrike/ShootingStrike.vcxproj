@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -157,11 +157,11 @@
     <ClInclude Include="Headers.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Logo.h" />
-    <ClInclude Include="LogoBackground.h" />
-    <ClInclude Include="LogoTitle.h" />
+    <ClInclude Include="ScrollVerticalBkg.h" />
     <ClInclude Include="MainUpdate.h" />
     <ClInclude Include="MathManager.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="BasicBkg.h" />
     <ClInclude Include="NormalBullet.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="ObjectFactory.h" />
@@ -172,11 +172,11 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="ScrollHorizontalBkg.h" />
     <ClInclude Include="ShootingStrike.h" />
     <ClInclude Include="SpawnManager.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="Background.h" />
-    <ClInclude Include="StageBackground.h" />
     <ClInclude Include="StageSideBackground.h" />
     <ClInclude Include="Struct.h" />
     <ClInclude Include="targetver.h" />
@@ -195,11 +195,11 @@
     <ClCompile Include="GuideBullet.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Logo.cpp" />
-    <ClCompile Include="LogoBackground.cpp" />
-    <ClCompile Include="LogoTitle.cpp" />
+    <ClCompile Include="ScrollVerticalBkg.cpp" />
     <ClCompile Include="MainUpdate.cpp" />
     <ClCompile Include="MathManager.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="BasicBkg.cpp" />
     <ClCompile Include="NormalBullet.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
@@ -208,11 +208,11 @@
     <ClCompile Include="RenderManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="ScrollHorizontalBkg.cpp" />
     <ClCompile Include="ShootingStrike.cpp" />
     <ClCompile Include="SpawnManager.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="Background.cpp" />
-    <ClCompile Include="StageBackground.cpp" />
     <ClCompile Include="StageSideBackground.cpp" />
   </ItemGroup>
   <ItemGroup>

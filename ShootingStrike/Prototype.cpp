@@ -29,7 +29,7 @@ void Prototype::CreatePrototype()
 	PrototypeList[eObjectKey::BULLET]			= new Bullet;
 	PrototypeList[eObjectKey::UI_BUTTON]		= new Button;
 
-	PrototypeList[eObjectKey::SIDE_BACKGROUND]  = PrototypeList[eObjectKey::BACKGROUND];
+	PrototypeList[eObjectKey::FOREGROUND]  = PrototypeList[eObjectKey::BACKGROUND];
 }
 
 Object* Prototype::FindPrototypeObject(eObjectKey _Key)

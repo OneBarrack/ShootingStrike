@@ -40,20 +40,6 @@ void ObjectManager::Update()
 			}
 		}
 	}
-
-	#ifdef GAME_DEBUG_MODE
-	static ULONGLONG Time = GetTickCount64();
-	if ( Time + 1000 < GetTickCount64() )
-	{
-		auto temp = ObjectManager::GetInstance()->GetEnableList();
-		auto temp2 = temp->find(eObjectKey::BULLET);
-		if ( temp2 != temp->end() )
-		{
-			cout << temp2->second.size() << endl;
-		}
-		Time = GetTickCount64();
-	}
-	#endif // GAME_DEBUG_MODE
 }
 
 void ObjectManager::Render(HDC _hdc)

@@ -6,7 +6,7 @@
 #include "HammerEffect.h"
 #include "ObjectFactory.h"
 #include "CollisionManager.h"
-#include "StageBackground.h"
+#include "ScrollVerticalBkg.h"
 #include "StageSideBackground.h"
 #include "BitmapManager.h"
 
@@ -29,12 +29,24 @@ void Stage::Initialize()
 	pPlayer = ObjectManager::GetInstance()->GetPlayer();
 
 	// ** Background
-	Bridge* pBridge = new StageBackground;
+	Bridge* pBridge = new ScrollVerticalBkg;
 	pBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::BACKGROUND, pBridge);
+	pBackground->SetImage(BitmapManager::GetInstance()->GetImage(eImageKey::STAGEBACK));
+	pBackground->SetSpeed(0.5f);
+
+	Transform StageBkgTransInfo;
+	StageBkgTransInfo.Position = Vector3(WindowsWidth * 0.5f, WindowsHeight * 0.5f);
+	StageBkgTransInfo.Scale = Vector3(600.0f, 5527.0f);
+	pBackground->SetTransInfo(StageBkgTransInfo);
+
+	Transform StageBkgCollider;
+	StageBkgCollider.Position = StageBkgTransInfo.Position;
+	StageBkgCollider.Scale = Vector3(600.0f, WindowsHeight);
+	pBackground->SetCollider(StageBkgCollider);
 
 	// ** Side Background
 	pBridge = new StageSideBackground;
-	pSideBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::SIDE_BACKGROUND, pBridge);
+	pSideBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::FOREGROUND, pBridge);
 
 	// ** Spawn Player
 	static_cast<Player*>(pPlayer)->SetStatus(eObjectStatus::ACTIVATED);

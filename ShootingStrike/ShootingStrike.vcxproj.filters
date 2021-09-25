@@ -88,9 +88,6 @@
     <Filter Include="소스 파일\02. Object\UI\Button">
       <UniqueIdentifier>{f8dfcd95-a908-4a3f-8ee8-807cca4cb3c9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\02. Object\Animation">
-      <UniqueIdentifier>{3e425bb0-e637-4ad1-bd09-0cc5ab84388e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\99. Manager\SpawnManager">
       <UniqueIdentifier>{d2286836-24a7-4923-a1b0-31bfe4a3f91d}</UniqueIdentifier>
     </Filter>
@@ -118,10 +115,19 @@
     <Filter Include="소스 파일\02. Object\Enemy\EnemyBridge">
       <UniqueIdentifier>{74083bfc-8fdf-4e8c-bc03-04ec1453f38f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\02. Object\Background\BackgroundBridge\Logo">
-      <UniqueIdentifier>{9b931869-e593-4f6b-8fb1-e41d47767851}</UniqueIdentifier>
+    <Filter Include="소스 파일\02. Object\Effect">
+      <UniqueIdentifier>{3e425bb0-e637-4ad1-bd09-0cc5ab84388e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\02. Object\Background\BackgroundBridge\Stage">
+    <Filter Include="소스 파일\02. Object\Background\BackgroundBridge\Basic">
+      <UniqueIdentifier>{0cae1821-5365-43c7-92f2-c34e062c622f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\Background\BackgroundBridge\ScrollHorizontal">
+      <UniqueIdentifier>{8d3f14c4-1024-45c5-9da7-50b33917c14e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\Background\BackgroundBridge\ScrollVertical">
+      <UniqueIdentifier>{895b1024-ab70-4874-8d0d-288a0a539a0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\Background\BackgroundBridge\StageSide">
       <UniqueIdentifier>{fe407649-c2f8-4647-9472-42983cb27aa5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -222,9 +228,6 @@
     <ClInclude Include="BackgroundBridge.h">
       <Filter>소스 파일\02. Object\Background\BackgroundBridge</Filter>
     </ClInclude>
-    <ClInclude Include="StageBackground.h">
-      <Filter>소스 파일\02. Object\Background\BackgroundBridge\Stage</Filter>
-    </ClInclude>
     <ClInclude Include="NormalBullet.h">
       <Filter>소스 파일\02. Object\Bullet\BulletBridge\NormalBullet</Filter>
     </ClInclude>
@@ -237,17 +240,20 @@
     <ClInclude Include="GuideBullet.h">
       <Filter>소스 파일\02. Object\Bullet\BulletBridge\GuideBullet</Filter>
     </ClInclude>
-    <ClInclude Include="LogoBackground.h">
-      <Filter>소스 파일\02. Object\Background\BackgroundBridge\Logo</Filter>
-    </ClInclude>
     <ClInclude Include="EnemyBridge.h">
       <Filter>소스 파일\02. Object\Enemy\EnemyBridge</Filter>
     </ClInclude>
     <ClInclude Include="StageSideBackground.h">
-      <Filter>소스 파일\02. Object\Background\BackgroundBridge\Stage</Filter>
+      <Filter>소스 파일\02. Object\Background\BackgroundBridge\StageSide</Filter>
     </ClInclude>
-    <ClInclude Include="LogoTitle.h">
-      <Filter>소스 파일\02. Object\Background\BackgroundBridge\Logo</Filter>
+    <ClInclude Include="BasicBkg.h">
+      <Filter>소스 파일\02. Object\Background\BackgroundBridge\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ScrollVerticalBkg.h">
+      <Filter>소스 파일\02. Object\Background\BackgroundBridge\ScrollVertical</Filter>
+    </ClInclude>
+    <ClInclude Include="ScrollHorizontalBkg.h">
+      <Filter>소스 파일\02. Object\Background\BackgroundBridge\ScrollHorizontal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -320,9 +326,6 @@
     <ClCompile Include="BackgroundBridge.cpp">
       <Filter>소스 파일\02. Object\Background\BackgroundBridge</Filter>
     </ClCompile>
-    <ClCompile Include="StageBackground.cpp">
-      <Filter>소스 파일\02. Object\Background\BackgroundBridge\Stage</Filter>
-    </ClCompile>
     <ClCompile Include="NormalBullet.cpp">
       <Filter>소스 파일\02. Object\Bullet\BulletBridge\NormalBullet</Filter>
     </ClCompile>
@@ -335,17 +338,20 @@
     <ClCompile Include="GuideBullet.cpp">
       <Filter>소스 파일\02. Object\Bullet\BulletBridge\GuideBullet</Filter>
     </ClCompile>
-    <ClCompile Include="LogoBackground.cpp">
-      <Filter>소스 파일\02. Object\Background\BackgroundBridge\Logo</Filter>
-    </ClCompile>
     <ClCompile Include="EnemyBridge.cpp">
       <Filter>소스 파일\02. Object\Enemy\EnemyBridge</Filter>
     </ClCompile>
     <ClCompile Include="StageSideBackground.cpp">
-      <Filter>소스 파일\02. Object\Background\BackgroundBridge\Stage</Filter>
+      <Filter>소스 파일\02. Object\Background\BackgroundBridge\StageSide</Filter>
     </ClCompile>
-    <ClCompile Include="LogoTitle.cpp">
-      <Filter>소스 파일\02. Object\Background\BackgroundBridge\Logo</Filter>
+    <ClCompile Include="BasicBkg.cpp">
+      <Filter>소스 파일\02. Object\Background\BackgroundBridge\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="ScrollVerticalBkg.cpp">
+      <Filter>소스 파일\02. Object\Background\BackgroundBridge\ScrollVertical</Filter>
+    </ClCompile>
+    <ClCompile Include="ScrollHorizontalBkg.cpp">
+      <Filter>소스 파일\02. Object\Background\BackgroundBridge\ScrollHorizontal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

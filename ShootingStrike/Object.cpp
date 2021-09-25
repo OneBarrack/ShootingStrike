@@ -2,7 +2,8 @@
 #include "InputManager.h"
 
 Object::Object()
-	: pBridgeObject(nullptr)
+	: pImage(nullptr)
+	, pBridgeObject(nullptr)
 	, TransInfo(Transform())
 	, Collider(Transform())
 	, Offset(Vector3())

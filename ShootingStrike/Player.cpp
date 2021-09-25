@@ -122,9 +122,7 @@ void Player::Update()
 	OldPosition = TransInfo.Position;
 
 	// ** 충돌체 갱신
-	Collider = TransInfo;	
-
-	cout << TransInfo.Position.x << " " << TransInfo.Position.y << endl;
+	Collider = TransInfo;
 
 	return;
 }

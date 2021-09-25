@@ -5,6 +5,9 @@ class Bridge;
 class Object
 {
 protected:
+	// ** Bitmap Image
+	Bitmap* pImage;
+
 	// ** Bridge Object
 	Bridge* pBridgeObject;
 
@@ -32,6 +35,9 @@ public:
 	virtual Object* Clone()PURE;
 
 public:
+	// ** 이미지를 반환
+	Bitmap* GetImage() { return pImage; }
+
 	// ** 오브젝트의 Key 값을 out
 	eObjectKey GetKey() const { return Key; }
 
@@ -68,6 +74,9 @@ public:
 
 	// ** 키 입력 상태 반환
 	bool CheckKeyInputStatus(eInputKey _InputKey, eKeyInputState _Status);
+
+	// ** 이미지를 반환
+	void SetImage(Bitmap* _pImage) { pImage = _pImage; }
 
 	// ** BridgeObject를 Setting
 	void SetBridgeObject(Bridge* _pBridge) { pBridgeObject = _pBridge; }

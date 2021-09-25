@@ -1,53 +1,39 @@
-#include "LogoBackground.h"
+#include "ScrollHorizontalBkg.h"
 #include "BitmapManager.h"
 
-LogoBackground::LogoBackground() 
-	: pLogoBkgImage(nullptr)
-	, LogoBkgScale(Vector3())
+ScrollHorizontalBkg::ScrollHorizontalBkg()
+	: bLoopScroll(false)
 	, LoopOffset1(0)
 	, LoopOffset2(0)
-	, ScrollSpeed(0)
 	, bAttachBkg(false)
 {
 }
 
-LogoBackground::~LogoBackground()
+ScrollHorizontalBkg::~ScrollHorizontalBkg()
 {
 	Release();
 }
 
-void LogoBackground::Initialize()
+void ScrollHorizontalBkg::Initialize()
 {
-	//** Logo background
-	pLogoBkgImage = BitmapManager::GetInstance()->GetImage(eImageKey::LOGOBACK);
-	LogoBkgScale = Vector3(1915.0f, 720.0f);
-	LoopOffset1  = 0;
-	LoopOffset2  = 0;
-	bAttachBkg   = false;
-	ScrollSpeed  = 1;
+	bLoopScroll = false;
+	LoopOffset1 = 0;
+	LoopOffset2 = 0;
+	bAttachBkg = false;
 }
 
-void LogoBackground::Update()
+void ScrollHorizontalBkg::Update()
 {
-
 }
 
-void LogoBackground::Render(HDC _hdc)
+void ScrollHorizontalBkg::Render(HDC _hdc)
 {
-	// ** Logo background
-	if ( pLogoBkgImage )
-		RenderLogoBkg(_hdc);
-}
+	Bitmap* pImage = pOwner->GetImage();
+	if ( !pImage )
+		return;
 
-void LogoBackground::Release()
-{
-
-}
-
-void LogoBackground::RenderLogoBkg(HDC _hdc)
-{
 	// ** 이어 붙이는 중이 아닐 때 배경이 끝에 도달했다면
-	if ( !bAttachBkg && LogoBkgScale.x < WindowsWidth + LoopOffset1 )
+	if ( !bAttachBkg && pOwner->GetScale().x < WindowsWidth + LoopOffset1 )
 	{
 		// ** 이어 붙이도록 Offset2과 bAttachBkg 세팅
 		LoopOffset2 = 0;
@@ -71,7 +57,7 @@ void LogoBackground::RenderLogoBkg(HDC _hdc)
 			0,
 			WindowsWidth,
 			WindowsHeight,
-			pLogoBkgImage->GetMemDC(),
+			pImage->GetMemDC(),
 			LoopOffset1,
 			0,
 			SRCCOPY);
@@ -84,7 +70,7 @@ void LogoBackground::RenderLogoBkg(HDC _hdc)
 			0,
 			WindowsWidth - LoopOffset2,
 			WindowsHeight,
-			pLogoBkgImage->GetMemDC(),
+			pImage->GetMemDC(),
 			LoopOffset1,
 			0,
 			SRCCOPY);
@@ -94,12 +80,17 @@ void LogoBackground::RenderLogoBkg(HDC _hdc)
 			0,
 			LoopOffset2,
 			WindowsHeight,
-			pLogoBkgImage->GetMemDC(),
+			pImage->GetMemDC(),
 			0,
 			0,
 			SRCCOPY);
 	}
 
-	LoopOffset1 += ScrollSpeed;
-	LoopOffset2 += ScrollSpeed;
+	LoopOffset1 += static_cast<int>(pOwner->GetSpeed());
+	LoopOffset2 += static_cast<int>(pOwner->GetSpeed());
+}
+
+void ScrollHorizontalBkg::Release()
+{
+
 }

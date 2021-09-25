@@ -3,8 +3,8 @@
 #include "ObjectManager.h"
 #include "ObjectFactory.h"
 #include "BitmapManager.h"
-#include "LogoBackground.h"
-#include "LogoTitle.h"
+#include "ScrollHorizontalBkg.h"
+#include "BasicBkg.h"
 #include "Player.h"
 #include "Enemy.h"
 #include "Button.h"
@@ -31,12 +31,27 @@ void Logo::Initialize()
 		ObjectManager::GetInstance()->TakeObject(eObjectKey::PLAYER));
 		
 	// ** Background
-	Bridge* pBridge = new LogoBackground;
+	Bridge* pBridge = new ScrollHorizontalBkg;
 	pBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::BACKGROUND, pBridge);
+	pBackground->SetImage(BitmapManager::GetInstance()->GetImage(eImageKey::LOGOBACK));
+	pBackground->SetSpeed(1.0f);
+	
+	Transform BackgroundTransInfo;
+	BackgroundTransInfo.Position = Vector3(WindowsWidth * 0.5f, WindowsHeight * 0.5f);
+	BackgroundTransInfo.Scale = Vector3(1915.0f, 720.0f);
+	pBackground->SetTransInfo(BackgroundTransInfo);
+	static_cast<ScrollHorizontalBkg*>(pBridge)->SetLoopScroll(true);
 
 	// ** Logo
-	pBridge = new LogoTitle;
+	pBridge = new BasicBkg;
 	pLogoTitle = ObjectManager::GetInstance()->TakeObject(eObjectKey::BACKGROUND, pBridge);
+	pLogoTitle->SetImage(BitmapManager::GetInstance()->GetImage(eImageKey::LOGO));
+	
+	Transform LogoTransInfo;
+	LogoTransInfo.Scale = Vector3(923.0f, 350.0f);
+	LogoTransInfo.Position = Vector3((WindowsWidth * 0.5f) - (LogoTransInfo.Scale.x * 0.5f),
+									 (WindowsHeight * 0.3f) - (LogoTransInfo.Scale.y * 0.5f));
+	pLogoTitle->SetTransInfo(LogoTransInfo);
 
 	// ** Play Button
 	pPlayButton = ObjectManager::GetInstance()->TakeObject(eObjectKey::UI_BUTTON);
