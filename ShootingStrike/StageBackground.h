@@ -9,11 +9,6 @@ private:
 	Vector3 StageBkgScale;
 	float StageBkgOffset;
 
-	// ** Stage side background
-	Bitmap* pStageSideBkgImage;
-	Vector3 SideBkgScale;
-	float SideBkgOffset;
-
 public:
 	virtual void Initialize()override;
 	virtual void Update()override;
@@ -23,9 +18,6 @@ public:
 private:
 	// ** Draw Stage main background
 	void RenderStageBkg(HDC _hdc);
-
-	// ** Draw Stage side background
-	void RenderStageSideBkg(HDC _hdc);
 
 public:
 	StageBackground();
