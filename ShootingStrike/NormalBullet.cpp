@@ -19,8 +19,6 @@ void NormalBullet::Initialize()
 {
 	pBulletImage = BitmapManager::GetInstance()->GetImage(eImageKey::PROJECTILE);
 	BulletImageScale = Vector3(230.0f, 230.0f);
-	
-	DrawKey = "NormalBullet";
 }
 
 void NormalBullet::Update()

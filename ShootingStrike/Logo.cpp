@@ -32,6 +32,8 @@ void Logo::Initialize()
 		
 	// ** Background
 	Bridge* pBridge = new ScrollHorizontalBkg;
+	static_cast<ScrollHorizontalBkg*>(pBridge)->SetLoopScroll(true);
+	
 	pBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::BACKGROUND, pBridge);
 	pBackground->SetImage(BitmapManager::GetInstance()->GetImage(eImageKey::LOGOBACK));
 	pBackground->SetSpeed(1.0f);
@@ -40,9 +42,8 @@ void Logo::Initialize()
 	BackgroundTransInfo.Position = Vector3(WindowsWidth * 0.5f, WindowsHeight * 0.5f);
 	BackgroundTransInfo.Scale = Vector3(1915.0f, 720.0f);
 	pBackground->SetTransInfo(BackgroundTransInfo);
-	static_cast<ScrollHorizontalBkg*>(pBridge)->SetLoopScroll(true);
 
-	// ** Logo
+	// ** Logo Title
 	pBridge = new BasicBkg;
 	pLogoTitle = ObjectManager::GetInstance()->TakeObject(eObjectKey::BACKGROUND, pBridge);
 	pLogoTitle->SetImage(BitmapManager::GetInstance()->GetImage(eImageKey::LOGO));

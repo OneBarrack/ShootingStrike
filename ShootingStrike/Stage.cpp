@@ -9,6 +9,7 @@
 #include "ScrollVerticalBkg.h"
 #include "StageSideBackground.h"
 #include "BitmapManager.h"
+#include "SpawnManager.h"
 
 Stage::Stage() 
 	: pPlayer(nullptr)
@@ -28,7 +29,7 @@ void Stage::Initialize()
 	// ** Player
 	pPlayer = ObjectManager::GetInstance()->GetPlayer();
 
-	// ** Background
+	// ** Main Scrolling Background
 	Bridge* pBridge = new ScrollVerticalBkg;
 	pBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::BACKGROUND, pBridge);
 	pBackground->SetImage(BitmapManager::GetInstance()->GetImage(eImageKey::STAGEBACK));
@@ -49,14 +50,14 @@ void Stage::Initialize()
 	pSideBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::FOREGROUND, pBridge);
 
 	// ** Spawn Player
-	static_cast<Player*>(pPlayer)->SetStatus(eObjectStatus::ACTIVATED);
-	static_cast<Player*>(pPlayer)->SpawnPlayer();	
+	SpawnManager::SpawnPlayer();
 }
 
 void Stage::Update()
 {
 	ObjectManager::GetInstance()->Update();
 
+	// ** 해당 오브젝트들이 메인 Background 내부를 벗어났는지 체크
 	CheckPositionInBkgBoundary(eObjectKey::PLAYER);
 	CheckPositionInBkgBoundary(eObjectKey::ENEMY);
 	CheckPositionInBkgBoundary(eObjectKey::BULLET);
@@ -78,19 +79,17 @@ void Stage::Release()
 
 void Stage::CheckPositionInBkgBoundary(eObjectKey _ObjectKey)
 {
+	// ** Stage의 바운더리
+	RectF ScreenRect = pBackground->GetColliderF();
+
 	// ** Key에 해당하는 Object List를 받아옴
 	list<Object*> ObjectList = ObjectManager::GetInstance()->GetObjectList(_ObjectKey);
 
 	// ** List를 돌며 Position 체크
 	for ( Object* pObject : ObjectList )
 	{
-		// ** Object의 Position과 Stage의 바운더리를 받아온다
-		Vector3 ObjectPosition = pObject->GetPosition();
-		RectF ScreenRect(
-			pBackground->GetPosition().x - (pBackground->GetScale().x * 0.5f),
-			pBackground->GetPosition().y - (pBackground->GetScale().y * 0.5f),
-			pBackground->GetPosition().x + (pBackground->GetScale().x * 0.5f),
-			pBackground->GetPosition().y + (pBackground->GetScale().y * 0.5f));
+		// ** Object의 Position과 
+		Vector3 ObjectPosition = pObject->GetPosition();		
 
 		float Offset = 0.0f;
 		switch ( pObject->GetKey() )
@@ -114,6 +113,7 @@ void Stage::CheckPositionInBkgBoundary(eObjectKey _ObjectKey)
 
 				// ** 계산된 Position을 다시 플레이어에 세팅
 				pObject->SetPosition(ObjectPosition);
+
 				break;
 			case eObjectKey::ENEMY:
 				[[fallthrough]];
@@ -122,14 +122,16 @@ void Stage::CheckPositionInBkgBoundary(eObjectKey _ObjectKey)
 				Offset = 0.0f;
 
 				// ** Stage 바운더리를 Offset 만큼 넓힌다
-				ScreenRect.Left -= Offset;
-				ScreenRect.Top -= Offset;
-				ScreenRect.Right += Offset;
+				ScreenRect.Left   -= Offset;
+				ScreenRect.Top    -= Offset;
+				ScreenRect.Right  += Offset;
 				ScreenRect.Bottom += Offset;
 
 				// ** Stage의 바운더리 내 Object Position이 위치하지 않으면 Destroy
 				if ( !CollisionManager::IsPointInRect(ScreenRect, ObjectPosition) )
+				{
 					pObject->SetStatus(eObjectStatus::DESTROYED);
+				}
 				break;
 			default:
 				break;

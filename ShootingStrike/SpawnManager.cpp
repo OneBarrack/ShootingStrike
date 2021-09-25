@@ -4,6 +4,13 @@
 #include "Enemy.h"
 #include "Bullet.h"
 
+void SpawnManager::SpawnPlayer()
+{
+	Player* pPlayer = static_cast<Player*>(ObjectManager::GetInstance()->GetPlayer());
+	pPlayer->SetStatus(eObjectStatus::ACTIVATED);
+	pPlayer->Spawn();
+}
+
 void SpawnManager::SpawnBullet(Object* _pOwner, Transform _TransInfo, Bridge* _pBridge, float _Speed, int _Damage)
 {
 	Bullet* pBullet = static_cast<Bullet*>(ObjectManager::GetInstance()->TakeObject(eObjectKey::BULLET, _pBridge));

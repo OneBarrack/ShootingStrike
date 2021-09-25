@@ -191,8 +191,6 @@ Object* ObjectManager::TakeObject(eObjectKey _Key, Bridge* _pBridge)
 	if ( _pBridge )
 	{
 		_pBridge->SetOwner(pObject);
-		_pBridge->Initialize();
-
 		(pObject)->SetBridgeObject(_pBridge);
 	}
 
@@ -234,8 +232,6 @@ Object* ObjectManager::TakeObject(eObjectKey _Key, Vector3 _Position, Bridge* _p
 	if ( _pBridge )
 	{
 		_pBridge->SetOwner(pObject);
-		_pBridge->Initialize();
-
 		(pObject)->SetBridgeObject(_pBridge);
 	}
 

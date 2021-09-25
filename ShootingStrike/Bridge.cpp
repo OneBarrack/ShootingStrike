@@ -2,8 +2,7 @@
 
 
 Bridge::Bridge()
-	: DrawKey("")
-	, pOwner(nullptr)
+	: pOwner(nullptr)
 {
 
 }

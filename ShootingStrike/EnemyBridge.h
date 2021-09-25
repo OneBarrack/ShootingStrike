@@ -3,10 +3,6 @@
 
 class EnemyBridge : public Bridge
 {
-protected:
-	Transform TransInfo;
-	float Speed;
-
 public:
 	virtual void Initialize()PURE;
 	virtual void Update()PURE;

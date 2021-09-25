@@ -30,7 +30,7 @@ public:
 
 public:
 	// ** Spawn / ReSpawn
-	void SpawnPlayer() { bSpawing = true; };
+	void Spawn() { bSpawing = true; };
 
 	// ** 미사일 발사
 	void Fire(eBulletFireType _FireType, int _Power, int _Damage);

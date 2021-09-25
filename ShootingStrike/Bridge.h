@@ -5,7 +5,6 @@
 class Bridge
 {
 protected:
-	string DrawKey;
 	Object* pOwner;
 
 public:

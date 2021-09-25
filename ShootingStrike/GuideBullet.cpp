@@ -26,8 +26,6 @@ void GuideBullet::Initialize()
 	BulletImageScale = Vector3(230.0f, 230.0f);
 
 	Speed = 3.0f;
-
-	DrawKey = "NormalBullet";
 }
 
 void GuideBullet::Update()
