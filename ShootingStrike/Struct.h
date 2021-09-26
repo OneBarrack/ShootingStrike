@@ -10,11 +10,16 @@ struct Vector3
 	
 	Vector3(float _x, float  _y, float _z) : x(_x), y(_y), z(_z) {}
 
-	Vector3 operator+ (Vector3& v) { return Vector3(x + v.x, y + v.y); }
-	Vector3 operator- (Vector3& v) { return Vector3(x - v.x, y - v.y); }
-	Vector3 operator* (Vector3& v) { return Vector3(x * v.x, y * v.y); }
-	Vector3 operator/ (Vector3& v) { return Vector3(x / v.x, y / v.y); }
-	bool operator== (Vector3& v) { return ((int)x == (int)v.x && (int)y == (int)v.y); }
+	Vector3 operator+ (float _value) { return Vector3(x + _value, y + _value, z + _value); }
+	Vector3 operator- (float _value) { return Vector3(x - _value, y - _value, z - _value); }
+	Vector3 operator* (float _value) { return Vector3(x * _value, y * _value, z * _value); }
+	Vector3 operator/ (float _value) { return Vector3(x / _value, y / _value, z / _value); }
+
+	Vector3 operator+ (Vector3& _v) { return Vector3(x + _v.x, y + _v.y); }
+	Vector3 operator- (Vector3& _v) { return Vector3(x - _v.x, y - _v.y); }
+	Vector3 operator* (Vector3& _v) { return Vector3(x * _v.x, y * _v.y); }
+	Vector3 operator/ (Vector3& _v) { return Vector3(x / _v.x, y / _v.y); }
+	bool operator== (Vector3& _v) { return ((int)x == (int)_v.x && (int)y == (int)_v.y); }
 };
 
 struct Transform
@@ -39,11 +44,32 @@ struct Transform
 		Position(Vector3(_Px, _Py)), Scale(Vector3(_Sx, _Sy)), Direction(Vector3(_Dx, _Dy)) {}	
 };
 
+struct Point
+{
+	int x, y;
+
+	Point() : x(0), y(0) {}
+	Point(int _x, int _y) : x(_x), y(_y) {}
+};
+
 struct PointF
 {
 	float x, y;
 
+	PointF() : x(0.0f), y(0.0f) {}
 	PointF(float _x, float  _y) : x(_x), y(_y) {}
+};
+
+struct Rect
+{
+	int Left;
+	int Top;
+	int Right;
+	int Bottom;
+
+	Rect() : Left(0), Top(0), Right(0), Bottom(0) {}
+	Rect(int _Left, int _Top, int _Right, int _Bottom) :
+		Left(_Left), Top(_Top), Right(_Right), Bottom(_Bottom) {}
 };
 
 struct RectF
@@ -53,6 +79,7 @@ struct RectF
 	float Right;
 	float Bottom;
 
+	RectF() : Left(0.0f), Top(0.0f), Right(0.0f), Bottom(0.0f) {}
 	RectF(float _Left, float _Top, float _Right, float _Bottom) : 
 		Left(_Left), Top(_Top), Right(_Right), Bottom(_Bottom) {}
 };

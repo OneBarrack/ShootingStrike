@@ -3,6 +3,7 @@
 
 BasicBkg::BasicBkg()
 {
+	Initialize();
 }
 
 BasicBkg::~BasicBkg()
@@ -26,15 +27,15 @@ void BasicBkg::Render(HDC _hdc)
 		return;
 
 	TransparentBlt(_hdc,
-		(int)pOwner->GetPosition().x,
-		(int)pOwner->GetPosition().y,
-		(int)pOwner->GetScale().x,
-		(int)pOwner->GetScale().y,
+		(int)(pOwner->GetPosition().x - (pOwner->GetScale().x * 0.5f)),
+		(int)(pOwner->GetPosition().y - (pOwner->GetScale().y * 0.5f)),
+		(int)(pOwner->GetScale().x),
+		(int)(pOwner->GetScale().y),
 		pOwner->GetImage()->GetMemDC(),
-		0,
-		0,
-		(int)pOwner->GetScale().x,
-		(int)pOwner->GetScale().y,
+		(int)(pImage->GetSegmentationScale().x * pOwner->GetImageOffsetOrder().x),
+		(int)(pImage->GetSegmentationScale().y * pOwner->GetImageOffsetOrder().y),
+		(int)(pImage->GetSegmentationScale().x),
+		(int)(pImage->GetSegmentationScale().y),
 		RGB(255, 0, 255));
 }
 

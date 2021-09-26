@@ -4,7 +4,7 @@
 Bridge::Bridge()
 	: pOwner(nullptr)
 {
-
+	
 }
 
 Bridge::~Bridge()

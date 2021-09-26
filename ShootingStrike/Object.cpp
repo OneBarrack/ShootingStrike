@@ -3,17 +3,17 @@
 
 Object::Object()
 	: pImage(nullptr)
+	, ImageOffsetOrder(Point(0,0))
 	, pBridgeObject(nullptr)
 	, TransInfo(Transform())
 	, Collider(Transform())
 	, Offset(Vector3())
-	// , Key(eObjectKey)
+	, Key(eObjectKey::BACKGROUND)
 	, Status(eObjectStatus::ACTIVATED)
 	, CollisionType(eCollisionType::NONE)
 	, Speed(0.0f)
 	, bGenerateCollisionEvent(false)
 {
-
 }
 
 Object::~Object()

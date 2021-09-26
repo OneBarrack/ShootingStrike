@@ -127,9 +127,6 @@
     <Filter Include="소스 파일\02. Object\Background\BackgroundBridge\ScrollVertical">
       <UniqueIdentifier>{895b1024-ab70-4874-8d0d-288a0a539a0d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\02. Object\Background\BackgroundBridge\StageSide">
-      <UniqueIdentifier>{fe407649-c2f8-4647-9472-42983cb27aa5}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers.h">
@@ -243,9 +240,6 @@
     <ClInclude Include="EnemyBridge.h">
       <Filter>소스 파일\02. Object\Enemy\EnemyBridge</Filter>
     </ClInclude>
-    <ClInclude Include="StageSideBackground.h">
-      <Filter>소스 파일\02. Object\Background\BackgroundBridge\StageSide</Filter>
-    </ClInclude>
     <ClInclude Include="BasicBkg.h">
       <Filter>소스 파일\02. Object\Background\BackgroundBridge\Basic</Filter>
     </ClInclude>
@@ -340,9 +334,6 @@
     </ClCompile>
     <ClCompile Include="EnemyBridge.cpp">
       <Filter>소스 파일\02. Object\Enemy\EnemyBridge</Filter>
-    </ClCompile>
-    <ClCompile Include="StageSideBackground.cpp">
-      <Filter>소스 파일\02. Object\Background\BackgroundBridge\StageSide</Filter>
     </ClCompile>
     <ClCompile Include="BasicBkg.cpp">
       <Filter>소스 파일\02. Object\Background\BackgroundBridge\Basic</Filter>

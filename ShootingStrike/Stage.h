@@ -6,9 +6,11 @@ class Object;
 class Stage : public Scene
 {
 private:
-	Object* pBackground;
-	Object* pSideBackground;
 	Object* pPlayer;
+
+	Object* pBackground;
+	Object* pLeftSideBackground;
+	Object* pRightSideBackground;
 
 public:
 	virtual void Initialize()override;

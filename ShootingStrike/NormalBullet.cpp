@@ -6,7 +6,7 @@ NormalBullet::NormalBullet()
 	: pBulletImage(nullptr)
 	, BulletImageScale(Vector3())
 {
-
+	Initialize();
 }
 
 NormalBullet::~NormalBullet()

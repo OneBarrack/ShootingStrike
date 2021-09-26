@@ -3,8 +3,7 @@
 #include "CollisionManager.h"
 
 Button::Button()
-	: pButtonImage(nullptr)
-	, bExistHoverImage(false)
+	: bExistHoverImage(false)
 	, bExistPressedImage(false)
 	, ButtonState(eButtonState::NORMAL)
 	, ButtonOffset(0)
@@ -34,7 +33,6 @@ void Button::Initialize()
 	
 	bGenerateCollisionEvent = false;
 	
-	pButtonImage = nullptr;
 	ButtonState = eButtonState::NORMAL;
 	ButtonOffset = 0;
 	bOnClick = false;
@@ -68,11 +66,14 @@ void Button::Update()
 	{
 		ButtonState = eButtonState::NORMAL;
 	}
+
+	// ** 충돌체 갱신
+	Collider = TransInfo;
 }
 
 void Button::Render(HDC _hdc)
 {
-	if ( !pButtonImage )
+	if ( !pImage )
 		return;
 
 	TransparentBlt(_hdc, // ** 최종 출력 위치
@@ -80,7 +81,7 @@ void Button::Render(HDC _hdc)
 		int(TransInfo.Position.y - (TransInfo.Scale.y * 0.5f)),
 		int(TransInfo.Scale.x),
 		int(TransInfo.Scale.y),
-		pButtonImage->GetMemDC(),
+		pImage->GetMemDC(),
 		int(TransInfo.Scale.x * static_cast<int>(ButtonState)),
 		0,
 		int(TransInfo.Scale.x),

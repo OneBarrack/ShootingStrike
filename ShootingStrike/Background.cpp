@@ -30,6 +30,9 @@ void Background::Update()
 {
 	if ( pBridgeObject )
 		pBridgeObject->Update();
+
+	// ** 충돌체 갱신
+	Collider = TransInfo;
 }
 
 void Background::Render(HDC _hdc)

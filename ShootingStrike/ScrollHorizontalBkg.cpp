@@ -2,11 +2,13 @@
 #include "BitmapManager.h"
 
 ScrollHorizontalBkg::ScrollHorizontalBkg()
-	: bLoopScroll(false)
-	, LoopOffset1(0)
-	, LoopOffset2(0)
-	, bAttachBkg(false)
+	: ScrollDirection(eScrollDirection::LEFT)
+	, ImageOffset(0.0f)
+	, LoopOffset(0.0f)
+	, bLoop(false)
+	, bDrawEachStartEnd(false)
 {
+	Initialize();
 }
 
 ScrollHorizontalBkg::~ScrollHorizontalBkg()
@@ -16,81 +18,154 @@ ScrollHorizontalBkg::~ScrollHorizontalBkg()
 
 void ScrollHorizontalBkg::Initialize()
 {
-	bLoopScroll = false;
-	LoopOffset1 = 0;
-	LoopOffset2 = 0;
-	bAttachBkg = false;
+	ScrollDirection = eScrollDirection::LEFT;
+	ImageOffset = 0.0f;
+	bLoop = true;
+	bDrawEachStartEnd = false;
 }
 
 void ScrollHorizontalBkg::Update()
 {
+	float ScrollSpeed = pOwner->GetSpeed();
+
+	// ** 윗방향 스크롤
+	if ( ScrollDirection == eScrollDirection::LEFT )
+	{
+		// ** Loop를 위한 이미지 연결 작업중이라면
+		if ( bDrawEachStartEnd )
+		{
+			LoopOffset += ScrollSpeed;
+
+			// ** 이미지 연결 구간이 끝났다면
+			if ( LoopOffset > pOwner->GetScale().x )
+			{
+				ImageOffset = pOwner->GetImage()->GetScale().x - pOwner->GetScale().x;
+				bDrawEachStartEnd = false;
+			}
+		}
+		else
+		{
+			ImageOffset -= ScrollSpeed;
+
+			// ** 이미지 최상단에 도달했다면
+			if ( ImageOffset < 0.0f )
+			{
+				// ** 이미지 최상단 Offset으로 고정
+				ImageOffset = 0.0f;
+
+				// ** Loop 되어야 하는 상태라면
+				if ( bLoop && !bDrawEachStartEnd )
+				{
+					LoopOffset = 0.0f;
+					bDrawEachStartEnd = true;
+				}
+			}
+		}
+	}
+	// ** 아랫방향 스크롤 Direction == eScrollDirection::DOWN
+	else
+	{
+		// ** Loop를 위한 이미지 연결 작업중인지
+		if ( bDrawEachStartEnd )
+		{
+			LoopOffset -= ScrollSpeed;
+
+			// ** 이미지 연결 구간이 끝났다면
+			if ( LoopOffset < 0.0f )
+			{
+				ImageOffset = 0.0f;
+				bDrawEachStartEnd = false;
+			}
+		}
+		else
+		{
+			ImageOffset += ScrollSpeed;
+
+			// ** 이미지 최하단에 도달했다면
+			if ( ImageOffset > pOwner->GetImage()->GetScale().x - pOwner->GetScale().x )
+			{
+				// ** 이미지 최하단 Offset으로 고정
+				ImageOffset = pOwner->GetImage()->GetScale().x - pOwner->GetScale().x;
+
+				// ** Loop 되어야 하는 상태라면
+				if ( bLoop && !bDrawEachStartEnd )
+				{
+					LoopOffset = pOwner->GetScale().x;
+					bDrawEachStartEnd = true;
+				}
+			}
+		}
+	}
 }
 
 void ScrollHorizontalBkg::Render(HDC _hdc)
 {
-	Bitmap* pImage = pOwner->GetImage();
-	if ( !pImage )
-		return;
-
-	// ** 이어 붙이는 중이 아닐 때 배경이 끝에 도달했다면
-	if ( !bAttachBkg && pOwner->GetScale().x < WindowsWidth + LoopOffset1 )
+	// ** 이미지 시작과 끝 연결 구간
+	// ** Loop Scroll
+	if ( bLoop && bDrawEachStartEnd )
 	{
-		// ** 이어 붙이도록 Offset2과 bAttachBkg 세팅
-		LoopOffset2 = 0;
-		bAttachBkg = true;
-	}
+		TransparentBlt(_hdc,
+			(int)(pOwner->GetPosition().x - (pOwner->GetScale().x * 0.5f)),
+			(int)(pOwner->GetPosition().y - (pOwner->GetScale().y * 0.5f)),
+			(int)(LoopOffset),
+			(int)(pOwner->GetScale().y),
+			pOwner->GetImage()->GetMemDC(),
+			(int)(pOwner->GetImage()->GetScale().x - LoopOffset),
+			(int)(pOwner->GetImage()->GetSegmentationScale().y * pOwner->GetImageOffsetOrder().y),
+			(int)(LoopOffset),
+			(int)(pOwner->GetImage()->GetSegmentationScale().y),
+			RGB(255, 0, 255));
 
-	// ** 이어 붙이는 중일 때 이어붙인 배경이 화면을 가득 채운다면
-	if ( bAttachBkg && WindowsWidth < LoopOffset2 )
-	{
-		// ** 그리기 한 번에 화면을 다 채울 수 있도록 Offset1과 bAttachBkg 세팅
-		LoopOffset1 = 0;
-		bAttachBkg = false;
+		TransparentBlt(_hdc,
+			(int)((pOwner->GetPosition().x - (pOwner->GetScale().x * 0.5f)) + LoopOffset),
+			(int)(pOwner->GetPosition().y - (pOwner->GetScale().y * 0.5f)),
+			(int)(pOwner->GetScale().x - LoopOffset),
+			(int)(pOwner->GetScale().y),
+			pOwner->GetImage()->GetMemDC(),
+			0,
+			(int)(pOwner->GetImage()->GetSegmentationScale().y * pOwner->GetImageOffsetOrder().y),
+			(int)(pOwner->GetScale().x - LoopOffset),
+			(int)(pOwner->GetImage()->GetSegmentationScale().y),
+			RGB(255, 0, 255));
 	}
-
-
-	// ** 한 번에 그림
-	if ( !bAttachBkg )
-	{
-		BitBlt(_hdc,
-			0,
-			0,
-			WindowsWidth,
-			WindowsHeight,
-			pImage->GetMemDC(),
-			LoopOffset1,
-			0,
-			SRCCOPY);
-	}
-	// ** 앞 부분, 뒷 부분 그리기로 나누어 이어붙임
+	// ** 일반 Scroll
 	else
 	{
-		BitBlt(_hdc,
-			0,
-			0,
-			WindowsWidth - LoopOffset2,
-			WindowsHeight,
-			pImage->GetMemDC(),
-			LoopOffset1,
-			0,
-			SRCCOPY);
-
-		BitBlt(_hdc,
-			WindowsWidth - LoopOffset2,
-			0,
-			LoopOffset2,
-			WindowsHeight,
-			pImage->GetMemDC(),
-			0,
-			0,
-			SRCCOPY);
+		TransparentBlt(_hdc,
+			(int)(pOwner->GetPosition().x - (pOwner->GetScale().x * 0.5f)),
+			(int)(pOwner->GetPosition().y - (pOwner->GetScale().y * 0.5f)),
+			(int)(pOwner->GetScale().x),
+			(int)(pOwner->GetScale().y),
+			pOwner->GetImage()->GetMemDC(),
+			(int)(ImageOffset),
+			(int)(pOwner->GetImage()->GetSegmentationScale().y * pOwner->GetImageOffsetOrder().y),
+			(int)(pOwner->GetScale().x),
+			(int)(pOwner->GetImage()->GetSegmentationScale().y),
+			RGB(255, 0, 255));
 	}
-
-	LoopOffset1 += static_cast<int>(pOwner->GetSpeed());
-	LoopOffset2 += static_cast<int>(pOwner->GetSpeed());
 }
 
 void ScrollHorizontalBkg::Release()
 {
 
+}
+
+void ScrollHorizontalBkg::StartLeft()
+{
+	ImageOffset = 0.0f;
+}
+
+void ScrollHorizontalBkg::StartRight()
+{
+	ImageOffset = pOwner->GetImage()->GetScale().x - pOwner->GetScale().x;
+}
+
+void ScrollHorizontalBkg::ScrollLeft()
+{
+	ScrollDirection = eScrollDirection::LEFT;
+}
+
+void ScrollHorizontalBkg::ScrollRight()
+{
+	ScrollDirection = eScrollDirection::RIGHT;
 }

@@ -6,15 +6,16 @@
 #include "HammerEffect.h"
 #include "ObjectFactory.h"
 #include "CollisionManager.h"
+#include "BasicBkg.h"
 #include "ScrollVerticalBkg.h"
-#include "StageSideBackground.h"
 #include "BitmapManager.h"
 #include "SpawnManager.h"
 
 Stage::Stage() 
 	: pPlayer(nullptr)
 	, pBackground(nullptr)
-	, pSideBackground(nullptr)
+	, pLeftSideBackground(nullptr)
+	, pRightSideBackground(nullptr)
 {
 
 }
@@ -26,28 +27,35 @@ Stage::~Stage()
 
 void Stage::Initialize()
 {
+	Bridge* pBridge = nullptr;
+
 	// ** Player
 	pPlayer = ObjectManager::GetInstance()->GetPlayer();
 
 	// ** Main Scrolling Background
-	Bridge* pBridge = new ScrollVerticalBkg;
+	pBridge = new ScrollVerticalBkg;	
 	pBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::BACKGROUND, pBridge);
 	pBackground->SetImage(BitmapManager::GetInstance()->GetImage(eImageKey::STAGEBACK));
+	pBackground->SetPosition(WindowsWidth * 0.5f, WindowsHeight * 0.5f);
+	pBackground->SetScale(600.0f, WindowsHeight);
 	pBackground->SetSpeed(0.5f);
+	static_cast<ScrollVerticalBkg*>(pBridge)->StartBottom();
+	static_cast<ScrollVerticalBkg*>(pBridge)->ScrollUp();
 
-	Transform StageBkgTransInfo;
-	StageBkgTransInfo.Position = Vector3(WindowsWidth * 0.5f, WindowsHeight * 0.5f);
-	StageBkgTransInfo.Scale = Vector3(600.0f, 5527.0f);
-	pBackground->SetTransInfo(StageBkgTransInfo);
+	// ** Left Side Background
+	pBridge = new BasicBkg;
+	pLeftSideBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::FOREGROUND, pBridge);
+	pLeftSideBackground->SetImage(BitmapManager::GetInstance()->GetImage(eImageKey::STAGESIDEBACK));
+	pLeftSideBackground->SetPosition((WindowsWidth - pBackground->GetScale().x) * 0.5f * 0.5f, WindowsHeight * 0.5f);
+	pLeftSideBackground->SetScale((WindowsWidth - pBackground->GetScale().x) * 0.5f, WindowsHeight);
 
-	Transform StageBkgCollider;
-	StageBkgCollider.Position = StageBkgTransInfo.Position;
-	StageBkgCollider.Scale = Vector3(600.0f, WindowsHeight);
-	pBackground->SetCollider(StageBkgCollider);
-
-	// ** Side Background
-	pBridge = new StageSideBackground;
-	pSideBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::FOREGROUND, pBridge);
+	// ** Right Side Background
+	pBridge = new BasicBkg;
+	pRightSideBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::FOREGROUND, pBridge);
+	pRightSideBackground->SetImage(BitmapManager::GetInstance()->GetImage(eImageKey::STAGESIDEBACK));
+	pRightSideBackground->SetImageOffsetOrder(Point(1,0));
+	pRightSideBackground->SetPosition(WindowsWidth - pLeftSideBackground->GetPosition().x, WindowsHeight * 0.5f);
+	pRightSideBackground->SetScale(pLeftSideBackground->GetScale());
 
 	// ** Spawn Player
 	SpawnManager::SpawnPlayer();
@@ -70,11 +78,9 @@ void Stage::Render(HDC _hdc)
 
 void Stage::Release()
 {
-	if ( pBackground )
-	{
-		pBackground->Release();
-		ObjectManager::GetInstance()->RecallObject(pBackground);	
-	}
+	if ( pBackground )			pBackground->SetStatus(eObjectStatus::DESTROYED);
+	if ( pLeftSideBackground )	pLeftSideBackground->SetStatus(eObjectStatus::DESTROYED);
+	if ( pRightSideBackground ) pRightSideBackground->SetStatus(eObjectStatus::DESTROYED);
 }
 
 void Stage::CheckPositionInBkgBoundary(eObjectKey _ObjectKey)

@@ -30,37 +30,32 @@ void Logo::Initialize()
 	ObjectManager::GetInstance()->SetPlayer(
 		ObjectManager::GetInstance()->TakeObject(eObjectKey::PLAYER));
 		
+	Bridge* pBridge = nullptr;
+
 	// ** Background
-	Bridge* pBridge = new ScrollHorizontalBkg;
-	static_cast<ScrollHorizontalBkg*>(pBridge)->SetLoopScroll(true);
-	
+	pBridge = new ScrollHorizontalBkg;	
 	pBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::BACKGROUND, pBridge);
 	pBackground->SetImage(BitmapManager::GetInstance()->GetImage(eImageKey::LOGOBACK));
-	pBackground->SetSpeed(1.0f);
-	
-	Transform BackgroundTransInfo;
-	BackgroundTransInfo.Position = Vector3(WindowsWidth * 0.5f, WindowsHeight * 0.5f);
-	BackgroundTransInfo.Scale = Vector3(1915.0f, 720.0f);
-	pBackground->SetTransInfo(BackgroundTransInfo);
+	pBackground->SetPosition(WindowsWidth * 0.5f, WindowsHeight * 0.5f);
+	pBackground->SetScale(1915.0f, WindowsHeight);
+	pBackground->SetSpeed(1.0f);	
+	static_cast<ScrollHorizontalBkg*>(pBridge)->StartLeft();
+	static_cast<ScrollHorizontalBkg*>(pBridge)->ScrollRight();
+	static_cast<ScrollHorizontalBkg*>(pBridge)->SetLoop(true);
 
 	// ** Logo Title
 	pBridge = new BasicBkg;
 	pLogoTitle = ObjectManager::GetInstance()->TakeObject(eObjectKey::BACKGROUND, pBridge);
 	pLogoTitle->SetImage(BitmapManager::GetInstance()->GetImage(eImageKey::LOGO));
-	
-	Transform LogoTransInfo;
-	LogoTransInfo.Scale = Vector3(923.0f, 350.0f);
-	LogoTransInfo.Position = Vector3((WindowsWidth * 0.5f) - (LogoTransInfo.Scale.x * 0.5f),
-									 (WindowsHeight * 0.3f) - (LogoTransInfo.Scale.y * 0.5f));
-	pLogoTitle->SetTransInfo(LogoTransInfo);
+	pLogoTitle->SetPosition(WindowsWidth * 0.5f, WindowsHeight * 0.3f);
+	pLogoTitle->SetScale(785.0f, 300.0f);
 
 	// ** Play Button
 	pPlayButton = ObjectManager::GetInstance()->TakeObject(eObjectKey::UI_BUTTON);
-	static_cast<Button*>(pPlayButton)->SetImage(BitmapManager::GetInstance()->GetImage(eImageKey::PLAYBUTTON));	
-	
-	Transform PlayButtonTransInfo = Transform(WindowsWidth * 0.5f, WindowsHeight * 0.75f, 150.0f, 70.0f);
-	pPlayButton->SetTransInfo(PlayButtonTransInfo);
-	pPlayButton->SetCollider(PlayButtonTransInfo);
+	pPlayButton->SetImage(BitmapManager::GetInstance()->GetImage(eImageKey::PLAYBUTTON));	
+	pPlayButton->SetPosition(WindowsWidth * 0.5f, WindowsHeight * 0.75f);
+	pPlayButton->SetScale(150.0f, 70.0f);
+	pPlayButton->SetCollider(pPlayButton->GetTransInfo());
 }
 
 void Logo::Update()
@@ -84,5 +79,6 @@ void Logo::Render(HDC _hdc)
 void Logo::Release()
 {
 	if ( pBackground ) pBackground->SetStatus(eObjectStatus::DESTROYED);
+	if ( pLogoTitle )  pLogoTitle->SetStatus(eObjectStatus::DESTROYED);
 	if ( pPlayButton ) pPlayButton->SetStatus(eObjectStatus::DESTROYED);
 }

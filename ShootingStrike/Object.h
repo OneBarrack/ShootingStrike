@@ -8,6 +8,9 @@ protected:
 	// ** Bitmap Image
 	Bitmap* pImage;
 
+	// ** 분할 Bitmap에서 현재 적용할 이미지의 Offset
+	Point ImageOffsetOrder;
+
 	// ** Bridge Object
 	Bridge* pBridgeObject;
 
@@ -37,6 +40,12 @@ public:
 public:
 	// ** 이미지를 반환
 	Bitmap* GetImage() { return pImage; }
+
+	// ** 현재 적용할 이미지의 Offset 반환
+	Point GetImageOffsetOrder() { return ImageOffsetOrder; }
+
+	// ** BridgeObject를 반환
+	Bridge* GetBridgeObject() { return pBridgeObject; }
 
 	// ** 오브젝트의 Key 값을 out
 	eObjectKey GetKey() const { return Key; }
@@ -77,6 +86,9 @@ public:
 
 	// ** 이미지를 반환
 	void SetImage(Bitmap* _pImage) { pImage = _pImage; }
+
+	// ** 현재 적용할 이미지의 Offset 설정
+	void SetImageOffsetOrder(Point _Order) { ImageOffsetOrder = _Order; }
 
 	// ** BridgeObject를 Setting
 	void SetBridgeObject(Bridge* _pBridge) { pBridgeObject = _pBridge; }

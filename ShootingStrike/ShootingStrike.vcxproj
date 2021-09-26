@@ -177,7 +177,6 @@
     <ClInclude Include="SpawnManager.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="Background.h" />
-    <ClInclude Include="StageSideBackground.h" />
     <ClInclude Include="Struct.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -213,7 +212,6 @@
     <ClCompile Include="SpawnManager.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="Background.cpp" />
-    <ClCompile Include="StageSideBackground.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ShootingStrike.rc" />
