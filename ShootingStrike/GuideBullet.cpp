@@ -22,24 +22,21 @@ void GuideBullet::Initialize()
 	pBulletImage = BitmapManager::GetInstance()->GetImage(eImageKey::PROJECTILE);
 	BulletImageScale = Vector3(230.0f, 230.0f);
 
-	pBulletImage = BitmapManager::GetInstance()->GetImage(eImageKey::PROJECTILE);
-	BulletImageScale = Vector3(230.0f, 230.0f);
-
 	Speed = 3.0f;
 }
 
 void GuideBullet::Update()
 {
-	TransInfo = pOwner->GetTransInfo();
-	Speed = pOwner->GetSpeed();
+	// ** Owner의 데이터를 받아옴
+	ReceiveInfo();
 
 	CalcGuideDirection(TransInfo.Position, TransInfo.Direction);
 
 	TransInfo.Position.x += TransInfo.Direction.x * Speed;
 	TransInfo.Position.y += TransInfo.Direction.y * Speed;
 
-	pOwner->SetTransInfo(TransInfo);
-	pOwner->SetSpeed(Speed);
+	// ** Owner로 가공된 데이터 전달
+	SendInfo();
 }
 
 
@@ -104,8 +101,8 @@ Object* GuideBullet::FindTarget(Vector3 _Pos)
 void GuideBullet::RenderBullet(HDC _hdc)
 {
 	TransparentBlt(_hdc, // ** 최종 출력 위치
-		(int)(pOwner->GetPosition().x - (TransInfo.Scale.x * 0.5f)),
-		(int)(pOwner->GetPosition().y - (TransInfo.Scale.y * 0.5f)),
+		(int)(TransInfo.Position.x - (TransInfo.Scale.x * 0.5f)),
+		(int)(TransInfo.Position.y - (TransInfo.Scale.y * 0.5f)),
 		(int)TransInfo.Scale.x,
 		(int)TransInfo.Scale.y,
 		pBulletImage->GetMemDC(),

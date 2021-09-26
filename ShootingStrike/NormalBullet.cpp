@@ -23,14 +23,14 @@ void NormalBullet::Initialize()
 
 void NormalBullet::Update()
 {
-	TransInfo = pOwner->GetTransInfo();
-	Speed = pOwner->GetSpeed();
+	// ** Owner의 데이터를 받아옴
+	ReceiveInfo();
 
 	TransInfo.Position.x += TransInfo.Direction.x * Speed;
 	TransInfo.Position.y += TransInfo.Direction.y * Speed;
 
-	pOwner->SetTransInfo(TransInfo);
-	pOwner->SetSpeed(Speed);
+	// ** Owner로 가공된 데이터 전달
+	SendInfo();
 }
 
 
@@ -48,8 +48,8 @@ void NormalBullet::Release()
 void NormalBullet::RenderBullet(HDC _hdc)
 {
 	TransparentBlt(_hdc, // ** 최종 출력 위치
-		(int)(pOwner->GetPosition().x - (TransInfo.Scale.x * 0.5f)),
-		(int)(pOwner->GetPosition().y - (TransInfo.Scale.y * 0.5f)),
+		(int)(TransInfo.Position.x - (TransInfo.Scale.x * 0.5f)),
+		(int)(TransInfo.Position.y - (TransInfo.Scale.y * 0.5f)),
 		(int)TransInfo.Scale.x,
 		(int)TransInfo.Scale.y,
 		pBulletImage->GetMemDC(),

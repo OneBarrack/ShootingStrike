@@ -12,7 +12,7 @@ public:
 	virtual void Initialize()override;
 	virtual void Update()override;
 	virtual void Render(HDC _hdc)override;
-	virtual void Release()override;
+	virtual void Release()override;	
 
 private:
 	void RenderBullet(HDC _hdc);

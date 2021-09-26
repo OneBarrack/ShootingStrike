@@ -9,3 +9,15 @@ BulletBridge::BulletBridge()
 BulletBridge::~BulletBridge()
 {
 }
+
+void BulletBridge::ReceiveInfo()
+{
+	TransInfo = pOwner->GetTransInfo();
+	Speed = pOwner->GetSpeed();
+}
+
+void BulletBridge::SendInfo()
+{
+	pOwner->SetTransInfo(TransInfo);
+	pOwner->SetSpeed(Speed);
+}
