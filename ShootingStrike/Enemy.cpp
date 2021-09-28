@@ -10,6 +10,8 @@ Enemy::Enemy()
 	, bAttacking(false)
 	, bTakeDamage(false)
 	, bDied(false)
+	, HitPoint(0)
+	, DeathPoint(0)
 	, Frame(0)
 	, OldPosition(Vector3())
 {

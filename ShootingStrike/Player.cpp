@@ -2,6 +2,7 @@
 #include "InputManager.h"
 #include "ObjectManager.h"
 #include "BitmapManager.h"
+#include "GameDataManager.h"
 #include "Bridge.h"
 #include "NormalBullet.h"
 #include "MathManager.h"
@@ -208,8 +209,16 @@ void Player::ApplyDamage(Object* _pTarget, int _Damage)
 	switch ( _pTarget->GetKey() )
 	{
 		case eObjectKey::ENEMY:
-			static_cast<Enemy*>(_pTarget)->TakeDamage(_Damage);
-			break;
+		{
+			Enemy* pEnemy = static_cast<Enemy*>(_pTarget);
+			pEnemy->TakeDamage(_Damage);
+			
+			// ** Enemy가 죽었다면 DeathPoint, Hit만 했다면 HitPoint Score를 받아온다.
+			bool aaa = pEnemy->IsDead();
+			int Score = pEnemy->IsDead() ? pEnemy->GetDeathPoint() : pEnemy->GetHitPoint();
+			GameDataManager::GetInstance()->AddScore(Score);
+		}
+		break;
 	}	
 }
 

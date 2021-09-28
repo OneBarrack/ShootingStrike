@@ -22,7 +22,7 @@ private:
 
 public:
 	// ** InputKey에 대한 입력 정보 체크
-	void InitKeyInfo();
+	void CheckKeyInput();
 
 	// ** 해당 Key에 대한 입력 정보 반환
 	eKeyInputState GetKeyState(eInputKey _Key) { return KeyInfo[static_cast<int>(_Key)]; }

@@ -130,6 +130,12 @@
     <Filter Include="소스 파일\02. Object\Bullet\BulletBridge\Guide">
       <UniqueIdentifier>{94f3f3fe-d352-4ce5-afe8-a7652214cd27}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\99. Manager\GameDataManager">
+      <UniqueIdentifier>{faefa851-8819-48eb-b9e7-e5f29708782f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\UI\Score">
+      <UniqueIdentifier>{13240147-5a18-47b2-9ffc-bc4bb0776625}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers.h">
@@ -231,7 +237,7 @@
     <ClInclude Include="NormalBullet.h">
       <Filter>소스 파일\02. Object\Bullet\BulletBridge\Normal</Filter>
     </ClInclude>
-    <ClInclude Include="Button.h">
+    <ClInclude Include="ButtonUI.h">
       <Filter>소스 파일\02. Object\UI\Button</Filter>
     </ClInclude>
     <ClInclude Include="SpawnManager.h">
@@ -254,6 +260,12 @@
     </ClInclude>
     <ClInclude Include="BossEnemy.h">
       <Filter>소스 파일\02. Object\Enemy\EnemyBridge\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="GameDataManager.h">
+      <Filter>소스 파일\99. Manager\GameDataManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreUI.h">
+      <Filter>소스 파일\02. Object\UI\Score</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -329,7 +341,7 @@
     <ClCompile Include="NormalBullet.cpp">
       <Filter>소스 파일\02. Object\Bullet\BulletBridge\Normal</Filter>
     </ClCompile>
-    <ClCompile Include="Button.cpp">
+    <ClCompile Include="ButtonUI.cpp">
       <Filter>소스 파일\02. Object\UI\Button</Filter>
     </ClCompile>
     <ClCompile Include="SpawnManager.cpp">
@@ -352,6 +364,12 @@
     </ClCompile>
     <ClCompile Include="BossEnemy.cpp">
       <Filter>소스 파일\02. Object\Enemy\EnemyBridge\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="GameDataManager.cpp">
+      <Filter>소스 파일\99. Manager\GameDataManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreUI.cpp">
+      <Filter>소스 파일\02. Object\UI\Score</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

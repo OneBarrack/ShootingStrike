@@ -37,7 +37,8 @@ enum class eObjectKey
 	ENEMY			,
 	BULLET			,
 	FOREGROUND		,
-	BUTTON			,
+	UI_BUTTON		,
+	UI_SCORE		,
 };
 
 enum class eBridgeKey
@@ -60,6 +61,8 @@ enum class eImageKey
 	STAGEBACK	  ,
 	STAGESIDEBACK ,
 	STAGECLOUD	  ,
+	SCORE		  ,
+	NUMBER		  ,
 	PLAYBUTTON	  ,
 	PLAYER		  ,
 	BULLET		  ,

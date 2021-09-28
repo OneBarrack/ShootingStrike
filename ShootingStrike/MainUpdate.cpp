@@ -1,6 +1,7 @@
 #include "MainUpdate.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "GameDataManager.h"
 #include "SceneManager.h"
 #include "InputManager.h"
 
@@ -26,9 +27,10 @@ void MainUpdate::Initialize()
 
 void MainUpdate::Update()
 {
-	InputManager::GetInstance()->InitKeyInfo();
+	InputManager::GetInstance()->CheckKeyInput();
 
 	SceneManager::GetInstance()->Update();
+	GameDataManager::GetInstance()->Update();
 }
 
 void MainUpdate::Render()

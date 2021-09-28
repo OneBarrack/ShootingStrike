@@ -3,11 +3,12 @@
 #include "ObjectManager.h"
 #include "ObjectFactory.h"
 #include "BitmapManager.h"
+#include "GameDataManager.h"
 #include "ScrollHorizontalBkg.h"
 #include "BasicBkg.h"
 #include "Player.h"
 #include "Enemy.h"
-#include "Button.h"
+#include "ButtonUI.h"
 
 Logo::Logo() 
 	: pBackground(nullptr)
@@ -26,6 +27,7 @@ void Logo::Initialize()
 {
 	BitmapManager::GetInstance()->Initialize();
 	ObjectManager::GetInstance()->Initialize();
+	GameDataManager::GetInstance()->Initialize();
 
 	ObjectManager::GetInstance()->SetPlayer(
 		ObjectManager::GetInstance()->TakeObject(eObjectKey::PLAYER));
@@ -54,7 +56,7 @@ void Logo::Initialize()
 	pLogoTitle->SetScale(785.0f, 300.0f);
 
 	// ** Play Button
-	pPlayButton = ObjectManager::GetInstance()->TakeObject(eObjectKey::BUTTON);
+	pPlayButton = ObjectManager::GetInstance()->TakeObject(eObjectKey::UI_BUTTON);
 	pPlayButton->SetImage(eImageKey::PLAYBUTTON);
 	pPlayButton->SetPosition(WindowsWidth * 0.5f, WindowsHeight * 0.75f);
 	pPlayButton->SetScale(150.0f, 70.0f);
@@ -65,7 +67,7 @@ void Logo::Update()
 {
 	ObjectManager::GetInstance()->Update();
 
-	if ( static_cast<Button*>(pPlayButton)->OnClick() )
+	if ( static_cast<ButtonUI*>(pPlayButton)->OnClick() )
 	{	
 		// ** MENU 구현 필요. 임시로 Stage로 바로 넘어감
 		//SceneManager::GetInstance()->SetScene(eSCENEID::MENU);

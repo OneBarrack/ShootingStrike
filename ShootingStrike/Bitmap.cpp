@@ -52,6 +52,14 @@ void Bitmap::Initialize()
 			//ImageScale = Vector3(1915.0f, 720.0f);
 			//SegmentationScale = ImageScale;
 			break;
+		case eImageKey::SCORE:
+			ImageScale = Vector3(125.0f, 27.0f);
+			SegmentationScale = Vector3(25.0f, 0.0f);
+			break;
+		case eImageKey::NUMBER:
+			ImageScale = Vector3(130.0f, 14.0f);
+			SegmentationScale = Vector3(13.0f, 0.0f);
+			break;
 		case eImageKey::PLAYBUTTON:
 			ImageScale = Vector3(450.0f, 70.0f);
 			SegmentationScale = Vector3(150.0f, 70.0f);

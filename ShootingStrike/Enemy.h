@@ -14,6 +14,8 @@ private:
 	bool bTakeDamage;
 	bool bDied;
 
+	int HitPoint;
+	int DeathPoint;
 	int Frame;
 
 	Vector3 OldPosition;
@@ -38,7 +40,16 @@ public:
 	void TakeDamage(int _Damage);
 
 	// ** Á×À½
+	bool IsDead() { return bDied; }
 	void Die() { bDied = true; };
+
+	int GetHP() { return HP; }
+	int GetHitPoint() { return HitPoint; }
+	int GetDeathPoint() { return DeathPoint; }
+
+	void SetHP(int _HP) { HP = _HP; }
+	void SetHitPoint(int _Point) { HitPoint = _Point; }
+	void SetDeathPoint(int _Point) { DeathPoint = _Point; }
 
 public:
 	Enemy();

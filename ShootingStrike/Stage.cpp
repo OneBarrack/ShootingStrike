@@ -2,6 +2,7 @@
 #include "SceneManager.h"
 #include "ObjectManager.h"
 #include "Player.h"
+#include "Enemy.h"
 #include "EnemyHole.h"
 #include "HammerEffect.h"
 #include "ObjectFactory.h"
@@ -68,6 +69,13 @@ void Stage::Initialize()
 	pEnemyBoss->SetImage(eImageKey::MOLE);
 	pEnemyBoss->SetPosition(pBackground->GetPosition().x, pBackground->GetScale().y * 0.3f);
 	pEnemyBoss->SetScale(100.0f, 100.0f);
+	static_cast<Enemy*>(pEnemyBoss)->SetHitPoint(10);
+	static_cast<Enemy*>(pEnemyBoss)->SetDeathPoint(5000);
+
+	// ** Score UI
+	pScoreUI = ObjectManager::GetInstance()->TakeObject(eObjectKey::UI_SCORE);
+	pScoreUI->SetPosition(WindowsWidth - 200.0f, 45.0f);
+	pScoreUI->SetScale(125.0f, 25.0f);
 
 	// ** Spawn Player
 	SpawnManager::SpawnPlayer();

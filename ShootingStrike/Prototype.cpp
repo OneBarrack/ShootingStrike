@@ -6,7 +6,8 @@
 #include "Enemy.h"
 #include "EnemyHole.h"
 #include "HammerEffect.h"
-#include "Button.h"
+#include "ButtonUI.h"
+#include "ScoreUI.h"
 
 #include "BasicBkg.h"
 #include "ScrollHorizontalBkg.h"
@@ -33,8 +34,9 @@ void Prototype::CreatePrototype()
 	ObjectPrototypeList[eObjectKey::PLAYER]			= new Player;
 	ObjectPrototypeList[eObjectKey::ENEMY]			= new Enemy;
 	ObjectPrototypeList[eObjectKey::BULLET]			= new Bullet;
-	ObjectPrototypeList[eObjectKey::BUTTON]			= new Button;
-
+	ObjectPrototypeList[eObjectKey::UI_BUTTON]		= new ButtonUI;
+	ObjectPrototypeList[eObjectKey::UI_SCORE]		= new ScoreUI;
+	
 	ObjectPrototypeList[eObjectKey::FOREGROUND]  = ObjectPrototypeList[eObjectKey::BACKGROUND];
 
 	// Create Bridge Prototype

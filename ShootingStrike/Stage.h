@@ -11,7 +11,7 @@ private:
 	Object* pBackground;
 	Object* pLeftSideBackground;
 	Object* pRightSideBackground;
-
+	Object* pScoreUI;
 	Object* pEnemyBoss;
 
 public:

@@ -1,8 +1,8 @@
-#include "Button.h"
+#include "ButtonUI.h"
 #include "InputManager.h"
 #include "CollisionManager.h"
 
-Button::Button()
+ButtonUI::ButtonUI()
 	: bExistHoverImage(false)
 	, bExistPressedImage(false)
 	, ButtonState(eButtonState::NORMAL)
@@ -12,13 +12,13 @@ Button::Button()
 
 }
 
-Button::~Button()
+ButtonUI::~ButtonUI()
 {
 
 }
 
 
-void Button::Initialize()
+void ButtonUI::Initialize()
 {
 	TransInfo.Position = Vector3(0.0f, 0.0f);
 	TransInfo.Scale = Vector3(0.0f, 0.0f);
@@ -27,7 +27,7 @@ void Button::Initialize()
 	Collider.Position = TransInfo.Position;
 	Collider.Scale = TransInfo.Scale;
 
-	Key = eObjectKey::BUTTON;
+	Key = eObjectKey::UI_BUTTON;
 	Status = eObjectStatus::ACTIVATED;
 	CollisionType = eCollisionType::RECT;
 	
@@ -38,7 +38,7 @@ void Button::Initialize()
 	bOnClick = false;
 }
 
-void Button::Update()
+void ButtonUI::Update()
 {
 	Vector3 MousePos = InputManager::GetInstance()->GetMousePosition();
 
@@ -71,7 +71,7 @@ void Button::Update()
 	Collider = TransInfo;
 }
 
-void Button::Render(HDC _hdc)
+void ButtonUI::Render(HDC _hdc)
 {
 	if ( !pImage )
 		return;
@@ -89,12 +89,12 @@ void Button::Render(HDC _hdc)
 		RGB(255, 0, 255));
 }
 
-void Button::Release()
+void ButtonUI::Release()
 {
 
 }
 
-void Button::OnCollision(Object* _pObject)
+void ButtonUI::OnCollision(Object* _pObject)
 {
 
 }

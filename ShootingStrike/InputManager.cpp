@@ -29,7 +29,7 @@ void InputManager::AddOverlapKey(eInputKey _Key, DWORD _dwKey)
 	OverlapKeyList[static_cast<int>(_Key)].push_back(_dwKey);
 }
 
-void InputManager::InitKeyInfo()
+void InputManager::CheckKeyInput()
 {
 	for ( int Key = 0; Key < static_cast<int>(eInputKey::KEY_MAX); ++Key )
 	{
