@@ -31,12 +31,23 @@ enum class eSCENEID
 
 enum class eObjectKey
 {
+	NONE			,
 	BACKGROUND		,	
 	PLAYER			,
 	ENEMY			,
 	BULLET			,
 	FOREGROUND		,
-	UI_BUTTON		,
+	BUTTON			,
+};
+
+enum class eBridgeKey
+{
+	NONE						,
+	BACKGROUND_BASIC			,
+	BACKGROUND_SCROLL_HORIZONTAL,
+	BACKGROUND_SCROLL_VERTICAL	,
+	BULLET_NORMAL				,
+	BULLET_GUIDE				,
 };
 
 enum class eImageKey
@@ -50,7 +61,7 @@ enum class eImageKey
 	STAGECLOUD	  ,
 	PLAYBUTTON	  ,
 	PLAYER		  ,
-	PROJECTILE	  ,
+	BULLET		  ,
 	MOLE		  ,
 	EFFECT		  ,
 	KEYMAX		  ,
@@ -70,8 +81,8 @@ enum class eCollisionType
 	RECT	,
 };
 
-enum class eBulletFireType
+enum class eBulletFiringType
 {
 	NORMAL	,
-	Guide	,
+	GUIDE	,
 };

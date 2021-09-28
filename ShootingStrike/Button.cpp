@@ -27,7 +27,7 @@ void Button::Initialize()
 	Collider.Position = TransInfo.Position;
 	Collider.Scale = TransInfo.Scale;
 
-	Key = eObjectKey::UI_BUTTON;
+	Key = eObjectKey::BUTTON;
 	Status = eObjectStatus::ACTIVATED;
 	CollisionType = eCollisionType::RECT;
 	

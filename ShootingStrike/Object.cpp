@@ -1,5 +1,6 @@
 #include "Object.h"
 #include "InputManager.h"
+#include "BitmapManager.h"
 
 Object::Object()
 	: pImage(nullptr)
@@ -8,7 +9,7 @@ Object::Object()
 	, TransInfo(Transform())
 	, Collider(Transform())
 	, Offset(Vector3())
-	, Key(eObjectKey::BACKGROUND)
+	, Key(eObjectKey::NONE)
 	, Status(eObjectStatus::ACTIVATED)
 	, CollisionType(eCollisionType::NONE)
 	, Speed(0.0f)
@@ -43,6 +44,11 @@ bool Object::CheckKeyInputStatus(eInputKey _InputKey, eKeyInputState _Status)
 {
 	return (InputManager::GetInstance()->GetKeyState(_InputKey) == _Status);
 	
+}
+
+void Object::SetImage(eImageKey _ImageKey)
+{
+	pImage = BitmapManager::GetInstance()->GetImage(_ImageKey);
 }
 
 void Object::SetStatus(const eObjectStatus& _Status)

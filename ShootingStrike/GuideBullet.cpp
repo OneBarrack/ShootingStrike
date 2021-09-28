@@ -19,7 +19,8 @@ GuideBullet::~GuideBullet()
 
 void GuideBullet::Initialize()
 {
-	pBulletImage = BitmapManager::GetInstance()->GetImage(eImageKey::PROJECTILE);
+	Key = eBridgeKey::BULLET_GUIDE;
+	pBulletImage = BitmapManager::GetInstance()->GetImage(eImageKey::BULLET);
 	BulletImageScale = Vector3(230.0f, 230.0f);
 
 	Speed = 3.0f;

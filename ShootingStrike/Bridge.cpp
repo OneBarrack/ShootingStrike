@@ -3,6 +3,7 @@
 
 Bridge::Bridge()
 	: pOwner(nullptr)
+	, Key(eBridgeKey::NONE)
 {
 	
 }

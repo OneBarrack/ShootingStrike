@@ -10,11 +10,12 @@ private:
 	HBITMAP hBitmap;
 	HBITMAP OldBitmap;
 
+	eImageKey ImageKey;
 	Vector3 ImageScale;
 	Vector3 SegmentationScale;
 
 public:
-	void Initialize(eImageKey _ImageKey, const LPCWSTR _FileName);
+	void Initialize();
 
 	HDC GetMemDC() const { return MemDC; };
 

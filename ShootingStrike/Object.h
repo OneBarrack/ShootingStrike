@@ -84,8 +84,8 @@ public:
 	// ** 키 입력 상태 반환
 	bool CheckKeyInputStatus(eInputKey _InputKey, eKeyInputState _Status);
 
-	// ** 이미지를 반환
-	void SetImage(Bitmap* _pImage) { pImage = _pImage; }
+	// ** 이미지 적재
+	void SetImage(eImageKey _ImageKey);
 
 	// ** 현재 적용할 이미지의 Offset 설정
 	void SetImageOffsetOrder(Point _Order) { ImageOffsetOrder = _Order; }

@@ -6,6 +6,7 @@
 #include "HammerEffect.h"
 #include "ObjectFactory.h"
 #include "CollisionManager.h"
+#include "Background.h"
 #include "BasicBkg.h"
 #include "ScrollVerticalBkg.h"
 #include "BitmapManager.h"
@@ -35,24 +36,24 @@ void Stage::Initialize()
 	// ** Main Scrolling Background
 	pBridge = new ScrollVerticalBkg;	
 	pBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::BACKGROUND, pBridge);
-	pBackground->SetImage(BitmapManager::GetInstance()->GetImage(eImageKey::STAGEBACK));
+	pBackground->SetImage(eImageKey::STAGEBACK);
 	pBackground->SetPosition(WindowsWidth * 0.5f, WindowsHeight * 0.5f);
 	pBackground->SetScale(600.0f, WindowsHeight);
 	pBackground->SetSpeed(0.5f);
 	static_cast<ScrollVerticalBkg*>(pBridge)->StartBottom();
 	static_cast<ScrollVerticalBkg*>(pBridge)->ScrollUp();
-
+	
 	// ** Left Side Background
 	pBridge = new BasicBkg;
 	pLeftSideBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::FOREGROUND, pBridge);
-	pLeftSideBackground->SetImage(BitmapManager::GetInstance()->GetImage(eImageKey::STAGESIDEBACK));
+	pLeftSideBackground->SetImage(eImageKey::STAGESIDEBACK);
 	pLeftSideBackground->SetPosition((WindowsWidth - pBackground->GetScale().x) * 0.5f * 0.5f, WindowsHeight * 0.5f);
 	pLeftSideBackground->SetScale((WindowsWidth - pBackground->GetScale().x) * 0.5f, WindowsHeight);
 
 	// ** Right Side Background
 	pBridge = new BasicBkg;
 	pRightSideBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::FOREGROUND, pBridge);
-	pRightSideBackground->SetImage(BitmapManager::GetInstance()->GetImage(eImageKey::STAGESIDEBACK));
+	pRightSideBackground->SetImage(eImageKey::STAGESIDEBACK);
 	pRightSideBackground->SetImageOffsetOrder(Point(1,0));
 	pRightSideBackground->SetPosition(WindowsWidth - pLeftSideBackground->GetPosition().x, WindowsHeight * 0.5f);
 	pRightSideBackground->SetScale(pLeftSideBackground->GetScale());

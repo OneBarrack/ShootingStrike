@@ -18,6 +18,7 @@ ScrollHorizontalBkg::~ScrollHorizontalBkg()
 
 void ScrollHorizontalBkg::Initialize()
 {
+	Key = eBridgeKey::BACKGROUND_SCROLL_HORIZONTAL;
 	ScrollDirection = eScrollDirection::LEFT;
 	ImageOffset = 0.0f;
 	bLoop = true;

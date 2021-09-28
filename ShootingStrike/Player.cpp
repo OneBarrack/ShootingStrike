@@ -11,8 +11,8 @@ Player::Player()
 	: pPlayerImage(nullptr)
 	, HP(0)
 	, Damage(0)
-	, Power(0)
-	, FireType(eBulletFireType::NORMAL)
+	, Level(0)
+	, FiringType(eBulletFiringType::NORMAL)
 	, bSpawing(false)
 	, bAttacking(false)
 	, bTakeDamage(false)
@@ -45,8 +45,8 @@ void Player::Initialize()
 
 	HP = 3;
 	Damage = 1;
-	Power = 1;
-	FireType = eBulletFireType::NORMAL;
+	Level = 1;
+	FiringType = eBulletFiringType::NORMAL;
 
 	bSpawing = false;
 	bAttacking = false;
@@ -84,7 +84,7 @@ void Player::Update()
 	#ifdef GAME_DEBUG_MODE
 	if ( CheckKeyInputState(eInputKey::KEY_ENTER, eKeyInputState::DOWN) )
 	{
-		Power++;
+		Level++;
 	}
 	#endif // GAME_DEBUG_MODE
 
@@ -108,7 +108,7 @@ void Player::Update()
 	// ** 미사일 발사
 	if ( CheckKeyInputState(eInputKey::KEY_SPACE, eKeyInputState::DOWN) )
 	{
-		Fire(FireType, Power, Damage);
+		Fire(FiringType, Level, Damage);
 	}
 	else
 	{
@@ -155,21 +155,21 @@ void Player::Render(HDC _hdc)
 	RenderPlayer(_hdc);	
 }
 
-void Player::Fire(eBulletFireType _FireType, int _Power, int _Damage)
+void Player::Fire(eBulletFiringType _FiringType, int _Level, int _Damage)
 {
 	Bridge* pBridge = nullptr;
 
-	switch ( _FireType )
+	switch ( _FiringType )
 	{
-		case eBulletFireType::NORMAL:
+		case eBulletFiringType::NORMAL:
 		{
-			// ** Power 수치만큼 총알 숫자를 늘리고, 상방 기준 총알 간 간격에 대한 각도를 설정하여
+			// ** Level 만큼 총알 숫자를 늘리고, 상방 기준 총알 간 간격에 대한 각도를 설정하여
 			// ** 부채꼴 형태로 발사되도록 한다.
 			// ** angleGap : 총알간 간격 각도
 			int angleGap = 10;
-			int startAngle = 90 - static_cast<int>(angleGap * 0.5 * (_Power - 1));
+			int startAngle = 90 - static_cast<int>(angleGap * 0.5 * (_Level - 1));
 			
-			for ( int i = 0; i < _Power; ++i )
+			for ( int i = 0; i < _Level; ++i )
 			{
 				// ** 상방 기준 현재 각도
 				int angle = startAngle + (angleGap * i);
@@ -184,11 +184,11 @@ void Player::Fire(eBulletFireType _FireType, int _Power, int _Damage)
 				float BulletSpeed = 3.0f;
 
 				// ** Bullet Spawn
-				SpawnManager::SpawnBullet(this, BulletTransInfo, new NormalBullet, BulletSpeed, _Damage);
+				SpawnManager::SpawnBullet(this, BulletTransInfo, BulletSpeed, _Damage, _FiringType);
 			}
 			break;
 		} 		
-		case eBulletFireType::Guide:
+		case eBulletFiringType::GUIDE:
 			break;
 		default:
 			break;

@@ -3,6 +3,8 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Bullet.h"
+#include "NormalBullet.h"
+#include "GuideBullet.h"
 
 void SpawnManager::SpawnPlayer()
 {
@@ -11,9 +13,20 @@ void SpawnManager::SpawnPlayer()
 	pPlayer->Spawn();
 }
 
-void SpawnManager::SpawnBullet(Object* _pOwner, Transform _TransInfo, Bridge* _pBridge, float _Speed, int _Damage)
+void SpawnManager::SpawnBullet(Object* _pOwner, Transform _TransInfo, float _Speed, int _Damage, eBulletFiringType _FiringType)
 {
-	Bullet* pBullet = static_cast<Bullet*>(ObjectManager::GetInstance()->TakeObject(eObjectKey::BULLET, _pBridge));
+	Bridge* pBridge = nullptr;
+
+	switch ( _FiringType )
+	{
+		case eBulletFiringType::NORMAL: pBridge = new NormalBullet;	break;
+		case eBulletFiringType::GUIDE:  pBridge = new GuideBullet;	break;
+		default: 
+			break;
+	}
+	//pRightSideBackground->SetImageOffsetOrder(Point(1, 0));
+	Bullet* pBullet = static_cast<Bullet*>(ObjectManager::GetInstance()->TakeObject(eObjectKey::BULLET, pBridge));
+	pBullet->SetImage(eImageKey::BULLET);
 	pBullet->SetOwner(_pOwner);
 	pBullet->SetTransInfo(_TransInfo);
 	pBullet->SetSpeed(_Speed);

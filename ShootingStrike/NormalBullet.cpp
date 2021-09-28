@@ -3,8 +3,6 @@
 #include "BitmapManager.h"
 
 NormalBullet::NormalBullet() 
-	: pBulletImage(nullptr)
-	, BulletImageScale(Vector3())
 {
 	Initialize();
 }
@@ -17,8 +15,7 @@ NormalBullet::~NormalBullet()
 
 void NormalBullet::Initialize()
 {
-	pBulletImage = BitmapManager::GetInstance()->GetImage(eImageKey::PROJECTILE);
-	BulletImageScale = Vector3(230.0f, 230.0f);
+	Key = eBridgeKey::BULLET_NORMAL;
 }
 
 void NormalBullet::Update()
@@ -36,26 +33,24 @@ void NormalBullet::Update()
 
 void NormalBullet::Render(HDC _hdc)
 {
-	if ( pBulletImage )
-		RenderBullet(_hdc);
+	Bitmap* pImage = pOwner->GetImage();
+	if ( !pImage )
+		return;
+
+	TransparentBlt(_hdc,
+		(int)(pOwner->GetPosition().x - (pOwner->GetScale().x * 0.5f)),
+		(int)(pOwner->GetPosition().y - (pOwner->GetScale().y * 0.5f)),
+		(int)(pOwner->GetScale().x),
+		(int)(pOwner->GetScale().y),
+		pOwner->GetImage()->GetMemDC(),
+		(int)(pImage->GetSegmentationScale().x * pOwner->GetImageOffsetOrder().x),
+		(int)(pImage->GetSegmentationScale().y * pOwner->GetImageOffsetOrder().y),
+		(int)(pImage->GetSegmentationScale().x),
+		(int)(pImage->GetSegmentationScale().y),
+		RGB(255, 0, 255));
 }
 
 void NormalBullet::Release()
 {
 
-}
-
-void NormalBullet::RenderBullet(HDC _hdc)
-{
-	TransparentBlt(_hdc, // ** 최종 출력 위치
-		(int)(TransInfo.Position.x - (TransInfo.Scale.x * 0.5f)),
-		(int)(TransInfo.Position.y - (TransInfo.Scale.y * 0.5f)),
-		(int)TransInfo.Scale.x,
-		(int)TransInfo.Scale.y,
-		pBulletImage->GetMemDC(),
-		(int)BulletImageScale.x,
-		0,
-		(int)BulletImageScale.x,
-		(int)BulletImageScale.y,
-		RGB(255, 0, 255));
 }

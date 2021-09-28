@@ -12,7 +12,7 @@ void BitmapManager::Initialize()
 	ImageList[eImageKey::STAGEBACK]		= new Bitmap(eImageKey::STAGEBACK	 , L"../Resource/StageBack.bmp");
 	ImageList[eImageKey::STAGECLOUD]	= new Bitmap(eImageKey::STAGECLOUD	 , L"../Resource/StageCloud.bmp");
 	ImageList[eImageKey::PLAYBUTTON]	= new Bitmap(eImageKey::PLAYBUTTON	 , L"../Resource/UI_Button_Play.bmp");
-	ImageList[eImageKey::PROJECTILE]	= new Bitmap(eImageKey::PROJECTILE	 , L"../Resource/Projectile.bmp");
+	ImageList[eImageKey::BULLET]	= new Bitmap(eImageKey::BULLET	 , L"../Resource/Projectile.bmp");
 	ImageList[eImageKey::MOLE]			= new Bitmap(eImageKey::MOLE		 , L"../Resource/Mole.bmp");
 	ImageList[eImageKey::EFFECT]		= new Bitmap(eImageKey::EFFECT		 , L"../Resource/Effect.bmp");
 	ImageList[eImageKey::PLAYER]		= new Bitmap(eImageKey::PLAYER		 , L"../Resource/Player.bmp");

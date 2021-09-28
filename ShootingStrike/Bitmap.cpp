@@ -9,7 +9,9 @@ Bitmap::Bitmap(eImageKey _ImageKey, const LPCWSTR _FileName)
 	, ImageScale(Vector3())
 	, SegmentationScale(Vector3())
 {
-	Initialize(_ImageKey, _FileName);
+	ImageKey = _ImageKey;
+	LoadBmp(_FileName);
+	Initialize();
 }
 
 Bitmap::~Bitmap()
@@ -17,12 +19,10 @@ Bitmap::~Bitmap()
 	Release();
 }
 
-void Bitmap::Initialize(eImageKey _ImageKey, const LPCWSTR _FileName)
+void Bitmap::Initialize()
 {
-	LoadBmp(_FileName);
-
 	// ** Image Scale 정보 입력
-	switch ( _ImageKey )
+	switch ( ImageKey )
 	{
 		case eImageKey::BUFFER:
 			ImageScale = Vector3(WindowsWidth, WindowsHeight);
@@ -60,7 +60,7 @@ void Bitmap::Initialize(eImageKey _ImageKey, const LPCWSTR _FileName)
 			ImageScale = Vector3(131.0f, 141.0f);
 			SegmentationScale = Vector3(42.0f, 47.0f);
 			break;
-		case eImageKey::PROJECTILE:
+		case eImageKey::BULLET:
 			ImageScale = Vector3(450.0f, 70.0f);
 			SegmentationScale = Vector3(230.0f, 230.0f);
 			break;

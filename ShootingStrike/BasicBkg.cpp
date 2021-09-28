@@ -13,6 +13,7 @@ BasicBkg::~BasicBkg()
 
 void BasicBkg::Initialize()
 {
+	Key = eBridgeKey::BACKGROUND_BASIC;
 }
 
 void BasicBkg::Update()

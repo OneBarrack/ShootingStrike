@@ -6,6 +6,7 @@ class Bridge
 {
 protected:
 	Object* pOwner;
+	eBridgeKey Key;
 
 public:
 	virtual void Initialize()PURE;

@@ -8,8 +8,8 @@ private:
 
 	int HP;
 	int Damage;
-	int Power;
-	eBulletFireType FireType;
+	int Level;
+	eBulletFiringType FiringType;
 
 	bool bSpawing;
 	bool bAttacking;
@@ -33,7 +33,7 @@ public:
 	void Spawn() { bSpawing = true; };
 
 	// ** 미사일 발사
-	void Fire(eBulletFireType _FireType, int _Power, int _Damage);
+	void Fire(eBulletFiringType _BulletType, int _Power, int _Damage);
 
 	// ** 데미지를 입힘
 	void ApplyDamage(Object* _pTarget, int _Damage);

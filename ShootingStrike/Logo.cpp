@@ -35,7 +35,7 @@ void Logo::Initialize()
 	// ** Background
 	pBridge = new ScrollHorizontalBkg;	
 	pBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::BACKGROUND, pBridge);
-	pBackground->SetImage(BitmapManager::GetInstance()->GetImage(eImageKey::LOGOBACK));
+	pBackground->SetImage(eImageKey::LOGOBACK);
 	pBackground->SetPosition(WindowsWidth * 0.5f, WindowsHeight * 0.5f);
 	pBackground->SetScale(1915.0f, WindowsHeight);
 	pBackground->SetSpeed(1.0f);	
@@ -46,13 +46,13 @@ void Logo::Initialize()
 	// ** Logo Title
 	pBridge = new BasicBkg;
 	pLogoTitle = ObjectManager::GetInstance()->TakeObject(eObjectKey::BACKGROUND, pBridge);
-	pLogoTitle->SetImage(BitmapManager::GetInstance()->GetImage(eImageKey::LOGO));
+	pLogoTitle->SetImage(eImageKey::LOGO);
 	pLogoTitle->SetPosition(WindowsWidth * 0.5f, WindowsHeight * 0.3f);
 	pLogoTitle->SetScale(785.0f, 300.0f);
 
 	// ** Play Button
-	pPlayButton = ObjectManager::GetInstance()->TakeObject(eObjectKey::UI_BUTTON);
-	pPlayButton->SetImage(BitmapManager::GetInstance()->GetImage(eImageKey::PLAYBUTTON));	
+	pPlayButton = ObjectManager::GetInstance()->TakeObject(eObjectKey::BUTTON);
+	pPlayButton->SetImage(eImageKey::PLAYBUTTON);
 	pPlayButton->SetPosition(WindowsWidth * 0.5f, WindowsHeight * 0.75f);
 	pPlayButton->SetScale(150.0f, 70.0f);
 	pPlayButton->SetCollider(pPlayButton->GetTransInfo());
