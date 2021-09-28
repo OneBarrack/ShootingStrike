@@ -17,21 +17,21 @@ void BasicBkg::Initialize()
 
 void BasicBkg::Update()
 {
-
+	ReceiveInfoFromOwner();
+	SendInfoToOwner();
 }
 
 void BasicBkg::Render(HDC _hdc)
 {
-	Bitmap* pImage = pOwner->GetImage();
 	if ( !pImage )
 		return;
 
 	TransparentBlt(_hdc,
-		(int)(pOwner->GetPosition().x - (pOwner->GetScale().x * 0.5f)),
-		(int)(pOwner->GetPosition().y - (pOwner->GetScale().y * 0.5f)),
-		(int)(pOwner->GetScale().x),
-		(int)(pOwner->GetScale().y),
-		pOwner->GetImage()->GetMemDC(),
+		(int)(TransInfo.Position.x - (TransInfo.Scale.x * 0.5f)),
+		(int)(TransInfo.Position.y - (TransInfo.Scale.y * 0.5f)),
+		(int)(TransInfo.Scale.x),
+		(int)(TransInfo.Scale.y),
+		pImage->GetMemDC(),
 		(int)(pImage->GetSegmentationScale().x * pOwner->GetImageOffsetOrder().x),
 		(int)(pImage->GetSegmentationScale().y * pOwner->GetImageOffsetOrder().y),
 		(int)(pImage->GetSegmentationScale().x),

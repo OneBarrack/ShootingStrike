@@ -7,8 +7,6 @@ public:
 	typedef Object Super;
 
 private:
-	Bitmap* pEnemyImage;
-
 	int HP;
 
 	bool bSpawing;

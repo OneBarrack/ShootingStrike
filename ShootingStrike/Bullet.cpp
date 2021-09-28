@@ -66,4 +66,6 @@ void Bullet::OnCollision(Object* _pObject)
 				break;
 		}
 	}
+
+	SetStatus(eObjectStatus::DESTROYED);
 }

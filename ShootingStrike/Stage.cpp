@@ -49,7 +49,7 @@ void Stage::Initialize()
 	pLeftSideBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::FOREGROUND);
 	pLeftSideBackground->SetBridge(pBridge);
 	pLeftSideBackground->SetImage(eImageKey::STAGESIDEBACK);
-	pLeftSideBackground->SetPosition((WindowsWidth - pBackground->GetScale().x) * 0.5f * 0.5f, WindowsHeight * 0.5f);
+	pLeftSideBackground->SetPosition(((WindowsWidth - pBackground->GetScale().x) * 0.5f) * 0.5f, WindowsHeight * 0.5f);
 	pLeftSideBackground->SetScale((WindowsWidth - pBackground->GetScale().x) * 0.5f, WindowsHeight);
 
 	// ** Right Side Background
@@ -60,6 +60,14 @@ void Stage::Initialize()
 	pRightSideBackground->SetImageOffsetOrder(Point(1,0));
 	pRightSideBackground->SetPosition(WindowsWidth - pLeftSideBackground->GetPosition().x, WindowsHeight * 0.5f);
 	pRightSideBackground->SetScale(pLeftSideBackground->GetScale());
+
+	// ** EnemyBoss
+	pBridge = ObjectManager::GetInstance()->TakeBridge(eBridgeKey::ENEMY_BOSS);
+	pEnemyBoss = ObjectManager::GetInstance()->TakeObject(eObjectKey::ENEMY);
+	pEnemyBoss->SetBridge(pBridge);
+	pEnemyBoss->SetImage(eImageKey::MOLE);
+	pEnemyBoss->SetPosition(pBackground->GetPosition().x, pBackground->GetScale().y * 0.3f);
+	pEnemyBoss->SetScale(100.0f, 100.0f);
 
 	// ** Spawn Player
 	SpawnManager::SpawnPlayer();

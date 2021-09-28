@@ -6,6 +6,7 @@
 #include "NormalBullet.h"
 #include "MathManager.h"
 #include "SpawnManager.h"
+#include "Enemy.h"
 
 Player::Player()
 	: pPlayerImage(nullptr)
@@ -203,9 +204,13 @@ void Player::Fire(eBulletFiringType _FiringType, int _Level, int _Damage)
 
 void Player::ApplyDamage(Object* _pTarget, int _Damage)
 {
-	// ** ... 데미지를 가할 때의 동작
-
-	TakeDamage(_Damage);
+	// ** 데미지를 가함
+	switch ( _pTarget->GetKey() )
+	{
+		case eObjectKey::ENEMY:
+			static_cast<Enemy*>(_pTarget)->TakeDamage(_Damage);
+			break;
+	}	
 }
 
 void Player::TakeDamage(int _Damage)

@@ -26,7 +26,7 @@ void ScrollVerticalBkg::Initialize()
 
 void ScrollVerticalBkg::Update()
 {
-	float ScrollSpeed = pOwner->GetSpeed();
+	ReceiveInfoFromOwner();
 	
 	// ** 윗방향 스크롤
 	if ( ScrollDirection == eScrollDirection::UP )
@@ -34,18 +34,18 @@ void ScrollVerticalBkg::Update()
 		// ** Loop를 위한 이미지 연결 작업중이라면
 		if ( bDrawEachStartEnd )
 		{
-			LoopOffset += ScrollSpeed;
+			LoopOffset += Speed;
 
 			// ** 이미지 연결 구간이 끝났다면
-			if ( LoopOffset > pOwner->GetScale().y )
+			if ( LoopOffset > TransInfo.Scale.y )
 			{
-				ImageOffset = pOwner->GetImage()->GetScale().y - pOwner->GetScale().y;
+				ImageOffset = pImage->GetScale().y - TransInfo.Scale.y;
 				bDrawEachStartEnd = false;
 			}
 		}
 		else
 		{
-			ImageOffset -= ScrollSpeed;
+			ImageOffset -= Speed;
 
 			// ** 이미지 최상단에 도달했다면
 			if ( ImageOffset < 0.0f )
@@ -68,7 +68,7 @@ void ScrollVerticalBkg::Update()
 		// ** Loop를 위한 이미지 연결 작업중인지
 		if ( bDrawEachStartEnd )
 		{
-			LoopOffset -= ScrollSpeed;
+			LoopOffset -= Speed;
 
 			// ** 이미지 연결 구간이 끝났다면
 			if ( LoopOffset < 0.0f )
@@ -79,13 +79,13 @@ void ScrollVerticalBkg::Update()
 		}
 		else
 		{
-			ImageOffset += ScrollSpeed;
+			ImageOffset += Speed;
 
 			// ** 이미지 최하단에 도달했다면
-			if ( ImageOffset > pOwner->GetImage()->GetScale().y - pOwner->GetScale().y )
+			if ( ImageOffset > pImage->GetScale().y - TransInfo.Scale.y )
 			{
 				// ** 이미지 최하단 Offset으로 고정
-				ImageOffset = pOwner->GetImage()->GetScale().y - pOwner->GetScale().y;
+				ImageOffset = pImage->GetScale().y - TransInfo.Scale.y;
 
 				// ** Loop 되어야 하는 상태라면
 				if ( bLoop && !bDrawEachStartEnd )
@@ -96,51 +96,56 @@ void ScrollVerticalBkg::Update()
 			}
 		}
 	}
+
+	SendInfoToOwner();
 }
 
 void ScrollVerticalBkg::Render(HDC _hdc)
 {
+	if ( !pImage )
+		return;
+
 	// ** 이미지 시작과 끝 연결 구간
 	// ** Loop Scroll
 	if (bLoop && bDrawEachStartEnd )
 	{
 		TransparentBlt(_hdc,
-			(int)(pOwner->GetPosition().x - (pOwner->GetScale().x * 0.5f)),
-			(int)(pOwner->GetPosition().y - (pOwner->GetScale().y * 0.5f)),
-			(int)(pOwner->GetScale().x),
+			(int)(TransInfo.Position.x - (TransInfo.Scale.x * 0.5f)),
+			(int)(TransInfo.Position.y - (TransInfo.Scale.y * 0.5f)),
+			(int)(TransInfo.Scale.x),
 			(int)(LoopOffset),
-			pOwner->GetImage()->GetMemDC(),
-			(int)(pOwner->GetImage()->GetSegmentationScale().x * pOwner->GetImageOffsetOrder().x),
-			(int)(pOwner->GetImage()->GetScale().y - LoopOffset),
-			(int)(pOwner->GetImage()->GetSegmentationScale().x),
+			pImage->GetMemDC(),
+			(int)(pImage->GetSegmentationScale().x * pOwner->GetImageOffsetOrder().x),
+			(int)(pImage->GetScale().y - LoopOffset),
+			(int)(pImage->GetSegmentationScale().x),
 			(int)(LoopOffset),
 			RGB(255, 0, 255));
 
 		TransparentBlt(_hdc,
-			(int)(pOwner->GetPosition().x - (pOwner->GetScale().x * 0.5f)),
-			(int)((pOwner->GetPosition().y - (pOwner->GetScale().y * 0.5f)) + LoopOffset),
-			(int)(pOwner->GetScale().x),
-			(int)(pOwner->GetScale().y - LoopOffset),
-			pOwner->GetImage()->GetMemDC(),
-			(int)(pOwner->GetImage()->GetSegmentationScale().x * pOwner->GetImageOffsetOrder().x),
+			(int)(TransInfo.Position.x - (TransInfo.Scale.x * 0.5f)),
+			(int)((TransInfo.Position.y - (TransInfo.Scale.y * 0.5f)) + LoopOffset),
+			(int)(TransInfo.Scale.x),
+			(int)(TransInfo.Scale.y - LoopOffset),
+			pImage->GetMemDC(),
+			(int)(pImage->GetSegmentationScale().x * pOwner->GetImageOffsetOrder().x),
 			0,
-			(int)(pOwner->GetImage()->GetSegmentationScale().x),
-			(int)(pOwner->GetScale().y - LoopOffset),
+			(int)(pImage->GetSegmentationScale().x),
+			(int)(TransInfo.Scale.y - LoopOffset),
 			RGB(255, 0, 255));
 	}
 	// ** 일반 Scroll
 	else
 	{
 		TransparentBlt(_hdc,
-			(int)(pOwner->GetPosition().x - (pOwner->GetScale().x * 0.5f)),
-			(int)(pOwner->GetPosition().y - (pOwner->GetScale().y * 0.5f)),
-			(int)(pOwner->GetScale().x),
-			(int)(pOwner->GetScale().y),
-			pOwner->GetImage()->GetMemDC(),
-			(int)(pOwner->GetImage()->GetSegmentationScale().x * pOwner->GetImageOffsetOrder().x),
+			(int)(TransInfo.Position.x - (TransInfo.Scale.x * 0.5f)),
+			(int)(TransInfo.Position.y - (TransInfo.Scale.y * 0.5f)),
+			(int)(TransInfo.Scale.x),
+			(int)(TransInfo.Scale.y),
+			pImage->GetMemDC(),
+			(int)(pImage->GetSegmentationScale().x * pOwner->GetImageOffsetOrder().x),
 			(int)(ImageOffset),
-			(int)(pOwner->GetImage()->GetSegmentationScale().x),
-			(int)(pOwner->GetScale().y),
+			(int)(pImage->GetSegmentationScale().x),
+			(int)(TransInfo.Scale.y),
 			RGB(255, 0, 255));
 	}	
 }

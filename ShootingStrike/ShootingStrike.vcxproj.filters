@@ -79,9 +79,6 @@
     <Filter Include="소스 파일\02. Object\Background\BackgroundBridge">
       <UniqueIdentifier>{ddc7b3dd-8676-4d8e-a0fe-21ccff021c79}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\02. Object\Bullet\BulletBridge\NormalBullet">
-      <UniqueIdentifier>{09746b99-22f4-4a3b-a8be-d60afb0ca26b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\02. Object\UI">
       <UniqueIdentifier>{7f7f33b5-986d-4fe2-bb5e-5a2973de84f4}</UniqueIdentifier>
     </Filter>
@@ -90,9 +87,6 @@
     </Filter>
     <Filter Include="소스 파일\99. Manager\SpawnManager">
       <UniqueIdentifier>{d2286836-24a7-4923-a1b0-31bfe4a3f91d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02. Object\Bullet\BulletBridge\GuideBullet">
-      <UniqueIdentifier>{94f3f3fe-d352-4ce5-afe8-a7652214cd27}</UniqueIdentifier>
     </Filter>
     <Filter Include="소스 파일\04. Helper">
       <UniqueIdentifier>{bcb0b951-8abe-4f9d-a038-d32d24a6da28}</UniqueIdentifier>
@@ -126,6 +120,15 @@
     </Filter>
     <Filter Include="소스 파일\02. Object\Background\BackgroundBridge\ScrollVertical">
       <UniqueIdentifier>{895b1024-ab70-4874-8d0d-288a0a539a0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\Enemy\EnemyBridge\Boss">
+      <UniqueIdentifier>{dbcb86fd-be32-467a-8a4f-c77f843c5cb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\Bullet\BulletBridge\Normal">
+      <UniqueIdentifier>{09746b99-22f4-4a3b-a8be-d60afb0ca26b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\Bullet\BulletBridge\Guide">
+      <UniqueIdentifier>{94f3f3fe-d352-4ce5-afe8-a7652214cd27}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -226,7 +229,7 @@
       <Filter>소스 파일\02. Object\Background\BackgroundBridge</Filter>
     </ClInclude>
     <ClInclude Include="NormalBullet.h">
-      <Filter>소스 파일\02. Object\Bullet\BulletBridge\NormalBullet</Filter>
+      <Filter>소스 파일\02. Object\Bullet\BulletBridge\Normal</Filter>
     </ClInclude>
     <ClInclude Include="Button.h">
       <Filter>소스 파일\02. Object\UI\Button</Filter>
@@ -235,7 +238,7 @@
       <Filter>소스 파일\99. Manager\SpawnManager</Filter>
     </ClInclude>
     <ClInclude Include="GuideBullet.h">
-      <Filter>소스 파일\02. Object\Bullet\BulletBridge\GuideBullet</Filter>
+      <Filter>소스 파일\02. Object\Bullet\BulletBridge\Guide</Filter>
     </ClInclude>
     <ClInclude Include="EnemyBridge.h">
       <Filter>소스 파일\02. Object\Enemy\EnemyBridge</Filter>
@@ -248,6 +251,9 @@
     </ClInclude>
     <ClInclude Include="ScrollHorizontalBkg.h">
       <Filter>소스 파일\02. Object\Background\BackgroundBridge\ScrollHorizontal</Filter>
+    </ClInclude>
+    <ClInclude Include="BossEnemy.h">
+      <Filter>소스 파일\02. Object\Enemy\EnemyBridge\Boss</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -321,7 +327,7 @@
       <Filter>소스 파일\02. Object\Background\BackgroundBridge</Filter>
     </ClCompile>
     <ClCompile Include="NormalBullet.cpp">
-      <Filter>소스 파일\02. Object\Bullet\BulletBridge\NormalBullet</Filter>
+      <Filter>소스 파일\02. Object\Bullet\BulletBridge\Normal</Filter>
     </ClCompile>
     <ClCompile Include="Button.cpp">
       <Filter>소스 파일\02. Object\UI\Button</Filter>
@@ -330,7 +336,7 @@
       <Filter>소스 파일\99. Manager\SpawnManager</Filter>
     </ClCompile>
     <ClCompile Include="GuideBullet.cpp">
-      <Filter>소스 파일\02. Object\Bullet\BulletBridge\GuideBullet</Filter>
+      <Filter>소스 파일\02. Object\Bullet\BulletBridge\Guide</Filter>
     </ClCompile>
     <ClCompile Include="EnemyBridge.cpp">
       <Filter>소스 파일\02. Object\Enemy\EnemyBridge</Filter>
@@ -343,6 +349,9 @@
     </ClCompile>
     <ClCompile Include="ScrollHorizontalBkg.cpp">
       <Filter>소스 파일\02. Object\Background\BackgroundBridge\ScrollHorizontal</Filter>
+    </ClCompile>
+    <ClCompile Include="BossEnemy.cpp">
+      <Filter>소스 파일\02. Object\Enemy\EnemyBridge\Boss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

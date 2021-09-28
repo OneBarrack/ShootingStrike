@@ -4,6 +4,7 @@
 class BulletBridge : public Bridge
 {
 protected:
+	Bitmap* pImage;
 	Transform TransInfo;
 	float Speed;
 
@@ -17,10 +18,10 @@ public:
 
 public:
 	// ** Owner의 데이터를 받아옴
-	virtual void ReceiveInfo();
+	virtual void ReceiveInfoFromOwner() override;
 
 	// ** Owner로 가공된 데이터 전달
-	virtual void SendInfo();
+	virtual void SendInfoToOwner() override;
 
 public:
 	BulletBridge();

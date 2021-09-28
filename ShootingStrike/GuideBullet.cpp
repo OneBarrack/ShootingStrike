@@ -28,7 +28,7 @@ void GuideBullet::Initialize()
 void GuideBullet::Update()
 {
 	// ** Owner의 데이터를 받아옴
-	ReceiveInfo();
+	ReceiveInfoFromOwner();
 
 	CalcGuideDirection(TransInfo.Position, TransInfo.Direction);
 
@@ -36,7 +36,7 @@ void GuideBullet::Update()
 	TransInfo.Position.y += TransInfo.Direction.y * Speed;
 
 	// ** Owner로 가공된 데이터 전달
-	SendInfo();
+	SendInfoToOwner();
 }
 
 

@@ -12,6 +12,8 @@ private:
 	Object* pLeftSideBackground;
 	Object* pRightSideBackground;
 
+	Object* pEnemyBoss;
+
 public:
 	virtual void Initialize()override;
 	virtual void Update()override;

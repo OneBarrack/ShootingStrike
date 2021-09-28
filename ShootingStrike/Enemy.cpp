@@ -1,11 +1,11 @@
 #include "Enemy.h"
 #include "Bridge.h"
+#include "Player.h"
 #include "BitmapManager.h"
 #include "MathManager.h"
 
 Enemy::Enemy()
-	: pEnemyImage(nullptr)
-	, HP(0)
+	: HP(0)
 	, bSpawing(false)
 	, bAttacking(false)
 	, bTakeDamage(false)
@@ -25,21 +25,13 @@ void Enemy::Initialize()
 {
 	Super::Initialize();
 
-	pEnemyImage = nullptr;// BitmapManager::GetInstance()->GetImage(eImageKey::PLAYER);
-
-	TransInfo.Position = Vector3(WindowsWidth * 0.5f, WindowsHeight * 0.5f);
-	TransInfo.Scale = Vector3(42.0f, 47.0f);
-
-	Collider.Position = TransInfo.Position;
-	Collider.Scale = TransInfo.Scale;
-
 	Key = eObjectKey::ENEMY;
 	Status = eObjectStatus::ACTIVATED;
 	CollisionType = eCollisionType::RECT;
 	OldPosition = TransInfo.Position;
 	bGenerateCollisionEvent = true;
 
-	HP = 3;
+	HP = 5;
 
 	bSpawing = false;
 	bAttacking = false;
@@ -121,8 +113,12 @@ void Enemy::Fire()
 void Enemy::ApplyDamage(Object* _pTarget, int _Damage)
 {
 	// ** ... 데미지를 가할 때의 동작
-
-	TakeDamage(_Damage);
+	switch ( _pTarget->GetKey() )
+	{
+		case eObjectKey::PLAYER:
+			static_cast<Player*>(_pTarget)->TakeDamage(_Damage);
+			break;
+	}
 }
 
 void Enemy::TakeDamage(int _Damage)

@@ -16,6 +16,9 @@ public:
 
 	virtual Bridge* Clone()PURE;
 
+	virtual void ReceiveInfoFromOwner()PURE;
+	virtual void SendInfoToOwner()PURE;
+
 public:
 	void SetOwner(Object* _pObject) { pOwner = _pObject; }
 	Object* GetOwner() { return pOwner; }
