@@ -3,6 +3,9 @@
 
 class Player : public Object
 {
+public:
+	typedef Object Super;
+
 private:
 	Bitmap* pPlayerImage;	
 

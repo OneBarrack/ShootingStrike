@@ -4,6 +4,9 @@
 class Background : public Object
 {
 public:
+	typedef Object Super;
+
+public:
 	virtual void Initialize()override;
 	virtual void Update()override;
 	virtual void Render(HDC _hdc)override;

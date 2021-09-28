@@ -7,8 +7,7 @@ ScrollVerticalBkg::ScrollVerticalBkg()
 	, LoopOffset(0.0f)
 	, bLoop(false)
 	, bDrawEachStartEnd(false)
-{
-	Initialize();
+{	
 }
 
 ScrollVerticalBkg::~ScrollVerticalBkg()

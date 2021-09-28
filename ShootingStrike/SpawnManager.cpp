@@ -19,13 +19,18 @@ void SpawnManager::SpawnBullet(Object* _pOwner, Transform _TransInfo, float _Spe
 
 	switch ( _FiringType )
 	{
-		case eBulletFiringType::NORMAL: pBridge = new NormalBullet;	break;
-		case eBulletFiringType::GUIDE:  pBridge = new GuideBullet;	break;
+		case eBulletFiringType::NORMAL: 
+			pBridge = ObjectManager::GetInstance()->TakeBridge(eBridgeKey::BULLET_NORMAL);	
+			break;
+		case eBulletFiringType::GUIDE:  
+			pBridge = ObjectManager::GetInstance()->TakeBridge(eBridgeKey::BULLET_GUIDE);
+			break;
 		default: 
 			break;
 	}
 	//pRightSideBackground->SetImageOffsetOrder(Point(1, 0));
-	Bullet* pBullet = static_cast<Bullet*>(ObjectManager::GetInstance()->TakeObject(eObjectKey::BULLET, pBridge));
+	Bullet* pBullet = static_cast<Bullet*>(ObjectManager::GetInstance()->TakeObject(eObjectKey::BULLET));
+	pBullet->SetBridge(pBridge);
 	pBullet->SetImage(eImageKey::BULLET);
 	pBullet->SetOwner(_pOwner);
 	pBullet->SetTransInfo(_TransInfo);

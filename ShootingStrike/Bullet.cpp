@@ -20,27 +20,20 @@ Bullet::~Bullet()
 
 void Bullet::Initialize()
 {
-	pOwner = nullptr;
-
-	TransInfo.Position = Vector3(0.0f, 0.0f);
-	TransInfo.Direction = Vector3(0.0f, -1.0f);
-	TransInfo.Scale = Vector3(30.0f, 30.0f);
-	
-	Collider.Position = TransInfo.Position;
-	Collider.Scale = TransInfo.Scale;
+	Super::Initialize();
 
 	Key = eObjectKey::BULLET;
 	Status = eObjectStatus::ACTIVATED;
 	CollisionType = eCollisionType::ELLIPSE;
 	bGenerateCollisionEvent = true;
 
-	Speed = 3.0f;
+	pOwner = nullptr;	
+	Damage = 0;
 }
 
 void Bullet::Update()
 {
-	if ( pBridgeObject )
-		pBridgeObject->Update();
+	Super::Update();
 	
 	// ** 충돌체 갱신
 	Collider = TransInfo;
@@ -48,22 +41,18 @@ void Bullet::Update()
 
 void Bullet::Render(HDC _hdc)
 {
-	if ( pBridgeObject )
-		pBridgeObject->Render(_hdc);
+	Super::Render(_hdc);
+
 }
 
 void Bullet::Release()
 {
-	if ( pBridgeObject )
-	{
-		pBridgeObject->Release();
-		::Safe_Delete(pBridgeObject);
-	}
+	Super::Release();
 }
 
 void Bullet::OnCollision(Object* _pObject)
 {
-	if ( pBridgeObject )
+	if ( pBridge )
 	{		
 		if ( pOwner->GetKey() == _pObject->GetKey() )
 			return;

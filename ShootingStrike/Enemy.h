@@ -3,6 +3,9 @@
 
 class Enemy : public Object
 {
+public:
+	typedef Object Super;
+
 private:
 	Bitmap* pEnemyImage;
 

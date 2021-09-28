@@ -8,7 +8,6 @@ ScrollHorizontalBkg::ScrollHorizontalBkg()
 	, bLoop(false)
 	, bDrawEachStartEnd(false)
 {
-	Initialize();
 }
 
 ScrollHorizontalBkg::~ScrollHorizontalBkg()

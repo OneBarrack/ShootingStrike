@@ -34,8 +34,9 @@ void Stage::Initialize()
 	pPlayer = ObjectManager::GetInstance()->GetPlayer();
 
 	// ** Main Scrolling Background
-	pBridge = new ScrollVerticalBkg;	
-	pBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::BACKGROUND, pBridge);
+	pBridge = ObjectManager::GetInstance()->TakeBridge(eBridgeKey::BACKGROUND_SCROLL_VERTICAL);
+	pBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::BACKGROUND);
+	pBackground->SetBridge(pBridge);
 	pBackground->SetImage(eImageKey::STAGEBACK);
 	pBackground->SetPosition(WindowsWidth * 0.5f, WindowsHeight * 0.5f);
 	pBackground->SetScale(600.0f, WindowsHeight);
@@ -44,15 +45,17 @@ void Stage::Initialize()
 	static_cast<ScrollVerticalBkg*>(pBridge)->ScrollUp();
 	
 	// ** Left Side Background
-	pBridge = new BasicBkg;
-	pLeftSideBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::FOREGROUND, pBridge);
+	pBridge = ObjectManager::GetInstance()->TakeBridge(eBridgeKey::BACKGROUND_BASIC);
+	pLeftSideBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::FOREGROUND);
+	pLeftSideBackground->SetBridge(pBridge);
 	pLeftSideBackground->SetImage(eImageKey::STAGESIDEBACK);
 	pLeftSideBackground->SetPosition((WindowsWidth - pBackground->GetScale().x) * 0.5f * 0.5f, WindowsHeight * 0.5f);
 	pLeftSideBackground->SetScale((WindowsWidth - pBackground->GetScale().x) * 0.5f, WindowsHeight);
 
 	// ** Right Side Background
-	pBridge = new BasicBkg;
-	pRightSideBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::FOREGROUND, pBridge);
+	pBridge = ObjectManager::GetInstance()->TakeBridge(eBridgeKey::BACKGROUND_BASIC); 
+	pRightSideBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::FOREGROUND);
+	pRightSideBackground->SetBridge(pBridge);
 	pRightSideBackground->SetImage(eImageKey::STAGESIDEBACK);
 	pRightSideBackground->SetImageOffsetOrder(Point(1,0));
 	pRightSideBackground->SetPosition(WindowsWidth - pLeftSideBackground->GetPosition().x, WindowsHeight * 0.5f);

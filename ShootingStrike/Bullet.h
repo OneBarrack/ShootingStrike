@@ -3,6 +3,9 @@
 
 class Bullet : public Object
 {
+public:
+	typedef Object Super;
+
 private:
 	Object* pOwner;
 	int Damage;

@@ -8,6 +8,9 @@ public:
 	virtual void Update()PURE;
 	virtual void Render(HDC _hdc)PURE;
 	virtual void Release()PURE;
+
+	virtual Bridge* Clone()PURE;
+
 public:
 	EnemyBridge();
 	virtual ~EnemyBridge();

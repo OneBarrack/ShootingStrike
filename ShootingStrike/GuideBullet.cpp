@@ -8,7 +8,6 @@ GuideBullet::GuideBullet()
 	: pBulletImage(nullptr)
 	, BulletImageScale(Vector3())
 {
-	Initialize();
 }
 
 GuideBullet::~GuideBullet()

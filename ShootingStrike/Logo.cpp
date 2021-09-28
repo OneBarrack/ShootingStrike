@@ -33,19 +33,22 @@ void Logo::Initialize()
 	Bridge* pBridge = nullptr;
 
 	// ** Background
-	pBridge = new ScrollHorizontalBkg;	
-	pBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::BACKGROUND, pBridge);
-	pBackground->SetImage(eImageKey::LOGOBACK);
-	pBackground->SetPosition(WindowsWidth * 0.5f, WindowsHeight * 0.5f);
-	pBackground->SetScale(1915.0f, WindowsHeight);
-	pBackground->SetSpeed(1.0f);	
+	pBridge = ObjectManager::GetInstance()->TakeBridge(eBridgeKey::BACKGROUND_SCROLL_HORIZONTAL);
 	static_cast<ScrollHorizontalBkg*>(pBridge)->StartLeft();
 	static_cast<ScrollHorizontalBkg*>(pBridge)->ScrollRight();
 	static_cast<ScrollHorizontalBkg*>(pBridge)->SetLoop(true);
 
+	pBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::BACKGROUND);
+	pBackground->SetBridge(pBridge);
+	pBackground->SetImage(eImageKey::LOGOBACK);
+	pBackground->SetPosition(WindowsWidth * 0.5f, WindowsHeight * 0.5f);
+	pBackground->SetScale(1915.0f, WindowsHeight);
+	pBackground->SetSpeed(1.0f);	
+
 	// ** Logo Title
-	pBridge = new BasicBkg;
-	pLogoTitle = ObjectManager::GetInstance()->TakeObject(eObjectKey::BACKGROUND, pBridge);
+	pBridge = ObjectManager::GetInstance()->TakeBridge(eBridgeKey::BACKGROUND_BASIC);
+	pLogoTitle = ObjectManager::GetInstance()->TakeObject(eObjectKey::BACKGROUND);
+	pLogoTitle->SetBridge(pBridge);
 	pLogoTitle->SetImage(eImageKey::LOGO);
 	pLogoTitle->SetPosition(WindowsWidth * 0.5f, WindowsHeight * 0.3f);
 	pLogoTitle->SetScale(785.0f, 300.0f);

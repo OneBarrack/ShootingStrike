@@ -14,22 +14,19 @@ Background::~Background()
 
 void Background::Initialize()
 {
-	TransInfo.Position = Vector3(0.0f, 0.0f);
-	TransInfo.Direction = Vector3(0.0f, 0.0f);
-	TransInfo.Scale = Vector3(0.0f, 0.0f);
+	Super::Initialize();
 
 	Key = eObjectKey::BACKGROUND;
 	Status = eObjectStatus::ACTIVATED;
 	CollisionType = eCollisionType::NONE;
 	bGenerateCollisionEvent = false;
 
-	pBridgeObject = nullptr;
+	pBridge = nullptr;
 }
 
 void Background::Update()
-{
-	if ( pBridgeObject )
-		pBridgeObject->Update();
+{	
+	Super::Update();
 
 	// ** 충돌체 갱신
 	Collider = TransInfo;
@@ -37,17 +34,12 @@ void Background::Update()
 
 void Background::Render(HDC _hdc)
 {
-	if ( pBridgeObject )
-		pBridgeObject->Render(_hdc);
+	Super::Render(_hdc);
 }
 
 void Background::Release()
 {
-	if ( pBridgeObject )
-	{
-		pBridgeObject->Release();
-		::Safe_Delete(pBridgeObject);
-	}
+	Super::Release();
 }
 
 void Background::OnCollision(Object* _pObject)

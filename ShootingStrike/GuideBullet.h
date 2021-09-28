@@ -14,6 +14,8 @@ public:
 	virtual void Render(HDC _hdc)override;
 	virtual void Release()override;
 
+	virtual Bridge* Clone()override { return new GuideBullet(*this); }
+
 private:
 	// ** 유도 미사일의 Direction 계산
 	void CalcGuideDirection(Vector3 _Pos, Vector3& _rDirection);

@@ -23,6 +23,8 @@ Enemy::~Enemy()
 
 void Enemy::Initialize()
 {
+	Super::Initialize();
+
 	pEnemyImage = nullptr;// BitmapManager::GetInstance()->GetImage(eImageKey::PLAYER);
 
 	TransInfo.Position = Vector3(WindowsWidth * 0.5f, WindowsHeight * 0.5f);
@@ -50,8 +52,7 @@ void Enemy::Initialize()
 
 void Enemy::Update()
 {
-	if ( pBridgeObject )
-		pBridgeObject->Update();
+	Super::Update();
 
 	// ** 스폰 중
 	if ( bSpawing )
@@ -90,8 +91,7 @@ void Enemy::Update()
 
 void Enemy::Render(HDC _hdc)
 {
-	if ( pBridgeObject )
-		pBridgeObject->Render(_hdc);
+	Super::Render(_hdc);
 
 	//TransparentBlt(_hdc, // ** 최종 출력 위치
 	//	int(TransInfo.Position.x - (TransInfo.Scale.x * 0.5f)),
@@ -107,11 +107,7 @@ void Enemy::Render(HDC _hdc)
 
 void Enemy::Release()
 {
-	if ( pBridgeObject )
-	{
-		pBridgeObject->Release();
-		::Safe_Delete(pBridgeObject);
-	}
+	Super::Release();
 }
 
 void Enemy::OnCollision(Object* _pObject)

@@ -13,6 +13,9 @@ public:
 	virtual void Render(HDC _hdc)PURE;
 	virtual void Release()PURE;
 
+	virtual Bridge* Clone()PURE;
+
+public:
 	// ** Owner의 데이터를 받아옴
 	virtual void ReceiveInfo();
 

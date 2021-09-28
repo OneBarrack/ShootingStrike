@@ -14,9 +14,13 @@ public:
 	virtual void Render(HDC _hdc)PURE;
 	virtual void Release()PURE;
 
+	virtual Bridge* Clone()PURE;
+
 public:
 	void SetOwner(Object* _pObject) { pOwner = _pObject; }
 	Object* GetOwner() { return pOwner; }
+
+	eBridgeKey GetKey() { return Key; }
 
 public:
 	Bridge();

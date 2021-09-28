@@ -29,6 +29,8 @@ Player::~Player()
 
 void Player::Initialize()
 {
+	Super::Initialize();
+
 	pPlayerImage = BitmapManager::GetInstance()->GetImage(eImageKey::PLAYER);
 
 	TransInfo.Position = Vector3(WindowsWidth * 0.5f, WindowsHeight * 0.5f);
@@ -62,6 +64,8 @@ void Player::Initialize()
 
 void Player::Update()
 {
+	Super::Update();
+
 	Frame++;
 
 	// ** 스폰 중
@@ -129,6 +133,8 @@ void Player::Update()
 
 void Player::Render(HDC _hdc)
 {
+	Super::Render(_hdc);
+
 	// ** 스폰 중
 	if ( bSpawing )
 	{
@@ -276,7 +282,7 @@ void Player::RenderPlayer(HDC _hdc)
 
 void Player::Release()
 {
-	
+	Super::Release();
 }
 
 void Player::OnCollision(Object* _pObject)

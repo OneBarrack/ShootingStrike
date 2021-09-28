@@ -28,6 +28,8 @@ public:
 	virtual void Render(HDC _hdc)override;
 	virtual void Release()override;
 
+	virtual Bridge* Clone()override { return new ScrollVerticalBkg(*this); }
+
 public:
 	void SetLoop(bool _bLoop) {	bLoop = _bLoop;	}
 

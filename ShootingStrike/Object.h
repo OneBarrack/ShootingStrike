@@ -12,7 +12,7 @@ protected:
 	Point ImageOffsetOrder;
 
 	// ** Bridge Object
-	Bridge* pBridgeObject;
+	Bridge* pBridge;
 
 	// ** 오브젝트의 기본 Transform
 	Transform TransInfo;
@@ -29,13 +29,14 @@ protected:
 	// ** 모든 오브젝트에 대한 충돌 체크가 필요한 오브젝트인지
 	bool bGenerateCollisionEvent;
 public:
-	virtual void Initialize()PURE;
-	virtual void Update()PURE;
-	virtual void Render(HDC _hdc)PURE;
-	virtual void Release()PURE;
-	virtual void OnCollision(Object* _pObject)PURE;
+	virtual void Initialize();
+	virtual void Update();
+	virtual void Render(HDC _hdc);
+	virtual void Release();
 
 	virtual Object* Clone()PURE;
+
+	virtual void OnCollision(Object* _pObject)PURE;
 
 public:
 	// ** 이미지를 반환
@@ -45,7 +46,7 @@ public:
 	Point GetImageOffsetOrder() { return ImageOffsetOrder; }
 
 	// ** BridgeObject를 반환
-	Bridge* GetBridgeObject() { return pBridgeObject; }
+	Bridge* GetBridgeObject() { return pBridge; }
 
 	// ** 오브젝트의 Key 값을 out
 	eObjectKey GetKey() const { return Key; }
@@ -90,8 +91,8 @@ public:
 	// ** 현재 적용할 이미지의 Offset 설정
 	void SetImageOffsetOrder(Point _Order) { ImageOffsetOrder = _Order; }
 
-	// ** BridgeObject를 Setting
-	void SetBridgeObject(Bridge* _pBridge) { pBridgeObject = _pBridge; }
+	// ** Bridge를 Setting
+	void SetBridge(Bridge* _pBridge);
 
 	// ** Transform 정보를 Setting (Transform)
 	void SetTransInfo(Transform _TransInfo) { TransInfo = _TransInfo; }

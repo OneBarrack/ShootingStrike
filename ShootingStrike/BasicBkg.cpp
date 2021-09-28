@@ -3,7 +3,6 @@
 
 BasicBkg::BasicBkg()
 {
-	Initialize();
 }
 
 BasicBkg::~BasicBkg()

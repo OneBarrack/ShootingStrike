@@ -8,6 +8,12 @@
 #include "HammerEffect.h"
 #include "Button.h"
 
+#include "BasicBkg.h"
+#include "ScrollHorizontalBkg.h"
+#include "ScrollVerticalBkg.h"
+#include "NormalBullet.h"
+#include "GuideBullet.h"
+
 Prototype::Prototype()
 {
 
@@ -21,25 +27,46 @@ Prototype::~Prototype()
 
 void Prototype::CreatePrototype()
 {
-	Transform TransInfo;
+	// Create Object Prototype
+	ObjectPrototypeList[eObjectKey::BACKGROUND]		= new Background;
+	ObjectPrototypeList[eObjectKey::PLAYER]			= new Player;
+	ObjectPrototypeList[eObjectKey::ENEMY]			= new Enemy;
+	ObjectPrototypeList[eObjectKey::BULLET]			= new Bullet;
+	ObjectPrototypeList[eObjectKey::BUTTON]			= new Button;
 
-	PrototypeList[eObjectKey::BACKGROUND]		= new Background;
-	PrototypeList[eObjectKey::PLAYER]			= new Player;
-	PrototypeList[eObjectKey::ENEMY]			= new Enemy;
-	PrototypeList[eObjectKey::BULLET]			= new Bullet;
-	PrototypeList[eObjectKey::BUTTON]		= new Button;
+	ObjectPrototypeList[eObjectKey::FOREGROUND]  = ObjectPrototypeList[eObjectKey::BACKGROUND];
 
-	PrototypeList[eObjectKey::FOREGROUND]  = PrototypeList[eObjectKey::BACKGROUND];
+	// Create Bridge Prototype
+	BridgePrototypeList[eBridgeKey::BACKGROUND_BASIC]			  = new BasicBkg;
+	BridgePrototypeList[eBridgeKey::BACKGROUND_SCROLL_HORIZONTAL] = new ScrollHorizontalBkg;
+	BridgePrototypeList[eBridgeKey::BACKGROUND_SCROLL_VERTICAL]	  = new ScrollVerticalBkg;
+	BridgePrototypeList[eBridgeKey::BULLET_NORMAL]				  = new NormalBullet;
+	BridgePrototypeList[eBridgeKey::BULLET_GUIDE]				  = new GuideBullet;
 }
 
 Object* Prototype::FindPrototypeObject(eObjectKey _Key)
 {
-	map<eObjectKey, Object*>::iterator iter = PrototypeList.find(_Key);
+	map<eObjectKey, Object*>::iterator iter = ObjectPrototypeList.find(_Key);
 
-	if (iter == PrototypeList.end())
+	if (iter == ObjectPrototypeList.end())
 	{
 		//ERROR_MESSAGE("복사 생성할 객체 원형이 없습니다.", _Key);
 		
+		Sleep(500);
+		return nullptr;
+	}
+
+	return iter->second;
+}
+
+Bridge* Prototype::FindPrototypeBridge(eBridgeKey _Key)
+{
+	map<eBridgeKey, Bridge*>::iterator iter = BridgePrototypeList.find(_Key);
+
+	if ( iter == BridgePrototypeList.end() )
+	{
+		//ERROR_MESSAGE("복사 생성할 객체 원형이 없습니다.", _Key);
+
 		Sleep(500);
 		return nullptr;
 	}

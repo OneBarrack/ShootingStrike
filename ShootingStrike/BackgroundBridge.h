@@ -9,6 +9,8 @@ public:
 	virtual void Render(HDC _hdc)PURE;
 	virtual void Release()PURE;
 
+	virtual Bridge* Clone()PURE;
+
 public:
 	BackgroundBridge();
 	virtual ~BackgroundBridge();

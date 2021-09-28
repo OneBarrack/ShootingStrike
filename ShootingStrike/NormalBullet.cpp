@@ -4,7 +4,6 @@
 
 NormalBullet::NormalBullet() 
 {
-	Initialize();
 }
 
 NormalBullet::~NormalBullet()
