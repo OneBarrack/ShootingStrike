@@ -4,19 +4,10 @@
 
 class RenderManager
 {
-private:
-	static RenderManager* Instance;
 public:
-	static RenderManager* GetInstance()
-	{
-		if ( Instance == nullptr )
-			Instance = new RenderManager;
-
-		return Instance;
-	}
-
-public:
-	HDC GetBufferDC() { return BitmapManager::GetInstance()->GetImage(eImageKey::BUFFER)->GetMemDC(); }
-	void Render(HDC _hdc);
+	static HDC GetBufferDC() { return BitmapManager::GetInstance()->GetImage(eImageKey::BUFFER)->GetMemDC(); }	
+	static void RenderToScreen(HDC _hdc);
+	static void DrawRect(HDC _hdc, Transform _TransInfo, COLORREF _Color = RGB(0,0,0));
+	static void DrawEllipse(HDC _hdc, Transform _TransInfo, COLORREF _Color = RGB(0, 0, 0));
 };
 

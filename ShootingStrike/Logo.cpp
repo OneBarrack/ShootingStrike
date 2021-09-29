@@ -4,6 +4,7 @@
 #include "ObjectFactory.h"
 #include "BitmapManager.h"
 #include "GameDataManager.h"
+#include "GameDebugManager.h"
 #include "ScrollHorizontalBkg.h"
 #include "BasicBkg.h"
 #include "Player.h"
@@ -28,6 +29,7 @@ void Logo::Initialize()
 	BitmapManager::GetInstance()->Initialize();
 	ObjectManager::GetInstance()->Initialize();
 	GameDataManager::GetInstance()->Initialize();
+	GameDebugManager::GetInstance()->Initialize();
 
 	ObjectManager::GetInstance()->SetPlayer(
 		ObjectManager::GetInstance()->TakeObject(eObjectKey::PLAYER));

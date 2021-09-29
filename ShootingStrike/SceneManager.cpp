@@ -1,5 +1,4 @@
 #include "SceneManager.h"
-#include "RenderManager.h"
 #include "Logo.h"
 #include "Menu.h"
 #include "Stage.h"
@@ -41,8 +40,7 @@ void SceneManager::Update()
 
 void SceneManager::Render(HDC _hdc)
 {
-	pSceneState->Render(RenderManager::GetInstance()->GetBufferDC());
-	RenderManager::GetInstance()->Render(_hdc);	
+	pSceneState->Render(_hdc);
 }
 
 void SceneManager::Release()

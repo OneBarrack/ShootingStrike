@@ -55,9 +55,13 @@ public:
 	// ** 사용후 더이상 사용하지 않는 브릿지 회수
 	void RecallBridge(Bridge* _pBridge);
 
-	// ** map 컨테이너를 사용하고있는 ObjectList를 반환.
-	map<eObjectKey, list<Object*>>* GetEnableList() { return &EnableObjectList; }
-	map<eObjectKey, list<Object*>>* GetDisableList() { return &DisableObjectList; }	
+	// ** map 컨테이너를 사용하고있는 Object Enable/Disable List를 반환.
+	map<eObjectKey, list<Object*>>* GetEnableObjectList() { return &EnableObjectList; }
+	map<eObjectKey, list<Object*>>* GetDisableObjectList() { return &DisableObjectList; }
+
+	// ** map 컨테이너를 사용하고있는 Bridge Enable/Disable List를 반환.
+	map<eBridgeKey, list<Bridge*>>* GetEnableBridgeList() { return &EnableBridgeList; }
+	map<eBridgeKey, list<Bridge*>>* GetDisableBridgeList() { return &DisableBridgeList; }
 
 	// ** ObjectKey에 해당하는 Object List를 반환
 	list<Object*> GetObjectList(eObjectKey _ObjectKey);	

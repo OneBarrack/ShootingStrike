@@ -64,13 +64,13 @@ void Stage::Initialize()
 
 	// ** EnemyBoss
 	pBridge = ObjectManager::GetInstance()->TakeBridge(eBridgeKey::ENEMY_BOSS);
-	pEnemyBoss = ObjectManager::GetInstance()->TakeObject(eObjectKey::ENEMY);
-	pEnemyBoss->SetBridge(pBridge);
-	pEnemyBoss->SetImage(eImageKey::MOLE);
-	pEnemyBoss->SetPosition(pBackground->GetPosition().x, pBackground->GetScale().y * 0.3f);
-	pEnemyBoss->SetScale(100.0f, 100.0f);
-	static_cast<Enemy*>(pEnemyBoss)->SetHitPoint(10);
-	static_cast<Enemy*>(pEnemyBoss)->SetDeathPoint(5000);
+	pBossAngelEnemy = ObjectManager::GetInstance()->TakeObject(eObjectKey::ENEMY);
+	pBossAngelEnemy->SetBridge(pBridge);
+	pBossAngelEnemy->SetImage(eImageKey::ANGEL);
+	pBossAngelEnemy->SetPosition(pBackground->GetPosition().x, pBackground->GetScale().y * 0.3f);
+	pBossAngelEnemy->SetScale(224.0f, 320.0f);
+	static_cast<Enemy*>(pBossAngelEnemy)->SetHitPoint(10);
+	static_cast<Enemy*>(pBossAngelEnemy)->SetDeathPoint(5000);
 
 	// ** Score UI
 	pScoreUI = ObjectManager::GetInstance()->TakeObject(eObjectKey::UI_SCORE);

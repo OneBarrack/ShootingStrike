@@ -10,6 +10,7 @@ enum class eInputKey
 	KEY_SPACE	,
 	KEY_ENTER	,
 	KEY_LBUTTON	, // ** 마우스 좌측 키 입력 확인.
+	KEY_F8		,
 	KEY_MAX		, // ** 총 Key 개수.
 };
 
@@ -66,7 +67,7 @@ enum class eImageKey
 	PLAYBUTTON	  ,
 	PLAYER		  ,
 	BULLET		  ,
-	MOLE		  ,
+	ANGEL		  ,
 	EFFECT		  ,
 	KEYMAX		  ,
 };

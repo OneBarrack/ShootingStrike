@@ -136,6 +136,9 @@
     <Filter Include="소스 파일\02. Object\UI\Score">
       <UniqueIdentifier>{13240147-5a18-47b2-9ffc-bc4bb0776625}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\99. Manager\GameDebugManager">
+      <UniqueIdentifier>{35ed8b27-2a75-4306-a5f7-266aa81af39b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers.h">
@@ -258,7 +261,7 @@
     <ClInclude Include="ScrollHorizontalBkg.h">
       <Filter>소스 파일\02. Object\Background\BackgroundBridge\ScrollHorizontal</Filter>
     </ClInclude>
-    <ClInclude Include="BossEnemy.h">
+    <ClInclude Include="BossAngelEnemy.h">
       <Filter>소스 파일\02. Object\Enemy\EnemyBridge\Boss</Filter>
     </ClInclude>
     <ClInclude Include="GameDataManager.h">
@@ -266,6 +269,9 @@
     </ClInclude>
     <ClInclude Include="ScoreUI.h">
       <Filter>소스 파일\02. Object\UI\Score</Filter>
+    </ClInclude>
+    <ClInclude Include="GameDebugManager.h">
+      <Filter>소스 파일\99. Manager\GameDebugManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -362,7 +368,7 @@
     <ClCompile Include="ScrollHorizontalBkg.cpp">
       <Filter>소스 파일\02. Object\Background\BackgroundBridge\ScrollHorizontal</Filter>
     </ClCompile>
-    <ClCompile Include="BossEnemy.cpp">
+    <ClCompile Include="BossAngelEnemy.cpp">
       <Filter>소스 파일\02. Object\Enemy\EnemyBridge\Boss</Filter>
     </ClCompile>
     <ClCompile Include="GameDataManager.cpp">
@@ -370,6 +376,9 @@
     </ClCompile>
     <ClCompile Include="ScoreUI.cpp">
       <Filter>소스 파일\02. Object\UI\Score</Filter>
+    </ClCompile>
+    <ClCompile Include="GameDebugManager.cpp">
+      <Filter>소스 파일\99. Manager\GameDebugManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

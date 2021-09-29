@@ -12,7 +12,7 @@
 #include "BasicBkg.h"
 #include "ScrollHorizontalBkg.h"
 #include "ScrollVerticalBkg.h"
-#include "BossEnemy.h"
+#include "BossAngelEnemy.h"
 #include "NormalBullet.h"
 #include "GuideBullet.h"
 
@@ -43,7 +43,7 @@ void Prototype::CreatePrototype()
 	BridgePrototypeList[eBridgeKey::BACKGROUND_BASIC]			  = new BasicBkg;
 	BridgePrototypeList[eBridgeKey::BACKGROUND_SCROLL_HORIZONTAL] = new ScrollHorizontalBkg;
 	BridgePrototypeList[eBridgeKey::BACKGROUND_SCROLL_VERTICAL]	  = new ScrollVerticalBkg;
-	BridgePrototypeList[eBridgeKey::ENEMY_BOSS]					  = new BossEnemy;
+	BridgePrototypeList[eBridgeKey::ENEMY_BOSS]					  = new BossAngelEnemy;
 	BridgePrototypeList[eBridgeKey::BULLET_NORMAL]				  = new NormalBullet;
 	BridgePrototypeList[eBridgeKey::BULLET_GUIDE]				  = new GuideBullet;
 }

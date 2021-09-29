@@ -15,7 +15,7 @@ void BitmapManager::Initialize()
 	ImageList[eImageKey::NUMBER]		= new Bitmap(eImageKey::NUMBER		 , L"../Resource/Number.bmp");
 	ImageList[eImageKey::PLAYBUTTON]	= new Bitmap(eImageKey::PLAYBUTTON	 , L"../Resource/UI_Button_Play.bmp");
 	ImageList[eImageKey::BULLET]		= new Bitmap(eImageKey::BULLET		 , L"../Resource/Projectile.bmp");
-	ImageList[eImageKey::MOLE]			= new Bitmap(eImageKey::MOLE		 , L"../Resource/Mole.bmp");
+	ImageList[eImageKey::ANGEL]			= new Bitmap(eImageKey::ANGEL		 , L"../Resource/Angel.bmp");
 	ImageList[eImageKey::EFFECT]		= new Bitmap(eImageKey::EFFECT		 , L"../Resource/Effect.bmp");
 	ImageList[eImageKey::PLAYER]		= new Bitmap(eImageKey::PLAYER		 , L"../Resource/Player.bmp");
 }

@@ -11,7 +11,7 @@ const DWORD KEY_ENTER	= 0x00000040;
 
 // ** 마우스 좌측 키 입력 확인.
 const DWORD KEY_LBUTTON = 0x00000080;
-
+const DWORD KEY_F8		= 0x00000100;
 
 
 

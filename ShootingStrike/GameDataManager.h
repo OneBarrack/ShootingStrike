@@ -18,7 +18,6 @@ private:
 	int Score;
 	int Frame;
 	int FPS;
-	ULONGLONG Time;
 
 public:
 	void Initialize();

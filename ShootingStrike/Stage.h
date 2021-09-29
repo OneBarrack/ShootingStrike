@@ -12,7 +12,7 @@ private:
 	Object* pLeftSideBackground;
 	Object* pRightSideBackground;
 	Object* pScoreUI;
-	Object* pEnemyBoss;
+	Object* pBossAngelEnemy;
 
 public:
 	virtual void Initialize()override;

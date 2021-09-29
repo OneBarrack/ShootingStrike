@@ -24,11 +24,11 @@ public:
 	// ** InputKey에 대한 입력 정보 체크
 	void CheckKeyInput();
 
-	// ** 해당 Key에 대한 입력 정보 반환
-	eKeyInputState GetKeyState(eInputKey _Key) { return KeyInfo[static_cast<int>(_Key)]; }
-
 	// ** 마우스 Position 반환
-	Vector3 GetMousePosition();	
+	Vector3 GetMousePosition();
+	
+	// ** 해당 Key에 대한 입력 정보 반환
+	inline eKeyInputState GetKeyState(eInputKey _Key) { return KeyInfo[static_cast<int>(_Key)]; }
 
 private:
 	// ** 같은 기능을 하는 Key 중 하나라도 눌렀는지 확인하는 함수
@@ -38,6 +38,7 @@ private:
 	void SetKeyState(eKeyInputState& _KeyState, bool _IsKeyPressed);
 
 	void AddOverlapKey(eInputKey _Key, DWORD _dwKey);
+
 private:
 	InputManager();
 public:

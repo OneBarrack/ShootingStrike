@@ -4,7 +4,6 @@ GameDataManager* GameDataManager::Instance = nullptr;
 
 GameDataManager::GameDataManager()
 	: Score(0)
-	, Time(0)
 	, Frame(0)
 	, FPS(0)
 {
@@ -19,7 +18,6 @@ void GameDataManager::Initialize()
 	Score = 0;
 	Frame = 0;
 	FPS = 0;
-	Time = GetTickCount64();
 }
 
 void GameDataManager::Update()
@@ -40,6 +38,8 @@ void GameDataManager::AddScore(int _Score)
 
 void GameDataManager::CalcFPS()
 {
+	static ULONGLONG Time = GetTickCount64();
+
 	if ( Time + 1000 < GetTickCount64() )
 	{
 		FPS = Frame;

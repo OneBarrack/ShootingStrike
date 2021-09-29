@@ -20,7 +20,7 @@ void ObjectManager::Update()
 	CheckCollision();
 
 	// ** 모든 오브젝트의 Status를 체크하여 Update 또는 Recall 처리
-	auto enableList = ObjectManager::GetInstance()->GetEnableList();
+	auto enableList = ObjectManager::GetInstance()->GetEnableObjectList();
 	for ( auto ListIter1 = enableList->begin(); ListIter1 != enableList->end(); ++ListIter1 )
 	{
 		for ( auto ObjIter1 = ListIter1->second.begin(); ObjIter1 != ListIter1->second.end(); )
@@ -46,7 +46,7 @@ void ObjectManager::Render(HDC _hdc)
 {
 	// ** 모든 Object Rendering
 	// ** Buffer MemDC에 모두 그린 후 memDC를 hdc와 스왑시켜 그린다
-	map<eObjectKey, list<Object*>>* enableList = ObjectManager::GetInstance()->GetEnableList();
+	map<eObjectKey, list<Object*>>* enableList = ObjectManager::GetInstance()->GetEnableObjectList();
 	for ( map<eObjectKey, list<Object*>>::iterator iter = enableList->begin();
 		iter != enableList->end(); ++iter )
 	{
@@ -163,7 +163,7 @@ void ObjectManager::AddBridge(map<eBridgeKey, list<Bridge*>>& _TargetList, Bridg
 
 void ObjectManager::CheckCollision()
 {
-	auto EnableList = ObjectManager::GetInstance()->GetEnableList();
+	auto EnableList = ObjectManager::GetInstance()->GetEnableObjectList();
 	for ( auto ListIter1 = EnableList->begin(); ListIter1 != EnableList->end(); ++ListIter1 )
 	{
 		for ( auto ObjIter1 = ListIter1->second.begin(); ObjIter1 != ListIter1->second.end(); ++ObjIter1 )

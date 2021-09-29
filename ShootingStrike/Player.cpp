@@ -72,7 +72,14 @@ void Player::Update()
 
 	// ** 스폰 중
 	if ( bSpawing )
+	{
+		CollisionType = eCollisionType::NONE;
 		return;
+	}
+	else
+	{
+
+	}
 
 	// ** 체력이 0 이하일 시 Die
 	if ( HP <= 0 )
@@ -141,7 +148,10 @@ void Player::Render(HDC _hdc)
 	if ( bSpawing )
 	{
 		if ( RenderSpawn(_hdc) )
+		{
+			CollisionType = eCollisionType::RECT;
 			bSpawing = false;
+		}			
 
 		return;
 	}

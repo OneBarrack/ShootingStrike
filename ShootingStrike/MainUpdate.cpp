@@ -1,9 +1,11 @@
 #include "MainUpdate.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "GameDebugManager.h"
 #include "GameDataManager.h"
 #include "SceneManager.h"
 #include "InputManager.h"
+#include "RenderManager.h"
 
 
 MainUpdate::MainUpdate()
@@ -31,14 +33,23 @@ void MainUpdate::Update()
 
 	SceneManager::GetInstance()->Update();
 	GameDataManager::GetInstance()->Update();
+	
+	GameDebugManager::GetInstance()->Update();
 }
 
 void MainUpdate::Render()
 {
-	SceneManager::GetInstance()->Render(m_hdc);
+	HDC BufferDC = RenderManager::GetBufferDC();
+	
+	SceneManager::GetInstance()->Render(BufferDC);	
+	GameDebugManager::GetInstance()->Render(BufferDC);
+
+	RenderManager::RenderToScreen(m_hdc);
 }
 
 void MainUpdate::Release()
 {
 	SceneManager::GetInstance()->Release();
+
+	GameDebugManager::GetInstance()->Release();
 }

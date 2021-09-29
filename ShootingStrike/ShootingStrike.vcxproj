@@ -142,7 +142,7 @@
     <ClInclude Include="BackgroundBridge.h" />
     <ClInclude Include="Bitmap.h" />
     <ClInclude Include="BitmapManager.h" />
-    <ClInclude Include="BossEnemy.h" />
+    <ClInclude Include="BossAngelEnemy.h" />
     <ClInclude Include="Bridge.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="BulletBridge.h" />
@@ -155,6 +155,7 @@
     <ClInclude Include="Enum.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GameDataManager.h" />
+    <ClInclude Include="GameDebugManager.h" />
     <ClInclude Include="GuideBullet.h" />
     <ClInclude Include="Headers.h" />
     <ClInclude Include="InputManager.h" />
@@ -187,7 +188,7 @@
     <ClCompile Include="BackgroundBridge.cpp" />
     <ClCompile Include="Bitmap.cpp" />
     <ClCompile Include="BitmapManager.cpp" />
-    <ClCompile Include="BossEnemy.cpp" />
+    <ClCompile Include="BossAngelEnemy.cpp" />
     <ClCompile Include="Bridge.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="BulletBridge.cpp" />
@@ -196,6 +197,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyBridge.cpp" />
     <ClCompile Include="GameDataManager.cpp" />
+    <ClCompile Include="GameDebugManager.cpp" />
     <ClCompile Include="GuideBullet.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Logo.cpp" />

@@ -72,7 +72,7 @@ public:
 	// ** 충돌체를 out.
 	RECT GetColliderL();
 	RectF GetColliderF();
-	Transform GetColliderTransform() { return Collider; }
+	Transform GetCollider() { return Collider; }
 	Vector3 GetColliderPosition() { return Collider.Position; }
 	Vector3 GetColliderScale() { return Collider.Scale; }
 
