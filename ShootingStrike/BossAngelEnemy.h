@@ -3,6 +3,7 @@
 
 class BossAngelEnemy : public EnemyBridge
 {
+public:
 	enum class AnimationType
 	{
 		DEFAULT,
@@ -15,6 +16,7 @@ class BossAngelEnemy : public EnemyBridge
 
 private:
 	AnimationType AnimType;
+	bool bLoopPlayAnim;
 
 public:
 	virtual void Initialize()override;
@@ -24,12 +26,16 @@ public:
 
 	virtual BossAngelEnemy* Clone()override { return new BossAngelEnemy(*this); }
 
+public:
+	void PlayAnimation(AnimationType _AnimType, bool _bLoop);
+
 private:
-	void PlayAnimDefault(HDC _hdc);
-	void PlayAnimAttack1(HDC _hdc);
-	void PlayAnimAttack2(HDC _hdc);
-	void PlayAnimAttack3(HDC _hdc);
-	void PlayAnimEvolution(HDC _hdc);
+	void PlayAnimDefault(HDC _hdc, ULONGLONG& _Time, int& _Offset);
+	void PlayAnimAttack1(HDC _hdc, ULONGLONG& _Time, int& _Offset);
+	void PlayAnimAttack2(HDC _hdc, ULONGLONG& _Time, int& _Offset);
+	void PlayAnimAttack3(HDC _hdc, ULONGLONG& _Time, int& _Offset);
+	void PlayAnimEvolution(HDC _hdc, ULONGLONG& _Time, int& _Offset);
+	void PlayAnimAttacked(HDC _hdc, ULONGLONG& _Time, int& _Offset);
 
 public:
 	BossAngelEnemy();
