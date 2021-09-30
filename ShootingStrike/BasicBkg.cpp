@@ -7,7 +7,7 @@ BasicBkg::BasicBkg()
 
 BasicBkg::~BasicBkg()
 {
-	Release();
+
 }
 
 void BasicBkg::Initialize()

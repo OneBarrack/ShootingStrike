@@ -85,7 +85,7 @@ void Logo::Render(HDC _hdc)
 
 void Logo::Release()
 {
-	if ( pBackground ) pBackground->SetStatus(eObjectStatus::DESTROYED);
-	if ( pLogoTitle )  pLogoTitle->SetStatus(eObjectStatus::DESTROYED);
-	if ( pPlayButton ) pPlayButton->SetStatus(eObjectStatus::DESTROYED);
+	if ( pBackground ) ObjectManager::GetInstance()->RecallObject(pBackground);
+	if ( pLogoTitle )  ObjectManager::GetInstance()->RecallObject(pLogoTitle);
+	if ( pPlayButton ) ObjectManager::GetInstance()->RecallObject(pPlayButton);
 }

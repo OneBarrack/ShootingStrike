@@ -98,9 +98,11 @@ void Stage::Render(HDC _hdc)
 
 void Stage::Release()
 {
-	if ( pBackground )			pBackground->SetStatus(eObjectStatus::DESTROYED);
-	if ( pLeftSideBackground )	pLeftSideBackground->SetStatus(eObjectStatus::DESTROYED);
-	if ( pRightSideBackground ) pRightSideBackground->SetStatus(eObjectStatus::DESTROYED);
+	if ( pBackground )			ObjectManager::GetInstance()->RecallObject(pBackground);
+	if ( pLeftSideBackground )	ObjectManager::GetInstance()->RecallObject(pLeftSideBackground);
+	if ( pRightSideBackground ) ObjectManager::GetInstance()->RecallObject(pRightSideBackground);
+	if ( pScoreUI )				ObjectManager::GetInstance()->RecallObject(pScoreUI);
+	if ( pBossAngelEnemy )		ObjectManager::GetInstance()->RecallObject(pBossAngelEnemy);
 }
 
 void Stage::CheckPositionInBkgBoundary(eObjectKey _ObjectKey)

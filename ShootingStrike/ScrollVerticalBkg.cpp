@@ -12,7 +12,6 @@ ScrollVerticalBkg::ScrollVerticalBkg()
 
 ScrollVerticalBkg::~ScrollVerticalBkg()
 {
-	Release();
 }
 
 void ScrollVerticalBkg::Initialize()

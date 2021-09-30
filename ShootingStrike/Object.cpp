@@ -53,8 +53,11 @@ void Object::Render(HDC _hdc)
 
 void Object::Release()
 {
-	if ( pBridge ) 
+	if ( pBridge )
+	{
 		ObjectManager::GetInstance()->RecallBridge(pBridge);
+		pBridge = nullptr;
+	}
 }
 
 RECT Object::GetColliderL()

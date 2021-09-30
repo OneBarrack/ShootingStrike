@@ -12,7 +12,7 @@ BossAngelEnemy::BossAngelEnemy()
 
 BossAngelEnemy::~BossAngelEnemy()
 {
-	Release();
+	
 }
 
 
@@ -34,20 +34,20 @@ void BossAngelEnemy::Update()
 	static ULONGLONG ActiveTime = GetTickCount64();
 
 	// _Debug_
-	//if ( CheckKeyInputState(eInputKey::KEY_LBUTTON, eKeyInputState::DOWN) )
-	//{
-	//	PatternIndex = 1;
-	//	ActiveCount = 1;
-	//	ActiveTime = GetTickCount64();
+	if ( CheckKeyInputState(eInputKey::KEY_LBUTTON, eKeyInputState::DOWN) )
+	{
+		PatternIndex = 1;
+		ActiveCount = 1;
+		ActiveTime = GetTickCount64();
 
-	//	static int TypeIndex = 0;
-	//	if ( TypeIndex == static_cast<int>(AnimationType::EVOLUTION) )
-	//		TypeIndex = 0;
-	//	else
-	//		TypeIndex++;
-	//		
-	//	PlayAnimation(static_cast<AnimationType>(TypeIndex), false);
-	//}
+		static int TypeIndex = 0;
+		if ( TypeIndex == static_cast<int>(AnimationType::EVOLUTION) )
+			TypeIndex = 0;
+		else
+			TypeIndex++;
+			
+		PlayAnimation(static_cast<AnimationType>(TypeIndex), false);
+	}
 
 	switch ( PatternIndex )
 	{
@@ -519,7 +519,12 @@ void BossAngelEnemy::PlayAnimAttacked(HDC _hdc, ULONGLONG& _Time, int& _Offset)
 	{
 		// ** Default는 항상 Loop 상태이므로 Offset을 0으로 세팅
 		if ( ++_Offset == MaxSegmentCount )
-			_Offset = 0;
+		{
+			if ( bLoopPlayAnim )
+				_Offset = 0;
+			else
+				PlayAnimation(AnimationType::DEFAULT, true);
+		}
 
 		_Time = GetTickCount64();
 	}

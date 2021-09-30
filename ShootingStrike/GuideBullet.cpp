@@ -12,7 +12,6 @@ GuideBullet::GuideBullet()
 
 GuideBullet::~GuideBullet()
 {
-	Release();
 }
 
 

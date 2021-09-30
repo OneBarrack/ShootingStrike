@@ -6,6 +6,7 @@
 #include "SceneManager.h"
 #include "InputManager.h"
 #include "RenderManager.h"
+#include "ObjectManager.h"
 
 
 MainUpdate::MainUpdate()
@@ -31,6 +32,9 @@ void MainUpdate::Update()
 {
 	InputManager::GetInstance()->CheckKeyInput();
 
+	if ( CheckKeyInputState(eInputKey::KEY_ESCAPE, eKeyInputState::DOWN) )
+		PostQuitMessage(NULL);
+
 	SceneManager::GetInstance()->Update();
 	GameDataManager::GetInstance()->Update();
 	
@@ -52,4 +56,6 @@ void MainUpdate::Release()
 	SceneManager::GetInstance()->Release();
 
 	GameDebugManager::GetInstance()->Release();
+
+	ObjectManager::GetInstance()->Release();
 }

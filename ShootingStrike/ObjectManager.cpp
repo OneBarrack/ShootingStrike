@@ -301,7 +301,7 @@ void ObjectManager::RecallObject(Object* _pObject)
 	ObjectList.erase(find(ObjectList.begin(), ObjectList.end(), _pObject));
 	
 	// ** 해당 Object를 DisableList에 추가.
-	AddObject(DisableObjectList, _pObject);	
+	AddObject(DisableObjectList, _pObject);
 }
 
 void ObjectManager::RecallBridge(Bridge* _pBridge)
@@ -341,8 +341,40 @@ list<Bridge*> ObjectManager::GetBridgeList(eBridgeKey _BridgeKey)
 
 void ObjectManager::Release()
 {
-	// ** 안전한 삭제.
-	::Safe_Delete(pPlayer);
+	// ** Recall Player
+	RecallObject(pPlayer);
+	
+	/** 
+	* Object / Bridge EnableList에 대한 Recall 처리.
+	* 
+	* 게임이 정상 종료 되었다면 Player Recall을 마지막으로 모든 오브젝트/브릿지는 회수되어 있어야 한다.
+	* 즉, EnableList에 데이터가 남아있다면 어디선가 Recall 해주지 않았거나 비정상 종료라는 뜻.
+	* 혹여나 일부 Object 또는 Bridge가 회수되지 못했을 시를 대비한 예외처리이다.
+	*/
+
+	// ** Recall Enable Object
+	for ( map<eObjectKey, list<Object*>>::iterator iter = EnableObjectList.begin();
+		iter != EnableObjectList.end(); ++iter )
+	{
+		for ( list<Object*>::iterator iter2 = iter->second.begin();
+			iter2 != iter->second.end(); )
+		{
+			RecallObject((*iter2++));
+		}
+	}
+	EnableObjectList.clear();
+	
+	// ** Recall Enable Bridge
+	for ( map<eBridgeKey, list<Bridge*>>::iterator iter = EnableBridgeList.begin();
+		iter != EnableBridgeList.end(); ++iter )
+	{
+		for ( list<Bridge*>::iterator iter2 = iter->second.begin();
+			iter2 != iter->second.end(); )
+		{
+			RecallBridge((*iter2++));
+		}
+	}
+	EnableBridgeList.clear();
 
 	// ** Delete Object
 	for (map<eObjectKey, list<Object*>>::iterator iter = DisableObjectList.begin();
@@ -355,20 +387,9 @@ void ObjectManager::Release()
 		}
 		iter->second.clear();
 	}
-	DisableObjectList.clear();
+	DisableObjectList.clear();	
 
-	for ( map<eObjectKey, list<Object*>>::iterator iter = EnableObjectList.begin();
-		iter != EnableObjectList.end(); ++iter )
-	{
-		for ( list<Object*>::iterator iter2 = iter->second.begin();
-			iter2 != iter->second.end(); ++iter2 )
-		{
-			::Safe_Delete((*iter2));
-		}
-	}
-	EnableObjectList.clear();
-
-	// ** Delete Bridge
+	// ** Delete Bridge		
 	for ( map<eBridgeKey, list<Bridge*>>::iterator iter = DisableBridgeList.begin();
 		iter != DisableBridgeList.end(); ++iter )
 	{
@@ -380,15 +401,4 @@ void ObjectManager::Release()
 		iter->second.clear();
 	}
 	DisableBridgeList.clear();
-
-	for ( map<eBridgeKey, list<Bridge*>>::iterator iter = EnableBridgeList.begin();
-		iter != EnableBridgeList.end(); ++iter )
-	{
-		for ( list<Bridge*>::iterator iter2 = iter->second.begin();
-			iter2 != iter->second.end(); ++iter2 )
-		{
-			::Safe_Delete((*iter2));
-		}
-	}
-	EnableBridgeList.clear();
 }

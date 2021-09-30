@@ -8,7 +8,6 @@ NormalBullet::NormalBullet()
 
 NormalBullet::~NormalBullet()
 {
-	Release();
 }
 
 

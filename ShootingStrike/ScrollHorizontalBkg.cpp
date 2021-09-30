@@ -12,7 +12,6 @@ ScrollHorizontalBkg::ScrollHorizontalBkg()
 
 ScrollHorizontalBkg::~ScrollHorizontalBkg()
 {
-	Release();
 }
 
 void ScrollHorizontalBkg::Initialize()

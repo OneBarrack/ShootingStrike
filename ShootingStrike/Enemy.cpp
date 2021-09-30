@@ -20,7 +20,6 @@ Enemy::Enemy()
 
 Enemy::~Enemy()
 {
-	Release();
 }
 
 void Enemy::Initialize()

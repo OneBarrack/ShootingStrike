@@ -14,7 +14,6 @@ Bullet::Bullet()
 
 Bullet::~Bullet()
 {
-	Release();
 }
 
 

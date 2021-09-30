@@ -26,7 +26,6 @@ Player::Player()
 
 Player::~Player()
 {
-	Release();
 }
 
 void Player::Initialize()
@@ -95,6 +94,7 @@ void Player::Update()
 	}
 
 	#ifdef GAME_DEBUG_MODE
+	// _Debug_
 	if ( CheckKeyInputState(eInputKey::KEY_ENTER, eKeyInputState::DOWN) )
 	{
 		Level++;
