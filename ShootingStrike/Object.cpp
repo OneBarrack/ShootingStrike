@@ -6,6 +6,7 @@
 
 Object::Object()
 	: pImage(nullptr)
+	, TagName(eTagName::NONE)
 	, ImageOffsetOrder(Point(0,0))
 	, pBridge(nullptr)
 	, TransInfo(Transform())
@@ -27,6 +28,7 @@ Object::~Object()
 void Object::Initialize()
 {
 	pImage = nullptr;
+	TagName = eTagName::NONE;
 	ImageOffsetOrder = Point(0, 0);
 	pBridge = nullptr;
 	TransInfo = Transform();

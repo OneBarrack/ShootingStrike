@@ -8,6 +8,9 @@ protected:
 	// ** Bitmap Image
 	Bitmap* pImage;
 
+	// ** Tag Name
+	eTagName TagName;
+
 	// ** 분할 Bitmap에서 현재 적용할 이미지의 Offset
 	Point ImageOffsetOrder;
 
@@ -41,6 +44,9 @@ public:
 public:
 	// ** 이미지를 반환
 	Bitmap* GetImage() { return pImage; }
+
+	// ** 태그명 반환
+	eTagName GetTagName() { return TagName; }
 
 	// ** 현재 적용할 이미지의 Offset 반환
 	Point GetImageOffsetOrder() { return ImageOffsetOrder; }
@@ -87,6 +93,9 @@ public:
 
 	// ** 이미지 적재
 	void SetImage(eImageKey _ImageKey);
+
+	// ** 태그명 설정
+	void SetTagName(eTagName _TagName) { TagName = _TagName; }
 
 	// ** 현재 적용할 이미지의 Offset 설정
 	void SetImageOffsetOrder(Point _Order) { ImageOffsetOrder = _Order; }

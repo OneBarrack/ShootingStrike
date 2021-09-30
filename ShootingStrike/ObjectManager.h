@@ -43,11 +43,11 @@ public:
 	void SetPlayer(Object* _pPlayer) { pPlayer = _pPlayer; }
 
 	// ** 컨테이너에서 오브젝트 객체를 찾아서 반환. 없다면 Prototype 생성 후 반환
-	Object* TakeObject(eObjectKey _Key);
-	Object* TakeObject(eObjectKey _Key, Vector3 _Position);
+	Object* NewObject(eObjectKey _Key);
+	Object* NewObject(eObjectKey _Key, Vector3 _Position);
 	
 	// ** 컨테이너에서 브릿지 객체를 찾아서 반환. 없다면 Prototype 생성 후 반환
-	Bridge* TakeBridge(eBridgeKey _Key);
+	Bridge* NewBridge(eBridgeKey _Key);
 
 	// ** 사용후 더이상 사용하지 않는 오브젝트 회수
 	void RecallObject(Object* _pObject);
@@ -64,10 +64,14 @@ public:
 	map<eBridgeKey, list<Bridge*>>* GetDisableBridgeList() { return &DisableBridgeList; }
 
 	// ** ObjectKey에 해당하는 Object List를 반환
-	list<Object*> GetObjectList(eObjectKey _ObjectKey);	
+	list<Object*> GetObjectList(eObjectKey _ObjectKey);
 
 	// ** BridgeKey에 해당하는 Bridge List를 반환
-	list<Bridge*> GetBridgeList(eBridgeKey _BridgeKey);
+	list<Bridge*> GetBridgeList(eBridgeKey _BridgeKey);	
+
+	// ** TagName에 해당하는 Object를 반환
+	Object* FindObjectWithTag(eTagName _TagName);
+	Object* FindObjectWithTag(eObjectKey _ObjectKey, eTagName _TagName);
 
 private:
 	// ** 오브젝트 객체 생성

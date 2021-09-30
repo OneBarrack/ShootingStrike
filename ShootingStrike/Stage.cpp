@@ -35,27 +35,28 @@ void Stage::Initialize()
 	pPlayer = ObjectManager::GetInstance()->GetPlayer();
 
 	// ** Main Scrolling Background
-	pBridge = ObjectManager::GetInstance()->TakeBridge(eBridgeKey::BACKGROUND_SCROLL_VERTICAL);
-	pBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::BACKGROUND);
+	pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::BACKGROUND_SCROLL_VERTICAL);
+	pBackground = ObjectManager::GetInstance()->NewObject(eObjectKey::BACKGROUND);
 	pBackground->SetBridge(pBridge);
 	pBackground->SetImage(eImageKey::STAGEBACK);
+	pBackground->SetTagName(eTagName::STAGE_BATTLE_GROUND);
 	pBackground->SetPosition(WindowsWidth * 0.5f, WindowsHeight * 0.5f);
-	pBackground->SetScale(600.0f, WindowsHeight);
+	pBackground->SetScale(600, WindowsHeight);
 	pBackground->SetSpeed(0.5f);
 	static_cast<ScrollVerticalBkg*>(pBridge)->StartBottom();
 	static_cast<ScrollVerticalBkg*>(pBridge)->ScrollUp();
 	
 	// ** Left Side Background
-	pBridge = ObjectManager::GetInstance()->TakeBridge(eBridgeKey::BACKGROUND_BASIC);
-	pLeftSideBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::FOREGROUND);
+	pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::BACKGROUND_BASIC);
+	pLeftSideBackground = ObjectManager::GetInstance()->NewObject(eObjectKey::FOREGROUND);
 	pLeftSideBackground->SetBridge(pBridge);
 	pLeftSideBackground->SetImage(eImageKey::STAGESIDEBACK);
 	pLeftSideBackground->SetPosition(((WindowsWidth - pBackground->GetScale().x) * 0.5f) * 0.5f, WindowsHeight * 0.5f);
 	pLeftSideBackground->SetScale((WindowsWidth - pBackground->GetScale().x) * 0.5f, WindowsHeight);
 
 	// ** Right Side Background
-	pBridge = ObjectManager::GetInstance()->TakeBridge(eBridgeKey::BACKGROUND_BASIC); 
-	pRightSideBackground = ObjectManager::GetInstance()->TakeObject(eObjectKey::FOREGROUND);
+	pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::BACKGROUND_BASIC); 
+	pRightSideBackground = ObjectManager::GetInstance()->NewObject(eObjectKey::FOREGROUND);
 	pRightSideBackground->SetBridge(pBridge);
 	pRightSideBackground->SetImage(eImageKey::STAGESIDEBACK);
 	pRightSideBackground->SetImageOffsetOrder(Point(1,0));
@@ -63,17 +64,18 @@ void Stage::Initialize()
 	pRightSideBackground->SetScale(pLeftSideBackground->GetScale());
 
 	// ** EnemyBoss
-	pBridge = ObjectManager::GetInstance()->TakeBridge(eBridgeKey::ENEMY_BOSS);
-	pBossAngelEnemy = ObjectManager::GetInstance()->TakeObject(eObjectKey::ENEMY);
+	pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::ENEMY_BOSS);
+	pBossAngelEnemy = ObjectManager::GetInstance()->NewObject(eObjectKey::ENEMY);
 	pBossAngelEnemy->SetBridge(pBridge);
 	pBossAngelEnemy->SetImage(eImageKey::ANGEL);
+	pBossAngelEnemy->SetTagName(eTagName::ENEMY_BOSS);
 	pBossAngelEnemy->SetPosition(pBackground->GetPosition().x, pBackground->GetScale().y * 0.3f);
 	pBossAngelEnemy->SetScale(224.0f, 320.0f);
 	static_cast<Enemy*>(pBossAngelEnemy)->SetHitPoint(10);
 	static_cast<Enemy*>(pBossAngelEnemy)->SetDeathPoint(5000);
 
 	// ** Score UI
-	pScoreUI = ObjectManager::GetInstance()->TakeObject(eObjectKey::UI_SCORE);
+	pScoreUI = ObjectManager::GetInstance()->NewObject(eObjectKey::UI_SCORE);
 	pScoreUI->SetPosition(WindowsWidth - 200.0f, 45.0f);
 	pScoreUI->SetScale(125.0f, 25.0f);
 
@@ -133,8 +135,8 @@ void Stage::CheckPositionInBkgBoundary(eObjectKey _ObjectKey)
 				if ( ObjectPosition.x > ScreenRect.Right - Offset )
 					ObjectPosition.x = ScreenRect.Right - Offset;
 				// ** ╩С
-				if ( ObjectPosition.y < ScreenRect.Top - Offset )
-					ObjectPosition.y = ScreenRect.Top - Offset;
+				if ( ObjectPosition.y < ScreenRect.Top + Offset )
+					ObjectPosition.y = ScreenRect.Top + Offset;
 				// ** го
 				if ( ObjectPosition.y > ScreenRect.Bottom - Offset )
 					ObjectPosition.y = ScreenRect.Bottom - Offset;

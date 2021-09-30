@@ -33,6 +33,7 @@ void Player::Initialize()
 	Super::Initialize();
 
 	pPlayerImage = BitmapManager::GetInstance()->GetImage(eImageKey::PLAYER);
+	TagName = eTagName::PLAYER;
 
 	TransInfo.Position = Vector3(WindowsWidth * 0.5f, WindowsHeight * 0.5f);
 	TransInfo.Scale = Vector3(42.0f, 47.0f);
@@ -67,67 +68,68 @@ void Player::Update()
 {
 	Super::Update();
 
+	// ** 수정 작업 필요
+
 	Frame++;
+
+	if ( bDied )
+	{
+		HP = 3;
+		Level = 1;
+		bDied = false;
+		bSpawing = true;
+	}
 
 	// ** 스폰 중
 	if ( bSpawing )
 	{
-		CollisionType = eCollisionType::NONE;
-		return;
+		bGenerateCollisionEvent = false;
 	}
 	else
 	{
+		bGenerateCollisionEvent = true;
+		// ** 공격중
+		if ( bAttacking )
+		{
+			// ...
+		}
 
+		#ifdef GAME_DEBUG_MODE
+		// _Debug_
+		if ( CheckKeyInputState(eInputKey::KEY_ENTER, eKeyInputState::DOWN) )
+		{
+			Level++;
+		}
+		#endif // GAME_DEBUG_MODE
+
+		if ( CheckKeyInputState(eInputKey::KEY_LEFT, eKeyInputState::PRESSED) )
+		{
+			TransInfo.Position.x -= 3;
+		}
+		if ( CheckKeyInputState(eInputKey::KEY_UP, eKeyInputState::PRESSED) )
+		{
+			TransInfo.Position.y -= 3;
+		}
+		if ( CheckKeyInputState(eInputKey::KEY_RIGHT, eKeyInputState::PRESSED) )
+		{
+			TransInfo.Position.x += 3;
+		}
+		if ( CheckKeyInputState(eInputKey::KEY_DOWN, eKeyInputState::PRESSED) )
+		{
+			TransInfo.Position.y += 3;
+		}
+
+		// ** 미사일 발사
+		if ( CheckKeyInputState(eInputKey::KEY_SPACE, eKeyInputState::DOWN) )
+		{
+			Fire(FiringType, Level, Damage);
+		}
+		else
+		{
+			bAttacking = false;
+		}
 	}
 
-	// ** 체력이 0 이하일 시 Die
-	if ( HP <= 0 )
-	{
-		bDied = true;
-		return;
-	}
-
-	// ** 공격중
-	if ( bAttacking )
-	{
-		// ...
-	}
-
-	#ifdef GAME_DEBUG_MODE
-	// _Debug_
-	if ( CheckKeyInputState(eInputKey::KEY_ENTER, eKeyInputState::DOWN) )
-	{
-		Level++;
-	}
-	#endif // GAME_DEBUG_MODE
-
-	if ( CheckKeyInputState(eInputKey::KEY_LEFT, eKeyInputState::PRESSED) )
-	{
-		TransInfo.Position.x -= 3;
-	}
-	if ( CheckKeyInputState(eInputKey::KEY_UP, eKeyInputState::PRESSED) )
-	{
-		TransInfo.Position.y -= 3;
-	}
-	if ( CheckKeyInputState(eInputKey::KEY_RIGHT, eKeyInputState::PRESSED) )
-	{
-		TransInfo.Position.x += 3;
-	}
-	if ( CheckKeyInputState(eInputKey::KEY_DOWN, eKeyInputState::PRESSED) )
-	{
-		TransInfo.Position.y += 3;
-	}
-
-	// ** 미사일 발사
-	if ( CheckKeyInputState(eInputKey::KEY_SPACE, eKeyInputState::DOWN) )
-	{
-		Fire(FiringType, Level, Damage);
-	}
-	else
-	{
-		bAttacking = false;
-	}
-	
 	// ** Direction 저장
 	TransInfo.Direction = MathManager::GetDirection(OldPosition, TransInfo.Position);
 
@@ -147,11 +149,8 @@ void Player::Render(HDC _hdc)
 	// ** 스폰 중
 	if ( bSpawing )
 	{
-		if ( RenderSpawn(_hdc) )
-		{
-			CollisionType = eCollisionType::RECT;
+		if ( RenderSpawn(_hdc) )			
 			bSpawing = false;
-		}			
 
 		return;
 	}
@@ -159,8 +158,7 @@ void Player::Render(HDC _hdc)
 	// ** 죽음
 	if ( bDied )
 	{		
-		bDied = false;
-		//return;
+		return;
 	}
 		
 	// ** 피해를 입었을 시

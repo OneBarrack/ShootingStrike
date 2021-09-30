@@ -193,7 +193,7 @@ void ObjectManager::CheckCollision()
 }
 
 // ** 컨테이너에서 객체를 찾아서 반환. 없다면 Prototype 생성 후 반환
-Object* ObjectManager::TakeObject(eObjectKey _Key)
+Object* ObjectManager::NewObject(eObjectKey _Key)
 {
 	Object* pObject = nullptr;
 
@@ -226,7 +226,7 @@ Object* ObjectManager::TakeObject(eObjectKey _Key)
 }
 
 // ** 컨테이너에서 객체를 찾아서 반환. 없다면 Prototype 생성 후 반환
-Object* ObjectManager::TakeObject(eObjectKey _Key, Vector3 _Position)
+Object* ObjectManager::NewObject(eObjectKey _Key, Vector3 _Position)
 {
 	Object* pObject = nullptr;
 
@@ -259,7 +259,7 @@ Object* ObjectManager::TakeObject(eObjectKey _Key, Vector3 _Position)
 	return pObject;
 }
 
-Bridge* ObjectManager::TakeBridge(eBridgeKey _Key)
+Bridge* ObjectManager::NewBridge(eBridgeKey _Key)
 {
 	Bridge* pBridge = nullptr;
 
@@ -337,6 +337,37 @@ list<Bridge*> ObjectManager::GetBridgeList(eBridgeKey _BridgeKey)
 		ResultList = FindIter->second;
 
 	return ResultList;
+}
+
+Object* ObjectManager::FindObjectWithTag(eTagName _TagName)
+{
+	for ( map<eObjectKey, list<Object*>>::iterator iter = EnableObjectList.begin();
+		iter != EnableObjectList.end(); ++iter )
+	{
+		for ( list<Object*>::iterator iter2 = iter->second.begin();
+			iter2 != iter->second.end(); ++iter2 )
+		{
+			if ( (*iter2)->GetTagName() == _TagName )
+				return (*iter2);
+		}
+	}
+	return nullptr;
+}
+
+Object* ObjectManager::FindObjectWithTag(eObjectKey _ObjectKey, eTagName _TagName)
+{
+	map<eObjectKey, list<Object*>>::iterator FindIter = EnableObjectList.find(_ObjectKey);
+	if ( FindIter != EnableObjectList.end() )
+	{
+		list<Object*> ObjectList = FindIter->second;
+		for ( Object* pObject : ObjectList )
+		{
+			if ( pObject->GetTagName() == _TagName )
+				return pObject;
+		}
+	}
+
+	return nullptr;
 }
 
 void ObjectManager::Release()

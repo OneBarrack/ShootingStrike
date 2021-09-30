@@ -91,3 +91,11 @@ enum class eBulletFiringType
 	NORMAL	,
 	GUIDE	,
 };
+
+enum class eTagName
+{
+	NONE				,
+	STAGE_BATTLE_GROUND ,
+	PLAYER				,
+	ENEMY_BOSS			,
+};
