@@ -48,6 +48,9 @@ public:
 	void Die() { bDied = true; };
 
 private:
+	// ** Stage 전장을 벗어났는지 체크
+	void CheckPositionInBkgBoundary();
+
 	// ** 플레이어의 캐릭터가 생성되는 애니메이션 동작. 
 	// ** 발생조건 : 최초 스타트 / 죽은 후 다시 살아나는 상황
 	bool RenderSpawn(HDC _hdc);

@@ -3,6 +3,8 @@
 #include "Player.h"
 #include "BitmapManager.h"
 #include "MathManager.h"
+#include "ObjectManager.h"
+#include "CollisionManager.h"
 
 Enemy::Enemy()
 	: HP(0)
@@ -73,11 +75,14 @@ void Enemy::Update()
 	// ** Direction 저장
 	TransInfo.Direction = MathManager::GetDirection(OldPosition, TransInfo.Position);
 
+	// ** Stage 전장을 벗어났는지 체크
+	CheckPositionInBkgBoundary();
+
 	// ** 직전 위치 정보 저장
 	OldPosition = TransInfo.Position;
 
 	// ** 충돌체 갱신
-	Collider = TransInfo;
+	SetCollider(TransInfo);
 
 	return;
 }
@@ -131,5 +136,29 @@ void Enemy::TakeDamage(int _Damage)
 	{
 		HP = 0;
 		bDied = true;
+	}
+}
+
+void Enemy::CheckPositionInBkgBoundary()
+{
+	// ** Stage 전장 배경
+	Object* pBackground = ObjectManager::GetInstance()->FindObjectWithTag(eObjectKey::BACKGROUND, eTagName::STAGE_MAIN_BKG);
+
+	// ** Stage의 바운더리
+	RectF BkgBoundary = pBackground->GetColliderF();
+
+	// ** Stage 바운더리 기준으로 Check 범위를 추가/감소 시킬 Offset
+	float Offset = 0.0f;
+
+	// ** 바운더리 크기 조정
+	BkgBoundary.Left -= Offset;
+	BkgBoundary.Top -= Offset;
+	BkgBoundary.Right += Offset;
+	BkgBoundary.Bottom += Offset;
+
+	// ** Stage의 바운더리 내 Position이 위치하지 않으면 Destroy
+	if ( !CollisionManager::IsPointInRect(BkgBoundary, TransInfo.Position) )
+	{
+		SetStatus(eObjectStatus::DESTROYED);
 	}
 }

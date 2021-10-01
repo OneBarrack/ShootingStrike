@@ -51,6 +51,10 @@ public:
 	void SetHitPoint(int _Point) { HitPoint = _Point; }
 	void SetDeathPoint(int _Point) { DeathPoint = _Point; }
 
+private:
+	// ** Stage 전장을 벗어났는지 체크
+	void CheckPositionInBkgBoundary();
+
 public:
 	Enemy();
 	Enemy(const Transform& _rTransInfo) : Object(_rTransInfo) { }

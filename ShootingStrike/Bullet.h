@@ -26,6 +26,10 @@ public:
 	Object* GetOwner() { return pOwner; }
 	int GetDamage() { return Damage; }
 
+private:
+	// ** Stage 전장을 벗어났는지 체크
+	void CheckPositionInBkgBoundary();
+
 public:
 	Bullet();
 	Bullet(const Transform& _rTransInfo) : Object(_rTransInfo) { }

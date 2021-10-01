@@ -95,7 +95,7 @@ enum class eBulletFiringType
 enum class eTagName
 {
 	NONE				,
-	STAGE_BATTLE_GROUND ,
-	PLAYER				,
+	STAGE_MAIN_BKG		,
+	PLAYER_FLIGHT1		,
 	ENEMY_BOSS			,
 };

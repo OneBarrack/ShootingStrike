@@ -39,7 +39,7 @@ void Stage::Initialize()
 	pBackground = ObjectManager::GetInstance()->NewObject(eObjectKey::BACKGROUND);
 	pBackground->SetBridge(pBridge);
 	pBackground->SetImage(eImageKey::STAGEBACK);
-	pBackground->SetTagName(eTagName::STAGE_BATTLE_GROUND);
+	pBackground->SetTagName(eTagName::STAGE_MAIN_BKG);
 	pBackground->SetPosition(WindowsWidth * 0.5f, WindowsHeight * 0.5f);
 	pBackground->SetScale(600, WindowsHeight);
 	pBackground->SetSpeed(0.5f);
@@ -88,9 +88,9 @@ void Stage::Update()
 	ObjectManager::GetInstance()->Update();
 
 	// ** 해당 오브젝트들이 메인 Background 내부를 벗어났는지 체크
-	CheckPositionInBkgBoundary(eObjectKey::PLAYER);
-	CheckPositionInBkgBoundary(eObjectKey::ENEMY);
-	CheckPositionInBkgBoundary(eObjectKey::BULLET);
+	//CheckPositionInBkgBoundary(eObjectKey::PLAYER);
+	//CheckPositionInBkgBoundary(eObjectKey::ENEMY);
+	//CheckPositionInBkgBoundary(eObjectKey::BULLET);
 }
 
 void Stage::Render(HDC _hdc)

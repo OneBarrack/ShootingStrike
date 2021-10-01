@@ -118,10 +118,12 @@ public:
 	void SetDirection(Vector3 _Direction) { TransInfo.Direction = _Direction; }
 	void SetDirection(float _x, float _y) { TransInfo.Direction.x = _x; TransInfo.Direction.y = _y; }
 
+	// ** 충돌체 Transform Setting
 	void SetCollider(Transform _Collider) { Collider = _Collider; }
+	void SetCollider(Vector3 _Position, Vector3 _Scale) { Collider.Position = _Position; Collider.Scale = _Scale; }
 
 	// ** 충돌체 Position Setting
-	void SetColliderPosition(Vector3 _position) { Collider.Position = _position; }
+	void SetColliderPosition(Vector3 _Position) { Collider.Position = _Position; }
 	void SetColliderPosition(float _x, float _y) { Collider.Position.x = _x; Collider.Position.y = _y; }
 
 	// ** 충돌체 Scale Setting

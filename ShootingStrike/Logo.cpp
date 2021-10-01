@@ -5,6 +5,7 @@
 #include "BitmapManager.h"
 #include "GameDataManager.h"
 #include "GameDebugManager.h"
+#include "InputManager.h"
 #include "ScrollHorizontalBkg.h"
 #include "BasicBkg.h"
 #include "Player.h"
@@ -76,6 +77,10 @@ void Logo::Update()
 
 		SceneManager::GetInstance()->SetScene(eSCENEID::STAGE);
 	}
+
+	// ** 임시 종료 테스트(ESC). 버튼 등 추가구현 필요
+	if ( CheckKeyInputState(eInputKey::KEY_ESCAPE, eKeyInputState::DOWN) )
+		PostQuitMessage(NULL);
 }
 
 void Logo::Render(HDC _hdc)

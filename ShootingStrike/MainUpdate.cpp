@@ -30,10 +30,7 @@ void MainUpdate::Initialize()
 
 void MainUpdate::Update()
 {
-	InputManager::GetInstance()->CheckKeyInput();
-
-	if ( CheckKeyInputState(eInputKey::KEY_ESCAPE, eKeyInputState::DOWN) )
-		PostQuitMessage(NULL);
+	InputManager::GetInstance()->CheckKeyInput();	
 
 	SceneManager::GetInstance()->Update();
 	GameDataManager::GetInstance()->Update();

@@ -33,7 +33,7 @@ void Player::Initialize()
 	Super::Initialize();
 
 	pPlayerImage = BitmapManager::GetInstance()->GetImage(eImageKey::PLAYER);
-	TagName = eTagName::PLAYER;
+	TagName = eTagName::PLAYER_FLIGHT1;
 
 	TransInfo.Position = Vector3(WindowsWidth * 0.5f, WindowsHeight * 0.5f);
 	TransInfo.Scale = Vector3(42.0f, 47.0f);
@@ -133,11 +133,14 @@ void Player::Update()
 	// ** Direction 저장
 	TransInfo.Direction = MathManager::GetDirection(OldPosition, TransInfo.Position);
 
+	// ** Stage 전장을 벗어났는지 체크
+	CheckPositionInBkgBoundary();
+
 	// ** 직전 위치 정보 저장
 	OldPosition = TransInfo.Position;
 
 	// ** 충돌체 갱신
-	Collider = TransInfo;
+	SetCollider(TransInfo);
 
 	return;
 }
@@ -240,6 +243,31 @@ void Player::TakeDamage(int _Damage)
 		HP = 0;
 		bDied = true;
 	}
+}
+
+void Player::CheckPositionInBkgBoundary()
+{
+	// ** Stage 전장 배경
+	Object* pBackground = ObjectManager::GetInstance()->FindObjectWithTag(eObjectKey::BACKGROUND, eTagName::STAGE_MAIN_BKG);
+
+	// ** Stage의 바운더리
+	RectF BkgBoundary = pBackground->GetColliderF();
+
+	// ** 테두리 경계선 기준에 몸체가 잘리지 않게 하기 위한 Offset 값
+	float Offset = 22.0f;
+
+	// ** 좌
+	if ( TransInfo.Position.x < BkgBoundary.Left + Offset )
+		TransInfo.Position.x = BkgBoundary.Left + Offset;
+	// ** 우
+	if ( TransInfo.Position.x > BkgBoundary.Right - Offset )
+		TransInfo.Position.x = BkgBoundary.Right - Offset;
+	// ** 상
+	if ( TransInfo.Position.y < BkgBoundary.Top + Offset )
+		TransInfo.Position.y = BkgBoundary.Top + Offset;
+	// ** 하
+	if ( TransInfo.Position.y > BkgBoundary.Bottom - Offset )
+		TransInfo.Position.y = BkgBoundary.Bottom - Offset;
 }
 
 bool Player::RenderSpawn(HDC _hdc)
