@@ -92,13 +92,6 @@ enum class eBulletType
 	GUIDE	,
 };
 
-enum class eBulletSpawnPattern
-{
-	NONE		,
-	SPIN		,
-	MULTI_SPIN	,
-};
-
 enum class eTagName
 {
 	NONE			,
