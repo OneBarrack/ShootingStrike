@@ -13,7 +13,7 @@ NormalBullet::~NormalBullet()
 
 void NormalBullet::Initialize()
 {
-	Key = eBridgeKey::BULLET_NORMAL;
+	key = eBridgeKey::BULLET_NORMAL;
 }
 
 void NormalBullet::Update()
@@ -21,8 +21,8 @@ void NormalBullet::Update()
 	// ** Owner의 데이터를 받아옴
 	ReceiveInfoFromOwner();
 
-	TransInfo.Position.x += TransInfo.Direction.x * Speed;
-	TransInfo.Position.y += TransInfo.Direction.y * Speed;
+	transInfo.Position.x += transInfo.Direction.x * speed;
+	transInfo.Position.y += transInfo.Direction.y * speed;
 
 	// ** Owner로 가공된 데이터 전달
 	SendInfoToOwner();

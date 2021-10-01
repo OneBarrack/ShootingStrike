@@ -6,12 +6,12 @@
 #include "Enemy.h"
 #include "Bullet.h"
 
-ObjectManager* ObjectManager::Instance = nullptr;
+ObjectManager* ObjectManager::pInstance = nullptr;
 
 void ObjectManager::Initialize()
 {
-	PrototypeObject = new Prototype;
-	PrototypeObject->CreatePrototype();
+	pPrototypeObject = new Prototype;
+	pPrototypeObject->CreatePrototype();
 }
 
 void ObjectManager::Update()
@@ -21,21 +21,21 @@ void ObjectManager::Update()
 
 	// ** 모든 오브젝트의 Status를 체크하여 Update 또는 Recall 처리
 	auto enableList = ObjectManager::GetInstance()->GetEnableObjectList();
-	for ( auto ListIter1 = enableList->begin(); ListIter1 != enableList->end(); ++ListIter1 )
+	for ( auto listIter = enableList->begin(); listIter != enableList->end(); ++listIter )
 	{
-		for ( auto ObjIter1 = ListIter1->second.begin(); ObjIter1 != ListIter1->second.end(); )
+		for ( auto objIter = listIter->second.begin(); objIter != listIter->second.end(); )
 		{
 			// ** Status를 체크하여 Update 또는 Recall 해준다
-			switch ( (*ObjIter1)->GetStatus() )
+			switch ( (*objIter)->GetStatus() )
 			{
 				case eObjectStatus::DESTROYED:
-					RecallObject(*ObjIter1++);
+					RecallObject(*objIter++);
 					break;
 				case eObjectStatus::ACTIVATED:
-					(*ObjIter1)->Update(); // ** Update
+					(*objIter)->Update(); // ** Update
 					[[fallthrough]];
 				default:
-					++ObjIter1;
+					++objIter;
 					break;
 			}
 		}
@@ -47,25 +47,25 @@ void ObjectManager::Render(HDC _hdc)
 	// ** 모든 Object Rendering
 	// ** Buffer MemDC에 모두 그린 후 memDC를 hdc와 스왑시켜 그린다
 	map<eObjectKey, list<Object*>>* enableList = ObjectManager::GetInstance()->GetEnableObjectList();
-	for ( map<eObjectKey, list<Object*>>::iterator iter = enableList->begin();
-		iter != enableList->end(); ++iter )
+	for ( map<eObjectKey, list<Object*>>::iterator listIter = enableList->begin();
+		listIter != enableList->end(); ++listIter )
 	{
-		for ( list<Object*>::iterator iter2 = iter->second.begin();
-			iter2 != iter->second.end(); ++iter2 )
+		for ( list<Object*>::iterator objIter = listIter->second.begin();
+			objIter != listIter->second.end(); ++objIter )
 		{
-			if ( (*iter2)->GetStatus() == eObjectStatus::ACTIVATED )
+			if ( (*objIter)->GetStatus() == eObjectStatus::ACTIVATED )
 			{
-				(*iter2)->Render(_hdc);
+				(*objIter)->Render(_hdc);
 			}
 		}
 	}
 }
 
-Object* ObjectManager::CreateObject(eObjectKey _Key)
+Object* ObjectManager::CreateObject(eObjectKey _key)
 {
 	// ** 새로운 객체를 생성해주어야 한다. 생성은 원형 객체를 복사생성하는 방식으로 생성할 것이다.
 	// ** 그러려면 먼저 원형객체가 존재하는지 찾는다.
-	Object* pProtoObject = PrototypeObject->FindPrototypeObject(_Key);
+	Object* pProtoObject = pPrototypeObject->FindPrototypeObject(_key);
 
 	// ** 원형객체가 없다면....
 	if ( pProtoObject == nullptr )
@@ -78,11 +78,11 @@ Object* ObjectManager::CreateObject(eObjectKey _Key)
 	return pObject;
 }
 
-Object* ObjectManager::CreateObject(eObjectKey _Key, Vector3 _Position)
+Object* ObjectManager::CreateObject(eObjectKey _key, Vector3 _position)
 {
 	// ** 새로운 객체를 생성해주어야 한다. 생성은 원형 객체를 복사생성하는 방식으로 생성할 것이다.
 	// ** 그러려면 먼저 원형객체가 존재하는지 찾는다.
-	Object* pProtoObject = PrototypeObject->FindPrototypeObject(_Key);
+	Object* pProtoObject = pPrototypeObject->FindPrototypeObject(_key);
 
 	// ** 원형객체가 없다면....
 	if ( pProtoObject == nullptr )
@@ -91,16 +91,16 @@ Object* ObjectManager::CreateObject(eObjectKey _Key, Vector3 _Position)
 	// ** 원형 객체를 찾았다면 원형객체를 복사 생성한다.
 	Object* pObject = pProtoObject->Clone();
 	pObject->Initialize();
-	pObject->SetPosition(_Position);
+	pObject->SetPosition(_position);
 
 	return pObject;
 }
 
-Bridge* ObjectManager::CreateBridge(eBridgeKey _Key)
+Bridge* ObjectManager::CreateBridge(eBridgeKey _key)
 {
 	// ** 새로운 객체를 생성해주어야 한다. 생성은 원형 객체를 복사생성하는 방식으로 생성할 것이다.
 	// ** 그러려면 먼저 원형객체가 존재하는지 찾는다.
-	Bridge* pProtoBridge = PrototypeObject->FindPrototypeBridge(_Key);
+	Bridge* pProtoBridge = pPrototypeObject->FindPrototypeBridge(_key);
 
 	// ** 원형객체가 없다면....
 	if ( pProtoBridge == nullptr )
@@ -113,78 +113,78 @@ Bridge* ObjectManager::CreateBridge(eBridgeKey _Key)
 	return pBridge;
 }
 
-void ObjectManager::AddObject(map<eObjectKey, list<Object*>>& _TargetList, Object* _pObject)
+void ObjectManager::AddObject(map<eObjectKey, list<Object*>>& _targetList, Object* _pObject)
 {
 	// ** 키값으로 탐색후 탐색이 완료된 결과물을 반환.
-	map<eObjectKey, list<Object*>>::iterator ListIter = _TargetList.find(_pObject->GetKey());
+	map<eObjectKey, list<Object*>>::iterator listIter = _targetList.find(_pObject->GetKey());
 
 	// ** 만약 결과물이 존재하지 않는다면....
-	if ( ListIter == _TargetList.end() )
+	if ( listIter == _targetList.end() )
 	{
 		// ** 새로운 리스트를 생성.
-		list<Object*> TempList;
+		list<Object*> tempList;
 
-		TempList.push_back(_pObject);
+		tempList.push_back(_pObject);
 
 		// ** 오브젝트가 추가된 리스트를 맵에 삽입.
-		_TargetList.insert(make_pair(_pObject->GetKey(), TempList));
+		_targetList.insert(make_pair(_pObject->GetKey(), tempList));
 	}
 	// ** 결과물이 존재 한다면...
 	else
 	{
 		// ** 해당 리스트에 오브젝트를 추가
-		ListIter->second.push_back(_pObject);
+		listIter->second.push_back(_pObject);
 	}
 }
 
-void ObjectManager::AddBridge(map<eBridgeKey, list<Bridge*>>& _TargetList, Bridge* _pBridge)
+void ObjectManager::AddBridge(map<eBridgeKey, list<Bridge*>>& _targetList, Bridge* _pBridge)
 {
 	// ** 키값으로 탐색후 탐색이 완료된 결과물을 반환.
-	map<eBridgeKey, list<Bridge*>>::iterator ListIter = _TargetList.find(_pBridge->GetKey());
+	map<eBridgeKey, list<Bridge*>>::iterator listIter = _targetList.find(_pBridge->GetKey());
 
 	// ** 만약 결과물이 존재하지 않는다면....
-	if ( ListIter == _TargetList.end() )
+	if ( listIter == _targetList.end() )
 	{
 		// ** 새로운 리스트를 생성.
-		list<Bridge*> TempList;
+		list<Bridge*> tempList;
 
-		TempList.push_back(_pBridge);
+		tempList.push_back(_pBridge);
 
 		// ** 오브젝트가 추가된 리스트를 맵에 삽입.
-		_TargetList.insert(make_pair(_pBridge->GetKey(), TempList));
+		_targetList.insert(make_pair(_pBridge->GetKey(), tempList));
 	}
 	// ** 결과물이 존재 한다면...
 	else
 	{
 		// ** 해당 리스트에 오브젝트를 추가
-		ListIter->second.push_back(_pBridge);
+		listIter->second.push_back(_pBridge);
 	}
 }
 
 void ObjectManager::CheckCollision()
 {
-	auto EnableList = ObjectManager::GetInstance()->GetEnableObjectList();
-	for ( auto ListIter1 = EnableList->begin(); ListIter1 != EnableList->end(); ++ListIter1 )
+	auto enableList = ObjectManager::GetInstance()->GetEnableObjectList();
+	for ( auto listIter1 = enableList->begin(); listIter1 != enableList->end(); ++listIter1 )
 	{
-		for ( auto ObjIter1 = ListIter1->second.begin(); ObjIter1 != ListIter1->second.end(); ++ObjIter1 )
+		for ( auto objIter1 = listIter1->second.begin(); objIter1 != listIter1->second.end(); ++objIter1 )
 		{
-			if ( (*ObjIter1)->IsGeneratedCollisionEvent() == false )
+			if ( (*objIter1)->IsGeneratedCollisionEvent() == false )
 				continue;
 
 			// ** 전체 Object간 충돌체크
-			auto ListIter2 = ListIter1;
-			for ( ++ListIter2; ListIter2 != EnableList->end(); ++ListIter2 )
+			auto listIter2 = listIter1;
+			for ( ++listIter2; listIter2 != enableList->end(); ++listIter2 )
 			{
-				for ( auto ObjIter2 = ListIter2->second.begin(); ObjIter2 != ListIter2->second.end(); ++ObjIter2 )
+				for ( auto objIter2 = listIter2->second.begin(); objIter2 != listIter2->second.end(); ++objIter2 )
 				{
-					if ( (*ObjIter2)->IsGeneratedCollisionEvent() == false )
+					if ( (*objIter2)->IsGeneratedCollisionEvent() == false )
 						continue;
 
-					if ( CollisionManager::IsCollision(*ObjIter1, *ObjIter2) )
+					if ( CollisionManager::IsCollision(*objIter1, *objIter2) )
 					{
 						// 충돌 트리거 발동
-						(*ObjIter1)->OnCollision(*ObjIter2);
-						(*ObjIter2)->OnCollision(*ObjIter1);
+						(*objIter1)->OnCollision(*objIter2);
+						(*objIter2)->OnCollision(*objIter1);
 					}
 				}
 			}
@@ -193,21 +193,21 @@ void ObjectManager::CheckCollision()
 }
 
 // ** 컨테이너에서 객체를 찾아서 반환. 없다면 Prototype 생성 후 반환
-Object* ObjectManager::NewObject(eObjectKey _Key)
+Object* ObjectManager::NewObject(eObjectKey _key)
 {
 	Object* pObject = nullptr;
 
 	// ** DisableList에 생성하려는 오브젝트가 있는지 확인.
-	map<eObjectKey, list<Object*>>::iterator iter = DisableObjectList.find(_Key);
+	map<eObjectKey, list<Object*>>::iterator iter = disableObjectList.find(_key);
 
 	// ** 없으면..
-	if ( iter == DisableObjectList.end() || iter->second.empty() )
+	if ( iter == disableObjectList.end() || iter->second.empty() )
 	{
 		// ** Object를 새로 생성하여 EnableList에 추가
-		pObject = CreateObject(_Key);
+		pObject = CreateObject(_key);
 		if ( pObject != nullptr )
 		{
-			AddObject(EnableObjectList, pObject);
+			AddObject(enableObjectList, pObject);
 		}
 	}
 	// ** 있으면..
@@ -218,7 +218,7 @@ Object* ObjectManager::NewObject(eObjectKey _Key)
 		pObject->Initialize();		
 
 		// ** 추출한 Object를 EnableList에 추가 후 DisableList에서 삭제
-		AddObject(EnableObjectList, pObject);
+		AddObject(enableObjectList, pObject);
 		iter->second.pop_front();
 	}
 
@@ -226,21 +226,21 @@ Object* ObjectManager::NewObject(eObjectKey _Key)
 }
 
 // ** 컨테이너에서 객체를 찾아서 반환. 없다면 Prototype 생성 후 반환
-Object* ObjectManager::NewObject(eObjectKey _Key, Vector3 _Position)
+Object* ObjectManager::NewObject(eObjectKey _key, Vector3 _position)
 {
 	Object* pObject = nullptr;
 
 	// ** DisableList에 생성하려는 오브젝트가 있는지 확인.
-	map<eObjectKey, list<Object*>>::iterator iter = DisableObjectList.find(_Key);
+	map<eObjectKey, list<Object*>>::iterator iter = disableObjectList.find(_key);
 
 	// ** 없으면.....
-	if (iter == DisableObjectList.end() || iter->second.empty())
+	if (iter == disableObjectList.end() || iter->second.empty())
 	{
 		// ** Object를 새로 생성하여 EnableList에 추가
-		pObject = CreateObject(_Key, _Position);
+		pObject = CreateObject(_key, _position);
 		if ( pObject != nullptr )
 		{
-			AddObject(EnableObjectList, pObject);
+			AddObject(enableObjectList, pObject);
 		}
 	}
 	// ** 있으면..
@@ -249,31 +249,31 @@ Object* ObjectManager::NewObject(eObjectKey _Key, Vector3 _Position)
 		// ** DisableList의 앞 Object를 추출.
 		pObject = iter->second.front();
 		pObject->Initialize();
-		pObject->SetPosition(_Position);
+		pObject->SetPosition(_position);
 
 		// ** 추출한 Object를 EnableList에 추가 후 DisableList에서 삭제
-		AddObject(EnableObjectList, pObject);
+		AddObject(enableObjectList, pObject);
 		iter->second.pop_front();
 	}
 
 	return pObject;
 }
 
-Bridge* ObjectManager::NewBridge(eBridgeKey _Key)
+Bridge* ObjectManager::NewBridge(eBridgeKey _key)
 {
 	Bridge* pBridge = nullptr;
 
 	// ** DisableList에 생성하려는 오브젝트가 있는지 확인.
-	map<eBridgeKey, list<Bridge*>>::iterator iter = DisableBridgeList.find(_Key);
+	map<eBridgeKey, list<Bridge*>>::iterator iter = disableBridgeList.find(_key);
 
 	// ** 없으면..
-	if ( iter == DisableBridgeList.end() || iter->second.empty() )
+	if ( iter == disableBridgeList.end() || iter->second.empty() )
 	{
 		// ** Bridge를 새로 생성하여 EnableList에 추가
-		pBridge = CreateBridge(_Key);
+		pBridge = CreateBridge(_key);
 		if ( pBridge != nullptr )
 		{
-			AddBridge(EnableBridgeList, pBridge);
+			AddBridge(enableBridgeList, pBridge);
 		}
 	}
 	// ** 있으면..
@@ -284,7 +284,7 @@ Bridge* ObjectManager::NewBridge(eBridgeKey _Key)
 		pBridge->Initialize();
 
 		// ** 추출한 Bridge를 EnableList에 추가 후 DisableList에서 삭제
-		AddBridge(EnableBridgeList, pBridge);
+		AddBridge(enableBridgeList, pBridge);
 		iter->second.pop_front();
 	}
 
@@ -297,11 +297,11 @@ void ObjectManager::RecallObject(Object* _pObject)
 	_pObject->Release();
 	
 	// ** 키값으로 Enable ObjectList를 탐색하여 리스트 내 해당 Object 공간 삭제.
-	list<Object*>& ObjectList = EnableObjectList.find(_pObject->GetKey())->second;
-	ObjectList.erase(find(ObjectList.begin(), ObjectList.end(), _pObject));
+	list<Object*>& objectList = enableObjectList.find(_pObject->GetKey())->second;
+	objectList.erase(find(objectList.begin(), objectList.end(), _pObject));
 	
 	// ** 해당 Object를 DisableList에 추가.
-	AddObject(DisableObjectList, _pObject);
+	AddObject(disableObjectList, _pObject);
 }
 
 void ObjectManager::RecallBridge(Bridge* _pBridge)
@@ -310,59 +310,55 @@ void ObjectManager::RecallBridge(Bridge* _pBridge)
 	_pBridge->Release();
 
 	// ** 키값으로 Enable BridgeList를 탐색하여 리스트 내 해당 Bridge 공간 삭제.
-	list<Bridge*>& BridgeList = EnableBridgeList.find(_pBridge->GetKey())->second;
-	BridgeList.erase(find(BridgeList.begin(), BridgeList.end(), _pBridge));
+	list<Bridge*>& bridgeList = enableBridgeList.find(_pBridge->GetKey())->second;
+	bridgeList.erase(find(bridgeList.begin(), bridgeList.end(), _pBridge));
 
 	// ** 해당 Bridge를 DisableList에 추가.
-	AddBridge(DisableBridgeList, _pBridge);
+	AddBridge(disableBridgeList, _pBridge);
 }
 
-list<Object*> ObjectManager::GetObjectList(eObjectKey _ObjectKey)
+list<Object*> ObjectManager::GetObjectList(eObjectKey _objectKey)
 {
-	list<Object*> ResultList;
+	auto FindIter = enableObjectList.find(_objectKey);
+	if ( FindIter != enableObjectList.end() )
+		return FindIter->second;
 
-	auto FindIter = EnableObjectList.find(_ObjectKey);
-	if ( FindIter != EnableObjectList.end() )
-		ResultList = FindIter->second;
-
-	return ResultList;
+	return list<Object*>();
 }
 
-list<Bridge*> ObjectManager::GetBridgeList(eBridgeKey _BridgeKey)
+list<Bridge*> ObjectManager::GetBridgeList(eBridgeKey _bridgeKey)
 {
-	list<Bridge*> ResultList;
+	auto FindIter = enableBridgeList.find(_bridgeKey);
+	if ( FindIter != enableBridgeList.end() )
+		return FindIter->second;
 
-	auto FindIter = EnableBridgeList.find(_BridgeKey);
-	if ( FindIter != EnableBridgeList.end() )
-		ResultList = FindIter->second;
-
-	return ResultList;
+	return list<Bridge*>();
 }
 
-Object* ObjectManager::FindObjectWithTag(eTagName _TagName)
+Object* ObjectManager::FindObjectWithTag(eTagName _tagName)
 {
-	for ( map<eObjectKey, list<Object*>>::iterator iter = EnableObjectList.begin();
-		iter != EnableObjectList.end(); ++iter )
+	for ( map<eObjectKey, list<Object*>>::iterator listIter = enableObjectList.begin();
+		listIter != enableObjectList.end(); ++listIter )
 	{
-		for ( list<Object*>::iterator iter2 = iter->second.begin();
-			iter2 != iter->second.end(); ++iter2 )
+		for ( list<Object*>::iterator objIter = listIter->second.begin();
+			objIter != listIter->second.end(); ++objIter )
 		{
-			if ( (*iter2)->GetTagName() == _TagName )
-				return (*iter2);
+			if ( (*objIter)->GetTagName() == _tagName )
+				return (*objIter);
 		}
 	}
 	return nullptr;
 }
 
-Object* ObjectManager::FindObjectWithTag(eObjectKey _ObjectKey, eTagName _TagName)
+Object* ObjectManager::FindObjectWithTag(eObjectKey _objectKey, eTagName _tagName)
 {
-	map<eObjectKey, list<Object*>>::iterator FindIter = EnableObjectList.find(_ObjectKey);
-	if ( FindIter != EnableObjectList.end() )
+	map<eObjectKey, list<Object*>>::iterator findIter = enableObjectList.find(_objectKey);
+	if ( findIter != enableObjectList.end() )
 	{
-		list<Object*> ObjectList = FindIter->second;
-		for ( Object* pObject : ObjectList )
+		list<Object*> objectList = findIter->second;
+		for ( Object* pObject : objectList )
 		{
-			if ( pObject->GetTagName() == _TagName )
+			if ( pObject->GetTagName() == _tagName )
 				return pObject;
 		}
 	}
@@ -384,52 +380,52 @@ void ObjectManager::Release()
 	*/
 
 	// ** Recall Enable Object
-	for ( map<eObjectKey, list<Object*>>::iterator iter = EnableObjectList.begin();
-		iter != EnableObjectList.end(); ++iter )
+	for ( map<eObjectKey, list<Object*>>::iterator listIter = enableObjectList.begin();
+		listIter != enableObjectList.end(); ++listIter )
 	{
-		for ( list<Object*>::iterator iter2 = iter->second.begin();
-			iter2 != iter->second.end(); )
+		for ( list<Object*>::iterator objIter = listIter->second.begin();
+			objIter != listIter->second.end(); )
 		{
-			RecallObject((*iter2++));
+			RecallObject((*objIter++));
 		}
 	}
-	EnableObjectList.clear();
+	enableObjectList.clear();
 	
 	// ** Recall Enable Bridge
-	for ( map<eBridgeKey, list<Bridge*>>::iterator iter = EnableBridgeList.begin();
-		iter != EnableBridgeList.end(); ++iter )
+	for ( map<eBridgeKey, list<Bridge*>>::iterator listIter = enableBridgeList.begin();
+		listIter != enableBridgeList.end(); ++listIter )
 	{
-		for ( list<Bridge*>::iterator iter2 = iter->second.begin();
-			iter2 != iter->second.end(); )
+		for ( list<Bridge*>::iterator bridgeIter = listIter->second.begin();
+			bridgeIter != listIter->second.end(); )
 		{
-			RecallBridge((*iter2++));
+			RecallBridge((*bridgeIter++));
 		}
 	}
-	EnableBridgeList.clear();
+	enableBridgeList.clear();
 
 	// ** Delete Object
-	for (map<eObjectKey, list<Object*>>::iterator iter = DisableObjectList.begin();
-		iter != DisableObjectList.end(); ++iter)
+	for (map<eObjectKey, list<Object*>>::iterator listIter = disableObjectList.begin();
+		listIter != disableObjectList.end(); ++listIter)
 	{
-		for (list<Object*>::iterator iter2 = iter->second.begin();
-			iter2 != iter->second.end(); ++iter2)
+		for (list<Object*>::iterator objIter = listIter->second.begin();
+			objIter != listIter->second.end(); ++objIter)
 		{
-			::Safe_Delete((*iter2));
+			::Safe_Delete((*objIter));
 		}
-		iter->second.clear();
+		listIter->second.clear();
 	}
-	DisableObjectList.clear();	
+	disableObjectList.clear();	
 
 	// ** Delete Bridge		
-	for ( map<eBridgeKey, list<Bridge*>>::iterator iter = DisableBridgeList.begin();
-		iter != DisableBridgeList.end(); ++iter )
+	for ( map<eBridgeKey, list<Bridge*>>::iterator listIter = disableBridgeList.begin();
+		listIter != disableBridgeList.end(); ++listIter )
 	{
-		for ( list<Bridge*>::iterator iter2 = iter->second.begin();
-			iter2 != iter->second.end(); ++iter2 )
+		for ( list<Bridge*>::iterator bridgeIter = listIter->second.begin();
+			bridgeIter != listIter->second.end(); ++bridgeIter )
 		{
-			::Safe_Delete((*iter2));
+			::Safe_Delete((*bridgeIter));
 		}
-		iter->second.clear();
+		listIter->second.clear();
 	}
-	DisableBridgeList.clear();
+	disableBridgeList.clear();
 }

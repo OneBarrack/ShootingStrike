@@ -4,24 +4,24 @@
 class BitmapManager
 {
 private:
-	static BitmapManager* Instance;
+	static BitmapManager* pInstance;
 public:
 	static BitmapManager* GetInstance()
 	{
-		if ( Instance == nullptr )
-			Instance = new BitmapManager;
+		if ( pInstance == nullptr )
+			pInstance = new BitmapManager;
 
-		return Instance;
+		return pInstance;
 	}
 
 public:
 	void Initialize();
-	Bitmap* GetImage(const eImageKey _Key);
+	Bitmap* GetImage(const eImageKey _key);
 
 private:
 	// imageKey enum값을 Key로 가지는 Bitmap List
-	map<eImageKey, Bitmap*> ImageList;
+	map<eImageKey, Bitmap*> imageList;
 
 public:
-	const map<eImageKey, Bitmap*> GetImageList() { return ImageList; }
+	const map<eImageKey, Bitmap*> GetImageList() { return imageList; }
 };

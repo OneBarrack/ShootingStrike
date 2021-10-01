@@ -10,17 +10,15 @@
 #include "Enemy.h"
 
 Player::Player()
-	: pPlayerImage(nullptr)
-	, HP(0)
-	, Damage(0)
-	, Level(0)
-	, FiringType(eBulletFiringType::NORMAL)
+	: HP(0)
+	, damage(0)
+	, level(0)
+	, bulletType(eBulletType::NORMAL)
 	, bSpawing(false)
 	, bAttacking(false)
 	, bTakeDamage(false)
 	, bDied(false)
-	, Frame(0)
-	, OldPosition(Vector3())
+	, oldPosition(Vector3())
 {
 }
 
@@ -32,36 +30,32 @@ void Player::Initialize()
 {
 	Super::Initialize();
 
-	pPlayerImage = BitmapManager::GetInstance()->GetImage(eImageKey::PLAYER);
-	TagName = eTagName::PLAYER_FLIGHT1;
+	pImage = BitmapManager::GetInstance()->GetImage(eImageKey::PLAYER);
+	tagName = eTagName::PLAYER_FLIGHT1;
 
-	TransInfo.Position = Vector3(WindowsWidth * 0.5f, WindowsHeight * 0.5f);
-	TransInfo.Scale = Vector3(42.0f, 47.0f);
+	transInfo.Position = Vector3(WINDOWS_WIDTH * 0.5f, WINDOWS_HEIGHT * 0.5f);
+	transInfo.Scale = Vector3(42.0f, 47.0f);
 
-	Collider.Position = TransInfo.Position;
-	Collider.Scale = TransInfo.Scale;
+	collider.Position = transInfo.Position;
+	collider.Scale = transInfo.Scale;
 
-	Key = eObjectKey::PLAYER;
-	Status = eObjectStatus::DEACTIVATED;
-	CollisionType = eCollisionType::RECT;
-	OldPosition = TransInfo.Position;
+	key = eObjectKey::PLAYER;
+	status = eObjectStatus::DEACTIVATED;
+	collisionType = eCollisionType::RECT;
+	oldPosition = transInfo.Position;
 	bGenerateCollisionEvent = true;
 
 	HP = 3;
-	Damage = 1;
-	Level = 1;
-	FiringType = eBulletFiringType::NORMAL;
+	damage = 1;
+	level = 1;
+	bulletType = eBulletType::NORMAL;
 
 	bSpawing = false;
 	bAttacking = false;
 	bTakeDamage = false;
 	bDied = false;
 
-	Speed = 3.0f;
-	Frame = 0;
-	
-
-	Offset = Vector3(95.0f, -85.0f);
+	speed = 3.0f;
 }
 
 void Player::Update()
@@ -70,12 +64,10 @@ void Player::Update()
 
 	// ** 수정 작업 필요
 
-	Frame++;
-
 	if ( bDied )
 	{
 		HP = 3;
-		Level = 1;
+		level = 1;
 		bDied = false;
 		bSpawing = true;
 	}
@@ -96,33 +88,33 @@ void Player::Update()
 
 		#ifdef GAME_DEBUG_MODE
 		// _Debug_
-		if ( CheckKeyInputState(eInputKey::KEY_ENTER, eKeyInputState::DOWN) )
+		if ( CHECK_KEYINPUT_STATE(eInputKey::KEY_ENTER, eKeyInputState::DOWN) )
 		{
-			Level++;
+			level++;
 		}
 		#endif // GAME_DEBUG_MODE
 
-		if ( CheckKeyInputState(eInputKey::KEY_LEFT, eKeyInputState::PRESSED) )
+		if ( CHECK_KEYINPUT_STATE(eInputKey::KEY_LEFT, eKeyInputState::PRESSED) )
 		{
-			TransInfo.Position.x -= 3;
+			transInfo.Position.x -= 3;
 		}
-		if ( CheckKeyInputState(eInputKey::KEY_UP, eKeyInputState::PRESSED) )
+		if ( CHECK_KEYINPUT_STATE(eInputKey::KEY_UP, eKeyInputState::PRESSED) )
 		{
-			TransInfo.Position.y -= 3;
+			transInfo.Position.y -= 3;
 		}
-		if ( CheckKeyInputState(eInputKey::KEY_RIGHT, eKeyInputState::PRESSED) )
+		if ( CHECK_KEYINPUT_STATE(eInputKey::KEY_RIGHT, eKeyInputState::PRESSED) )
 		{
-			TransInfo.Position.x += 3;
+			transInfo.Position.x += 3;
 		}
-		if ( CheckKeyInputState(eInputKey::KEY_DOWN, eKeyInputState::PRESSED) )
+		if ( CHECK_KEYINPUT_STATE(eInputKey::KEY_DOWN, eKeyInputState::PRESSED) )
 		{
-			TransInfo.Position.y += 3;
+			transInfo.Position.y += 3;
 		}
 
 		// ** 미사일 발사
-		if ( CheckKeyInputState(eInputKey::KEY_SPACE, eKeyInputState::DOWN) )
+		if ( CHECK_KEYINPUT_STATE(eInputKey::KEY_SPACE, eKeyInputState::DOWN) )
 		{
-			Fire(FiringType, Level, Damage);
+			Fire(bulletType, level, damage);
 		}
 		else
 		{
@@ -131,16 +123,16 @@ void Player::Update()
 	}
 
 	// ** Direction 저장
-	TransInfo.Direction = MathManager::GetDirection(OldPosition, TransInfo.Position);
+	transInfo.Direction = MathManager::GetDirection(oldPosition, transInfo.Position);
 
 	// ** Stage 전장을 벗어났는지 체크
 	CheckPositionInBkgBoundary();
 
 	// ** 직전 위치 정보 저장
-	OldPosition = TransInfo.Position;
+	oldPosition = transInfo.Position;
 
 	// ** 충돌체 갱신
-	SetCollider(TransInfo);
+	SetCollider(transInfo);
 
 	return;
 }
@@ -174,47 +166,47 @@ void Player::Render(HDC _hdc)
 	RenderPlayer(_hdc);	
 }
 
-void Player::Fire(eBulletFiringType _FiringType, int _Level, int _Damage)
+void Player::Fire(eBulletType _firingType, int _level, int _damage)
 {
 	Bridge* pBridge = nullptr;
 
-	switch ( _FiringType )
+	switch ( _firingType )
 	{
-		case eBulletFiringType::NORMAL:
+		case eBulletType::NORMAL:
 		{
 			// ** Level 만큼 총알 숫자를 늘리고, 상방 기준 총알 간 간격에 대한 각도를 설정하여
 			// ** 부채꼴 형태로 발사되도록 한다.
 			// ** angleGap : 총알간 간격 각도
 			int angleGap = 10;
-			int startAngle = 90 - static_cast<int>(angleGap * 0.5 * (_Level - 1));
+			int startAngle = 90 - static_cast<int>(angleGap * 0.5 * (_level - 1));
 			
-			for ( int i = 0; i < _Level; ++i )
+			for ( int i = 0; i < _level; ++i )
 			{
 				// ** 상방 기준 현재 각도
 				int angle = startAngle + (angleGap * i);
 
 				// ** Bullet의 TransInfo 설정
-				Transform BulletTransInfo;
-				BulletTransInfo.Position  = TransInfo.Position;
-				BulletTransInfo.Scale	  = Vector3(10.0f, 10.0f);
-				BulletTransInfo.Direction = Vector3(cosf(angle * PI / 180), -sinf(angle * PI / 180));
+				Transform bulletTransInfo;
+				bulletTransInfo.Position  = transInfo.Position;
+				bulletTransInfo.Scale	  = Vector3(10.0f, 10.0f);
+				bulletTransInfo.Direction = Vector3(cosf(angle * PI / 180), -sinf(angle * PI / 180));
 				
 				// ** Bullet의 Speed 설정
-				float BulletSpeed = 3.0f;
+				float bulletSpeed = 3.0f;
 
 				// ** Bullet Spawn
-				SpawnManager::SpawnBullet(this, BulletTransInfo, BulletSpeed, _Damage, _FiringType);
+				SpawnManager::SpawnBullet(this, bulletTransInfo, bulletSpeed, _damage, _firingType);
 			}
 			break;
 		} 		
-		case eBulletFiringType::GUIDE:
+		case eBulletType::GUIDE:
 			break;
 		default:
 			break;
 	}	
 }
 
-void Player::ApplyDamage(Object* _pTarget, int _Damage)
+void Player::ApplyDamage(Object* _pTarget, int _damage)
 {
 	// ** 데미지를 가함
 	switch ( _pTarget->GetKey() )
@@ -222,20 +214,21 @@ void Player::ApplyDamage(Object* _pTarget, int _Damage)
 		case eObjectKey::ENEMY:
 		{
 			Enemy* pEnemy = static_cast<Enemy*>(_pTarget);
-			pEnemy->TakeDamage(_Damage);
+			pEnemy->TakeDamage(_damage);
 			
-			// ** Enemy가 죽었다면 DeathPoint, Hit만 했다면 HitPoint Score를 받아온다.
-			bool aaa = pEnemy->IsDead();
-			int Score = pEnemy->IsDead() ? pEnemy->GetDeathPoint() : pEnemy->GetHitPoint();
-			GameDataManager::GetInstance()->AddScore(Score);
-		}
-		break;
+			// ** Enemy가 죽었다면 DeathPoint, Hit만 했다면 HitPoint Score를 받아온다.			
+			int score = pEnemy->IsDead() ? pEnemy->GetDeathPoint() : pEnemy->GetHitPoint();
+			GameDataManager::GetInstance()->AddScore(score);
+			break;
+		}		
+		default:
+			break;
 	}	
 }
 
-void Player::TakeDamage(int _Damage)
+void Player::TakeDamage(int _damage)
 {
-	HP -= _Damage;
+	HP -= _damage;
 	bTakeDamage = true;
 
 	if ( HP <= 0 )
@@ -251,82 +244,85 @@ void Player::CheckPositionInBkgBoundary()
 	Object* pBackground = ObjectManager::GetInstance()->FindObjectWithTag(eObjectKey::BACKGROUND, eTagName::STAGE_MAIN_BKG);
 
 	// ** Stage의 바운더리
-	RectF BkgBoundary = pBackground->GetColliderF();
+	RectF bkgBoundary = pBackground->GetColliderF();
 
 	// ** 테두리 경계선 기준에 몸체가 잘리지 않게 하기 위한 Offset 값
-	float Offset = 22.0f;
+	float offset = 22.0f;
 
 	// ** 좌
-	if ( TransInfo.Position.x < BkgBoundary.Left + Offset )
-		TransInfo.Position.x = BkgBoundary.Left + Offset;
+	if ( transInfo.Position.x < bkgBoundary.Left + offset )
+		transInfo.Position.x = bkgBoundary.Left + offset;
 	// ** 우
-	if ( TransInfo.Position.x > BkgBoundary.Right - Offset )
-		TransInfo.Position.x = BkgBoundary.Right - Offset;
+	if ( transInfo.Position.x > bkgBoundary.Right - offset )
+		transInfo.Position.x = bkgBoundary.Right - offset;
 	// ** 상
-	if ( TransInfo.Position.y < BkgBoundary.Top + Offset )
-		TransInfo.Position.y = BkgBoundary.Top + Offset;
+	if ( transInfo.Position.y < bkgBoundary.Top + offset )
+		transInfo.Position.y = bkgBoundary.Top + offset;
 	// ** 하
-	if ( TransInfo.Position.y > BkgBoundary.Bottom - Offset )
-		TransInfo.Position.y = BkgBoundary.Bottom - Offset;
+	if ( transInfo.Position.y > bkgBoundary.Bottom - offset )
+		transInfo.Position.y = bkgBoundary.Bottom - offset;
 }
 
 bool Player::RenderSpawn(HDC _hdc)
 {
-	if ( !pPlayerImage ) return false;
+	if ( !pImage ) return false;
+
+	float moveSpeed = 0.5f;
 
 	// ** 화면 아래에서부터 일정 위치까지 서서히 올라오도록 그림	
-	static float MovePositionY = WindowsHeight + 30;
+	static float movePositionY = WINDOWS_HEIGHT + 30;	
+	float stopPositionY = WINDOWS_HEIGHT - 100;
 
-	float MoveSpeed = 0.5f;
-	float StopPositionY = WindowsHeight - 100;
-	Vector3 ImagePosition = Vector3(42.0f, 0.0f);
-
-	TransInfo.Position.x = WindowsWidth * 0.5f;
-	TransInfo.Position.y = MovePositionY;
+	transInfo.Position.x = WINDOWS_WIDTH * 0.5f;
+	transInfo.Position.y = movePositionY;
 
 	TransparentBlt(_hdc, 
-		(int)(TransInfo.Position.x - TransInfo.Scale.x * 0.5f),
-		(int)(TransInfo.Position.y - TransInfo.Scale.y * 0.5f),
-		(int)TransInfo.Scale.x,
-		(int)TransInfo.Scale.y,
-		pPlayerImage->GetMemDC(),
-		(int)ImagePosition.x,
-		(int)ImagePosition.y,
-		(int)TransInfo.Scale.x,
-		(int)TransInfo.Scale.y,
+		(int)(transInfo.Position.x - transInfo.Scale.x * 0.5f),
+		(int)(transInfo.Position.y - transInfo.Scale.y * 0.5f),
+		(int)transInfo.Scale.x,
+		(int)transInfo.Scale.y,
+		pImage->GetMemDC(),
+		(int)pImage->GetSegmentationScale().x,
+		(int)0,
+		(int)pImage->GetSegmentationScale().x,
+		(int)pImage->GetSegmentationScale().y,
 		RGB(255, 0, 255));
 
-	if ( MovePositionY < StopPositionY )
+	if ( movePositionY < stopPositionY )
 	{
-		MovePositionY = WindowsHeight + 30;
+		movePositionY = WINDOWS_HEIGHT + 30;
 		return true;
 	}
 
-	MovePositionY -= MoveSpeed;
+	// ** Speed만큼 위치값 조정
+	movePositionY -= moveSpeed;
 	return false;
 }
 
 void Player::RenderPlayer(HDC _hdc)
 {
-	if ( !pPlayerImage ) return;
+	if ( !pImage ) return;
 
-	Vector3 ImagePosition = Vector3(0.0f, TransInfo.Scale.y * (Frame % 2 + 1));
+	static POINT segmentOffset = { 0, 0 };
 
-	// ** Direction으로 방향을 체크하여 해당하는 이미지 포지션 적용
-	if ( TransInfo.Direction.x < 0.0f )		 ImagePosition.x = 0.0f;  // ** Left
-	else if ( TransInfo.Direction.x > 0.0f ) ImagePosition.x = 84.0f; // ** Right
-	else									 ImagePosition.x = 42.0f; // ** None(Center)
+	// ** Direction으로 방향을 체크하여 해당하는 Offset x값 적용
+	if ( transInfo.Direction.x < 0.0f )		 segmentOffset.x = 0; // ** Left
+	else if ( transInfo.Direction.x > 0.0f ) segmentOffset.x = 2; // ** Right
+	else									 segmentOffset.x = 1; // ** None(Center)
+
+	// ** 비행기 뒷편 불꽃 애니메이션을 위해 Offset.y값을 1, 2 무한반복 시킴
+	segmentOffset.y = (segmentOffset.y < 2) ? 2 : 1;
 
 	TransparentBlt(_hdc,
-		(int)TransInfo.Position.x - (int)(TransInfo.Scale.x * 0.5f),
-		(int)TransInfo.Position.y - (int)(TransInfo.Scale.y * 0.5f),
-		(int)TransInfo.Scale.x,
-		(int)TransInfo.Scale.y,
-		pPlayerImage->GetMemDC(),
-		(int)ImagePosition.x,
-		(int)ImagePosition.y,
-		(int)TransInfo.Scale.x,
-		(int)TransInfo.Scale.y,
+		(int)transInfo.Position.x - (int)(transInfo.Scale.x * 0.5f),
+		(int)transInfo.Position.y - (int)(transInfo.Scale.y * 0.5f),
+		(int)transInfo.Scale.x,
+		(int)transInfo.Scale.y,
+		pImage->GetMemDC(),
+		(int)(pImage->GetSegmentationScale().x * segmentOffset.x),
+		(int)(pImage->GetSegmentationScale().y * segmentOffset.y),
+		(int)(pImage->GetSegmentationScale().x),
+		(int)(pImage->GetSegmentationScale().y),
 		RGB(255, 0, 255));
 }
 

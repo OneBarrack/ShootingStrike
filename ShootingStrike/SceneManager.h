@@ -5,19 +5,20 @@ class Scene;
 class SceneManager
 {
 private:
-	static SceneManager* Instance;
+	static SceneManager* pInstance;
 public:
 	static SceneManager* GetInstance()
 	{
-		if (Instance == nullptr)
-			Instance = new SceneManager;
+		if (pInstance == nullptr)
+			pInstance = new SceneManager;
 
-		return Instance;
+		return pInstance;
 	}
 private:
 	Scene* pSceneState;
+
 public:
-	void SetScene(eSCENEID _SceneID);
+	void SetScene(eSCENEID _sceneID);
 	void Update();
 	void Render(HDC _hdc);
 	void Release();

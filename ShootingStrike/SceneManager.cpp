@@ -3,14 +3,14 @@
 #include "Menu.h"
 #include "Stage.h"
 
-SceneManager* SceneManager::Instance = nullptr;
+SceneManager* SceneManager::pInstance = nullptr;
 
 
-void SceneManager::SetScene(eSCENEID _SceneID)
+void SceneManager::SetScene(eSCENEID _sceneID)
 {
 	::Safe_Delete(pSceneState);
 	
-	switch (_SceneID)
+	switch (_sceneID)
 	{
 	case eSCENEID::LOGO:
 		pSceneState = new Logo;

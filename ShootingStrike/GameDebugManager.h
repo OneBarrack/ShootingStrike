@@ -2,6 +2,7 @@
 
 class GameDebugManager
 {
+private:
 	enum class eDebugMode
 	{
 		NONE,
@@ -11,14 +12,14 @@ class GameDebugManager
 	};
 
 private:
-	static GameDebugManager* Instance;
+	static GameDebugManager* pInstance;
 public:
 	static GameDebugManager* GetInstance()
 	{
-		if ( Instance == nullptr )
-			Instance = new GameDebugManager;
+		if ( pInstance == nullptr )
+			pInstance = new GameDebugManager;
 
-		return Instance;
+		return pInstance;
 	}
 
 private:
@@ -31,7 +32,10 @@ public:
 	void Release();
 
 private:
+	// ** Game Info에 대한 Text 출력
 	void PrintTextForGameInfo(HDC _hdc);
+
+	// ** Collision Box 바운더리 렌더링
 	void DrawCollisionBoundary(HDC _hdc);
 
 public:

@@ -6,7 +6,7 @@
 #include "Object.h"
 #include "Bridge.h"
 
-GameDebugManager* GameDebugManager::Instance = nullptr;
+GameDebugManager* GameDebugManager::pInstance = nullptr;
 
 GameDebugManager::GameDebugManager()
 	: bDebugMode(eDebugMode::NONE)
@@ -23,7 +23,8 @@ void GameDebugManager::Initialize()
 
 void GameDebugManager::Update()
 {
-	if ( CheckKeyInputState(eInputKey::KEY_F8, eKeyInputState::DOWN) )
+	// ** F8을 누르면 Debug 모드가 실행되도록
+	if ( CHECK_KEYINPUT_STATE(eInputKey::KEY_F8, eKeyInputState::DOWN) )
 	{
 		if ( bDebugMode == eDebugMode::ALL )
 		{
@@ -54,34 +55,34 @@ void GameDebugManager::Release()
 
 void GameDebugManager::PrintTextForGameInfo(HDC _hdc)
 {
-	RECT TextBoundary;
-	TextBoundary.left = 0;
-	TextBoundary.top = 0;
-	TextBoundary.right = 500;
-	TextBoundary.bottom = WindowsHeight;
+	RECT textBoundary;
+	textBoundary.left = 0;
+	textBoundary.top = 0;
+	textBoundary.right = 500;
+	textBoundary.bottom = WINDOWS_HEIGHT;
 
 	int FPS = GameDataManager::GetInstance()->GetFPS();
-	auto EnemyList = ObjectManager::GetInstance()->GetObjectList(eObjectKey::ENEMY);
-	auto BulletList = ObjectManager::GetInstance()->GetObjectList(eObjectKey::BULLET);
-	Vector3 PlayerPos = ObjectManager::GetInstance()->GetPlayer()->GetPosition();
+	auto enemyList = ObjectManager::GetInstance()->GetObjectList(eObjectKey::ENEMY);
+	auto bulletList = ObjectManager::GetInstance()->GetObjectList(eObjectKey::BULLET);
+	Vector3 playerPos = ObjectManager::GetInstance()->GetPlayer()->GetPosition();
 	
-	string TempStr = "";
-	TempStr += "FPS : " + to_string(FPS) + "\n";
-	TempStr += "Enemy Count : " + to_string(EnemyList.size()) + "\n";		
-	TempStr += "Bullet Count : " + to_string(BulletList.size()) + "\n";
-	TempStr += "Player Position : " + to_string(PlayerPos.x) + " " + to_string(PlayerPos.y);
+	string tempStr = "";
+	tempStr += "FPS : " + to_string(FPS) + "\n";
+	tempStr += "Enemy Count : " + to_string(enemyList.size()) + "\n";		
+	tempStr += "Bullet Count : " + to_string(bulletList.size()) + "\n";
+	tempStr += "Player Position : " + to_string(playerPos.x) + " " + to_string(playerPos.y);
 	
-	wstring ResultStr = wstring(TempStr.begin(), TempStr.end());
-	DrawText(_hdc, ResultStr.c_str(), ResultStr.length(), &TextBoundary, DT_LEFT | DT_WORDBREAK);
+	wstring resultStr = wstring(tempStr.begin(), tempStr.end());
+	DrawText(_hdc, resultStr.c_str(), resultStr.length(), &textBoundary, DT_LEFT | DT_WORDBREAK);
 }
 
 void GameDebugManager::DrawCollisionBoundary(HDC _hdc)
 {
-	auto EnableObjectList = ObjectManager::GetInstance()->GetEnableObjectList();
-	auto EnableBridgeList = ObjectManager::GetInstance()->GetEnableBridgeList();
+	auto enableObjectList = ObjectManager::GetInstance()->GetEnableObjectList();
+	auto enableBridgeList = ObjectManager::GetInstance()->GetEnableBridgeList();
 
-	for ( map<eObjectKey, list<Object*>>::iterator iter = EnableObjectList->begin();
-		iter != EnableObjectList->end(); ++iter )
+	for ( map<eObjectKey, list<Object*>>::iterator iter = enableObjectList->begin();
+		iter != enableObjectList->end(); ++iter )
 	{
 		for ( list<Object*>::iterator iter2 = iter->second.begin();
 			iter2 != iter->second.end(); ++iter2 )
@@ -90,8 +91,12 @@ void GameDebugManager::DrawCollisionBoundary(HDC _hdc)
 			switch ( pObject->GetCollisionType() )
 			{
 				// ** 사각형:빨간색, 원:파란색 선으로 표시
-				case eCollisionType::RECT: RenderManager::DrawRect(_hdc, pObject->GetCollider(), RGB(255, 0, 0)); break;
-				case eCollisionType::ELLIPSE: RenderManager::DrawEllipse(_hdc, pObject->GetCollider(), RGB(0, 0, 255)); break;
+				case eCollisionType::RECT: 
+					RenderManager::DrawRect(_hdc, pObject->GetCollider(), RGB(255, 0, 0)); 
+					break;
+				case eCollisionType::ELLIPSE: 
+					RenderManager::DrawEllipse(_hdc, pObject->GetCollider(), RGB(0, 0, 255)); 
+					break;
 			}
 		}
 	}

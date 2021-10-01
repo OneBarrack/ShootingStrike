@@ -17,7 +17,7 @@ const DWORD KEY_F8		= 0x00000100;
 
 
 
-const int WindowsWidth = 1280;
-const int WindowsHeight = 720;
+const int WINDOWS_WIDTH = 1280;
+const int WINDOWS_HEIGHT = 720;
 
 

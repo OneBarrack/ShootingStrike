@@ -46,8 +46,8 @@ void Logo::Initialize()
 	pBackground = ObjectManager::GetInstance()->NewObject(eObjectKey::BACKGROUND);
 	pBackground->SetBridge(pBridge);
 	pBackground->SetImage(eImageKey::LOGOBACK);
-	pBackground->SetPosition(WindowsWidth * 0.5f, WindowsHeight * 0.5f);
-	pBackground->SetScale(1915.0f, WindowsHeight);
+	pBackground->SetPosition(WINDOWS_WIDTH * 0.5f, WINDOWS_HEIGHT * 0.5f);
+	pBackground->SetScale(1915.0f, WINDOWS_HEIGHT);
 	pBackground->SetSpeed(1.0f);	
 
 	// ** Logo Title
@@ -55,13 +55,13 @@ void Logo::Initialize()
 	pLogoTitle = ObjectManager::GetInstance()->NewObject(eObjectKey::BACKGROUND);
 	pLogoTitle->SetBridge(pBridge);
 	pLogoTitle->SetImage(eImageKey::LOGO);
-	pLogoTitle->SetPosition(WindowsWidth * 0.5f, WindowsHeight * 0.3f);
+	pLogoTitle->SetPosition(WINDOWS_WIDTH * 0.5f, WINDOWS_HEIGHT * 0.3f);
 	pLogoTitle->SetScale(785.0f, 300.0f);
 
 	// ** Play Button
 	pPlayButton = ObjectManager::GetInstance()->NewObject(eObjectKey::UI_BUTTON);
 	pPlayButton->SetImage(eImageKey::PLAYBUTTON);
-	pPlayButton->SetPosition(WindowsWidth * 0.5f, WindowsHeight * 0.75f);
+	pPlayButton->SetPosition(WINDOWS_WIDTH * 0.5f, WINDOWS_HEIGHT * 0.75f);
 	pPlayButton->SetScale(150.0f, 70.0f);
 	pPlayButton->SetCollider(pPlayButton->GetTransInfo());
 }
@@ -79,7 +79,7 @@ void Logo::Update()
 	}
 
 	// ** 임시 종료 테스트(ESC). 버튼 등 추가구현 필요
-	if ( CheckKeyInputState(eInputKey::KEY_ESCAPE, eKeyInputState::DOWN) )
+	if ( CHECK_KEYINPUT_STATE(eInputKey::KEY_ESCAPE, eKeyInputState::DOWN) )
 		PostQuitMessage(NULL);
 }
 

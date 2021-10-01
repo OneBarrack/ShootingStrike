@@ -8,7 +8,7 @@ public:
 
 private:
 	Object* pOwner;
-	int Damage;
+	int damage;
 
 public:
 	virtual void Initialize()override;
@@ -21,10 +21,10 @@ public:
 
 public:
 	void SetOwner(Object* _Owner) { pOwner = _Owner; }
-	void SetDamage(const int _Damage) { Damage = _Damage; }	
+	void SetDamage(const int _damage) { damage = _damage; }	
 
 	Object* GetOwner() { return pOwner; }
-	int GetDamage() { return Damage; }
+	int GetDamage() { return damage; }
 
 private:
 	// ** Stage 전장을 벗어났는지 체크

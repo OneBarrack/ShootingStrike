@@ -6,7 +6,7 @@ class Bridge
 {
 protected:
 	Object* pOwner;
-	eBridgeKey Key;
+	eBridgeKey key;
 
 public:
 	virtual void Initialize()PURE;
@@ -23,7 +23,7 @@ public:
 	void SetOwner(Object* _pObject) { pOwner = _pObject; }
 	Object* GetOwner() { return pOwner; }
 
-	eBridgeKey GetKey() { return Key; }
+	eBridgeKey GetKey() { return key; }
 
 public:
 	Bridge();

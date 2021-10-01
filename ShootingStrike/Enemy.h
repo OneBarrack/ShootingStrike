@@ -14,11 +14,10 @@ private:
 	bool bTakeDamage;
 	bool bDied;
 
-	int HitPoint;
-	int DeathPoint;
-	int Frame;
+	int hitScore;
+	int deathScore;
 
-	Vector3 OldPosition;
+	Vector3 oldPosition;
 
 public:
 	virtual void Initialize()override;
@@ -44,12 +43,12 @@ public:
 	void Die() { bDied = true; };
 
 	int GetHP() { return HP; }
-	int GetHitPoint() { return HitPoint; }
-	int GetDeathPoint() { return DeathPoint; }
+	int GetHitPoint() { return hitScore; }
+	int GetDeathPoint() { return deathScore; }
 
 	void SetHP(int _HP) { HP = _HP; }
-	void SetHitPoint(int _Point) { HitPoint = _Point; }
-	void SetDeathPoint(int _Point) { DeathPoint = _Point; }
+	void SetHitPoint(int _Point) { hitScore = _Point; }
+	void SetDeathPoint(int _Point) { deathScore = _Point; }
 
 private:
 	// ** Stage 전장을 벗어났는지 체크

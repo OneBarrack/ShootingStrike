@@ -10,11 +10,14 @@ class ScrollVerticalBkg : public BackgroundBridge
 	};
 
 private:
-	float ImageOffset;
-	float LoopOffset;
+	// ** 일반 Scroll 시 사용될 Offset
+	float imageOffset;
+
+	// ** 이미지의 끝에 도달하여 Loop되는 시점에 사용될 Offset
+	float imageOffsetForRestart;
 
 	// ** 스크롤 방향
-	eScrollDirection ScrollDirection;	
+	eScrollDirection scrollDirection;	
 
 	// ** 스크롤을 무한 반복할 것 인지
 	bool bLoop;

@@ -10,7 +10,7 @@
 
 
 MainUpdate::MainUpdate()
-	: m_hdc(NULL)
+	: mHdc(NULL)
 {
 
 }
@@ -23,7 +23,7 @@ MainUpdate::~MainUpdate()
 
 void MainUpdate::Initialize()
 {
-	m_hdc = GetDC(g_hWnd);
+	mHdc = GetDC(g_hWnd);
 
 	SceneManager::GetInstance()->SetScene(eSCENEID::LOGO);
 }
@@ -40,12 +40,12 @@ void MainUpdate::Update()
 
 void MainUpdate::Render()
 {
-	HDC BufferDC = RenderManager::GetBufferDC();
+	HDC bufferDC = RenderManager::GetBufferDC();
 	
-	SceneManager::GetInstance()->Render(BufferDC);	
-	GameDebugManager::GetInstance()->Render(BufferDC);
+	SceneManager::GetInstance()->Render(bufferDC);	
+	GameDebugManager::GetInstance()->Render(bufferDC);
 
-	RenderManager::RenderToScreen(m_hdc);
+	RenderManager::RenderToScreen(mHdc);
 }
 
 void MainUpdate::Release()

@@ -1,10 +1,9 @@
 #include "GameDataManager.h"
 
-GameDataManager* GameDataManager::Instance = nullptr;
+GameDataManager* GameDataManager::pInstance = nullptr;
 
 GameDataManager::GameDataManager()
-	: Score(0)
-	, Frame(0)
+	: score(0)
 	, FPS(0)
 {
 }
@@ -15,35 +14,36 @@ GameDataManager::~GameDataManager()
 
 void GameDataManager::Initialize()
 {
-	Score = 0;
-	Frame = 0;
+	score = 0;
 	FPS = 0;
 }
 
 void GameDataManager::Update()
 {
-	++Frame;
-
 	CalcFPS();
 }
 
-void GameDataManager::AddScore(int _Score)
+void GameDataManager::AddScore(int _score)
 {
 	// ** INT 최대 값을 넘긴다면 INT_MAX로 고정
-	if ( (ULONGLONG)Score + _Score > INT_MAX )
-		Score = INT_MAX;
+	if ( (ULONGLONG)score + _score > INT_MAX )
+		score = INT_MAX;
 	else
-		Score += _Score;
+		score += _score;
 }
 
 void GameDataManager::CalcFPS()
 {
+	// ** FPS 계산
 	static ULONGLONG Time = GetTickCount64();
+	static int frame = 0;
+
+	++frame;
 
 	if ( Time + 1000 < GetTickCount64() )
 	{
-		FPS = Frame;
+		FPS = frame;
 		Time = GetTickCount64();
-		Frame = 0;
+		frame = 0;
 	}
 }

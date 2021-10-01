@@ -15,27 +15,27 @@ public:
 	};
 
 private:
-	AnimationType AnimType;
+	AnimationType animType;
 	bool bLoopPlayAnim;
 
 public:
-	virtual void Initialize()override;
-	virtual void Update()override;
-	virtual void Render(HDC _hdc)override;
-	virtual void Release()override;
+	virtual void Initialize() override;
+	virtual void Update() override;
+	virtual void Render(HDC _hdc) override;
+	virtual void Release() override;
 
-	virtual BossAngelEnemy* Clone()override { return new BossAngelEnemy(*this); }
+	virtual BossAngelEnemy* Clone() override { return new BossAngelEnemy(*this); }
 
 public:
-	void PlayAnimation(AnimationType _AnimType, bool _bLoop);
+	void PlayAnimation(AnimationType _animType, bool _bLoop);
 
 private:
-	void PlayAnimDefault(HDC _hdc, ULONGLONG& _Time, int& _Offset);
-	void PlayAnimAttack1(HDC _hdc, ULONGLONG& _Time, int& _Offset);
-	void PlayAnimAttack2(HDC _hdc, ULONGLONG& _Time, int& _Offset);
-	void PlayAnimAttack3(HDC _hdc, ULONGLONG& _Time, int& _Offset);
-	void PlayAnimEvolution(HDC _hdc, ULONGLONG& _Time, int& _Offset);
-	void PlayAnimAttacked(HDC _hdc, ULONGLONG& _Time, int& _Offset);
+	void PlayAnimDefault(HDC _hdc, ULONGLONG& _time, int& _offset);
+	void PlayAnimAttack1(HDC _hdc, ULONGLONG& _time, int& _offset);
+	void PlayAnimAttack2(HDC _hdc, ULONGLONG& _time, int& _offset);
+	void PlayAnimAttack3(HDC _hdc, ULONGLONG& _time, int& _offset);
+	void PlayAnimEvolution(HDC _hdc, ULONGLONG& _time, int& _offset);
+	void PlayAnimAttacked(HDC _hdc, ULONGLONG& _time, int& _offset);
 
 public:
 	BossAngelEnemy();

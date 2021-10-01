@@ -86,16 +86,23 @@ enum class eCollisionType
 	RECT	,
 };
 
-enum class eBulletFiringType
+enum class eBulletType
 {
 	NORMAL	,
 	GUIDE	,
 };
 
+enum class eBulletSpawnPattern
+{
+	NONE		,
+	SPIN		,
+	MULTI_SPIN	,
+};
+
 enum class eTagName
 {
-	NONE				,
-	STAGE_MAIN_BKG		,
-	PLAYER_FLIGHT1		,
-	ENEMY_BOSS			,
+	NONE			,
+	STAGE_MAIN_BKG	,
+	PLAYER_FLIGHT1	,
+	ENEMY_BOSS		,
 };

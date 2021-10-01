@@ -1,16 +1,16 @@
 #include "Bitmap.h"
 
 
-Bitmap::Bitmap(eImageKey _ImageKey, const LPCWSTR _FileName)
+Bitmap::Bitmap(eImageKey _imageKey, const LPCWSTR _fileName)
 	: hdc(NULL)
-	, MemDC(NULL)
+	, memDC(NULL)
 	, hBitmap(NULL)
-	, OldBitmap(NULL)
-	, ImageScale(Vector3())
-	, SegmentationScale(Vector3())
+	, oldBitmap(NULL)
+	, imageScale(Vector3())
+	, segmentationScale(Vector3())
 {
-	ImageKey = _ImageKey;
-	LoadBmp(_FileName);
+	imageKey = _imageKey;
+	LoadBmp(_fileName);
 	Initialize();
 }
 
@@ -22,59 +22,59 @@ Bitmap::~Bitmap()
 void Bitmap::Initialize()
 {
 	// ** Image Scale 정보 입력
-	switch ( ImageKey )
+	switch ( imageKey )
 	{
 		case eImageKey::BUFFER:
-			ImageScale = Vector3(WindowsWidth, WindowsHeight);
-			SegmentationScale = ImageScale;
+			imageScale = Vector3(WINDOWS_WIDTH, WINDOWS_HEIGHT);
+			segmentationScale = imageScale;
 			break;
 		case eImageKey::BACKGROUND:
-			ImageScale = Vector3(WindowsWidth, WindowsHeight);
-			SegmentationScale = ImageScale;
+			imageScale = Vector3(WINDOWS_WIDTH, WINDOWS_HEIGHT);
+			segmentationScale = imageScale;
 			break;
 		case eImageKey::LOGO:
-			ImageScale = Vector3(923.0f, 350.0f);
-			SegmentationScale = ImageScale;
+			imageScale = Vector3(923.0f, 350.0f);
+			segmentationScale = imageScale;
 			break;
 		case eImageKey::LOGOBACK:
-			ImageScale = Vector3(1915.0f, 720.0f);
-			SegmentationScale = ImageScale;
+			imageScale = Vector3(1915.0f, 720.0f);
+			segmentationScale = imageScale;
 			break;
 		case eImageKey::STAGEBACK:
-			ImageScale = Vector3(600.0f, 5527.0f);
-			SegmentationScale = ImageScale;
+			imageScale = Vector3(600.0f, 5527.0f);
+			segmentationScale = imageScale;
 			break;
 		case eImageKey::STAGESIDEBACK:
-			ImageScale = Vector3(608.0f, 800.0f);
-			SegmentationScale = Vector3(ImageScale.x * 0.5f, ImageScale.y);
+			imageScale = Vector3(608.0f, 800.0f);
+			segmentationScale = Vector3(imageScale.x * 0.5f, imageScale.y);
 			break;
 		case eImageKey::STAGECLOUD:
 			//ImageScale = Vector3(1915.0f, 720.0f);
 			//SegmentationScale = ImageScale;
 			break;
 		case eImageKey::SCORE:
-			ImageScale = Vector3(125.0f, 27.0f);
-			SegmentationScale = Vector3(25.0f, 0.0f);
+			imageScale = Vector3(125.0f, 27.0f);
+			segmentationScale = Vector3(25.0f, 0.0f);
 			break;
 		case eImageKey::NUMBER:
-			ImageScale = Vector3(130.0f, 14.0f);
-			SegmentationScale = Vector3(13.0f, 0.0f);
+			imageScale = Vector3(130.0f, 14.0f);
+			segmentationScale = Vector3(13.0f, 0.0f);
 			break;
 		case eImageKey::PLAYBUTTON:
-			ImageScale = Vector3(450.0f, 70.0f);
-			SegmentationScale = Vector3(150.0f, 70.0f);
+			imageScale = Vector3(450.0f, 70.0f);
+			segmentationScale = Vector3(150.0f, 70.0f);
 			break;
 		case eImageKey::PLAYER:
-			ImageScale = Vector3(131.0f, 141.0f);
-			SegmentationScale = Vector3(42.0f, 47.0f);
+			imageScale = Vector3(131.0f, 141.0f);
+			segmentationScale = Vector3(42.0f, 47.0f);
 			break;
 		case eImageKey::BULLET:
-			ImageScale = Vector3(450.0f, 70.0f);
-			SegmentationScale = Vector3(230.0f, 230.0f);
+			imageScale = Vector3(450.0f, 70.0f);
+			segmentationScale = Vector3(230.0f, 230.0f);
 			break;
 		case eImageKey::ANGEL:
-			ImageScale = Vector3(1792.0f, 1920.0f);
-			SegmentationScale = Vector3(224.0f, 320.0f);
+			imageScale = Vector3(1792.0f, 1920.0f);
+			segmentationScale = Vector3(224.0f, 320.0f);
 			break;
 		case eImageKey::EFFECT:
 			//ImageScale = Vector3(149.0f, 124.0f);
@@ -89,7 +89,7 @@ void Bitmap::Initialize()
 void Bitmap::LoadBmp(const LPCWSTR _FileName)
 {
 	hdc = GetDC(g_hWnd);
-	MemDC = CreateCompatibleDC(hdc);
+	memDC = CreateCompatibleDC(hdc);
 
 	/*
 	LoadImageW(
@@ -107,15 +107,15 @@ void Bitmap::LoadBmp(const LPCWSTR _FileName)
 
 
 
-	OldBitmap = (HBITMAP)SelectObject(MemDC, hBitmap);
+	oldBitmap = (HBITMAP)SelectObject(memDC, hBitmap);
 
 	ReleaseDC(g_hWnd, hdc);
 }
 
 void Bitmap::Release()
 {
-	SelectObject(MemDC, OldBitmap);
+	SelectObject(memDC, oldBitmap);
 	DeleteObject(hBitmap);
-	ReleaseDC(g_hWnd, MemDC);
+	ReleaseDC(g_hWnd, memDC);
 }
 

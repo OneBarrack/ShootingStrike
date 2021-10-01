@@ -7,15 +7,15 @@ class Prototype
 {
 private:
 	// ** Object Prototype
-	map<eObjectKey, Object*> ObjectPrototypeList;
+	map<eObjectKey, Object*> objectPrototypeList;
 
 	// ** Bridge Prototype
-	map<eBridgeKey, Bridge*> BridgePrototypeList;
+	map<eBridgeKey, Bridge*> bridgePrototypeList;
 
 public:
 	void CreatePrototype();
-	Object* FindPrototypeObject(eObjectKey _Key);
-	Bridge* FindPrototypeBridge(eBridgeKey _Key);
+	Object* FindPrototypeObject(eObjectKey _key);
+	Bridge* FindPrototypeBridge(eBridgeKey _key);
 
 public:
 	Prototype();

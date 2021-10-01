@@ -1,14 +1,12 @@
 #include "InputManager.h"
 
-#define CheckKeyInputState(_Key, _State) (InputManager::GetInstance()->GetKeyState(_Key) == _State)
-
-InputManager* InputManager::Instance = nullptr;
+InputManager* InputManager::pInstance = nullptr;
 
 InputManager::InputManager()
 {
 	// ** Key_MAX 크기만큼 사이즈 할당
-	OverlapKeyList.resize(static_cast<int>(eInputKey::KEY_MAX));
-	KeyInfo.resize(static_cast<int>(eInputKey::KEY_MAX));
+	overlapKeyList.resize(static_cast<int>(eInputKey::KEY_MAX));
+	keyInfo.resize(static_cast<int>(eInputKey::KEY_MAX));
 	
 	AddOverlapKey(eInputKey::KEY_UP, VK_UP);
 	AddOverlapKey(eInputKey::KEY_UP, 'W');
@@ -25,16 +23,16 @@ InputManager::InputManager()
 	AddOverlapKey(eInputKey::KEY_F8, VK_F8);
 }
 
-void InputManager::AddOverlapKey(eInputKey _Key, DWORD _dwKey)
+void InputManager::AddOverlapKey(eInputKey _key, DWORD _dwKey)
 {
-	OverlapKeyList[static_cast<int>(_Key)].push_back(_dwKey);
+	overlapKeyList[static_cast<int>(_key)].push_back(_dwKey);
 }
 
 void InputManager::CheckKeyInput()
 {
-	for ( int Key = 0; Key < static_cast<int>(eInputKey::KEY_MAX); ++Key )
+	for ( int key = 0; key < static_cast<int>(eInputKey::KEY_MAX); ++key )
 	{
-		SetKeyState(KeyInfo[Key], IsKeyPressed(OverlapKeyList[Key]));
+		SetKeyState(keyInfo[key], IsKeyPressed(overlapKeyList[key]));
 	}
 }
 
@@ -51,9 +49,9 @@ Vector3 InputManager::GetMousePosition()
 	return Vector3((float)ptMouse.x, (float)ptMouse.y);
 }
 
-bool InputManager::IsKeyPressed(vector<DWORD> _OverlapKeys)
+bool InputManager::IsKeyPressed(vector<DWORD> _overlapKeys)
 {
-	for ( DWORD Key : _OverlapKeys )
+	for ( DWORD Key : _overlapKeys )
 	{
 		if ( GetAsyncKeyState(Key) & 0x8000 )
 		{
@@ -64,30 +62,30 @@ bool InputManager::IsKeyPressed(vector<DWORD> _OverlapKeys)
 	return false;
 }
 
-void InputManager::SetKeyState(eKeyInputState& _KeyState, bool _IsKeyPressed)
+void InputManager::SetKeyState(eKeyInputState& _keyState, bool _IsKeyPressed)
 {
 	if ( _IsKeyPressed )
 	{
-		if ( _KeyState == eKeyInputState::DOWN ||
-			_KeyState == eKeyInputState::PRESSED )
+		if ( _keyState == eKeyInputState::DOWN ||
+			_keyState == eKeyInputState::PRESSED )
 		{
-			_KeyState = eKeyInputState::PRESSED;
+			_keyState = eKeyInputState::PRESSED;
 		}
 		else
 		{
-			_KeyState = eKeyInputState::DOWN;
+			_keyState = eKeyInputState::DOWN;
 		}
 	}
 	else
 	{
-		if ( _KeyState == eKeyInputState::DOWN ||
-			_KeyState == eKeyInputState::PRESSED )
+		if ( _keyState == eKeyInputState::DOWN ||
+			_keyState == eKeyInputState::PRESSED )
 		{
-			_KeyState = eKeyInputState::UP;
+			_keyState = eKeyInputState::UP;
 		}
 		else
 		{
-			_KeyState = eKeyInputState::NONE;
+			_keyState = eKeyInputState::NONE;
 		}
 	}
 }

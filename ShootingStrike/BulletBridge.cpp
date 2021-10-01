@@ -2,8 +2,8 @@
 
 BulletBridge::BulletBridge()
 	: pImage(nullptr)
-	, TransInfo(Transform())
-	, Speed(0.0f)
+	, transInfo(Transform())
+	, speed(0.0f)
 {
 }
 
@@ -14,12 +14,12 @@ BulletBridge::~BulletBridge()
 void BulletBridge::ReceiveInfoFromOwner()
 {
 	pImage = pOwner->GetImage();
-	TransInfo = pOwner->GetTransInfo();
-	Speed = pOwner->GetSpeed();
+	transInfo = pOwner->GetTransInfo();
+	speed = pOwner->GetSpeed();
 }
 
 void BulletBridge::SendInfoToOwner()
 {
-	pOwner->SetTransInfo(TransInfo);
-	pOwner->SetSpeed(Speed);
+	pOwner->SetTransInfo(transInfo);
+	pOwner->SetSpeed(speed);
 }

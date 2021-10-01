@@ -31,11 +31,11 @@ struct Transform
 	Transform() : 
 		Position(Vector3()), Scale(Vector3()), Direction(Vector3()) {}
 
-	Transform(Vector3 _Position, Vector3 _Scale) : 
-		Position(_Position), Scale(_Scale), Direction(Vector3()) {}
+	Transform(Vector3 _position, Vector3 _scale) : 
+		Position(_position), Scale(_scale), Direction(Vector3()) {}
 
-	Transform(Vector3 _Position, Vector3 _Scale, Vector3 _Direction) :
-		Position(_Position), Scale(_Scale), Direction(_Direction) {}
+	Transform(Vector3 _position, Vector3 _scale, Vector3 _direction) :
+		Position(_position), Scale(_scale), Direction(_direction) {}
 
 	Transform(float _Px, float _Py, float _Sx, float _Sy) :
 		Position(Vector3(_Px, _Py)), Scale(Vector3(_Sx, _Sy)), Direction(Vector3())	{}
@@ -68,8 +68,8 @@ struct Rect
 	int Bottom;
 
 	Rect() : Left(0), Top(0), Right(0), Bottom(0) {}
-	Rect(int _Left, int _Top, int _Right, int _Bottom) :
-		Left(_Left), Top(_Top), Right(_Right), Bottom(_Bottom) {}
+	Rect(int _left, int _top, int _right, int _bottom) :
+		Left(_left), Top(_top), Right(_right), Bottom(_bottom) {}
 };
 
 struct RectF
@@ -80,6 +80,6 @@ struct RectF
 	float Bottom;
 
 	RectF() : Left(0.0f), Top(0.0f), Right(0.0f), Bottom(0.0f) {}
-	RectF(float _Left, float _Top, float _Right, float _Bottom) : 
-		Left(_Left), Top(_Top), Right(_Right), Bottom(_Bottom) {}
+	RectF(float _left, float _top, float _right, float _bottom) : 
+		Left(_left), Top(_top), Right(_right), Bottom(_bottom) {}
 };

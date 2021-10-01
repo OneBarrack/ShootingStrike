@@ -12,10 +12,9 @@ Enemy::Enemy()
 	, bAttacking(false)
 	, bTakeDamage(false)
 	, bDied(false)
-	, HitPoint(0)
-	, DeathPoint(0)
-	, Frame(0)
-	, OldPosition(Vector3())
+	, hitScore(0)
+	, deathScore(0)
+	, oldPosition(Vector3())
 {
 
 }
@@ -28,10 +27,10 @@ void Enemy::Initialize()
 {
 	Super::Initialize();
 
-	Key = eObjectKey::ENEMY;
-	Status = eObjectStatus::ACTIVATED;
-	CollisionType = eCollisionType::RECT;
-	OldPosition = TransInfo.Position;
+	key = eObjectKey::ENEMY;
+	status = eObjectStatus::ACTIVATED;
+	collisionType = eCollisionType::RECT;
+	oldPosition = transInfo.Position;
 	bGenerateCollisionEvent = true;
 
 	HP = 5;
@@ -41,8 +40,7 @@ void Enemy::Initialize()
 	bTakeDamage = false;
 	bDied = false;
 
-	Speed = 3.0f;
-	Frame = 0;
+	speed = 3.0f;
 }
 
 void Enemy::Update()
@@ -73,16 +71,16 @@ void Enemy::Update()
 	//RenderEnemy(_hdc);
 
 	// ** Direction 저장
-	TransInfo.Direction = MathManager::GetDirection(OldPosition, TransInfo.Position);
+	transInfo.Direction = MathManager::GetDirection(oldPosition, transInfo.Position);
 
 	// ** Stage 전장을 벗어났는지 체크
 	CheckPositionInBkgBoundary();
 
 	// ** 직전 위치 정보 저장
-	OldPosition = TransInfo.Position;
+	oldPosition = transInfo.Position;
 
 	// ** 충돌체 갱신
-	SetCollider(TransInfo);
+	SetCollider(transInfo);
 
 	return;
 }
@@ -116,20 +114,22 @@ void Enemy::Fire()
 {
 }
 
-void Enemy::ApplyDamage(Object* _pTarget, int _Damage)
+void Enemy::ApplyDamage(Object* _pTarget, int _damage)
 {
 	// ** ... 데미지를 가할 때의 동작
 	switch ( _pTarget->GetKey() )
 	{
 		case eObjectKey::PLAYER:
-			static_cast<Player*>(_pTarget)->TakeDamage(_Damage);
+			static_cast<Player*>(_pTarget)->TakeDamage(_damage);
+			break;
+		default:
 			break;
 	}
 }
 
-void Enemy::TakeDamage(int _Damage)
+void Enemy::TakeDamage(int _damage)
 {
-	HP -= _Damage;
+	HP -= _damage;
 	bTakeDamage = true;
 
 	if ( HP <= 0 )
@@ -145,19 +145,19 @@ void Enemy::CheckPositionInBkgBoundary()
 	Object* pBackground = ObjectManager::GetInstance()->FindObjectWithTag(eObjectKey::BACKGROUND, eTagName::STAGE_MAIN_BKG);
 
 	// ** Stage의 바운더리
-	RectF BkgBoundary = pBackground->GetColliderF();
+	RectF bkgBoundary = pBackground->GetColliderF();
 
 	// ** Stage 바운더리 기준으로 Check 범위를 추가/감소 시킬 Offset
 	float Offset = 0.0f;
 
 	// ** 바운더리 크기 조정
-	BkgBoundary.Left -= Offset;
-	BkgBoundary.Top -= Offset;
-	BkgBoundary.Right += Offset;
-	BkgBoundary.Bottom += Offset;
+	bkgBoundary.Left -= Offset;
+	bkgBoundary.Top -= Offset;
+	bkgBoundary.Right += Offset;
+	bkgBoundary.Bottom += Offset;
 
 	// ** Stage의 바운더리 내 Position이 위치하지 않으면 Destroy
-	if ( !CollisionManager::IsPointInRect(BkgBoundary, TransInfo.Position) )
+	if ( !CollisionManager::IsPointInRect(bkgBoundary, transInfo.Position) )
 	{
 		SetStatus(eObjectStatus::DESTROYED);
 	}

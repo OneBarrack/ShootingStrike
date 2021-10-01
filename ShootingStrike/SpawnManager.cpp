@@ -13,16 +13,16 @@ void SpawnManager::SpawnPlayer()
 	pPlayer->Spawn();
 }
 
-void SpawnManager::SpawnBullet(Object* _pOwner, Transform _TransInfo, float _Speed, int _Damage, eBulletFiringType _FiringType)
+void SpawnManager::SpawnBullet(Object* _pOwner, Transform _transInfo, float _speed, int _damage, eBulletType _bulletType)
 {
 	Bridge* pBridge = nullptr;
 
-	switch ( _FiringType )
+	switch ( _bulletType )
 	{
-		case eBulletFiringType::NORMAL: 
+		case eBulletType::NORMAL: 
 			pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::BULLET_NORMAL);	
 			break;
-		case eBulletFiringType::GUIDE:  
+		case eBulletType::GUIDE:  
 			pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::BULLET_GUIDE);
 			break;
 		default: 
@@ -33,11 +33,11 @@ void SpawnManager::SpawnBullet(Object* _pOwner, Transform _TransInfo, float _Spe
 	pBullet->SetBridge(pBridge);
 	pBullet->SetImage(eImageKey::BULLET);
 	pBullet->SetOwner(_pOwner);
-	pBullet->SetTransInfo(_TransInfo);
-	pBullet->SetSpeed(_Speed);
-	pBullet->SetDamage(_Damage);
+	pBullet->SetTransInfo(_transInfo);
+	pBullet->SetSpeed(_speed);
+	pBullet->SetDamage(_damage);
 }
 
-void SpawnManager::SpawnEnemy(Vector3 _Position, Vector3 _Direction, Bridge* _pBridge)
+void SpawnManager::SpawnEnemy(Vector3 _position, Vector3 _direction, Bridge* _pBridge)
 {
 }

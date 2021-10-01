@@ -1,29 +1,29 @@
 #include "BitmapManager.h"
 
-BitmapManager* BitmapManager::Instance = nullptr;
+BitmapManager* BitmapManager::pInstance = nullptr;
 
 void BitmapManager::Initialize()
 {
-	ImageList[eImageKey::BUFFER]		= new Bitmap(eImageKey::BUFFER		 , L"../Resource/Buffer.bmp");
-	ImageList[eImageKey::BACKGROUND]	= new Bitmap(eImageKey::BACKGROUND	 , L"../Resource/Background.bmp");
-	ImageList[eImageKey::LOGO]			= new Bitmap(eImageKey::LOGO		 , L"../Resource/Logo.bmp");
-	ImageList[eImageKey::LOGOBACK]		= new Bitmap(eImageKey::LOGOBACK	 , L"../Resource/LogoBack.bmp");
-	ImageList[eImageKey::STAGESIDEBACK] = new Bitmap(eImageKey::STAGESIDEBACK, L"../Resource/StageSideBack.bmp");
-	ImageList[eImageKey::STAGEBACK]		= new Bitmap(eImageKey::STAGEBACK	 , L"../Resource/StageBack.bmp");
-	ImageList[eImageKey::STAGECLOUD]	= new Bitmap(eImageKey::STAGECLOUD	 , L"../Resource/StageCloud.bmp");
-	ImageList[eImageKey::SCORE]			= new Bitmap(eImageKey::SCORE		 , L"../Resource/Score.bmp");
-	ImageList[eImageKey::NUMBER]		= new Bitmap(eImageKey::NUMBER		 , L"../Resource/Number.bmp");
-	ImageList[eImageKey::PLAYBUTTON]	= new Bitmap(eImageKey::PLAYBUTTON	 , L"../Resource/UI_Button_Play.bmp");
-	ImageList[eImageKey::BULLET]		= new Bitmap(eImageKey::BULLET		 , L"../Resource/Projectile.bmp");
-	ImageList[eImageKey::ANGEL]			= new Bitmap(eImageKey::ANGEL		 , L"../Resource/Angel.bmp");
-	ImageList[eImageKey::EFFECT]		= new Bitmap(eImageKey::EFFECT		 , L"../Resource/Effect.bmp");
-	ImageList[eImageKey::PLAYER]		= new Bitmap(eImageKey::PLAYER		 , L"../Resource/Player.bmp");
+	imageList[eImageKey::BUFFER]		= new Bitmap(eImageKey::BUFFER		 , L"../Resource/Buffer.bmp");
+	imageList[eImageKey::BACKGROUND]	= new Bitmap(eImageKey::BACKGROUND	 , L"../Resource/Background.bmp");
+	imageList[eImageKey::LOGO]			= new Bitmap(eImageKey::LOGO		 , L"../Resource/Logo.bmp");
+	imageList[eImageKey::LOGOBACK]		= new Bitmap(eImageKey::LOGOBACK	 , L"../Resource/LogoBack.bmp");
+	imageList[eImageKey::STAGESIDEBACK] = new Bitmap(eImageKey::STAGESIDEBACK, L"../Resource/StageSideBack.bmp");
+	imageList[eImageKey::STAGEBACK]		= new Bitmap(eImageKey::STAGEBACK	 , L"../Resource/StageBack.bmp");
+	imageList[eImageKey::STAGECLOUD]	= new Bitmap(eImageKey::STAGECLOUD	 , L"../Resource/StageCloud.bmp");
+	imageList[eImageKey::SCORE]			= new Bitmap(eImageKey::SCORE		 , L"../Resource/Score.bmp");
+	imageList[eImageKey::NUMBER]		= new Bitmap(eImageKey::NUMBER		 , L"../Resource/Number.bmp");
+	imageList[eImageKey::PLAYBUTTON]	= new Bitmap(eImageKey::PLAYBUTTON	 , L"../Resource/UI_Button_Play.bmp");
+	imageList[eImageKey::BULLET]		= new Bitmap(eImageKey::BULLET		 , L"../Resource/Projectile.bmp");
+	imageList[eImageKey::ANGEL]			= new Bitmap(eImageKey::ANGEL		 , L"../Resource/Angel.bmp");
+	imageList[eImageKey::EFFECT]		= new Bitmap(eImageKey::EFFECT		 , L"../Resource/Effect.bmp");
+	imageList[eImageKey::PLAYER]		= new Bitmap(eImageKey::PLAYER		 , L"../Resource/Player.bmp");
 }
 
-Bitmap* BitmapManager::GetImage(const eImageKey _Key)
+Bitmap* BitmapManager::GetImage(const eImageKey _key)
 { 
-	auto FindImage = ImageList.find(_Key);
-	if ( FindImage != ImageList.end() )
+	auto FindImage = imageList.find(_key);
+	if ( FindImage != imageList.end() )
 		return FindImage->second;
 
 	return nullptr;

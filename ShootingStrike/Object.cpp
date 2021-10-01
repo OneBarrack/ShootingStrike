@@ -6,16 +6,15 @@
 
 Object::Object()
 	: pImage(nullptr)
-	, TagName(eTagName::NONE)
-	, ImageOffsetOrder(Point(0,0))
+	, tagName(eTagName::NONE)
+	, imageOffsetOrder(Point(0,0))
 	, pBridge(nullptr)
-	, TransInfo(Transform())
-	, Collider(Transform())
-	, Offset(Vector3())
-	, Key(eObjectKey::NONE)
-	, Status(eObjectStatus::ACTIVATED)
-	, CollisionType(eCollisionType::NONE)
-	, Speed(0.0f)
+	, transInfo(Transform())
+	, collider(Transform())
+	, key(eObjectKey::NONE)
+	, status(eObjectStatus::ACTIVATED)
+	, collisionType(eCollisionType::NONE)
+	, speed(0.0f)
 	, bGenerateCollisionEvent(false)
 {
 }
@@ -28,16 +27,15 @@ Object::~Object()
 void Object::Initialize()
 {
 	pImage = nullptr;
-	TagName = eTagName::NONE;
-	ImageOffsetOrder = Point(0, 0);
+	tagName = eTagName::NONE;
+	imageOffsetOrder = Point(0, 0);
 	pBridge = nullptr;
-	TransInfo = Transform();
-	Collider = Transform();
-	Offset = Vector3();
-	Key = eObjectKey::NONE;
-	Status = eObjectStatus::ACTIVATED;
-	CollisionType = eCollisionType::NONE;
-	Speed = 0.0f;
+	transInfo = Transform();
+	collider = Transform();
+	key = eObjectKey::NONE;
+	status = eObjectStatus::ACTIVATED;
+	collisionType = eCollisionType::NONE;
+	speed = 0.0f;
 	bGenerateCollisionEvent = false;
 }
 
@@ -65,30 +63,30 @@ void Object::Release()
 RECT Object::GetColliderL()
 {	
 	return RECT{
-		LONG(Collider.Position.x - (Collider.Scale.x * 0.5f)),
-		LONG(Collider.Position.y - (Collider.Scale.y * 0.5f)),
-		LONG(Collider.Position.x + (Collider.Scale.x * 0.5f)),
-		LONG(Collider.Position.y + (Collider.Scale.y * 0.5f))};
+		LONG(collider.Position.x - (collider.Scale.x * 0.5f)),
+		LONG(collider.Position.y - (collider.Scale.y * 0.5f)),
+		LONG(collider.Position.x + (collider.Scale.x * 0.5f)),
+		LONG(collider.Position.y + (collider.Scale.y * 0.5f))};
 }
 
 RectF Object::GetColliderF()
 {
 	return RectF{
-		Collider.Position.x - (Collider.Scale.x * 0.5f),
-		Collider.Position.y - (Collider.Scale.y * 0.5f),
-		Collider.Position.x + (Collider.Scale.x * 0.5f),
-		Collider.Position.y + (Collider.Scale.y * 0.5f)};
+		collider.Position.x - (collider.Scale.x * 0.5f),
+		collider.Position.y - (collider.Scale.y * 0.5f),
+		collider.Position.x + (collider.Scale.x * 0.5f),
+		collider.Position.y + (collider.Scale.y * 0.5f)};
 }
 
-bool Object::CheckKeyInputStatus(eInputKey _InputKey, eKeyInputState _Status)
+bool Object::CheckKeyInputStatus(eInputKey _inputKey, eKeyInputState _status)
 {
-	return (InputManager::GetInstance()->GetKeyState(_InputKey) == _Status);
+	return (InputManager::GetInstance()->GetKeyState(_inputKey) == _status);
 	
 }
 
-void Object::SetImage(eImageKey _ImageKey)
+void Object::SetImage(eImageKey _imageKey)
 {
-	pImage = BitmapManager::GetInstance()->GetImage(_ImageKey);
+	pImage = BitmapManager::GetInstance()->GetImage(_imageKey);
 }
 
 void Object::SetBridge(Bridge* _pBridge)
@@ -106,12 +104,12 @@ void Object::SetBridge(Bridge* _pBridge)
 	}
 }
 
-void Object::SetStatus(const eObjectStatus& _Status)
+void Object::SetStatus(const eObjectStatus& _status)
 {	
-	Status = _Status;
+	status = _status;
 	
 	// ** ACTIVATED 상태가 아니라면 충돌 체크가 필요하지 않음
-	if ( Status != eObjectStatus::ACTIVATED )
+	if ( status != eObjectStatus::ACTIVATED )
 	{
 		SetGenerateCollisionEvent(false);
 	}

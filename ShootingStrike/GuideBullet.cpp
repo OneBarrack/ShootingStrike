@@ -4,9 +4,7 @@
 #include "BitmapManager.h"
 #include "MathManager.h"
 
-GuideBullet::GuideBullet() 
-	: pBulletImage(nullptr)
-	, BulletImageScale(Vector3())
+GuideBullet::GuideBullet()
 {
 }
 
@@ -17,11 +15,9 @@ GuideBullet::~GuideBullet()
 
 void GuideBullet::Initialize()
 {
-	Key = eBridgeKey::BULLET_GUIDE;
-	pBulletImage = BitmapManager::GetInstance()->GetImage(eImageKey::BULLET);
-	BulletImageScale = Vector3(230.0f, 230.0f);
+	key = eBridgeKey::BULLET_GUIDE;
 
-	Speed = 3.0f;
+	speed = 3.0f;
 }
 
 void GuideBullet::Update()
@@ -29,10 +25,10 @@ void GuideBullet::Update()
 	// ** Owner의 데이터를 받아옴
 	ReceiveInfoFromOwner();
 
-	CalcGuideDirection(TransInfo.Position, TransInfo.Direction);
+	CalcGuideDirection(transInfo.Position, transInfo.Direction);
 
-	TransInfo.Position.x += TransInfo.Direction.x * Speed;
-	TransInfo.Position.y += TransInfo.Direction.y * Speed;
+	transInfo.Position.x += transInfo.Direction.x * speed;
+	transInfo.Position.y += transInfo.Direction.y * speed;
 
 	// ** Owner로 가공된 데이터 전달
 	SendInfoToOwner();
@@ -41,7 +37,7 @@ void GuideBullet::Update()
 
 void GuideBullet::Render(HDC _hdc)
 {
-	if ( pBulletImage )
+	if ( pImage )
 		RenderBullet(_hdc);
 }
 
@@ -50,64 +46,64 @@ void GuideBullet::Release()
 
 }
 
-void GuideBullet::CalcGuideDirection(Vector3 _Pos, Vector3& _rDirection)
+void GuideBullet::CalcGuideDirection(Vector3 _pos, Vector3& _rDirection)
 {
 	// ** 가장 가까운 적 탐색
-	Object* Target = FindTarget(_Pos);
+	Object* target = FindTarget(_pos);
 
 	// ** 찾았다면 해당 적 방향으로 Direction 갱신
-	if ( Target )
-		_rDirection = MathManager::GetDirection(_Pos, Target->GetPosition());
+	if ( target )
+		_rDirection = MathManager::GetDirection(_pos, target->GetPosition());
 }
 
-Object* GuideBullet::FindTarget(Vector3 _Pos)
+Object* GuideBullet::FindTarget(Vector3 _pos)
 {
-	list<Object*> ObjectList; 
+	list<Object*> objectList; 
 
 	// ** 상대되는 Object의 List를 받아온다
 	eObjectKey OwnerObjectKey = pOwner->GetKey();
 	switch ( OwnerObjectKey )
 	{
 		case eObjectKey::PLAYER:
-			ObjectList = ObjectManager::GetInstance()->GetObjectList(eObjectKey::ENEMY);
+			objectList = ObjectManager::GetInstance()->GetObjectList(eObjectKey::ENEMY);
 			break;
 		case eObjectKey::ENEMY:
-			ObjectList = ObjectManager::GetInstance()->GetObjectList(eObjectKey::PLAYER);
+			objectList = ObjectManager::GetInstance()->GetObjectList(eObjectKey::PLAYER);
 			break;
 		default:
 			break;
 	}	
 
 	// ** 멀티맵을 만든다. Key = 거리, value = Object
-	multimap<float, Object*> FindTargetList;
+	multimap<float, Object*> findTargetList;
 
 	// ** 모든 적 유닛리스트를 돌면서 확인한다.
-	for ( Object* TargetObject : ObjectList )
+	for ( Object* TargetObject : objectList )
 	{
 		// ** Current 와 Target 의 거리를 구해서 멀티맵에 추가한다.
-		float Distance = MathManager::GetDistance(_Pos, TargetObject->GetPosition());		
-		FindTargetList.insert(make_pair(Distance,TargetObject));
+		float distance = MathManager::GetDistance(_pos, TargetObject->GetPosition());		
+		findTargetList.insert(make_pair(distance,TargetObject));
 	}
 
 	// ** 만약에 리스트에 아무것도 없다면....
-	if ( FindTargetList.empty() )
+	if ( findTargetList.empty() )
 		return nullptr;
 
 	// ** 모든 오브젝트의 추가작업이 끝나면 가장 첫번째에 있는 오브젝트를 반환한다.
-	return FindTargetList.begin()->second;
+	return findTargetList.begin()->second;
 }
 
 void GuideBullet::RenderBullet(HDC _hdc)
 {
 	TransparentBlt(_hdc, // ** 최종 출력 위치
-		(int)(TransInfo.Position.x - (TransInfo.Scale.x * 0.5f)),
-		(int)(TransInfo.Position.y - (TransInfo.Scale.y * 0.5f)),
-		(int)TransInfo.Scale.x,
-		(int)TransInfo.Scale.y,
-		pBulletImage->GetMemDC(),
-		(int)TransInfo.Scale.x,
+		(int)(transInfo.Position.x - (transInfo.Scale.x * 0.5f)),
+		(int)(transInfo.Position.y - (transInfo.Scale.y * 0.5f)),
+		(int)transInfo.Scale.x,
+		(int)transInfo.Scale.y,
+		pImage->GetMemDC(),
+		(int)transInfo.Scale.x,
 		0,
-		(int)TransInfo.Scale.x,
-		(int)TransInfo.Scale.y,
+		(int)transInfo.Scale.x,
+		(int)transInfo.Scale.y,
 		RGB(255, 0, 255));
 }

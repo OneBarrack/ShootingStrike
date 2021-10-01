@@ -4,21 +4,21 @@
 class InputManager
 {
 private:
-	static InputManager* Instance;
+	static InputManager* pInstance;
 public:
 	static InputManager* GetInstance()
 	{
-		if ( Instance == nullptr )
-			Instance = new InputManager;
+		if ( pInstance == nullptr )
+			pInstance = new InputManager;
 
-		return Instance;
+		return pInstance;
 	}
 private:
 	// ** 같은 기능을 하는 Key들을 모아놓은 List
-	vector<vector<DWORD>> OverlapKeyList;
+	vector<vector<DWORD>> overlapKeyList;
 
 	// ** Key에 대한 입력 정보가 담겨있음
-	vector<eKeyInputState> KeyInfo;
+	vector<eKeyInputState> keyInfo;
 
 public:
 	// ** InputKey에 대한 입력 정보 체크
@@ -28,16 +28,16 @@ public:
 	Vector3 GetMousePosition();
 	
 	// ** 해당 Key에 대한 입력 정보 반환
-	inline eKeyInputState GetKeyState(eInputKey _Key) { return KeyInfo[static_cast<int>(_Key)]; }
+	inline eKeyInputState GetKeyState(eInputKey _Key) { return keyInfo[static_cast<int>(_Key)]; }
 
 private:
 	// ** 같은 기능을 하는 Key 중 하나라도 눌렀는지 확인하는 함수
-	bool IsKeyPressed(vector<DWORD> _OverlapKeys);
+	bool IsKeyPressed(vector<DWORD> _overlapKeys);
 
 	// ** Key에 대한 현재 입력상태 세팅
-	void SetKeyState(eKeyInputState& _KeyState, bool _IsKeyPressed);
+	void SetKeyState(eKeyInputState& _keyState, bool _IsKeyPressed);
 
-	void AddOverlapKey(eInputKey _Key, DWORD _dwKey);
+	void AddOverlapKey(eInputKey _key, DWORD _dwKey);
 
 private:
 	InputManager();

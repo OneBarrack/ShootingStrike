@@ -7,29 +7,29 @@ class Bridge;
 class ObjectManager
 {
 private:
-	static ObjectManager* Instance;
+	static ObjectManager* pInstance;
 public:
 	static ObjectManager* GetInstance()
 	{
-		if (Instance == nullptr)
-			Instance = new ObjectManager;
+		if (pInstance == nullptr)
+			pInstance = new ObjectManager;
 
-		return Instance;
+		return pInstance;
 	}
 private:
 	// ** Prototype
-	Prototype* PrototypeObject;
+	Prototype* pPrototypeObject;
 
 	// ** 플레이어
 	Object* pPlayer;
 
 	// ** 오브젝트 리스트
-	map<eObjectKey, list<Object*>> EnableObjectList;
-	map<eObjectKey, list<Object*>> DisableObjectList;
+	map<eObjectKey, list<Object*>> enableObjectList;
+	map<eObjectKey, list<Object*>> disableObjectList;
 
 	// ** 브릿지 리스트
-	map<eBridgeKey, list<Bridge*>> EnableBridgeList;
-	map<eBridgeKey, list<Bridge*>> DisableBridgeList;
+	map<eBridgeKey, list<Bridge*>> enableBridgeList;
+	map<eBridgeKey, list<Bridge*>> disableBridgeList;
 
 public:
 	// ** 초기화
@@ -43,11 +43,11 @@ public:
 	void SetPlayer(Object* _pPlayer) { pPlayer = _pPlayer; }
 
 	// ** 컨테이너에서 오브젝트 객체를 찾아서 반환. 없다면 Prototype 생성 후 반환
-	Object* NewObject(eObjectKey _Key);
-	Object* NewObject(eObjectKey _Key, Vector3 _Position);
+	Object* NewObject(eObjectKey _key);
+	Object* NewObject(eObjectKey _key, Vector3 _position);
 	
 	// ** 컨테이너에서 브릿지 객체를 찾아서 반환. 없다면 Prototype 생성 후 반환
-	Bridge* NewBridge(eBridgeKey _Key);
+	Bridge* NewBridge(eBridgeKey _key);
 
 	// ** 사용후 더이상 사용하지 않는 오브젝트 회수
 	void RecallObject(Object* _pObject);
@@ -56,36 +56,36 @@ public:
 	void RecallBridge(Bridge* _pBridge);
 
 	// ** map 컨테이너를 사용하고있는 Object Enable/Disable List를 반환.
-	map<eObjectKey, list<Object*>>* GetEnableObjectList() { return &EnableObjectList; }
-	map<eObjectKey, list<Object*>>* GetDisableObjectList() { return &DisableObjectList; }
+	map<eObjectKey, list<Object*>>* GetEnableObjectList() { return &enableObjectList; }
+	map<eObjectKey, list<Object*>>* GetDisableObjectList() { return &disableObjectList; }
 
 	// ** map 컨테이너를 사용하고있는 Bridge Enable/Disable List를 반환.
-	map<eBridgeKey, list<Bridge*>>* GetEnableBridgeList() { return &EnableBridgeList; }
-	map<eBridgeKey, list<Bridge*>>* GetDisableBridgeList() { return &DisableBridgeList; }
+	map<eBridgeKey, list<Bridge*>>* GetEnableBridgeList() { return &enableBridgeList; }
+	map<eBridgeKey, list<Bridge*>>* GetDisableBridgeList() { return &disableBridgeList; }
 
 	// ** ObjectKey에 해당하는 Object List를 반환
-	list<Object*> GetObjectList(eObjectKey _ObjectKey);
+	list<Object*> GetObjectList(eObjectKey _objectKey);
 
 	// ** BridgeKey에 해당하는 Bridge List를 반환
-	list<Bridge*> GetBridgeList(eBridgeKey _BridgeKey);	
+	list<Bridge*> GetBridgeList(eBridgeKey _bridgeKey);	
 
 	// ** TagName에 해당하는 Object를 반환
-	Object* FindObjectWithTag(eTagName _TagName);
-	Object* FindObjectWithTag(eObjectKey _ObjectKey, eTagName _TagName);
+	Object* FindObjectWithTag(eTagName _tagName);
+	Object* FindObjectWithTag(eObjectKey _objectKey, eTagName _tagName);
 
 private:
 	// ** 오브젝트 객체 생성
-	Object* CreateObject(eObjectKey _Key);
-	Object* CreateObject(eObjectKey _Key, Vector3 _Position);
+	Object* CreateObject(eObjectKey _key);
+	Object* CreateObject(eObjectKey _key, Vector3 _position);
 
 	// ** 브릿지 객체 생성
-	Bridge* CreateBridge(eBridgeKey _Key);
+	Bridge* CreateBridge(eBridgeKey _key);
 
 	// ** 오브젝트 객체 추가
-	void AddObject(map<eObjectKey, list<Object*>>& _TargetList, Object* _pObject);
+	void AddObject(map<eObjectKey, list<Object*>>& _targetList, Object* _pObject);
 
 	// ** 브릿지 객체 추가
-	void AddBridge(map<eBridgeKey, list<Bridge*>>& _TargetList, Bridge* _pObject);
+	void AddBridge(map<eBridgeKey, list<Bridge*>>& _targetList, Bridge* _pObject);
 
 	// ** 모든 활성화 오브젝트 간 충돌 검사
 	void CheckCollision();

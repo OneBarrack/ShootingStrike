@@ -2,9 +2,9 @@
 #include "BitmapManager.h"
 
 ScrollHorizontalBkg::ScrollHorizontalBkg()
-	: ScrollDirection(eScrollDirection::LEFT)
-	, ImageOffset(0.0f)
-	, LoopOffset(0.0f)
+	: scrollDirection(eScrollDirection::LEFT)
+	, imageOffset(0.0f)
+	, imageOffsetForRestart(0.0f)
 	, bLoop(false)
 	, bDrawEachStartEnd(false)
 {
@@ -16,9 +16,9 @@ ScrollHorizontalBkg::~ScrollHorizontalBkg()
 
 void ScrollHorizontalBkg::Initialize()
 {
-	Key = eBridgeKey::BACKGROUND_SCROLL_HORIZONTAL;
-	ScrollDirection = eScrollDirection::LEFT;
-	ImageOffset = 0.0f;
+	key = eBridgeKey::BACKGROUND_SCROLL_HORIZONTAL;
+	scrollDirection = eScrollDirection::LEFT;
+	imageOffset = 0.0f;
 	bLoop = true;
 	bDrawEachStartEnd = false;
 }
@@ -28,34 +28,34 @@ void ScrollHorizontalBkg::Update()
 	ReceiveInfoFromOwner();
 
 	// ** 윗방향 스크롤
-	if ( ScrollDirection == eScrollDirection::LEFT )
+	if ( scrollDirection == eScrollDirection::LEFT )
 	{
 		// ** Loop를 위한 이미지 연결 작업중이라면
 		if ( bDrawEachStartEnd )
 		{
-			LoopOffset += Speed;
+			imageOffsetForRestart += speed;
 
 			// ** 이미지 연결 구간이 끝났다면
-			if ( LoopOffset > TransInfo.Scale.x )
+			if ( imageOffsetForRestart > transInfo.Scale.x )
 			{
-				ImageOffset = pImage->GetScale().x - TransInfo.Scale.x;
+				imageOffset = pImage->GetScale().x - transInfo.Scale.x;
 				bDrawEachStartEnd = false;
 			}
 		}
 		else
 		{
-			ImageOffset -= Speed;
+			imageOffset -= speed;
 
 			// ** 이미지 최상단에 도달했다면
-			if ( ImageOffset < 0.0f )
+			if ( imageOffset < 0.0f )
 			{
 				// ** 이미지 최상단 Offset으로 고정
-				ImageOffset = 0.0f;
+				imageOffset = 0.0f;
 
 				// ** Loop 되어야 하는 상태라면
 				if ( bLoop && !bDrawEachStartEnd )
 				{
-					LoopOffset = 0.0f;
+					imageOffsetForRestart = 0.0f;
 					bDrawEachStartEnd = true;
 				}
 			}
@@ -67,29 +67,29 @@ void ScrollHorizontalBkg::Update()
 		// ** Loop를 위한 이미지 연결 작업중인지
 		if ( bDrawEachStartEnd )
 		{
-			LoopOffset -= Speed;
+			imageOffsetForRestart -= speed;
 
 			// ** 이미지 연결 구간이 끝났다면
-			if ( LoopOffset < 0.0f )
+			if ( imageOffsetForRestart < 0.0f )
 			{
-				ImageOffset = 0.0f;
+				imageOffset = 0.0f;
 				bDrawEachStartEnd = false;
 			}
 		}
 		else
 		{
-			ImageOffset += Speed;
+			imageOffset += speed;
 
 			// ** 이미지 최하단에 도달했다면
-			if ( ImageOffset > pImage->GetScale().x - TransInfo.Scale.x )
+			if ( imageOffset > pImage->GetScale().x - transInfo.Scale.x )
 			{
 				// ** 이미지 최하단 Offset으로 고정
-				ImageOffset = pImage->GetScale().x - TransInfo.Scale.x;
+				imageOffset = pImage->GetScale().x - transInfo.Scale.x;
 
 				// ** Loop 되어야 하는 상태라면
 				if ( bLoop && !bDrawEachStartEnd )
 				{
-					LoopOffset = TransInfo.Scale.x;
+					imageOffsetForRestart = transInfo.Scale.x;
 					bDrawEachStartEnd = true;
 				}
 			}
@@ -109,26 +109,26 @@ void ScrollHorizontalBkg::Render(HDC _hdc)
 	if ( bLoop && bDrawEachStartEnd )
 	{
 		TransparentBlt(_hdc,
-			(int)(TransInfo.Position.x - (TransInfo.Scale.x * 0.5f)),
-			(int)(TransInfo.Position.y - (TransInfo.Scale.y * 0.5f)),
-			(int)(LoopOffset),
-			(int)(TransInfo.Scale.y),
+			(int)(transInfo.Position.x - (transInfo.Scale.x * 0.5f)),
+			(int)(transInfo.Position.y - (transInfo.Scale.y * 0.5f)),
+			(int)(imageOffsetForRestart),
+			(int)(transInfo.Scale.y),
 			pImage->GetMemDC(),
-			(int)(pImage->GetScale().x - LoopOffset),
+			(int)(pImage->GetScale().x - imageOffsetForRestart),
 			(int)(pImage->GetSegmentationScale().y * pOwner->GetImageOffsetOrder().y),
-			(int)(LoopOffset),
+			(int)(imageOffsetForRestart),
 			(int)(pImage->GetSegmentationScale().y),
 			RGB(255, 0, 255));
 
 		TransparentBlt(_hdc,
-			(int)((TransInfo.Position.x - (TransInfo.Scale.x * 0.5f)) + LoopOffset),
-			(int)(TransInfo.Position.y - (TransInfo.Scale.y * 0.5f)),
-			(int)(TransInfo.Scale.x - LoopOffset),
-			(int)(TransInfo.Scale.y),
+			(int)((transInfo.Position.x - (transInfo.Scale.x * 0.5f)) + imageOffsetForRestart),
+			(int)(transInfo.Position.y - (transInfo.Scale.y * 0.5f)),
+			(int)(transInfo.Scale.x - imageOffsetForRestart),
+			(int)(transInfo.Scale.y),
 			pImage->GetMemDC(),
 			0,
 			(int)(pImage->GetSegmentationScale().y * pOwner->GetImageOffsetOrder().y),
-			(int)(TransInfo.Scale.x - LoopOffset),
+			(int)(transInfo.Scale.x - imageOffsetForRestart),
 			(int)(pImage->GetSegmentationScale().y),
 			RGB(255, 0, 255));
 	}
@@ -136,14 +136,14 @@ void ScrollHorizontalBkg::Render(HDC _hdc)
 	else
 	{
 		TransparentBlt(_hdc,
-			(int)(TransInfo.Position.x - (TransInfo.Scale.x * 0.5f)),
-			(int)(TransInfo.Position.y - (TransInfo.Scale.y * 0.5f)),
-			(int)(TransInfo.Scale.x),
-			(int)(TransInfo.Scale.y),
+			(int)(transInfo.Position.x - (transInfo.Scale.x * 0.5f)),
+			(int)(transInfo.Position.y - (transInfo.Scale.y * 0.5f)),
+			(int)(transInfo.Scale.x),
+			(int)(transInfo.Scale.y),
 			pImage->GetMemDC(),
-			(int)(ImageOffset),
+			(int)(imageOffset),
 			(int)(pImage->GetSegmentationScale().y * pOwner->GetImageOffsetOrder().y),
-			(int)(TransInfo.Scale.x),
+			(int)(transInfo.Scale.x),
 			(int)(pImage->GetSegmentationScale().y),
 			RGB(255, 0, 255));
 	}
@@ -156,20 +156,20 @@ void ScrollHorizontalBkg::Release()
 
 void ScrollHorizontalBkg::StartLeft()
 {
-	ImageOffset = 0.0f;
+	imageOffset = 0.0f;
 }
 
 void ScrollHorizontalBkg::StartRight()
 {
-	ImageOffset = pOwner->GetImage()->GetScale().x - pOwner->GetScale().x;
+	imageOffset = pOwner->GetImage()->GetScale().x - pOwner->GetScale().x;
 }
 
 void ScrollHorizontalBkg::ScrollLeft()
 {
-	ScrollDirection = eScrollDirection::LEFT;
+	scrollDirection = eScrollDirection::LEFT;
 }
 
 void ScrollHorizontalBkg::ScrollRight()
 {
-	ScrollDirection = eScrollDirection::RIGHT;
+	scrollDirection = eScrollDirection::RIGHT;
 }

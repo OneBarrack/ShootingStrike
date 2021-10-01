@@ -8,7 +8,7 @@
 
 Bullet::Bullet()
 	: pOwner(nullptr)
-	, Damage(0)
+	, damage(0)
 {
 
 }
@@ -22,13 +22,13 @@ void Bullet::Initialize()
 {
 	Super::Initialize();
 
-	Key = eObjectKey::BULLET;
-	Status = eObjectStatus::ACTIVATED;
-	CollisionType = eCollisionType::ELLIPSE;
+	key = eObjectKey::BULLET;
+	status = eObjectStatus::ACTIVATED;
+	collisionType = eCollisionType::ELLIPSE;
 	bGenerateCollisionEvent = true;
 
 	pOwner = nullptr;	
-	Damage = 0;
+	damage = 0;
 }
 
 void Bullet::Update()
@@ -39,7 +39,7 @@ void Bullet::Update()
 	CheckPositionInBkgBoundary();
 
 	// ** 충돌체 갱신
-	SetCollider(TransInfo);
+	SetCollider(transInfo);
 }
 
 void Bullet::Render(HDC _hdc)
@@ -62,8 +62,8 @@ void Bullet::OnCollision(Object* _pObject)
 		// ** Bullet의 주체 Object의 데미지를 충돌된 Object에 전달
 		switch ( pOwner->GetKey() )
 		{
-			case eObjectKey::PLAYER: static_cast<Player*>(pOwner)->ApplyDamage(_pObject, Damage); break;
-			case eObjectKey::ENEMY: static_cast<Enemy*>(pOwner)->ApplyDamage(_pObject, Damage);	break;
+			case eObjectKey::PLAYER: static_cast<Player*>(pOwner)->ApplyDamage(_pObject, damage); break;
+			case eObjectKey::ENEMY: static_cast<Enemy*>(pOwner)->ApplyDamage(_pObject, damage);	break;
 			default: 
 				break;
 		}
@@ -78,19 +78,19 @@ void Bullet::CheckPositionInBkgBoundary()
 	Object* pBackground = ObjectManager::GetInstance()->FindObjectWithTag(eObjectKey::BACKGROUND, eTagName::STAGE_MAIN_BKG);
 
 	// ** Stage의 바운더리
-	RectF BkgBoundary = pBackground->GetColliderF();
+	RectF bkgBoundary = pBackground->GetColliderF();
 
 	// ** Stage 바운더리 기준으로 Check 범위를 추가/감소 시킬 Offset
-	float Offset = 0.0f;
+	float offset = 0.0f;
 
 	// ** 바운더리 크기 조정
-	BkgBoundary.Left   -= Offset;
-	BkgBoundary.Top	   -= Offset;
-	BkgBoundary.Right  += Offset;
-	BkgBoundary.Bottom += Offset;
+	bkgBoundary.Left   -= offset;
+	bkgBoundary.Top	   -= offset;
+	bkgBoundary.Right  += offset;
+	bkgBoundary.Bottom += offset;
 
 	// ** Stage의 바운더리 내 Position이 위치하지 않으면 Destroy
-	if ( !CollisionManager::IsPointInRect(BkgBoundary, TransInfo.Position) )
+	if ( !CollisionManager::IsPointInRect(bkgBoundary, transInfo.Position) )
 	{
 		SetStatus(eObjectStatus::DESTROYED);
 	}

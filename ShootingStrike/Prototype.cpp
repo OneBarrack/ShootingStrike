@@ -30,29 +30,28 @@ Prototype::~Prototype()
 void Prototype::CreatePrototype()
 {
 	// Create Object Prototype
-	ObjectPrototypeList[eObjectKey::BACKGROUND]		= new Background;
-	ObjectPrototypeList[eObjectKey::PLAYER]			= new Player;
-	ObjectPrototypeList[eObjectKey::ENEMY]			= new Enemy;
-	ObjectPrototypeList[eObjectKey::BULLET]			= new Bullet;
-	ObjectPrototypeList[eObjectKey::UI_BUTTON]		= new ButtonUI;
-	ObjectPrototypeList[eObjectKey::UI_SCORE]		= new ScoreUI;
-	
-	ObjectPrototypeList[eObjectKey::FOREGROUND]  = ObjectPrototypeList[eObjectKey::BACKGROUND];
+	objectPrototypeList[eObjectKey::BACKGROUND]	= new Background;
+	objectPrototypeList[eObjectKey::PLAYER]		= new Player;
+	objectPrototypeList[eObjectKey::ENEMY]		= new Enemy;
+	objectPrototypeList[eObjectKey::BULLET]		= new Bullet;
+	objectPrototypeList[eObjectKey::UI_BUTTON]	= new ButtonUI;
+	objectPrototypeList[eObjectKey::UI_SCORE]	= new ScoreUI;	
+	objectPrototypeList[eObjectKey::FOREGROUND] = objectPrototypeList[eObjectKey::BACKGROUND];
 
 	// Create Bridge Prototype
-	BridgePrototypeList[eBridgeKey::BACKGROUND_BASIC]			  = new BasicBkg;
-	BridgePrototypeList[eBridgeKey::BACKGROUND_SCROLL_HORIZONTAL] = new ScrollHorizontalBkg;
-	BridgePrototypeList[eBridgeKey::BACKGROUND_SCROLL_VERTICAL]	  = new ScrollVerticalBkg;
-	BridgePrototypeList[eBridgeKey::ENEMY_BOSS]					  = new BossAngelEnemy;
-	BridgePrototypeList[eBridgeKey::BULLET_NORMAL]				  = new NormalBullet;
-	BridgePrototypeList[eBridgeKey::BULLET_GUIDE]				  = new GuideBullet;
+	bridgePrototypeList[eBridgeKey::BACKGROUND_BASIC]			  = new BasicBkg;
+	bridgePrototypeList[eBridgeKey::BACKGROUND_SCROLL_HORIZONTAL] = new ScrollHorizontalBkg;
+	bridgePrototypeList[eBridgeKey::BACKGROUND_SCROLL_VERTICAL]	  = new ScrollVerticalBkg;
+	bridgePrototypeList[eBridgeKey::ENEMY_BOSS]					  = new BossAngelEnemy;
+	bridgePrototypeList[eBridgeKey::BULLET_NORMAL]				  = new NormalBullet;
+	bridgePrototypeList[eBridgeKey::BULLET_GUIDE]				  = new GuideBullet;
 }
 
-Object* Prototype::FindPrototypeObject(eObjectKey _Key)
+Object* Prototype::FindPrototypeObject(eObjectKey _key)
 {
-	map<eObjectKey, Object*>::iterator iter = ObjectPrototypeList.find(_Key);
+	map<eObjectKey, Object*>::iterator iter = objectPrototypeList.find(_key);
 
-	if (iter == ObjectPrototypeList.end())
+	if (iter == objectPrototypeList.end())
 	{
 		//ERROR_MESSAGE("복사 생성할 객체 원형이 없습니다.", _Key);
 		
@@ -63,11 +62,11 @@ Object* Prototype::FindPrototypeObject(eObjectKey _Key)
 	return iter->second;
 }
 
-Bridge* Prototype::FindPrototypeBridge(eBridgeKey _Key)
+Bridge* Prototype::FindPrototypeBridge(eBridgeKey _key)
 {
-	map<eBridgeKey, Bridge*>::iterator iter = BridgePrototypeList.find(_Key);
+	map<eBridgeKey, Bridge*>::iterator iter = bridgePrototypeList.find(_key);
 
-	if ( iter == BridgePrototypeList.end() )
+	if ( iter == bridgePrototypeList.end() )
 	{
 		//ERROR_MESSAGE("복사 생성할 객체 원형이 없습니다.", _Key);
 

@@ -7,42 +7,40 @@ public:
 	typedef Object Super;
 
 private:
-	Bitmap* pPlayerImage;	
 
 	int HP;
-	int Damage;
-	int Level;
-	eBulletFiringType FiringType;
+	int damage;
+	int level;
+	eBulletType bulletType;
 
 	bool bSpawing;
 	bool bAttacking;
 	bool bTakeDamage;
 	bool bDied;
 
-	int Frame;
+	Vector3 oldPosition;
 
-	Vector3 OldPosition;
 public:
-	virtual void Initialize()override;
-	virtual void Update()override;
-	virtual void Render(HDC _hdc)override;
-	virtual void Release()override;	
-	virtual void OnCollision(Object* _pObject)override;
+	virtual void Initialize() override;
+	virtual void Update() override;
+	virtual void Render(HDC _hdc) override;
+	virtual void Release() override;	
+	virtual void OnCollision(Object* _pObject) override;
 
-	virtual Object* Clone()override { return new Player(*this); }
+	virtual Object* Clone() override { return new Player(*this); }
 
 public:
 	// ** Spawn / ReSpawn
 	void Spawn() { bSpawing = true; };
 
 	// ** 미사일 발사
-	void Fire(eBulletFiringType _BulletType, int _Power, int _Damage);
+	void Fire(eBulletType _bulletType, int _power, int _damage);
 
 	// ** 데미지를 입힘
-	void ApplyDamage(Object* _pTarget, int _Damage);
+	void ApplyDamage(Object* _pTarget, int _damage);
 
 	// ** 데미지를 받음
-	void TakeDamage(int _Damage);
+	void TakeDamage(int _damage);
 
 	// ** 죽음
 	void Die() { bDied = true; };

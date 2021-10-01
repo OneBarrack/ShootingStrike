@@ -14,9 +14,9 @@ void Background::Initialize()
 {
 	Super::Initialize();
 
-	Key = eObjectKey::BACKGROUND;
-	Status = eObjectStatus::ACTIVATED;
-	CollisionType = eCollisionType::NONE;
+	key = eObjectKey::BACKGROUND;
+	status = eObjectStatus::ACTIVATED;
+	collisionType = eCollisionType::NONE;
 	bGenerateCollisionEvent = false;
 
 	pBridge = nullptr;
@@ -27,7 +27,7 @@ void Background::Update()
 	Super::Update();
 
 	// ** 충돌체 갱신
-	SetCollider(TransInfo);
+	SetCollider(transInfo);
 }
 
 void Background::Render(HDC _hdc)

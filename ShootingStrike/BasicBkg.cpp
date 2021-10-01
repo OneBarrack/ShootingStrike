@@ -12,7 +12,7 @@ BasicBkg::~BasicBkg()
 
 void BasicBkg::Initialize()
 {
-	Key = eBridgeKey::BACKGROUND_BASIC;
+	key = eBridgeKey::BACKGROUND_BASIC;
 }
 
 void BasicBkg::Update()
@@ -27,10 +27,10 @@ void BasicBkg::Render(HDC _hdc)
 		return;
 
 	TransparentBlt(_hdc,
-		(int)(TransInfo.Position.x - (TransInfo.Scale.x * 0.5f)),
-		(int)(TransInfo.Position.y - (TransInfo.Scale.y * 0.5f)),
-		(int)(TransInfo.Scale.x),
-		(int)(TransInfo.Scale.y),
+		(int)(transInfo.Position.x - (transInfo.Scale.x * 0.5f)),
+		(int)(transInfo.Position.y - (transInfo.Scale.y * 0.5f)),
+		(int)(transInfo.Scale.x),
+		(int)(transInfo.Scale.y),
 		pImage->GetMemDC(),
 		(int)(pImage->GetSegmentationScale().x * pOwner->GetImageOffsetOrder().x),
 		(int)(pImage->GetSegmentationScale().y * pOwner->GetImageOffsetOrder().y),
