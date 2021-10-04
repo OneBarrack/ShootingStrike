@@ -9,6 +9,5 @@ Bridge::Bridge()
 }
 
 Bridge::~Bridge()
-{
-
+{	
 }

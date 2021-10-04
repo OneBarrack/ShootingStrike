@@ -38,8 +38,8 @@ enum class eObjectKey
 	ENEMY			,
 	BULLET			,
 	FOREGROUND		,
-	UI_BUTTON		,
-	UI_SCORE		,
+	UI				,	
+	EFFECT			,
 };
 
 enum class eBridgeKey
@@ -51,6 +51,10 @@ enum class eBridgeKey
 	ENEMY_BOSS					,
 	BULLET_NORMAL				,
 	BULLET_GUIDE				,
+	UI_BUTTON					,
+	UI_SCORE					,
+	EFFECT_EXPLOSION			,
+	EFFECT_HIT					,
 };
 
 enum class eImageKey
@@ -68,7 +72,8 @@ enum class eImageKey
 	PLAYER		  ,
 	BULLET		  ,
 	ANGEL		  ,
-	EFFECT		  ,
+	HIT			  ,
+	EXPLOSION	  ,	
 	KEYMAX		  ,
 };
 

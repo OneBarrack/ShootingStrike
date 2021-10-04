@@ -22,6 +22,9 @@ void Bullet::Initialize()
 {
 	Super::Initialize();
 
+	// ** ÀÓ½Ã »¡°£»ö ÃÑ¾Ë
+	imageOffsetOrder = { 1, 0 };
+
 	key = eObjectKey::BULLET;
 	status = eObjectStatus::ACTIVATED;
 	collisionType = eCollisionType::ELLIPSE;

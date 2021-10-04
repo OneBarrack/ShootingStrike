@@ -4,6 +4,9 @@
 class NormalBullet : public BulletBridge
 {
 public:
+	typedef BulletBridge Super;
+
+public:
 	virtual void Initialize() override;
 	virtual void Update() override;
 	virtual void Render(HDC _hdc) override;

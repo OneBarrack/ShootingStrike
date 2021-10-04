@@ -6,8 +6,8 @@
 #include "Enemy.h"
 #include "EnemyHole.h"
 #include "HammerEffect.h"
-#include "ButtonUI.h"
-#include "ScoreUI.h"
+#include "Effect.h"
+#include "UserInterface.h"
 
 #include "BasicBkg.h"
 #include "ScrollHorizontalBkg.h"
@@ -15,6 +15,10 @@
 #include "BossAngelEnemy.h"
 #include "NormalBullet.h"
 #include "GuideBullet.h"
+#include "ButtonUI.h"
+#include "ScoreUI.h"
+#include "ExplosionEffect.h"
+#include "HitEffect.h"
 
 Prototype::Prototype()
 {
@@ -33,9 +37,9 @@ void Prototype::CreatePrototype()
 	objectPrototypeList[eObjectKey::BACKGROUND]	= new Background;
 	objectPrototypeList[eObjectKey::PLAYER]		= new Player;
 	objectPrototypeList[eObjectKey::ENEMY]		= new Enemy;
-	objectPrototypeList[eObjectKey::BULLET]		= new Bullet;
-	objectPrototypeList[eObjectKey::UI_BUTTON]	= new ButtonUI;
-	objectPrototypeList[eObjectKey::UI_SCORE]	= new ScoreUI;	
+	objectPrototypeList[eObjectKey::BULLET]		= new Bullet;	
+	objectPrototypeList[eObjectKey::UI]			= new UserInterface;
+	objectPrototypeList[eObjectKey::EFFECT]		= new Effect;
 	objectPrototypeList[eObjectKey::FOREGROUND] = objectPrototypeList[eObjectKey::BACKGROUND];
 
 	// Create Bridge Prototype
@@ -45,6 +49,10 @@ void Prototype::CreatePrototype()
 	bridgePrototypeList[eBridgeKey::ENEMY_BOSS]					  = new BossAngelEnemy;
 	bridgePrototypeList[eBridgeKey::BULLET_NORMAL]				  = new NormalBullet;
 	bridgePrototypeList[eBridgeKey::BULLET_GUIDE]				  = new GuideBullet;
+	bridgePrototypeList[eBridgeKey::UI_BUTTON]					  = new ButtonUI;
+	bridgePrototypeList[eBridgeKey::UI_SCORE]					  = new ScoreUI;
+	bridgePrototypeList[eBridgeKey::EFFECT_EXPLOSION]			  = new ExplosionEffect;
+	bridgePrototypeList[eBridgeKey::EFFECT_HIT]					  = new HitEffect;
 }
 
 Object* Prototype::FindPrototypeObject(eObjectKey _key)

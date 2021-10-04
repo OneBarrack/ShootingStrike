@@ -16,6 +16,8 @@ ScrollHorizontalBkg::~ScrollHorizontalBkg()
 
 void ScrollHorizontalBkg::Initialize()
 {
+	Super::Initialize();
+
 	key = eBridgeKey::BACKGROUND_SCROLL_HORIZONTAL;
 	scrollDirection = eScrollDirection::LEFT;
 	imageOffset = 0.0f;
@@ -25,6 +27,8 @@ void ScrollHorizontalBkg::Initialize()
 
 void ScrollHorizontalBkg::Update()
 {
+	Super::Update();
+
 	ReceiveInfoFromOwner();
 
 	// ** 拉规氢 胶农费
@@ -101,6 +105,8 @@ void ScrollHorizontalBkg::Update()
 
 void ScrollHorizontalBkg::Render(HDC _hdc)
 {
+	Super::Render(_hdc);
+
 	if ( !pImage ) 
 		return;
 
@@ -151,7 +157,7 @@ void ScrollHorizontalBkg::Render(HDC _hdc)
 
 void ScrollHorizontalBkg::Release()
 {
-
+	Super::Release();
 }
 
 void ScrollHorizontalBkg::StartLeft()

@@ -4,6 +4,9 @@
 class BossAngelEnemy : public EnemyBridge
 {
 public:
+	typedef EnemyBridge Super;
+
+public:
 	enum class AnimationType
 	{
 		DEFAULT,

@@ -15,12 +15,27 @@ private:
 	int level;
 	eBulletType bulletType;
 
+	// ** 스폰중인지
 	bool bSpawing;
-	bool bAttacking;
-	bool bTakeDamage;
+
+	// ** 죽었는지
 	bool bDied;
 
+	// ** 무적인지
+	bool bInvicible;
+
+	// ** 키 입력이 막혔는지
+	bool bCantAccessInput;
+
 	Vector3 oldPosition;
+
+	// ** 스폰 시 딜레이 Timer
+	ULONGLONG cantAccessInputTimer;
+	int cantAccessInputDurationTime;
+
+	// ** 무적 Timer
+	ULONGLONG invincibleTimer;
+	int invicibleDurationTime;
 
 public:
 	virtual void Initialize() override;
@@ -32,9 +47,6 @@ public:
 	virtual Object* Clone() override { return new Player(*this); }
 
 public:
-	// ** Spawn / ReSpawn
-	void Spawn() { bSpawing = true; };
-
 	// ** 미사일 발사
 	void Fire(eBulletType _bulletType, int _power, int _damage);
 
@@ -44,10 +56,16 @@ public:
 	// ** 데미지를 받음
 	void TakeDamage(int _damage);
 
+	// ** Spawn / ReSpawn
+	void Spawn();
+
 	// ** 죽음
-	void Die() { bDied = true; };
+	void Die();
 
 private:
+	// ** 현재 플레이어 상태 체크
+	void CheckStatus();
+
 	// ** Stage 전장을 벗어났는지 체크
 	void CheckPositionInBkgBoundary();
 

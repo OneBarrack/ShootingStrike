@@ -18,42 +18,34 @@ ScoreUI::~ScoreUI()
 
 void ScoreUI::Initialize()
 {
+	Super::Initialize();
+
 	pScoreImage = BitmapManager::GetInstance()->GetImage(eImageKey::SCORE);
 	pNumberImage = BitmapManager::GetInstance()->GetImage(eImageKey::NUMBER);
 
-	transInfo.Position = Vector3(0.0f, 0.0f);
-	transInfo.Scale = Vector3(0.0f, 0.0f);
-	transInfo.Direction = Vector3(0.0f, 0.0f);
-
-	collider.Position = transInfo.Position;
-	collider.Scale = transInfo.Scale;
-
-	key = eObjectKey::UI_SCORE;
-	status = eObjectStatus::ACTIVATED;
-	collisionType = eCollisionType::NONE;
-
-	bGenerateCollisionEvent = false;
+	key = eBridgeKey::UI_SCORE;
 }
 
 void ScoreUI::Update()
 {
-	MakeScoreNumberList();
+	Super::Update();
 
-	// ** 충돌체 갱신
-	collider = transInfo;
+	MakeScoreNumberList();
 }
 
 void ScoreUI::Render(HDC _hdc)
 {
+	Super::Render(_hdc);
+
 	if ( !pScoreImage || !pNumberImage )
 		return;
 
 	// ** Score
 	TransparentBlt(_hdc, // ** 최종 출력 위치
-		int(transInfo.Position.x - transInfo.Scale.x),
-		int(transInfo.Position.y - transInfo.Scale.y),
-		int(transInfo.Scale.x),
-		int(transInfo.Scale.y),
+		int(pOwner->GetPosition().x - pOwner->GetScale().x),
+		int(pOwner->GetPosition().y - pOwner->GetScale().y),
+		int(pOwner->GetScale().x),
+		int(pOwner->GetScale().y),
 		pScoreImage->GetMemDC(),
 		0,
 		0,
@@ -76,10 +68,10 @@ void ScoreUI::Render(HDC _hdc)
 		}
 		
 		TransparentBlt(_hdc, // ** 최종 출력 위치
-			int((transInfo.Position.x - transInfo.Scale.x) + ((pNumberImage->GetSegmentationScale().x + 15) * offset)),
-			int(transInfo.Position.y),
+			int((pOwner->GetPosition().x - pOwner->GetScale().x) + ((pNumberImage->GetSegmentationScale().x + 15) * offset)),
+			int(pOwner->GetPosition().y),
 			int(pNumberImage->GetSegmentationScale().x + 13),
-			int(transInfo.Scale.y),
+			int(pOwner->GetScale().y),
 			pNumberImage->GetMemDC(),
 			int(pNumberImage->GetSegmentationScale().x * Num),
 			0,
@@ -91,12 +83,7 @@ void ScoreUI::Render(HDC _hdc)
 
 void ScoreUI::Release()
 {
-
-}
-
-void ScoreUI::OnCollision(Object* _pObject)
-{
-
+	Super::Release();
 }
 
 void ScoreUI::MakeScoreNumberList()

@@ -9,10 +9,10 @@ protected:
 	float speed;
 
 public:
-	virtual void Initialize() PURE;
-	virtual void Update() PURE;
-	virtual void Render(HDC _hdc) PURE;
-	virtual void Release() PURE;
+	virtual void Initialize() override;
+	virtual void Update() override;
+	virtual void Render(HDC _hdc) override;
+	virtual void Release() override;
 
 	virtual Bridge* Clone() PURE;
 

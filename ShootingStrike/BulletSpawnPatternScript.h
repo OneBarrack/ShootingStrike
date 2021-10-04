@@ -10,6 +10,9 @@ private:
 	// ** Spawn Pattern
 	eBulletSpawnPattern spawnPattern;
 
+	// ** Spawn Position
+	Vector3 spawnPosition;
+
 	// ** 데미지
 	int damage;
 
@@ -21,7 +24,7 @@ public:
 	void Initialize(Object* _pOwner = nullptr);
 
 	// ** Pattern 및 데미지 세팅
-	void ReadyToSpawn(eBulletSpawnPattern _SpawnPattern, int _damage);
+	void ReadyToSpawn(eBulletSpawnPattern _spawnPattern, Vector3 _spawnPosision, int _damage);
 
 	// ** 실행 중인지
 	bool IsRunning() { return !bReady; }

@@ -4,6 +4,9 @@
 class BasicBkg : public BackgroundBridge
 {
 public:
+	typedef BackgroundBridge Super;
+
+public:
 	virtual void Initialize() override;
 	virtual void Update() override;
 	virtual void Render(HDC _hdc) override;

@@ -82,9 +82,6 @@
     <Filter Include="소스 파일\02. Object\UI">
       <UniqueIdentifier>{7f7f33b5-986d-4fe2-bb5e-5a2973de84f4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\02. Object\UI\Button">
-      <UniqueIdentifier>{f8dfcd95-a908-4a3f-8ee8-807cca4cb3c9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\99. Manager\SpawnManager">
       <UniqueIdentifier>{d2286836-24a7-4923-a1b0-31bfe4a3f91d}</UniqueIdentifier>
     </Filter>
@@ -133,9 +130,6 @@
     <Filter Include="소스 파일\99. Manager\GameDataManager">
       <UniqueIdentifier>{faefa851-8819-48eb-b9e7-e5f29708782f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\02. Object\UI\Score">
-      <UniqueIdentifier>{13240147-5a18-47b2-9ffc-bc4bb0776625}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\99. Manager\GameDebugManager">
       <UniqueIdentifier>{35ed8b27-2a75-4306-a5f7-266aa81af39b}</UniqueIdentifier>
     </Filter>
@@ -150,6 +144,24 @@
     </Filter>
     <Filter Include="소스 파일\04. Helper\SpawnPatternScript\Enemy">
       <UniqueIdentifier>{0f12610f-4dc9-43e6-98e4-36401f32d754}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\UI\UIBridge">
+      <UniqueIdentifier>{856d6a58-e8d9-423a-943e-a7b6b3e06d3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\UI\UIBridge\Button">
+      <UniqueIdentifier>{f8dfcd95-a908-4a3f-8ee8-807cca4cb3c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\UI\UIBridge\Score">
+      <UniqueIdentifier>{13240147-5a18-47b2-9ffc-bc4bb0776625}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\Effect\EffectBridge">
+      <UniqueIdentifier>{f1201fec-6a4c-4690-829e-f788b0be8cfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\Effect\EffectBridge\Explosion">
+      <UniqueIdentifier>{ad493f18-37d9-4212-b1e3-fbad17fe0089}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\Effect\EffectBridge\Hit">
+      <UniqueIdentifier>{d031ba20-ae27-4ee0-9c77-022ae8b2d733}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -253,7 +265,7 @@
       <Filter>소스 파일\02. Object\Bullet\BulletBridge\Normal</Filter>
     </ClInclude>
     <ClInclude Include="ButtonUI.h">
-      <Filter>소스 파일\02. Object\UI\Button</Filter>
+      <Filter>소스 파일\02. Object\UI\UIBridge\Button</Filter>
     </ClInclude>
     <ClInclude Include="SpawnManager.h">
       <Filter>소스 파일\99. Manager\SpawnManager</Filter>
@@ -280,7 +292,7 @@
       <Filter>소스 파일\99. Manager\GameDataManager</Filter>
     </ClInclude>
     <ClInclude Include="ScoreUI.h">
-      <Filter>소스 파일\02. Object\UI\Score</Filter>
+      <Filter>소스 파일\02. Object\UI\UIBridge\Score</Filter>
     </ClInclude>
     <ClInclude Include="GameDebugManager.h">
       <Filter>소스 파일\99. Manager\GameDebugManager</Filter>
@@ -290,6 +302,24 @@
     </ClInclude>
     <ClInclude Include="SpawnPatternScript.h">
       <Filter>소스 파일\04. Helper\SpawnPatternScript</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect.h">
+      <Filter>소스 파일\02. Object\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="UserInterface.h">
+      <Filter>소스 파일\02. Object\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIBridge.h">
+      <Filter>소스 파일\02. Object\UI\UIBridge</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectBridge.h">
+      <Filter>소스 파일\02. Object\Effect\EffectBridge</Filter>
+    </ClInclude>
+    <ClInclude Include="ExplosionEffect.h">
+      <Filter>소스 파일\02. Object\Effect\EffectBridge\Explosion</Filter>
+    </ClInclude>
+    <ClInclude Include="HitEffect.h">
+      <Filter>소스 파일\02. Object\Effect\EffectBridge\Hit</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -366,7 +396,7 @@
       <Filter>소스 파일\02. Object\Bullet\BulletBridge\Normal</Filter>
     </ClCompile>
     <ClCompile Include="ButtonUI.cpp">
-      <Filter>소스 파일\02. Object\UI\Button</Filter>
+      <Filter>소스 파일\02. Object\UI\UIBridge\Button</Filter>
     </ClCompile>
     <ClCompile Include="SpawnManager.cpp">
       <Filter>소스 파일\99. Manager\SpawnManager</Filter>
@@ -393,7 +423,7 @@
       <Filter>소스 파일\99. Manager\GameDataManager</Filter>
     </ClCompile>
     <ClCompile Include="ScoreUI.cpp">
-      <Filter>소스 파일\02. Object\UI\Score</Filter>
+      <Filter>소스 파일\02. Object\UI\UIBridge\Score</Filter>
     </ClCompile>
     <ClCompile Include="GameDebugManager.cpp">
       <Filter>소스 파일\99. Manager\GameDebugManager</Filter>
@@ -403,6 +433,24 @@
     </ClCompile>
     <ClCompile Include="SpawnPatternScript.cpp">
       <Filter>소스 파일\04. Helper\SpawnPatternScript</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect.cpp">
+      <Filter>소스 파일\02. Object\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="UserInterface.cpp">
+      <Filter>소스 파일\02. Object\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UIBridge.cpp">
+      <Filter>소스 파일\02. Object\UI\UIBridge</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectBridge.cpp">
+      <Filter>소스 파일\02. Object\Effect\EffectBridge</Filter>
+    </ClCompile>
+    <ClCompile Include="ExplosionEffect.cpp">
+      <Filter>소스 파일\02. Object\Effect\EffectBridge\Explosion</Filter>
+    </ClCompile>
+    <ClCompile Include="HitEffect.cpp">
+      <Filter>소스 파일\02. Object\Effect\EffectBridge\Hit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

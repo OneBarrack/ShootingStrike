@@ -39,8 +39,9 @@ public:
 	void TakeDamage(int _Damage);
 
 	// ** Á×À½
+	void Die();
+
 	bool IsDead() { return bDied; }
-	void Die() { bDied = true; };
 
 	int GetHP() { return HP; }
 	int GetHitPoint() { return hitScore; }

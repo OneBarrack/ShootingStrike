@@ -151,14 +151,18 @@
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="Constant.h" />
     <ClInclude Include="Define.h" />
+    <ClInclude Include="Effect.h" />
+    <ClInclude Include="EffectBridge.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyBridge.h" />
     <ClInclude Include="Enum.h" />
+    <ClInclude Include="ExplosionEffect.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GameDataManager.h" />
     <ClInclude Include="GameDebugManager.h" />
     <ClInclude Include="GuideBullet.h" />
     <ClInclude Include="Headers.h" />
+    <ClInclude Include="HitEffect.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Logo.h" />
     <ClInclude Include="ScoreUI.h" />
@@ -185,6 +189,8 @@
     <ClInclude Include="Background.h" />
     <ClInclude Include="Struct.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="UserInterface.h" />
+    <ClInclude Include="UIBridge.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BackgroundBridge.cpp" />
@@ -197,11 +203,15 @@
     <ClCompile Include="BulletSpawnPatternScript.cpp" />
     <ClCompile Include="ButtonUI.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
+    <ClCompile Include="Effect.cpp" />
+    <ClCompile Include="EffectBridge.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyBridge.cpp" />
+    <ClCompile Include="ExplosionEffect.cpp" />
     <ClCompile Include="GameDataManager.cpp" />
     <ClCompile Include="GameDebugManager.cpp" />
     <ClCompile Include="GuideBullet.cpp" />
+    <ClCompile Include="HitEffect.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Logo.cpp" />
     <ClCompile Include="ScoreUI.cpp" />
@@ -224,6 +234,8 @@
     <ClCompile Include="SpawnPatternScript.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="Background.cpp" />
+    <ClCompile Include="UserInterface.cpp" />
+    <ClCompile Include="UIBridge.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ShootingStrike.rc" />

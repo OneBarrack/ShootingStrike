@@ -18,11 +18,7 @@ BossAngelEnemy::~BossAngelEnemy()
 
 void BossAngelEnemy::Initialize()
 {
-	if ( pOwner )
-	{
-		ReceiveInfoFromOwner();
-		bulletScript.Initialize(pOwner);
-	}
+	Super::Initialize();
 
 	key = eBridgeKey::ENEMY_BOSS;
 
@@ -32,9 +28,14 @@ void BossAngelEnemy::Initialize()
 
 void BossAngelEnemy::Update()
 {
+	Super::Update();
 	// ** Owner의 데이터를 받아옴
 	ReceiveInfoFromOwner();
 	
+	// 충돌체 조정
+	collider.Position = Vector3(transInfo.Position.x, transInfo.Position.y + (transInfo.Scale.y * 0.2f));
+	collider.Scale = Vector3(transInfo.Scale.x * 0.4f, transInfo.Scale.y * 0.5f);
+
 	// _Debug_ : Update 전체 테스트 중
 	if ( CHECK_KEYINPUT_STATE(eInputKey::KEY_LBUTTON, eKeyInputState::DOWN) )
 	{
@@ -52,11 +53,13 @@ void BossAngelEnemy::Update()
 			patternIndex++;
 			
 		PlayAnimation(static_cast<AnimationType>(animTypeIndex), false);
-		bulletScript.ReadyToSpawn(static_cast<eBulletSpawnPattern>(patternIndex), 1);
+		bulletScript.ReadyToSpawn(static_cast<eBulletSpawnPattern>(patternIndex), collider.Position, 1);
+		
+		//SpawnManager::SpawnEffect(transInfo, eBridgeKey::EFFECT_EXPLOSION);
 	}
 
 	//transInfo.Position.x += transInfo.Direction.x * Speed;
-	//transInfo.Position.y += transInfo.Direction.y * Speed;
+	//transInfo.Position.y += transInfo.Direction.y * Speed;	
 
 	// ** Owner로 가공된 데이터 전달
 	SendInfoToOwner();
@@ -67,6 +70,7 @@ void BossAngelEnemy::Update()
 
 void BossAngelEnemy::Render(HDC _hdc)
 {
+	Super::Render(_hdc);
 	if ( !pImage )
 		return;
 
@@ -99,7 +103,7 @@ void BossAngelEnemy::Render(HDC _hdc)
 
 void BossAngelEnemy::Release()
 {
-
+	Super::Release();
 }
 
 void BossAngelEnemy::PlayAnimation(AnimationType _AnimType, bool _bLoop)
@@ -166,69 +170,70 @@ void BossAngelEnemy::PlayAnimAttack1(HDC _hdc, ULONGLONG& _time, int& _offset)
 		(int)(pImage->GetSegmentationScale().y),
 		RGB(147, 187, 236));
 
-	// ** Ready 시작 구간 진입
-	if ( !bRepeatSection && _offset == readySectionStart )
+	// ** Delay 시간 주기로 Offset 적용
+	if ( _time + delay < GetTickCount64() )
 	{
-		// ** Ready 시작 타임 설정
-		readyTime = GetTickCount64();
-	}
+		_time = GetTickCount64();
 
-	// ** Fire 시작 구간 진입
-	if ( !bRepeatSection && _offset == fireSectionStart )
-	{
-		// ** Fire 시작 타임 설정
-		fireTime = GetTickCount64();
-	}
-
-	// ** Ready 종료 구간 진입
-	if ( _offset == readySectionEnd )
-	{
-		// ** 구간 반복 스타트
-		bRepeatSection = true;
-
-		// ** Ready 구간반복 지속시간이 끝났는지 체크
-		if ( readyTime + readyDurationTime < GetTickCount64() )
+		// ** Ready 시작 구간 진입
+		if ( !bRepeatSection && _offset == readySectionStart )
 		{
-			// ** 구간 반복 종료
-			bRepeatSection = false;
-
-			// ** 구간을 넘김 ( 종료지점의 다음 Offset으로 설정 )
-			_offset = readySectionEnd + 1;
+			// ** Ready 시작 타임 설정
+			readyTime = GetTickCount64();
 		}
-	}
-	// ** Fire 종료 구간 진입
-	else if ( _offset == fireSectionEnd )
-	{
-		// ** 구간 반복 스타트
-		bRepeatSection = true;
 
-		// ** Fire 구간반복 지속시간이 끝났는지 체크
-		if ( fireTime + fireDurationTime < GetTickCount64() )
+		// ** Fire 시작 구간 진입
+		if ( !bRepeatSection && _offset == fireSectionStart )
 		{
-			// ** 구간 반복 종료
-			bRepeatSection = false;
+			// ** Fire 시작 타임 설정
+			fireTime = GetTickCount64();
+		}
 
-			// ** Loop중이라면 Offset을 다시 0으로 세팅하고 아니라면 Default Animation을 Play 시킨다 
-			if ( bLoopPlayAnim )
-				_offset = 0;
+		// ** Ready 종료 구간 진입
+		if ( _offset == readySectionEnd )
+		{
+			// ** 구간 반복 스타트
+			bRepeatSection = true;
+
+			// ** Ready 구간반복 지속시간이 끝났는지 체크
+			if ( readyTime + readyDurationTime < GetTickCount64() )
+			{
+				// ** 구간 반복 종료
+				bRepeatSection = false;
+
+				// ** 구간을 넘김 ( 종료지점의 다음 Offset으로 설정 )
+				_offset = readySectionEnd + 1;
+			}
+		}
+		// ** Fire 종료 구간 진입
+		else if ( _offset == fireSectionEnd )
+		{
+			// ** 구간 반복 스타트
+			bRepeatSection = true;
+
+			// ** Fire 구간반복 지속시간이 끝났는지 체크
+			if ( fireTime + fireDurationTime < GetTickCount64() )
+			{
+				// ** 구간 반복 종료
+				bRepeatSection = false;
+
+				// ** Loop중이라면 Offset을 다시 0으로 세팅하고 아니라면 Default Animation을 Play 시킨다 
+				if ( bLoopPlayAnim )
+					_offset = 0;
+				else
+					PlayAnimation(AnimationType::DEFAULT, true);
+			}
 			else
-				PlayAnimation(AnimationType::DEFAULT, true);
+			{
+				// ** 반복을 위해 Fire 스타트 지점으로 리셋
+				_offset = fireSectionStart;
+			}
 		}
+		// ** 반복구간 종료지점이 아니라면
 		else
 		{
-			// ** 반복을 위해 Fire 스타트 지점으로 리셋
-			_offset = fireSectionStart;
-		}
-	}
-	// ** 반복구간 종료지점이 아니라면
-	else
-	{
-		// ** Delay 시간 주기로 Offset 증가
-		if ( _time + delay < GetTickCount64() )
-		{
+			// Offset 증가
 			++_offset;
-
-			_time = GetTickCount64();
 		}
 	}
 }
@@ -263,69 +268,70 @@ void BossAngelEnemy::PlayAnimAttack2(HDC _hdc, ULONGLONG& _time, int& _offset)
 		(int)(pImage->GetSegmentationScale().y),
 		RGB(147, 187, 236));
 
-	// ** Ready 시작 구간 진입
-	if ( !bRepeatSection && _offset == readySectionStart )
+	// ** Delay 시간 주기로 Offset 적용
+	if ( _time + delay < GetTickCount64() )
 	{
-		// ** Ready 시작 타임 설정
-		readyTime = GetTickCount64();
-	}
+		_time = GetTickCount64();
 
-	// ** Fire 시작 구간 진입
-	if ( !bRepeatSection && _offset == fireSectionStart )
-	{
-		// ** Fire 시작 타임 설정
-		fireTime = GetTickCount64();
-	}
-
-	// ** Ready 종료 구간 진입
-	if ( _offset == readySectionEnd )
-	{
-		// ** 구간 반복 스타트
-		bRepeatSection = true;
-
-		// ** Ready 구간반복 지속시간이 끝났는지 체크
-		if ( readyTime + readyDurationTime < GetTickCount64() )
+		// ** Ready 시작 구간 진입
+		if ( !bRepeatSection && _offset == readySectionStart )
 		{
-			// ** 구간 반복 종료
-			bRepeatSection = false;
-
-			// ** 구간을 넘김 ( 종료지점의 다음 Offset으로 설정 )
-			_offset = readySectionEnd + 1;
+			// ** Ready 시작 타임 설정
+			readyTime = GetTickCount64();
 		}
-	}
-	// ** Fire 종료 구간 진입
-	else if ( _offset == fireSectionEnd )
-	{
-		// ** 구간 반복 스타트
-		bRepeatSection = true;
 
-		// ** Fire 구간반복 지속시간이 끝났는지 체크
-		if ( fireTime + fireDurationTime < GetTickCount64() )
+		// ** Fire 시작 구간 진입
+		if ( !bRepeatSection && _offset == fireSectionStart )
 		{
-			// ** 구간 반복 종료
-			bRepeatSection = false;
+			// ** Fire 시작 타임 설정
+			fireTime = GetTickCount64();
+		}
 
-			// ** Loop중이라면 Offset을 다시 0으로 세팅하고 아니라면 Default Animation을 Play 시킨다 
-			if ( bLoopPlayAnim )
-				_offset = 0;
+		// ** Ready 종료 구간 진입
+		if ( _offset == readySectionEnd )
+		{
+			// ** 구간 반복 스타트
+			bRepeatSection = true;
+
+			// ** Ready 구간반복 지속시간이 끝났는지 체크
+			if ( readyTime + readyDurationTime < GetTickCount64() )
+			{
+				// ** 구간 반복 종료
+				bRepeatSection = false;
+
+				// ** 구간을 넘김 ( 종료지점의 다음 Offset으로 설정 )
+				_offset = readySectionEnd + 1;
+			}
+		}
+		// ** Fire 종료 구간 진입
+		else if ( _offset == fireSectionEnd )
+		{
+			// ** 구간 반복 스타트
+			bRepeatSection = true;
+
+			// ** Fire 구간반복 지속시간이 끝났는지 체크
+			if ( fireTime + fireDurationTime < GetTickCount64() )
+			{
+				// ** 구간 반복 종료
+				bRepeatSection = false;
+
+				// ** Loop중이라면 Offset을 다시 0으로 세팅하고 아니라면 Default Animation을 Play 시킨다 
+				if ( bLoopPlayAnim )
+					_offset = 0;
+				else
+					PlayAnimation(AnimationType::DEFAULT, true);
+			}
 			else
-				PlayAnimation(AnimationType::DEFAULT, true);
+			{
+				// ** 반복을 위해 Fire 스타트 지점으로 리셋
+				_offset = fireSectionStart;
+			}
 		}
+		// ** 반복구간 종료지점이 아니라면
 		else
 		{
-			// ** 반복을 위해 Fire 스타트 지점으로 리셋
-			_offset = fireSectionStart;
-		}
-	}
-	// ** 반복구간 종료지점이 아니라면
-	else
-	{
-		// ** Delay 시간 주기로 Offset 증가
-		if ( _time + delay < GetTickCount64() )
-		{
+			// Offset 증가
 			++_offset;
-
-			_time = GetTickCount64();
 		}
 	}
 }
@@ -333,7 +339,7 @@ void BossAngelEnemy::PlayAnimAttack2(HDC _hdc, ULONGLONG& _time, int& _offset)
 void BossAngelEnemy::PlayAnimAttack3(HDC _hdc, ULONGLONG& _time, int& _offset)
 {
 	static bool bRepeatSection = false; // ** 일정 구간이 반복되고 있는 타이밍인지
-	int maxSegmentCount = 4;			// ** 해당 라인에서 분할된 이미지 수	
+	int maxSegmentCount = 6;			// ** 해당 라인에서 분할된 이미지 수	
 	int delay = 200;
 
 	// ** Ready 타이밍
@@ -360,69 +366,70 @@ void BossAngelEnemy::PlayAnimAttack3(HDC _hdc, ULONGLONG& _time, int& _offset)
 		(int)(pImage->GetSegmentationScale().y),
 		RGB(147, 187, 236));
 
-	// ** Ready 시작 구간 진입
-	if ( !bRepeatSection && _offset == readySectionStart )
+	// ** Delay 시간 주기로 Offset 적용
+	if ( _time + delay < GetTickCount64() )
 	{
-		// ** Ready 시작 타임 설정
-		readyTime = GetTickCount64();
-	}
+		_time = GetTickCount64();
 
-	// ** Fire 시작 구간 진입
-	if ( !bRepeatSection && _offset == fireSectionStart )
-	{
-		// ** Fire 시작 타임 설정
-		fireTime = GetTickCount64();
-	}
-
-	// ** Ready 종료 구간 진입
-	if ( _offset == readySectionEnd )
-	{
-		// ** 구간 반복 스타트
-		bRepeatSection = true;
-
-		// ** Ready 구간반복 지속시간이 끝났는지 체크
-		if ( readyTime + readyDurationTime < GetTickCount64() )
+		// ** Ready 시작 구간 진입
+		if ( !bRepeatSection && _offset == readySectionStart )
 		{
-			// ** 구간 반복 종료
-			bRepeatSection = false;
-
-			// ** 구간을 넘김 ( 종료지점의 다음 Offset으로 설정 )
-			_offset = readySectionEnd + 1;
+			// ** Ready 시작 타임 설정
+			readyTime = GetTickCount64();
 		}
-	}
-	// ** Fire 종료 구간 진입
-	else if ( _offset == fireSectionEnd )
-	{
-		// ** 구간 반복 스타트
-		bRepeatSection = true;
 
-		// ** Fire 구간반복 지속시간이 끝났는지 체크
-		if ( fireTime + fireDurationTime < GetTickCount64() )
+		// ** Fire 시작 구간 진입
+		if ( !bRepeatSection && _offset == fireSectionStart )
 		{
-			// ** 구간 반복 종료
-			bRepeatSection = false;
+			// ** Fire 시작 타임 설정
+			fireTime = GetTickCount64();
+		}
 
-			// ** Loop중이라면 Offset을 다시 0으로 세팅하고 아니라면 Default Animation을 Play 시킨다 
-			if ( bLoopPlayAnim )
-				_offset = 0;
+		// ** Ready 종료 구간 진입
+		if ( _offset == readySectionEnd )
+		{
+			// ** 구간 반복 스타트
+			bRepeatSection = true;
+
+			// ** Ready 구간반복 지속시간이 끝났는지 체크
+			if ( readyTime + readyDurationTime < GetTickCount64() )
+			{
+				// ** 구간 반복 종료
+				bRepeatSection = false;
+
+				// ** 구간을 넘김 ( 종료지점의 다음 Offset으로 설정 )
+				_offset = readySectionEnd + 1;
+			}
+		}
+		// ** Fire 종료 구간 진입
+		else if ( _offset == fireSectionEnd )
+		{
+			// ** 구간 반복 스타트
+			bRepeatSection = true;
+
+			// ** Fire 구간반복 지속시간이 끝났는지 체크
+			if ( fireTime + fireDurationTime < GetTickCount64() )
+			{
+				// ** 구간 반복 종료
+				bRepeatSection = false;
+
+				// ** Loop중이라면 Offset을 다시 0으로 세팅하고 아니라면 Default Animation을 Play 시킨다 
+				if ( bLoopPlayAnim )
+					_offset = 0;
+				else
+					PlayAnimation(AnimationType::DEFAULT, true);
+			}
 			else
-				PlayAnimation(AnimationType::DEFAULT, true);
+			{
+				// ** 반복을 위해 Fire 스타트 지점으로 리셋
+				_offset = fireSectionStart;
+			}
 		}
+		// ** 반복구간 종료지점이 아니라면
 		else
 		{
-			// ** 반복을 위해 Fire 스타트 지점으로 리셋
-			_offset = fireSectionStart;
-		}
-	}
-	// ** 반복구간 종료지점이 아니라면
-	else
-	{
-		// ** Delay 시간 주기로 Offset 증가
-		if ( _time + delay < GetTickCount64() )
-		{
+			// Offset 증가
 			++_offset;
-
-			_time = GetTickCount64();
 		}
 	}
 }

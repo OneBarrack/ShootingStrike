@@ -1,6 +1,7 @@
 #include "ButtonUI.h"
 #include "InputManager.h"
 #include "CollisionManager.h"
+#include "InputManager.h"
 
 ButtonUI::ButtonUI()
 	: bExistHoverImage(false)
@@ -19,37 +20,30 @@ ButtonUI::~ButtonUI()
 
 void ButtonUI::Initialize()
 {
-	transInfo.Position = Vector3(0.0f, 0.0f);
-	transInfo.Scale = Vector3(0.0f, 0.0f);
-	transInfo.Direction = Vector3(0.0f, 0.0f);
-		
-	collider.Position = transInfo.Position;
-	collider.Scale = transInfo.Scale;
+	Super::Initialize();
 
-	key = eObjectKey::UI_BUTTON;
-	status = eObjectStatus::ACTIVATED;
-	collisionType = eCollisionType::RECT;
-	
-	bGenerateCollisionEvent = false;
-	
 	buttonState = eButtonState::NORMAL;
 	bOnClick = false;
+
+	key = eBridgeKey::UI_BUTTON;
 }
 
 void ButtonUI::Update()
 {
+	Super::Update();
+
 	Vector3 mousePos = InputManager::GetInstance()->GetMousePosition();
 
 	// ** 마우스가 버튼 이미지 위에 위치 하는지
-	if ( CollisionManager::IsPointInRect(GetColliderL(), mousePos))
+	if ( CollisionManager::IsPointInRect(pOwner->GetColliderL(), mousePos))
 	{
 		// ** 누르는 중
-		if ( CheckKeyInputStatus(eInputKey::KEY_LBUTTON, eKeyInputState::PRESSED) )
+		if ( CHECK_KEYINPUT_STATE(eInputKey::KEY_LBUTTON, eKeyInputState::PRESSED) )
 		{
 			buttonState = eButtonState::PRESSED;
 		}
 		// ** 눌렀다 뗀 시점(클릭 완료된 시점)
-		else if ( CheckKeyInputStatus(eInputKey::KEY_LBUTTON, eKeyInputState::UP) )
+		else if ( CHECK_KEYINPUT_STATE(eInputKey::KEY_LBUTTON, eKeyInputState::UP) )
 		{
 			buttonState = eButtonState::NORMAL;
 			bOnClick = true;
@@ -64,35 +58,29 @@ void ButtonUI::Update()
 	{
 		buttonState = eButtonState::NORMAL;
 	}
-
-	// ** 충돌체 갱신
-	collider = transInfo;
 }
 
 void ButtonUI::Render(HDC _hdc)
 {
+	Super::Render(_hdc);
+
 	if ( !pImage )
 		return;
 
 	TransparentBlt(_hdc, // ** 최종 출력 위치
-		int(transInfo.Position.x - (transInfo.Scale.x * 0.5f)),
-		int(transInfo.Position.y - (transInfo.Scale.y * 0.5f)),
-		int(transInfo.Scale.x),
-		int(transInfo.Scale.y),
+		int(pOwner->GetPosition().x - (pOwner->GetScale().x * 0.5f)),
+		int(pOwner->GetPosition().y - (pOwner->GetScale().y * 0.5f)),
+		int(pOwner->GetScale().x),
+		int(pOwner->GetScale().y),
 		pImage->GetMemDC(),
-		int(transInfo.Scale.x * static_cast<int>(buttonState)),
+		int(pImage->GetSegmentationScale().x * static_cast<int>(buttonState)),
 		0,
-		int(transInfo.Scale.x),
-		int(transInfo.Scale.y),
+		int(pImage->GetSegmentationScale().x),
+		int(pImage->GetSegmentationScale().y),
 		RGB(255, 0, 255));
 }
 
 void ButtonUI::Release()
 {
-
-}
-
-void ButtonUI::OnCollision(Object* _pObject)
-{
-
+	Super::Release();
 }

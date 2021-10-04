@@ -15,8 +15,7 @@ GuideBullet::~GuideBullet()
 
 void GuideBullet::Initialize()
 {
-	if ( pOwner )
-		ReceiveInfoFromOwner();
+	Super::Initialize();
 
 	key = eBridgeKey::BULLET_GUIDE;
 
@@ -25,6 +24,8 @@ void GuideBullet::Initialize()
 
 void GuideBullet::Update()
 {
+	Super::Update();
+
 	// ** Owner의 데이터를 받아옴
 	ReceiveInfoFromOwner();
 
@@ -40,13 +41,15 @@ void GuideBullet::Update()
 
 void GuideBullet::Render(HDC _hdc)
 {
+	Super::Render(_hdc);
+
 	if ( pImage )
 		RenderBullet(_hdc);
 }
 
 void GuideBullet::Release()
 {
-
+	Super::Release();
 }
 
 void GuideBullet::CalcGuideDirection(Vector3 _pos, Vector3& _rDirection)

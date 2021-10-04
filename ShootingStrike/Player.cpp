@@ -15,8 +15,6 @@ Player::Player()
 	, level(0)
 	, bulletType(eBulletType::NORMAL)
 	, bSpawing(false)
-	, bAttacking(false)
-	, bTakeDamage(false)
 	, bDied(false)
 	, oldPosition(Vector3())
 {
@@ -31,17 +29,17 @@ void Player::Initialize()
 	Super::Initialize();
 
 	pImage = BitmapManager::GetInstance()->GetImage(eImageKey::PLAYER);
-	tagName = eTagName::PLAYER_FLIGHT1;
+	tagName = eTagName::PLAYER_FLIGHT1;	
 
 	transInfo.Position = Vector3(WINDOWS_WIDTH * 0.5f, WINDOWS_HEIGHT * 0.5f);
 	transInfo.Scale = Vector3(42.0f, 47.0f);
 
-	collider.Position = transInfo.Position;
-	collider.Scale = transInfo.Scale;
+	collider.Position = Vector3(transInfo.Position.x + 3, transInfo.Position.y);
+	collider.Scale = Vector3(15.0f, 15.0f);
 
 	key = eObjectKey::PLAYER;
 	status = eObjectStatus::DEACTIVATED;
-	collisionType = eCollisionType::RECT;
+	collisionType = eCollisionType::ELLIPSE;
 	oldPosition = transInfo.Position;
 	bGenerateCollisionEvent = true;
 
@@ -53,41 +51,26 @@ void Player::Initialize()
 	bulletType = eBulletType::NORMAL;
 
 	bSpawing = false;
-	bAttacking = false;
-	bTakeDamage = false;
 	bDied = false;
 
 	speed = 3.0f;
+
+	cantAccessInputTimer = 0;
+	cantAccessInputDurationTime = 0;
+	invincibleTimer = 0;
+	invicibleDurationTime = 0;
 }
 
 void Player::Update()
 {
 	Super::Update();
 
-	// ** 수정 작업 필요
-
-	if ( bDied )
+	// ** 현재 플레이어 상태 체크
+	CheckStatus();
+		
+	// ** 키 입력이 막힌 상태가 아니라면
+	if ( !bCantAccessInput )
 	{
-		HP = 3;
-		level = 1;
-		bDied = false;
-		bSpawing = true;
-	}
-
-	// ** 스폰 중
-	if ( bSpawing )
-	{
-		bGenerateCollisionEvent = false;
-	}
-	else
-	{
-		bGenerateCollisionEvent = true;
-		// ** 공격중
-		if ( bAttacking )
-		{
-			// ...
-		}
-
 		#ifdef GAME_DEBUG_MODE
 		// _Debug_
 		if ( CHECK_KEYINPUT_STATE(eInputKey::KEY_ENTER, eKeyInputState::DOWN) )
@@ -118,12 +101,8 @@ void Player::Update()
 		{
 			//bulletScript.ReadyToSpawn(eBulletSpawnPattern::SPIN, damage);
 			//bulletScript.ReadyToSpawn(eBulletSpawnPattern::MULTI_SPIN, damage);			
-			
+
 			Fire(bulletType, level, damage);
-		}
-		else
-		{
-			bAttacking = false;
 		}
 	}
 
@@ -137,7 +116,7 @@ void Player::Update()
 	oldPosition = transInfo.Position;
 
 	// ** 충돌체 갱신
-	SetCollider(transInfo);
+	SetCollider(Vector3(transInfo.Position.x + 1, transInfo.Position.y), Vector3(15.0f, 15.0f));
 
 	// ** Bullet Spawn Pattern Script 실행
 	bulletScript.Run();
@@ -152,6 +131,7 @@ void Player::Render(HDC _hdc)
 	// ** 스폰 중
 	if ( bSpawing )
 	{
+		// ** 스폰이 끝나면
 		if ( RenderSpawn(_hdc) )			
 			bSpawing = false;
 
@@ -162,13 +142,7 @@ void Player::Render(HDC _hdc)
 	if ( bDied )
 	{		
 		return;
-	}
-		
-	// ** 피해를 입었을 시
-	if ( bTakeDamage )
-	{
-
-	}
+	}		
 
 	// ** 일반 출력
 	RenderPlayer(_hdc);	
@@ -201,7 +175,7 @@ void Player::Fire(eBulletType _firingType, int _level, int _damage)
 				
 				// ** Bullet의 Speed 설정
 				float bulletSpeed = 3.0f;
-
+				
 				// ** Bullet Spawn
 				SpawnManager::SpawnBullet(this, bulletTransInfo, bulletSpeed, _damage, _firingType);
 			}
@@ -236,13 +210,81 @@ void Player::ApplyDamage(Object* _pTarget, int _damage)
 
 void Player::TakeDamage(int _damage)
 {
-	HP -= _damage;
-	bTakeDamage = true;
-
-	if ( HP <= 0 )
+	// ** 현재 플레이어는 한방에 터짐
+	
+	// Die
+	if ( !bDied )
 	{
-		HP = 0;
-		bDied = true;
+		HP--;
+		Die();
+	}
+}
+
+void Player::Spawn()
+{
+	bSpawing = true;
+	
+	// ** 키 입력을 막음
+	bCantAccessInput = true;
+	cantAccessInputTimer = GetTickCount64();
+	cantAccessInputDurationTime = 4000;
+
+	// ** 무적 설정
+	bInvicible = true;
+	invincibleTimer = GetTickCount64();
+	invicibleDurationTime = 5500;
+}
+
+void Player::Die()
+{
+	// ** bDied flag true 세팅
+	bDied = true;
+
+	// ** 폭발 이펙트 스폰
+	Transform explosionTransInfo;
+	explosionTransInfo.Position = transInfo.Position;
+	explosionTransInfo.Scale = transInfo.Scale * 2.0f;
+	SpawnManager::SpawnEffect(explosionTransInfo, eBridgeKey::EFFECT_EXPLOSION);
+}
+
+void Player::CheckStatus()
+{
+	// ** 죽었을 시
+	if ( bDied )
+	{
+		// ** 체력과 레벨 초기화
+		HP = 3;
+		level = 1;
+
+		// ** 리 스폰
+		bDied = false;
+		Spawn();
+	}	
+
+	// ** 키 입력이 막혔을 시
+	if ( bCantAccessInput )
+	{
+		// ** 일정 딜레이 후 키 입력 허용
+		if ( cantAccessInputTimer + cantAccessInputDurationTime < GetTickCount64() )
+		{
+			cout << "bCantAccess true" << endl;
+			bCantAccessInput = false;
+		}
+	}
+
+	// ** 무적일 시 
+	if ( bInvicible )
+	{
+		// ** 충돌 비활성화
+		bGenerateCollisionEvent = false;
+		
+		// ** 일정 딜레이 후 무적 해제 및 충돌 활성화
+		if ( invincibleTimer + invicibleDurationTime < GetTickCount64() )
+		{
+			cout << "invicible end" << endl;
+			bInvicible = false;
+			bGenerateCollisionEvent = true;
+		}		
 	}
 }
 

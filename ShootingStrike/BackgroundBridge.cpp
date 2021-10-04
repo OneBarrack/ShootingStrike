@@ -11,15 +11,44 @@ BackgroundBridge::~BackgroundBridge()
 {
 }
 
-void BackgroundBridge::ReceiveInfoFromOwner()
+void BackgroundBridge::Initialize()
 {
-	pImage = pOwner->GetImage();
-	transInfo = pOwner->GetTransInfo();
-	speed = pOwner->GetSpeed();
+	if ( pOwner )
+	{
+		pImage = pOwner->GetImage();
+		transInfo = pOwner->GetTransInfo();
+		speed = pOwner->GetSpeed();
+	}
+}
+
+void BackgroundBridge::Update()
+{
+}
+
+void BackgroundBridge::Render(HDC _hdc)
+{
+}
+
+void BackgroundBridge::Release()
+{
+	pOwner = nullptr;
+	pImage = nullptr;
+}
+
+void BackgroundBridge::ReceiveInfoFromOwner()
+{	
+	if ( pOwner )
+	{
+		transInfo = pOwner->GetTransInfo();
+		speed = pOwner->GetSpeed();
+	}
 }
 
 void BackgroundBridge::SendInfoToOwner()
 {
-	pOwner->SetTransInfo(transInfo);
-	pOwner->SetSpeed(speed);
+	if ( pOwner )
+	{
+		pOwner->SetTransInfo(transInfo);
+		pOwner->SetSpeed(speed);
+	}
 }

@@ -11,15 +11,44 @@ BulletBridge::~BulletBridge()
 {
 }
 
-void BulletBridge::ReceiveInfoFromOwner()
+void BulletBridge::Initialize()
 {
-	pImage = pOwner->GetImage();
-	transInfo = pOwner->GetTransInfo();
-	speed = pOwner->GetSpeed();
+	if ( pOwner )
+	{
+		pImage = pOwner->GetImage();
+		transInfo = pOwner->GetTransInfo();
+		speed = pOwner->GetSpeed();
+	}
+}
+
+void BulletBridge::Update()
+{
+}
+
+void BulletBridge::Render(HDC _hdc)
+{
+}
+
+void BulletBridge::Release()
+{
+	pOwner = nullptr;
+	pImage = nullptr;
+}
+
+void BulletBridge::ReceiveInfoFromOwner()
+{	
+	if ( pOwner )
+	{
+		transInfo = pOwner->GetTransInfo();
+		speed = pOwner->GetSpeed();
+	}
 }
 
 void BulletBridge::SendInfoToOwner()
 {
-	pOwner->SetTransInfo(transInfo);
-	pOwner->SetSpeed(speed);
+	if ( pOwner )
+	{
+		pOwner->SetTransInfo(transInfo);
+		pOwner->SetSpeed(speed);
+	}
 }

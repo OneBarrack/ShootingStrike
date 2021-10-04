@@ -1,8 +1,11 @@
 #pragma once
-#include "Object.h"
+#include "UIBridge.h"
 
-class ScoreUI : public Object
+class ScoreUI : public UIBridge
 {
+public:
+	typedef UIBridge Super;
+
 private:
 	Bitmap* pScoreImage;
 	Bitmap* pNumberImage;
@@ -13,9 +16,8 @@ public:
 	virtual void Update() override;
 	virtual void Render(HDC _hdc) override;
 	virtual void Release() override;
-	virtual void OnCollision(Object* _pObject) override;
 
-	virtual Object* Clone() { return new ScoreUI(*this); };
+	virtual Bridge* Clone() override { return new ScoreUI(*this); }
 
 private:
 	// ** Score를 뒷자리 수 부터 차례대로 numberList에 넣음
@@ -23,7 +25,6 @@ private:
 
 public:
 	ScoreUI();
-	ScoreUI(const Transform& _rTransInfo) : Object(_rTransInfo) {}
 	virtual ~ScoreUI();
 };
 

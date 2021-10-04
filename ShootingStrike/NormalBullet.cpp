@@ -13,14 +13,15 @@ NormalBullet::~NormalBullet()
 
 void NormalBullet::Initialize()
 {
-	if ( pOwner )
-		ReceiveInfoFromOwner();
+	Super::Initialize();
 
 	key = eBridgeKey::BULLET_NORMAL;
 }
 
 void NormalBullet::Update()
 {
+	Super::Update();
+
 	// ** Owner의 데이터를 받아옴
 	ReceiveInfoFromOwner();
 
@@ -34,7 +35,8 @@ void NormalBullet::Update()
 
 void NormalBullet::Render(HDC _hdc)
 {
-	Bitmap* pImage = pOwner->GetImage();
+	Super::Render(_hdc);
+
 	if ( !pImage )
 		return;
 
@@ -53,5 +55,5 @@ void NormalBullet::Render(HDC _hdc)
 
 void NormalBullet::Release()
 {
-
+	Super::Release();
 }

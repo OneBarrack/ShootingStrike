@@ -16,6 +16,8 @@ ScrollVerticalBkg::~ScrollVerticalBkg()
 
 void ScrollVerticalBkg::Initialize()
 {
+	Super::Initialize();
+
 	key = eBridgeKey::BACKGROUND_SCROLL_VERTICAL;
 	scrollDirection = eScrollDirection::DOWN;
 	imageOffset = 0.0f;
@@ -25,6 +27,8 @@ void ScrollVerticalBkg::Initialize()
 
 void ScrollVerticalBkg::Update()
 {
+	Super::Update();
+
 	ReceiveInfoFromOwner();
 	
 	// ** 拉规氢 胶农费
@@ -101,6 +105,8 @@ void ScrollVerticalBkg::Update()
 
 void ScrollVerticalBkg::Render(HDC _hdc)
 {
+	Super::Render(_hdc);
+
 	if ( !pImage )
 		return;
 
@@ -151,7 +157,7 @@ void ScrollVerticalBkg::Render(HDC _hdc)
 
 void ScrollVerticalBkg::Release()
 {
-
+	Super::Release();
 }
 
 void ScrollVerticalBkg::StartTop() 

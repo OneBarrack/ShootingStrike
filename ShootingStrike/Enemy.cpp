@@ -1,10 +1,12 @@
 #include "Enemy.h"
 #include "Bridge.h"
 #include "Player.h"
+#include "Bullet.h"
 #include "BitmapManager.h"
 #include "MathManager.h"
 #include "ObjectManager.h"
 #include "CollisionManager.h"
+#include "SpawnManager.h"
 
 Enemy::Enemy()
 	: HP(0)
@@ -33,7 +35,7 @@ void Enemy::Initialize()
 	oldPosition = transInfo.Position;
 	bGenerateCollisionEvent = true;
 
-	HP = 5;
+	HP = 30;
 
 	bSpawing = false;
 	bAttacking = false;
@@ -47,25 +49,27 @@ void Enemy::Update()
 {
 	Super::Update();
 
+	// ** Enemy Update 작업 필요
+	
 	// ** 스폰 중
-	if ( bSpawing )
-	{
-		// SpawnEnemy
-		return;
-	}
+	//if ( bSpawing )
+	//{
+	//	// SpawnEnemy
+	//	return;
+	//}
 
-	// ** 죽음
-	if ( bDied )
-	{
-		bDied = false;
-		//return;
-	}
+	//// ** 죽음
+	//if ( bDied )
+	//{
+	//	bDied = false;
+	//	//return;
+	//}
 
-	// ** 피해를 입었을 시
-	if ( bTakeDamage )
-	{
+	//// ** 피해를 입었을 시
+	//if ( bTakeDamage )
+	//{
 
-	}
+	//}
 
 	// ** 일반 출력
 	//RenderEnemy(_hdc);
@@ -77,10 +81,10 @@ void Enemy::Update()
 	CheckPositionInBkgBoundary();
 
 	// ** 직전 위치 정보 저장
-	oldPosition = transInfo.Position;
+	oldPosition = transInfo.Position;	
 
-	// ** 충돌체 갱신
-	SetCollider(transInfo);
+	// ** 충돌체 갱신은 브릿지에서
+	//SetCollider(transInfo);
 
 	return;
 }
@@ -88,17 +92,6 @@ void Enemy::Update()
 void Enemy::Render(HDC _hdc)
 {
 	Super::Render(_hdc);
-
-	//TransparentBlt(_hdc, // ** 최종 출력 위치
-	//	int(TransInfo.Position.x - (TransInfo.Scale.x * 0.5f)),
-	//	int(TransInfo.Position.y + (TransInfo.Scale.x * 0.5f) - Offset.y - 50),
-	//	int(TransInfo.Scale.x),
-	//	int(Offset.y),
-	//	BitmapManager::GetInstance()->GetImage(eImageKey::MOLE)->GetMemDC(),
-	//	0, 0,
-	//	int(TransInfo.Scale.x),
-	//	int(Offset.y),
-	//	RGB(255, 0, 255));
 }
 
 void Enemy::Release()
@@ -108,6 +101,15 @@ void Enemy::Release()
 
 void Enemy::OnCollision(Object* _pObject)
 {
+	if ( _pObject->GetKey() == eObjectKey::BULLET &&
+		static_cast<Bullet*>(_pObject)->GetOwner()->GetKey() == eObjectKey::PLAYER )
+	{
+		// ** Hit 이펙트 스폰
+		Transform hitEffectTransInfo;
+		hitEffectTransInfo.Position = _pObject->GetPosition();
+		hitEffectTransInfo.Scale = Vector3(30.0f, 30.0f);
+		SpawnManager::SpawnEffect(hitEffectTransInfo, eBridgeKey::EFFECT_HIT);
+	}	
 }
 
 void Enemy::Fire()
@@ -135,8 +137,20 @@ void Enemy::TakeDamage(int _damage)
 	if ( HP <= 0 )
 	{
 		HP = 0;
-		bDied = true;
-	}
+		Die();
+	}	
+}
+
+void Enemy::Die()
+{
+	// ** bDied flag true 세팅
+	bDied = true;
+
+	// ** 폭발 이펙트 스폰
+	Transform explosionTransInfo;
+	explosionTransInfo.Position = transInfo.Position;
+	explosionTransInfo.Scale = transInfo.Scale;
+	SpawnManager::SpawnEffect(explosionTransInfo, eBridgeKey::EFFECT_EXPLOSION);
 }
 
 void Enemy::CheckPositionInBkgBoundary()

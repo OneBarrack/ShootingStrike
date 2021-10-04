@@ -12,17 +12,24 @@ BasicBkg::~BasicBkg()
 
 void BasicBkg::Initialize()
 {
+	Super::Initialize();
+
 	key = eBridgeKey::BACKGROUND_BASIC;
 }
 
 void BasicBkg::Update()
 {
+	Super::Update();
+
 	ReceiveInfoFromOwner();
+
 	SendInfoToOwner();
 }
 
 void BasicBkg::Render(HDC _hdc)
 {
+	Super::Render(_hdc);
+
 	if ( !pImage )
 		return;
 
@@ -40,6 +47,6 @@ void BasicBkg::Render(HDC _hdc)
 }
 
 void BasicBkg::Release()
-{
-
+{	
+	Super::Release();
 }

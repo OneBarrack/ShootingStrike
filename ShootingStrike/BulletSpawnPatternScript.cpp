@@ -5,6 +5,7 @@
 BulletSpawnPatternScript::BulletSpawnPatternScript()
 	: pOwner(nullptr)
 	, spawnPattern(eBulletSpawnPattern::NONE)
+	, spawnPosition(Vector3())
 	, damage(0)	
 	, bReady(false)
 {
@@ -21,13 +22,14 @@ void BulletSpawnPatternScript::Initialize(Object* _pOwner)
 
 	spawnPattern = eBulletSpawnPattern::NONE;
 	damage = 0;
-
+	spawnPosition = Vector3();
 	bReady = false;
 }
 
-void BulletSpawnPatternScript::ReadyToSpawn(eBulletSpawnPattern _SpawnPattern, int _damage)
+void BulletSpawnPatternScript::ReadyToSpawn(eBulletSpawnPattern _spawnPattern, Vector3 _spawnPosision, int _damage)
 {
-	spawnPattern = _SpawnPattern;
+	spawnPattern = _spawnPattern;
+	spawnPosition = _spawnPosision;
 	damage = _damage;
 
 	bReady = true;
@@ -72,7 +74,7 @@ void BulletSpawnPatternScript::Run()
 
 				// ** Bullet의 TransInfo 설정
 				Transform bulletTransInfo;
-				bulletTransInfo.Position = pOwner->GetPosition();
+				bulletTransInfo.Position = spawnPosition;
 				bulletTransInfo.Scale = Vector3(10.0f, 10.0f);
 				bulletTransInfo.Direction = Vector3(cosf(angle * PI / 180), -sinf(angle * PI / 180));
 
@@ -112,7 +114,7 @@ void BulletSpawnPatternScript::Run()
 
 					// ** Bullet의 TransInfo 설정
 					Transform bulletTransInfo;
-					bulletTransInfo.Position = pOwner->GetPosition();
+					bulletTransInfo.Position = spawnPosition;
 					bulletTransInfo.Scale = Vector3(10.0f, 10.0f);
 					bulletTransInfo.Direction = Vector3(cosf(angle * PI / 180), -sinf(angle * PI / 180));
 
@@ -153,7 +155,7 @@ void BulletSpawnPatternScript::Run()
 
 					// ** Bullet의 TransInfo 설정
 					Transform bulletTransInfo;
-					bulletTransInfo.Position = pOwner->GetPosition();
+					bulletTransInfo.Position = spawnPosition;
 					bulletTransInfo.Scale = Vector3(10.0f, 10.0f);
 					bulletTransInfo.Direction = Vector3(cosf(angle * PI / 180), -sinf(angle * PI / 180));
 

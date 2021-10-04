@@ -3,6 +3,10 @@
 
 class ScrollHorizontalBkg : public BackgroundBridge
 {
+public:
+	typedef BackgroundBridge Super;
+
+private:
 	enum class eScrollDirection
 	{
 		LEFT,

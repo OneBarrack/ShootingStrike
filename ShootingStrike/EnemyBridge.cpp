@@ -11,15 +11,47 @@ EnemyBridge::~EnemyBridge()
 {
 }
 
+void EnemyBridge::Initialize()
+{
+	if ( pOwner )
+	{
+		pImage = pOwner->GetImage();
+		transInfo = pOwner->GetTransInfo();
+		speed = pOwner->GetSpeed();		
+		bulletScript.Initialize(pOwner);
+	}
+}
+
+void EnemyBridge::Update()
+{
+}
+
+void EnemyBridge::Render(HDC _hdc)
+{
+}
+
+void EnemyBridge::Release()
+{
+	pOwner = nullptr;
+	pImage = nullptr;
+}
+
 void EnemyBridge::ReceiveInfoFromOwner()
 {
-	pImage = pOwner->GetImage();
-	transInfo = pOwner->GetTransInfo();
-	speed = pOwner->GetSpeed();
+	if ( pOwner )
+	{
+		transInfo = pOwner->GetTransInfo();
+		collider = pOwner->GetCollider();
+		speed = pOwner->GetSpeed();
+	}
 }
 
 void EnemyBridge::SendInfoToOwner()
 {
-	pOwner->SetTransInfo(transInfo);
-	pOwner->SetSpeed(speed);
+	if ( pOwner )
+	{
+		pOwner->SetTransInfo(transInfo);
+		pOwner->SetCollider(collider);
+		pOwner->SetSpeed(speed);
+	}
 }

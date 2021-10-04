@@ -76,9 +76,13 @@ void Bitmap::Initialize()
 			imageScale = Vector3(1792.0f, 1920.0f);
 			segmentationScale = Vector3(224.0f, 320.0f);
 			break;
-		case eImageKey::EFFECT:
-			//ImageScale = Vector3(149.0f, 124.0f);
-			//SegmentationScale = ImageScale;
+		case eImageKey::EXPLOSION:
+			imageScale = Vector3(2997.0f, 333.0f);
+			segmentationScale = Vector3(333.0f, 333.0f);
+			break;
+		case eImageKey::HIT:
+			imageScale = Vector3(200.0f, 50.0f);
+			segmentationScale = Vector3(50.0f, 50.0f);
 			break;
 		// ** eImageKey::KEYMAX
 		default: 
