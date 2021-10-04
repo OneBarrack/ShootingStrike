@@ -142,13 +142,13 @@
     <Filter Include="소스 파일\02. Object\Bullet\BulletBridge\GoTargetAfterDelay">
       <UniqueIdentifier>{30dd2e0b-17f7-4dc3-a4c4-03834c6c40aa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\04. Helper\Spawner">
+    <Filter Include="소스 파일\04. Helper\SpawnPatternScript">
       <UniqueIdentifier>{358acaf1-9c8f-47ae-8526-1c6972a21a10}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\04. Helper\Spawner\Bullet">
+    <Filter Include="소스 파일\04. Helper\SpawnPatternScript\Bullet">
       <UniqueIdentifier>{635da852-f16c-4e03-9500-a580fd16462e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\04. Helper\Spawner\Enemy">
+    <Filter Include="소스 파일\04. Helper\SpawnPatternScript\Enemy">
       <UniqueIdentifier>{0f12610f-4dc9-43e6-98e4-36401f32d754}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -285,8 +285,11 @@
     <ClInclude Include="GameDebugManager.h">
       <Filter>소스 파일\99. Manager\GameDebugManager</Filter>
     </ClInclude>
-    <ClInclude Include="BulletSpawner.h">
-      <Filter>소스 파일\04. Helper\Spawner\Bullet</Filter>
+    <ClInclude Include="BulletSpawnPatternScript.h">
+      <Filter>소스 파일\04. Helper\SpawnPatternScript\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="SpawnPatternScript.h">
+      <Filter>소스 파일\04. Helper\SpawnPatternScript</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -395,8 +398,11 @@
     <ClCompile Include="GameDebugManager.cpp">
       <Filter>소스 파일\99. Manager\GameDebugManager</Filter>
     </ClCompile>
-    <ClCompile Include="BulletSpawner.cpp">
-      <Filter>소스 파일\04. Helper\Spawner\Bullet</Filter>
+    <ClCompile Include="BulletSpawnPatternScript.cpp">
+      <Filter>소스 파일\04. Helper\SpawnPatternScript\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="SpawnPatternScript.cpp">
+      <Filter>소스 파일\04. Helper\SpawnPatternScript</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -15,6 +15,9 @@ GuideBullet::~GuideBullet()
 
 void GuideBullet::Initialize()
 {
+	if ( pOwner )
+		ReceiveInfoFromOwner();
+
 	key = eBridgeKey::BULLET_GUIDE;
 
 	speed = 3.0f;

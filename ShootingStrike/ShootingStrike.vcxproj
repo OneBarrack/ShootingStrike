@@ -146,7 +146,7 @@
     <ClInclude Include="Bridge.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="BulletBridge.h" />
-    <ClInclude Include="BulletSpawner.h" />
+    <ClInclude Include="BulletSpawnPatternScript.h" />
     <ClInclude Include="ButtonUI.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="Constant.h" />
@@ -180,6 +180,7 @@
     <ClInclude Include="ScrollHorizontalBkg.h" />
     <ClInclude Include="ShootingStrike.h" />
     <ClInclude Include="SpawnManager.h" />
+    <ClInclude Include="SpawnPatternScript.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="Background.h" />
     <ClInclude Include="Struct.h" />
@@ -193,7 +194,7 @@
     <ClCompile Include="Bridge.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="BulletBridge.cpp" />
-    <ClCompile Include="BulletSpawner.cpp" />
+    <ClCompile Include="BulletSpawnPatternScript.cpp" />
     <ClCompile Include="ButtonUI.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="Enemy.cpp" />
@@ -220,6 +221,7 @@
     <ClCompile Include="ScrollHorizontalBkg.cpp" />
     <ClCompile Include="ShootingStrike.cpp" />
     <ClCompile Include="SpawnManager.cpp" />
+    <ClCompile Include="SpawnPatternScript.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="Background.cpp" />
   </ItemGroup>

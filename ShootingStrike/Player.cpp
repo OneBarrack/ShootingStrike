@@ -45,6 +45,8 @@ void Player::Initialize()
 	oldPosition = transInfo.Position;
 	bGenerateCollisionEvent = true;
 
+	bulletScript.Initialize(this);
+
 	HP = 3;
 	damage = 1;
 	level = 1;
@@ -114,6 +116,9 @@ void Player::Update()
 		// ** 미사일 발사
 		if ( CHECK_KEYINPUT_STATE(eInputKey::KEY_SPACE, eKeyInputState::DOWN) )
 		{
+			//bulletScript.ReadyToSpawn(eBulletSpawnPattern::SPIN, damage);
+			//bulletScript.ReadyToSpawn(eBulletSpawnPattern::MULTI_SPIN, damage);			
+			
 			Fire(bulletType, level, damage);
 		}
 		else
@@ -133,6 +138,9 @@ void Player::Update()
 
 	// ** 충돌체 갱신
 	SetCollider(transInfo);
+
+	// ** Bullet Spawn Pattern Script 실행
+	bulletScript.Run();
 
 	return;
 }

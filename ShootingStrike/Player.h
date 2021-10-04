@@ -1,5 +1,6 @@
 #pragma once
 #include "Object.h"
+#include "BulletSpawnPatternScript.h"
 
 class Player : public Object
 {
@@ -7,6 +8,7 @@ public:
 	typedef Object Super;
 
 private:
+	BulletSpawnPatternScript bulletScript;
 
 	int HP;
 	int damage;

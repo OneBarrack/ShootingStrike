@@ -18,6 +18,12 @@ BossAngelEnemy::~BossAngelEnemy()
 
 void BossAngelEnemy::Initialize()
 {
+	if ( pOwner )
+	{
+		ReceiveInfoFromOwner();
+		bulletScript.Initialize(pOwner);
+	}
+
 	key = eBridgeKey::ENEMY_BOSS;
 
 	animType = AnimationType::DEFAULT;
@@ -28,78 +34,34 @@ void BossAngelEnemy::Update()
 {
 	// ** Owner의 데이터를 받아옴
 	ReceiveInfoFromOwner();
-
-	static int patternIndex = 0;
-	static int activeCount = 0;	
-	static ULONGLONG activeTime = GetTickCount64();
-
-	// _Debug_
+	
+	// _Debug_ : Update 전체 테스트 중
 	if ( CHECK_KEYINPUT_STATE(eInputKey::KEY_LBUTTON, eKeyInputState::DOWN) )
 	{
-		patternIndex = 1;
-		activeCount = 1;
-		activeTime = GetTickCount64();
+		static int animTypeIndex = 0;
+		static int patternIndex = 0;
 
-		static int TypeIndex = 0;
-		if ( TypeIndex == static_cast<int>(AnimationType::EVOLUTION) )
-			TypeIndex = 0;
+		if ( animTypeIndex == static_cast<int>(AnimationType::EVOLUTION) )
+			animTypeIndex = 0;
 		else
-			TypeIndex++;
+			animTypeIndex++;
+
+		if ( patternIndex == static_cast<int>(eBulletSpawnPattern::CIRCLE) )
+			patternIndex = 1;
+		else
+			patternIndex++;
 			
-		PlayAnimation(static_cast<AnimationType>(TypeIndex), false);
+		PlayAnimation(static_cast<AnimationType>(animTypeIndex), false);
+		bulletScript.ReadyToSpawn(static_cast<eBulletSpawnPattern>(patternIndex), 1);
 	}
 
-	switch ( patternIndex )
-	{
-		case 1:
-		{
-			int maxActiveCount = 50;
-
-			// ** Level 만큼 총알 숫자를 늘리고, 상방 기준 총알 간 간격에 대한 각도를 설정하여
-			// ** 부채꼴 형태로 발사되도록 한다.
-			// ** angleGap : 총알간 간격 각도
-
-			int angleGap = 30;
-			if ( activeTime + 50 < GetTickCount64() )
-			{				
-				int bulletCount = 360 / angleGap;				
-				for ( int i = 0; i < bulletCount; ++i )
-				{
-					// ** 상방 기준 현재 각도
-					int Angle = angleGap * i + (activeCount * 7);
-
-					// ** Bullet의 TransInfo 설정
-					Transform bulletTransInfo;
-					bulletTransInfo.Position = transInfo.Position;
-					bulletTransInfo.Scale = Vector3(10.0f, 10.0f);
-					bulletTransInfo.Direction = Vector3(cosf(Angle * PI / 180), -sinf(Angle * PI / 180));
-
-					// ** Bullet의 Speed 설정
-					float bulletSpeed = 3.0f;
-
-					// ** Bullet Spawn
-					SpawnManager::SpawnBullet(pOwner, bulletTransInfo, bulletSpeed, 1, eBulletType::NORMAL);
-				}
-								
-				activeTime = GetTickCount64();
-				++activeCount;
-			}
-			if ( maxActiveCount < activeCount )
-			{
-				patternIndex = 0;
-			}
-			break;
-		}
-		default:
-			activeTime = 0;
-			break;
-	}
-
-	//TransInfo.Position.x += TransInfo.Direction.x * Speed;
-	//TransInfo.Position.y += TransInfo.Direction.y * Speed;
+	//transInfo.Position.x += transInfo.Direction.x * Speed;
+	//transInfo.Position.y += transInfo.Direction.y * Speed;
 
 	// ** Owner로 가공된 데이터 전달
 	SendInfoToOwner();
+
+	bulletScript.Run();
 }
 
 

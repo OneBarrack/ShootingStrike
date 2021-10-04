@@ -13,6 +13,9 @@ NormalBullet::~NormalBullet()
 
 void NormalBullet::Initialize()
 {
+	if ( pOwner )
+		ReceiveInfoFromOwner();
+
 	key = eBridgeKey::BULLET_NORMAL;
 }
 

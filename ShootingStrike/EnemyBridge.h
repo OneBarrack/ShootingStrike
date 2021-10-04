@@ -1,9 +1,11 @@
 #pragma once
 #include "Bridge.h"
+#include "BulletSpawnPatternScript.h"
 
 class EnemyBridge : public Bridge
 {
 protected:
+	BulletSpawnPatternScript bulletScript;
 	Bitmap* pImage;
 	Transform transInfo;
 	float speed;
