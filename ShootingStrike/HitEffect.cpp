@@ -19,7 +19,7 @@ void HitEffect::Initialize()
 	Super::Initialize();
 
 	if ( pImage )
-		segmentImageCount = pImage->GetScale().x / pImage->GetSegmentationScale().x;
+		segmentImageCount = static_cast<int>(pImage->GetScale().x / pImage->GetSegmentationScale().x);
 	else
 		segmentImageCount = 1;
 

@@ -12,6 +12,7 @@ void BitmapManager::Initialize()
 	imageList[eImageKey::STAGESIDEBACK] = new Bitmap(eImageKey::STAGESIDEBACK, L"../Resource/StageSideBack.bmp");
 	imageList[eImageKey::STAGEBACK]		= new Bitmap(eImageKey::STAGEBACK	 , L"../Resource/StageBack.bmp");
 	imageList[eImageKey::STAGECLOUD]	= new Bitmap(eImageKey::STAGECLOUD	 , L"../Resource/StageCloud.bmp");
+	imageList[eImageKey::TEXT]			= new Bitmap(eImageKey::TEXT		 , L"../Resource/Text.bmp");
 	imageList[eImageKey::SCORE]			= new Bitmap(eImageKey::SCORE		 , L"../Resource/Score.bmp");
 	imageList[eImageKey::NUMBER]		= new Bitmap(eImageKey::NUMBER		 , L"../Resource/Number.bmp");
 	imageList[eImageKey::PLAYBUTTON]	= new Bitmap(eImageKey::PLAYBUTTON	 , L"../Resource/UI_Button_Play.bmp");

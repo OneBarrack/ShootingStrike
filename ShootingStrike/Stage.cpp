@@ -12,6 +12,7 @@
 #include "ScrollVerticalBkg.h"
 #include "BitmapManager.h"
 #include "SpawnManager.h"
+#include "TextUI.h"
 
 Stage::Stage() 
 	: pPlayer(nullptr)
@@ -74,12 +75,33 @@ void Stage::Initialize()
 	static_cast<Enemy*>(pBossAngelEnemy)->SetDeathPoint(5000);
 	pBossAngelEnemy->SetBridge(pBridge);
 
+	// ** Score Text UI
+	pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::UI_TEXT);
+	pScoreTextUI = ObjectManager::GetInstance()->NewObject(eObjectKey::UI);
+	pScoreTextUI->SetPosition(WINDOWS_WIDTH - 325.0f, 20.0f);
+	pScoreTextUI->SetBridge(pBridge);
+	static_cast<TextUI*>(pBridge)->SetText("SCORE", 21);
+
 	// ** Score UI
 	pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::UI_SCORE);
 	pScoreUI = ObjectManager::GetInstance()->NewObject(eObjectKey::UI);
 	pScoreUI->SetPosition(WINDOWS_WIDTH - 200.0f, 45.0f);
 	pScoreUI->SetScale(125.0f, 25.0f);
 	pScoreUI->SetBridge(pBridge);
+	
+	// ** Life Text UI
+	pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::UI_TEXT);
+	pLifeTextUI = ObjectManager::GetInstance()->NewObject(eObjectKey::UI);
+	pLifeTextUI->SetPosition(WINDOWS_WIDTH - 325.0f, pScoreUI->GetPosition().y + 50.0f);
+	pLifeTextUI->SetBridge(pBridge);
+	static_cast<TextUI*>(pBridge)->SetText("LIFE", 20);
+
+	// ** Life UI
+	pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::UI_LIFE);
+	pLifeUI = ObjectManager::GetInstance()->NewObject(eObjectKey::UI);
+	pLifeUI->SetPosition(WINDOWS_WIDTH - 200.0f, pLifeTextUI->GetPosition().y + 80.0f);
+	pLifeUI->SetScale(125.0f, 50.0f);
+	pLifeUI->SetBridge(pBridge);
 
 	// ** Spawn Player
 	SpawnManager::SpawnPlayer();

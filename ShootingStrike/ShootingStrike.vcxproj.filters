@@ -163,6 +163,12 @@
     <Filter Include="소스 파일\02. Object\Effect\EffectBridge\Hit">
       <UniqueIdentifier>{d031ba20-ae27-4ee0-9c77-022ae8b2d733}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\02. Object\UI\UIBridge\Text">
+      <UniqueIdentifier>{01516ad7-8a7a-49b5-b051-b88e453551f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\UI\UIBridge\Life">
+      <UniqueIdentifier>{94be3240-4e4b-459b-9380-863d1417d21f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers.h">
@@ -321,6 +327,12 @@
     <ClInclude Include="HitEffect.h">
       <Filter>소스 파일\02. Object\Effect\EffectBridge\Hit</Filter>
     </ClInclude>
+    <ClInclude Include="TextUI.h">
+      <Filter>소스 파일\02. Object\UI\UIBridge\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="LifeUI.h">
+      <Filter>소스 파일\02. Object\UI\UIBridge\Life</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ShootingStrike.cpp">
@@ -451,6 +463,12 @@
     </ClCompile>
     <ClCompile Include="HitEffect.cpp">
       <Filter>소스 파일\02. Object\Effect\EffectBridge\Hit</Filter>
+    </ClCompile>
+    <ClCompile Include="TextUI.cpp">
+      <Filter>소스 파일\02. Object\UI\UIBridge\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="LifeUI.cpp">
+      <Filter>소스 파일\02. Object\UI\UIBridge\Life</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

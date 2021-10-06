@@ -53,6 +53,8 @@ enum class eBridgeKey
 	BULLET_GUIDE				,
 	UI_BUTTON					,
 	UI_SCORE					,
+	UI_TEXT						,
+	UI_LIFE						,
 	EFFECT_EXPLOSION			,
 	EFFECT_HIT					,
 };
@@ -66,6 +68,7 @@ enum class eImageKey
 	STAGEBACK	  ,
 	STAGESIDEBACK ,
 	STAGECLOUD	  ,
+	TEXT		  ,
 	SCORE		  ,
 	NUMBER		  ,
 	PLAYBUTTON	  ,

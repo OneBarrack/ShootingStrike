@@ -7,7 +7,6 @@ public:
 	typedef UIBridge Super;
 
 private:
-	Bitmap* pScoreImage;
 	Bitmap* pNumberImage;
 	queue<int> numberList;
 

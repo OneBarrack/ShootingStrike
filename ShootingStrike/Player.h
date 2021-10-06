@@ -10,19 +10,22 @@ public:
 private:
 	BulletSpawnPatternScript bulletScript;
 
-	int HP;
+	int life;
 	int damage;
 	int level;
 	eBulletType bulletType;
 
 	// ** 스폰중인지
-	bool bSpawing;
+	bool isSpawing;
+
+	// ** 리스폰인지
+	bool bReSpawn; 
 
 	// ** 죽었는지
-	bool bDied;
+	bool isDied;
 
 	// ** 무적인지
-	bool bInvicible;
+	bool isInvicible;
 
 	// ** 키 입력이 막혔는지
 	bool bCantAccessInput;
@@ -47,6 +50,9 @@ public:
 	virtual Object* Clone() override { return new Player(*this); }
 
 public:
+	// ** Life 반환
+	int GetLife() { return life; }
+
 	// ** 미사일 발사
 	void Fire(eBulletType _bulletType, int _power, int _damage);
 
@@ -56,8 +62,11 @@ public:
 	// ** 데미지를 받음
 	void TakeDamage(int _damage);
 
-	// ** Spawn / ReSpawn
+	// ** Spawn
 	void Spawn();
+
+	// ** ReSpawn
+	void ReSpawn();
 
 	// ** 죽음
 	void Die();

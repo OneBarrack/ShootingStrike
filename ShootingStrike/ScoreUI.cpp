@@ -4,8 +4,7 @@
 #include "BitmapManager.h"
 
 ScoreUI::ScoreUI()
-	: pScoreImage(nullptr)
-	, pNumberImage(nullptr)
+	: pNumberImage(nullptr)
 	, numberList(queue<int>())
 {
 
@@ -20,7 +19,6 @@ void ScoreUI::Initialize()
 {
 	Super::Initialize();
 
-	pScoreImage = BitmapManager::GetInstance()->GetImage(eImageKey::SCORE);
 	pNumberImage = BitmapManager::GetInstance()->GetImage(eImageKey::NUMBER);
 
 	key = eBridgeKey::UI_SCORE;
@@ -37,21 +35,8 @@ void ScoreUI::Render(HDC _hdc)
 {
 	Super::Render(_hdc);
 
-	if ( !pScoreImage || !pNumberImage )
+	if ( !pNumberImage )
 		return;
-
-	// ** Score
-	TransparentBlt(_hdc, // ** 최종 출력 위치
-		int(pOwner->GetPosition().x - pOwner->GetScale().x),
-		int(pOwner->GetPosition().y - pOwner->GetScale().y),
-		int(pOwner->GetScale().x),
-		int(pOwner->GetScale().y),
-		pScoreImage->GetMemDC(),
-		0,
-		0,
-		int(pScoreImage->GetScale().x),
-		int(pScoreImage->GetScale().y),
-		RGB(255, 0, 255));
 
 	// ** Number
 	// ** 뒤에서부터 그리기 위해 Offset을 역순으로 루프

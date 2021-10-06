@@ -164,6 +164,8 @@
     <ClInclude Include="Headers.h" />
     <ClInclude Include="HitEffect.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="LifeUI.h" />
+    <ClInclude Include="TextUI.h" />
     <ClInclude Include="Logo.h" />
     <ClInclude Include="ScoreUI.h" />
     <ClInclude Include="ScrollVerticalBkg.h" />
@@ -213,6 +215,8 @@
     <ClCompile Include="GuideBullet.cpp" />
     <ClCompile Include="HitEffect.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="LifeUI.cpp" />
+    <ClCompile Include="TextUI.cpp" />
     <ClCompile Include="Logo.cpp" />
     <ClCompile Include="ScoreUI.cpp" />
     <ClCompile Include="ScrollVerticalBkg.cpp" />

@@ -10,12 +10,13 @@
 #include "Enemy.h"
 
 Player::Player()
-	: HP(0)
+	: life(0)
 	, damage(0)
 	, level(0)
 	, bulletType(eBulletType::NORMAL)
-	, bSpawing(false)
-	, bDied(false)
+	, isSpawing(false)
+	, bReSpawn(false)
+	, isDied(false)
 	, oldPosition(Vector3())
 {
 }
@@ -45,13 +46,13 @@ void Player::Initialize()
 
 	bulletScript.Initialize(this);
 
-	HP = 3;
+	life = 3;
 	damage = 1;
 	level = 1;
 	bulletType = eBulletType::NORMAL;
 
-	bSpawing = false;
-	bDied = false;
+	isSpawing = false;
+	isDied = false;
 
 	speed = 3.0f;
 
@@ -129,17 +130,20 @@ void Player::Render(HDC _hdc)
 	Super::Render(_hdc);
 
 	// ** 스폰 중
-	if ( bSpawing )
+	if ( isSpawing )
 	{
 		// ** 스폰이 끝나면
-		if ( RenderSpawn(_hdc) )			
-			bSpawing = false;
+		if ( RenderSpawn(_hdc) )
+		{
+			isSpawing = false;
+			bReSpawn = false;
+		}
 
 		return;
 	}
 
 	// ** 죽음
-	if ( bDied )
+	if ( isDied )
 	{		
 		return;
 	}		
@@ -210,19 +214,19 @@ void Player::ApplyDamage(Object* _pTarget, int _damage)
 
 void Player::TakeDamage(int _damage)
 {
-	// ** 현재 플레이어는 한방에 터짐
+	// ** 현재 플레이어는 HP가 없고 한방에 터짐. Life만 감소
 	
 	// Die
-	if ( !bDied )
+	if ( !isDied )
 	{
-		HP--;
+		life--;
 		Die();
 	}
 }
 
 void Player::Spawn()
 {
-	bSpawing = true;
+	isSpawing = true;
 	
 	// ** 키 입력을 막음
 	bCantAccessInput = true;
@@ -230,15 +234,21 @@ void Player::Spawn()
 	cantAccessInputDurationTime = 4000;
 
 	// ** 무적 설정
-	bInvicible = true;
+	isInvicible = true;
 	invincibleTimer = GetTickCount64();
 	invicibleDurationTime = 5500;
+}
+
+void Player::ReSpawn()
+{
+	bReSpawn = true;
+	Spawn();
 }
 
 void Player::Die()
 {
 	// ** bDied flag true 세팅
-	bDied = true;
+	isDied = true;
 
 	// ** 폭발 이펙트 스폰
 	Transform explosionTransInfo;
@@ -250,15 +260,14 @@ void Player::Die()
 void Player::CheckStatus()
 {
 	// ** 죽었을 시
-	if ( bDied )
+	if ( isDied )
 	{
-		// ** 체력과 레벨 초기화
-		HP = 3;
+		// ** 체력과 레벨 초기화		
 		level = 1;
 
 		// ** 리 스폰
-		bDied = false;
-		Spawn();
+		isDied = false;
+		ReSpawn();
 	}	
 
 	// ** 키 입력이 막혔을 시
@@ -273,7 +282,7 @@ void Player::CheckStatus()
 	}
 
 	// ** 무적일 시 
-	if ( bInvicible )
+	if ( isInvicible )
 	{
 		// ** 충돌 비활성화
 		bGenerateCollisionEvent = false;
@@ -282,7 +291,7 @@ void Player::CheckStatus()
 		if ( invincibleTimer + invicibleDurationTime < GetTickCount64() )
 		{
 			cout << "invicible end" << endl;
-			bInvicible = false;
+			isInvicible = false;
 			bGenerateCollisionEvent = true;
 		}		
 	}
@@ -317,26 +326,54 @@ bool Player::RenderSpawn(HDC _hdc)
 {
 	if ( !pImage ) return false;
 
+	// ** 그릴지 말지 판단
+	static bool bDraw = true;
+
+	// ** 이동 속도
 	float moveSpeed = 0.5f;
+	
+	// ** 리스폰 시 캐릭터의 깜빡임을 주기 위한 flicker 시간
+	static ULONGLONG flickerTime = GetTickCount64();
+	int flickerCycleTime = 200;
 
 	// ** 화면 아래에서부터 일정 위치까지 서서히 올라오도록 그림	
 	static float movePositionY = WINDOWS_HEIGHT + 30;	
 	float stopPositionY = WINDOWS_HEIGHT - 100;
 
+	// ** 위치 설정
 	transInfo.Position.x = WINDOWS_WIDTH * 0.5f;
 	transInfo.Position.y = movePositionY;
 
-	TransparentBlt(_hdc, 
-		(int)(transInfo.Position.x - transInfo.Scale.x * 0.5f),
-		(int)(transInfo.Position.y - transInfo.Scale.y * 0.5f),
-		(int)transInfo.Scale.x,
-		(int)transInfo.Scale.y,
-		pImage->GetMemDC(),
-		(int)pImage->GetSegmentationScale().x,
-		(int)0,
-		(int)pImage->GetSegmentationScale().x,
-		(int)pImage->GetSegmentationScale().y,
-		RGB(255, 0, 255));
+	// ** 리스폰일 경우 
+	if ( bReSpawn ) 		
+	{
+		// ** 캐릭터가 깜빡이면서 스폰되도록
+		if ( flickerTime + flickerCycleTime < GetTickCount64() )
+		{
+			flickerTime = GetTickCount64();
+			bDraw ^= true;
+		}
+	}
+	else
+	{
+		bDraw = true;
+	}
+
+	// ** Render
+	if ( bDraw )
+	{
+		TransparentBlt(_hdc,
+			(int)(transInfo.Position.x - transInfo.Scale.x * 0.5f),
+			(int)(transInfo.Position.y - transInfo.Scale.y * 0.5f),
+			(int)transInfo.Scale.x,
+			(int)transInfo.Scale.y,
+			pImage->GetMemDC(),
+			(int)pImage->GetSegmentationScale().x,
+			(int)0,
+			(int)pImage->GetSegmentationScale().x,
+			(int)pImage->GetSegmentationScale().y,
+			RGB(255, 0, 255));
+	}
 
 	if ( movePositionY < stopPositionY )
 	{

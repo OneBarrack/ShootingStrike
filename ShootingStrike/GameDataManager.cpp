@@ -1,9 +1,12 @@
 #include "GameDataManager.h"
+#include "ObjectManager.h"
+#include "Player.h"
 
 GameDataManager* GameDataManager::pInstance = nullptr;
 
 GameDataManager::GameDataManager()
-	: score(0)
+	: playerLife(0)
+	, score(0)
 	, FPS(0)
 {
 }
@@ -14,12 +17,14 @@ GameDataManager::~GameDataManager()
 
 void GameDataManager::Initialize()
 {
+	playerLife = 0;
 	score = 0;
 	FPS = 0;
 }
 
 void GameDataManager::Update()
 {
+	playerLife = static_cast<Player*>(ObjectManager::GetInstance()->GetPlayer())->GetLife();
 	CalcFPS();
 }
 

@@ -15,6 +15,7 @@ public:
 	}
 
 private:
+	int playerLife;
 	int score;
 	int FPS;
 
@@ -22,6 +23,7 @@ public:
 	void Initialize();
 	void Update();
 
+	int GetPlayerLife() { return playerLife; }
 	int GetScore() { return score; }
 	int GetFPS() { return FPS; }
 	

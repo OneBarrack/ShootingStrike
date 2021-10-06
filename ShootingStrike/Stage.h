@@ -10,7 +10,10 @@ private:
 	Object* pBackground;
 	Object* pLeftSideBackground;
 	Object* pRightSideBackground;
+	Object* pScoreTextUI;
 	Object* pScoreUI;
+	Object* pLifeTextUI;
+	Object* pLifeUI;
 	Object* pBossAngelEnemy;
 
 public:

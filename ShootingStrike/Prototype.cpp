@@ -17,6 +17,8 @@
 #include "GuideBullet.h"
 #include "ButtonUI.h"
 #include "ScoreUI.h"
+#include "TextUI.h"
+#include "LifeUI.h"
 #include "ExplosionEffect.h"
 #include "HitEffect.h"
 
@@ -51,6 +53,8 @@ void Prototype::CreatePrototype()
 	bridgePrototypeList[eBridgeKey::BULLET_GUIDE]				  = new GuideBullet;
 	bridgePrototypeList[eBridgeKey::UI_BUTTON]					  = new ButtonUI;
 	bridgePrototypeList[eBridgeKey::UI_SCORE]					  = new ScoreUI;
+	bridgePrototypeList[eBridgeKey::UI_TEXT]					  = new TextUI;
+	bridgePrototypeList[eBridgeKey::UI_LIFE]					  = new LifeUI;
 	bridgePrototypeList[eBridgeKey::EFFECT_EXPLOSION]			  = new ExplosionEffect;
 	bridgePrototypeList[eBridgeKey::EFFECT_HIT]					  = new HitEffect;
 }
