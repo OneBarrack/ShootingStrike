@@ -55,6 +55,7 @@ enum class eBridgeKey
 	UI_SCORE					,
 	UI_TEXT						,
 	UI_LIFE						,
+	UI_PROGRESSBAR				,
 	EFFECT_EXPLOSION			,
 	EFFECT_HIT					,
 };
@@ -71,6 +72,7 @@ enum class eImageKey
 	TEXT		  ,
 	SCORE		  ,
 	NUMBER		  ,
+	PROGRESSBAR	  ,
 	PLAYBUTTON	  ,
 	PLAYER		  ,
 	BULLET		  ,

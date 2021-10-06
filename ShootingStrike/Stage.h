@@ -15,12 +15,17 @@ private:
 	Object* pLifeTextUI;
 	Object* pLifeUI;
 	Object* pBossAngelEnemy;
+	Object* pBossEnemyProgressBar;
 
 public:
 	virtual void Initialize()override;
 	virtual void Update()override;
 	virtual void Render(HDC _hdc)override;
 	virtual void Release()override;
+
+private:
+	// ** Stage Start
+	void Start();
 
 public:
 	Stage();

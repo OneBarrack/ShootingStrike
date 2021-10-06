@@ -14,7 +14,10 @@ Menu::~Menu()
 
 void Menu::Initialize()
 {
+	// ...
 
+	/******* Menu Start *******/
+	Start();
 }
 
 void Menu::Update()
@@ -33,4 +36,8 @@ void Menu::Render(HDC _hdc)
 void Menu::Release()
 {
 
+}
+
+void Menu::Start()
+{
 }

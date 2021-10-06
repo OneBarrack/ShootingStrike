@@ -19,6 +19,7 @@
 #include "ScoreUI.h"
 #include "TextUI.h"
 #include "LifeUI.h"
+#include "ProgressBarUI.h"
 #include "ExplosionEffect.h"
 #include "HitEffect.h"
 
@@ -55,6 +56,7 @@ void Prototype::CreatePrototype()
 	bridgePrototypeList[eBridgeKey::UI_SCORE]					  = new ScoreUI;
 	bridgePrototypeList[eBridgeKey::UI_TEXT]					  = new TextUI;
 	bridgePrototypeList[eBridgeKey::UI_LIFE]					  = new LifeUI;
+	bridgePrototypeList[eBridgeKey::UI_PROGRESSBAR]				  = new ProgressBarUI;
 	bridgePrototypeList[eBridgeKey::EFFECT_EXPLOSION]			  = new ExplosionEffect;
 	bridgePrototypeList[eBridgeKey::EFFECT_HIT]					  = new HitEffect;
 }

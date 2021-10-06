@@ -31,28 +31,25 @@ void MainUpdate::Initialize()
 void MainUpdate::Update()
 {
 	InputManager::GetInstance()->CheckKeyInput();	
-
 	SceneManager::GetInstance()->Update();
-	GameDataManager::GetInstance()->Update();
-	
+	GameDataManager::GetInstance()->Update();	
 	GameDebugManager::GetInstance()->Update();
 }
 
 void MainUpdate::Render()
 {
-	HDC bufferDC = RenderManager::GetBufferDC();
-	
+	// ** Buffer DC
+	HDC bufferDC = RenderManager::GetBufferDC();	
 	SceneManager::GetInstance()->Render(bufferDC);	
 	GameDebugManager::GetInstance()->Render(bufferDC);
 
+	// ** HDC
 	RenderManager::RenderToScreen(mHdc);
 }
 
 void MainUpdate::Release()
 {
 	SceneManager::GetInstance()->Release();
-
 	GameDebugManager::GetInstance()->Release();
-
 	ObjectManager::GetInstance()->Release();
 }

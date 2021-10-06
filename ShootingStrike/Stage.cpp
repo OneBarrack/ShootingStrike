@@ -13,12 +13,19 @@
 #include "BitmapManager.h"
 #include "SpawnManager.h"
 #include "TextUI.h"
+#include "ProgressBarUI.h"
 
 Stage::Stage() 
 	: pPlayer(nullptr)
 	, pBackground(nullptr)
 	, pLeftSideBackground(nullptr)
 	, pRightSideBackground(nullptr)
+	, pScoreTextUI(nullptr)
+	, pScoreUI(nullptr)
+	, pLifeTextUI(nullptr)
+	, pLifeUI(nullptr)
+	, pBossAngelEnemy(nullptr)
+	, pBossEnemyProgressBar(nullptr)
 {
 
 }
@@ -61,7 +68,7 @@ void Stage::Initialize()
 	pRightSideBackground->SetImage(eImageKey::STAGESIDEBACK);
 	pRightSideBackground->SetImageOffsetOrder(Point(1,0));
 	pRightSideBackground->SetPosition(WINDOWS_WIDTH - pLeftSideBackground->GetPosition().x, WINDOWS_HEIGHT * 0.5f);
-	pRightSideBackground->SetScale(pLeftSideBackground->GetScale());
+	pRightSideBackground->SetScale((WINDOWS_WIDTH - pBackground->GetScale().x) * 0.5f, WINDOWS_HEIGHT);
 	pRightSideBackground->SetBridge(pBridge);
 
 	// ** EnemyBoss
@@ -71,6 +78,8 @@ void Stage::Initialize()
 	pBossAngelEnemy->SetTagName(eTagName::ENEMY_BOSS);
 	pBossAngelEnemy->SetPosition(pBackground->GetPosition().x, pBackground->GetScale().y * 0.3f);
 	pBossAngelEnemy->SetScale(224.0f, 320.0f);
+	static_cast<Enemy*>(pBossAngelEnemy)->SetMaxHP(50);
+	static_cast<Enemy*>(pBossAngelEnemy)->SetHP(50);
 	static_cast<Enemy*>(pBossAngelEnemy)->SetHitPoint(10);
 	static_cast<Enemy*>(pBossAngelEnemy)->SetDeathPoint(5000);
 	pBossAngelEnemy->SetBridge(pBridge);
@@ -78,38 +87,51 @@ void Stage::Initialize()
 	// ** Score Text UI
 	pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::UI_TEXT);
 	pScoreTextUI = ObjectManager::GetInstance()->NewObject(eObjectKey::UI);
-	pScoreTextUI->SetPosition(WINDOWS_WIDTH - 325.0f, 20.0f);
+	pScoreTextUI->SetPosition(pRightSideBackground->GetPosition().x, 30.0f);
+	pScoreTextUI->SetScale(pRightSideBackground->GetScale().x - 30.0f, 20.0f);
 	pScoreTextUI->SetBridge(pBridge);
-	static_cast<TextUI*>(pBridge)->SetText("SCORE", 21);
+	static_cast<TextUI*>(pBridge)->SetText("SCORE", 25);
 
 	// ** Score UI
 	pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::UI_SCORE);
 	pScoreUI = ObjectManager::GetInstance()->NewObject(eObjectKey::UI);
-	pScoreUI->SetPosition(WINDOWS_WIDTH - 200.0f, 45.0f);
-	pScoreUI->SetScale(125.0f, 25.0f);
+	pScoreUI->SetPosition(pRightSideBackground->GetPosition().x, 65.0f);
+	pScoreUI->SetScale(pRightSideBackground->GetScale().x - 20.0f, 27.0f);
 	pScoreUI->SetBridge(pBridge);
 	
 	// ** Life Text UI
 	pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::UI_TEXT);
 	pLifeTextUI = ObjectManager::GetInstance()->NewObject(eObjectKey::UI);
-	pLifeTextUI->SetPosition(WINDOWS_WIDTH - 325.0f, pScoreUI->GetPosition().y + 50.0f);
+	pLifeTextUI->SetPosition(pRightSideBackground->GetPosition().x, 120.0f);
+	pLifeTextUI->SetScale(pRightSideBackground->GetScale().x - 30.0f, 20.0f);
 	pLifeTextUI->SetBridge(pBridge);
-	static_cast<TextUI*>(pBridge)->SetText("LIFE", 20);
+	static_cast<TextUI*>(pBridge)->SetText("LIFE", 23);
 
 	// ** Life UI
 	pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::UI_LIFE);
 	pLifeUI = ObjectManager::GetInstance()->NewObject(eObjectKey::UI);
-	pLifeUI->SetPosition(WINDOWS_WIDTH - 200.0f, pLifeTextUI->GetPosition().y + 80.0f);
-	pLifeUI->SetScale(125.0f, 50.0f);
+	pLifeUI->SetPosition(pRightSideBackground->GetPosition().x, 163.0f);
+	pLifeUI->SetScale(pRightSideBackground->GetScale().x - 20.0f, 50.0f);
 	pLifeUI->SetBridge(pBridge);
 
-	// ** Spawn Player
-	SpawnManager::SpawnPlayer();
+	// ** Boss Enemy HP ProgressBar UI
+	pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::UI_PROGRESSBAR);
+	pBossEnemyProgressBar = ObjectManager::GetInstance()->NewObject(eObjectKey::UI);
+	pBossEnemyProgressBar->SetPosition(WINDOWS_WIDTH * 0.5f, 30.0f);
+	pBossEnemyProgressBar->SetScale(pBackground->GetScale().x - 30.0f, 50.0f);
+	pBossEnemyProgressBar->SetBridge(pBridge);
+
+	/******* Stage Start *******/
+	Start();	
 }
 
 void Stage::Update()
 {
 	ObjectManager::GetInstance()->Update();
+
+	int bossMaxHP = static_cast<Enemy*>(pBossAngelEnemy)->GetMaxHP();
+	int bossHP = static_cast<Enemy*>(pBossAngelEnemy)->GetHP();
+	static_cast<ProgressBarUI*>(pBossEnemyProgressBar->GetBridgeObject())->SetValue(bossHP, bossMaxHP);
 }
 
 void Stage::Render(HDC _hdc)
@@ -119,9 +141,22 @@ void Stage::Render(HDC _hdc)
 
 void Stage::Release()
 {
-	if ( pBackground )			ObjectManager::GetInstance()->RecallObject(pBackground);
-	if ( pLeftSideBackground )	ObjectManager::GetInstance()->RecallObject(pLeftSideBackground);
-	if ( pRightSideBackground ) ObjectManager::GetInstance()->RecallObject(pRightSideBackground);
-	if ( pScoreUI )				ObjectManager::GetInstance()->RecallObject(pScoreUI);
-	if ( pBossAngelEnemy )		ObjectManager::GetInstance()->RecallObject(pBossAngelEnemy);
+	if ( pBackground )			 ObjectManager::GetInstance()->RecallObject(pBackground);
+	if ( pLeftSideBackground )	 ObjectManager::GetInstance()->RecallObject(pLeftSideBackground);
+	if ( pRightSideBackground )  ObjectManager::GetInstance()->RecallObject(pRightSideBackground);
+	if ( pScoreUI )				 ObjectManager::GetInstance()->RecallObject(pScoreUI);
+	if ( pScoreTextUI )			 ObjectManager::GetInstance()->RecallObject(pScoreTextUI);
+	if ( pScoreUI )				 ObjectManager::GetInstance()->RecallObject(pScoreUI);
+	if ( pLifeTextUI )			 ObjectManager::GetInstance()->RecallObject(pLifeTextUI);
+	if ( pLifeUI )				 ObjectManager::GetInstance()->RecallObject(pLifeUI);
+	if ( pBossAngelEnemy )		 ObjectManager::GetInstance()->RecallObject(pBossAngelEnemy);
+	if ( pBossEnemyProgressBar ) ObjectManager::GetInstance()->RecallObject(pBossEnemyProgressBar);
+}
+
+void Stage::Start()
+{
+	// ** Player ½ºÆù
+	SpawnManager::SpawnPlayer();
+
+	// ...
 }

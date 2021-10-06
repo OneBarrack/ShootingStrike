@@ -45,8 +45,8 @@ void LifeUI::Render(HDC _hdc)
 	{
 		// ** Owner의 Scale y 값을 이미지 사이즈로 지정. (현재 가로로 표시하는 방식만 적용)
 		TransparentBlt(_hdc, // ** 최종 출력 위치
-			int(pOwner->GetPosition().x - pOwner->GetScale().x + (pOwner->GetScale().y * offset)),
-			int(pOwner->GetPosition().y - pOwner->GetScale().y),
+			int(pOwner->GetPosition().x - (pOwner->GetScale().x * 0.5f) + (pOwner->GetScale().y * offset)),
+			int(pOwner->GetPosition().y - (pOwner->GetScale().y * 0.5f)),
 			int(pOwner->GetScale().y),
 			int(pOwner->GetScale().y),
 			pPlayerImage->GetMemDC(),

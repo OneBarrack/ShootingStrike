@@ -276,7 +276,6 @@ void Player::CheckStatus()
 		// ** 일정 딜레이 후 키 입력 허용
 		if ( cantAccessInputTimer + cantAccessInputDurationTime < GetTickCount64() )
 		{
-			cout << "bCantAccess true" << endl;
 			bCantAccessInput = false;
 		}
 	}
@@ -290,7 +289,6 @@ void Player::CheckStatus()
 		// ** 일정 딜레이 후 무적 해제 및 충돌 활성화
 		if ( invincibleTimer + invicibleDurationTime < GetTickCount64() )
 		{
-			cout << "invicible end" << endl;
 			isInvicible = false;
 			bGenerateCollisionEvent = true;
 		}		

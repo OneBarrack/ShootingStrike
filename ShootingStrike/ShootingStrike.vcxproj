@@ -165,6 +165,7 @@
     <ClInclude Include="HitEffect.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LifeUI.h" />
+    <ClInclude Include="ProgressBarUI.h" />
     <ClInclude Include="TextUI.h" />
     <ClInclude Include="Logo.h" />
     <ClInclude Include="ScoreUI.h" />
@@ -216,6 +217,7 @@
     <ClCompile Include="HitEffect.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LifeUI.cpp" />
+    <ClCompile Include="ProgressBarUI.cpp" />
     <ClCompile Include="TextUI.cpp" />
     <ClCompile Include="Logo.cpp" />
     <ClCompile Include="ScoreUI.cpp" />

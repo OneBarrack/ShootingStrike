@@ -53,8 +53,8 @@ void ScoreUI::Render(HDC _hdc)
 		}
 		
 		TransparentBlt(_hdc, // ** 최종 출력 위치
-			int((pOwner->GetPosition().x - pOwner->GetScale().x) + ((pNumberImage->GetSegmentationScale().x + 15) * offset)),
-			int(pOwner->GetPosition().y),
+			int((pOwner->GetPosition().x - (pOwner->GetScale().x * 0.5f)) + ((pNumberImage->GetSegmentationScale().x + 15) * offset)),
+			int(pOwner->GetPosition().y - (pOwner->GetScale().y * 0.5f)),
 			int(pNumberImage->GetSegmentationScale().x + 13),
 			int(pOwner->GetScale().y),
 			pNumberImage->GetMemDC(),
@@ -69,6 +69,8 @@ void ScoreUI::Render(HDC _hdc)
 void ScoreUI::Release()
 {
 	Super::Release();
+
+	pNumberImage = nullptr;
 }
 
 void ScoreUI::MakeScoreNumberList()

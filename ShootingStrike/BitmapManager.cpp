@@ -15,6 +15,7 @@ void BitmapManager::Initialize()
 	imageList[eImageKey::TEXT]			= new Bitmap(eImageKey::TEXT		 , L"../Resource/Text.bmp");
 	imageList[eImageKey::SCORE]			= new Bitmap(eImageKey::SCORE		 , L"../Resource/Score.bmp");
 	imageList[eImageKey::NUMBER]		= new Bitmap(eImageKey::NUMBER		 , L"../Resource/Number.bmp");
+	imageList[eImageKey::PROGRESSBAR]	= new Bitmap(eImageKey::PROGRESSBAR	 , L"../Resource/UI_ProgressBar.bmp");
 	imageList[eImageKey::PLAYBUTTON]	= new Bitmap(eImageKey::PLAYBUTTON	 , L"../Resource/UI_Button_Play.bmp");
 	imageList[eImageKey::BULLET]		= new Bitmap(eImageKey::BULLET		 , L"../Resource/Projectile.bmp");
 	imageList[eImageKey::ANGEL]			= new Bitmap(eImageKey::ANGEL		 , L"../Resource/Angel.bmp");

@@ -13,7 +13,7 @@
 #include "ButtonUI.h"
 #include "TextUI.h"
 
-Logo::Logo() 
+Logo::Logo()
 	: pBackground(nullptr)
 	, pLogoTitle(nullptr)
 	, pPlayButton(nullptr)
@@ -65,7 +65,10 @@ void Logo::Initialize()
 	pPlayButton->SetPosition(WINDOWS_WIDTH * 0.5f, WINDOWS_HEIGHT * 0.75f);
 	pPlayButton->SetScale(150.0f, 70.0f);
 	pPlayButton->SetCollider(pPlayButton->GetTransInfo());
-	pPlayButton->SetBridge(pBridge);		
+	pPlayButton->SetBridge(pBridge);
+
+	/******* Logo Start *******/
+	Start();
 }
 
 void Logo::Update()
@@ -95,4 +98,9 @@ void Logo::Release()
 	if ( pBackground ) ObjectManager::GetInstance()->RecallObject(pBackground);
 	if ( pLogoTitle )  ObjectManager::GetInstance()->RecallObject(pLogoTitle);
 	if ( pPlayButton ) ObjectManager::GetInstance()->RecallObject(pPlayButton);
+}
+
+void Logo::Start()
+{
+	// ...
 }

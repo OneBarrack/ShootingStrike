@@ -7,7 +7,8 @@ public:
 	typedef Object Super;
 
 private:
-	int HP;
+	int maxHP;
+	int HP;	
 
 	bool bSpawing;
 	bool bAttacking;
@@ -43,10 +44,12 @@ public:
 
 	bool IsDead() { return bDied; }
 
+	int GetMaxHP() { return maxHP; }
 	int GetHP() { return HP; }
 	int GetHitPoint() { return hitScore; }
 	int GetDeathPoint() { return deathScore; }
 
+	void SetMaxHP(int _maxHP) { HP = _maxHP; }
 	void SetHP(int _HP) { HP = _HP; }
 	void SetHitPoint(int _Point) { hitScore = _Point; }
 	void SetDeathPoint(int _Point) { deathScore = _Point; }

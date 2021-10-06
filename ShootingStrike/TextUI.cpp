@@ -43,8 +43,8 @@ void TextUI::Render(HDC _hdc)
 
 			// ** Score
 			TransparentBlt(_hdc, // ** 최종 출력 위치
-				int(pOwner->GetPosition().x - pOwner->GetScale().x + (textSize * textOrder)),
-				int(pOwner->GetPosition().y - pOwner->GetScale().y),
+				int(pOwner->GetPosition().x - (pOwner->GetScale().x * 0.5f) + (textSize * textOrder)),
+				int(pOwner->GetPosition().y - (pOwner->GetScale().y * 0.5f)),
 				int(textSize),
 				int(textSize),
 				pTextImage->GetMemDC(),
@@ -60,6 +60,8 @@ void TextUI::Render(HDC _hdc)
 void TextUI::Release()
 {
 	Super::Release();
+
+	pTextImage = nullptr;
 }
 
 bool TextUI::SetText(string _text, int _textSize)

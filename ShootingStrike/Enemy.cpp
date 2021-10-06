@@ -9,7 +9,8 @@
 #include "SpawnManager.h"
 
 Enemy::Enemy()
-	: HP(0)
+	: maxHP(0)
+	, HP(0)
 	, bSpawing(false)
 	, bAttacking(false)
 	, bTakeDamage(false)
@@ -35,7 +36,8 @@ void Enemy::Initialize()
 	oldPosition = transInfo.Position;
 	bGenerateCollisionEvent = true;
 
-	HP = 30;
+	maxHP = 50;
+	HP = 50;
 
 	bSpawing = false;
 	bAttacking = false;

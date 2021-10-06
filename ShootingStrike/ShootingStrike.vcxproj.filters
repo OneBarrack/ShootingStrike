@@ -169,6 +169,9 @@
     <Filter Include="소스 파일\02. Object\UI\UIBridge\Life">
       <UniqueIdentifier>{94be3240-4e4b-459b-9380-863d1417d21f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\02. Object\UI\UIBridge\ProgressBar">
+      <UniqueIdentifier>{2868b1e7-74ab-49a0-9c02-f21eca09429c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers.h">
@@ -333,6 +336,9 @@
     <ClInclude Include="LifeUI.h">
       <Filter>소스 파일\02. Object\UI\UIBridge\Life</Filter>
     </ClInclude>
+    <ClInclude Include="ProgressBarUI.h">
+      <Filter>소스 파일\02. Object\UI\UIBridge\ProgressBar</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ShootingStrike.cpp">
@@ -469,6 +475,9 @@
     </ClCompile>
     <ClCompile Include="LifeUI.cpp">
       <Filter>소스 파일\02. Object\UI\UIBridge\Life</Filter>
+    </ClCompile>
+    <ClCompile Include="ProgressBarUI.cpp">
+      <Filter>소스 파일\02. Object\UI\UIBridge\ProgressBar</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
