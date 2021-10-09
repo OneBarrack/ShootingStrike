@@ -21,7 +21,7 @@ void ScrollVerticalBkg::Initialize()
 	key = eBridgeKey::BACKGROUND_SCROLL_VERTICAL;
 	scrollDirection = eScrollDirection::DOWN;
 	imageOffset = 0.0f;
-	bLoop = true;
+	bLoop = false;
 	bDrawEachStartEnd = false;
 }
 

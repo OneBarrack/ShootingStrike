@@ -95,9 +95,17 @@ void Logo::Render(HDC _hdc)
 
 void Logo::Release()
 {
-	if ( pBackground ) ObjectManager::GetInstance()->RecallObject(pBackground);
-	if ( pLogoTitle )  ObjectManager::GetInstance()->RecallObject(pLogoTitle);
-	if ( pPlayButton ) ObjectManager::GetInstance()->RecallObject(pPlayButton);
+	if ( pBackground )
+		ObjectManager::GetInstance()->RecallObject(pBackground);
+	pBackground = nullptr;
+	
+	if ( pLogoTitle )
+		ObjectManager::GetInstance()->RecallObject(pLogoTitle);
+	pLogoTitle = nullptr;
+	
+	if ( pPlayButton )
+		ObjectManager::GetInstance()->RecallObject(pPlayButton);
+	pPlayButton = nullptr;
 }
 
 void Logo::Start()

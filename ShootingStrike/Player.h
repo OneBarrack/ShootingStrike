@@ -4,6 +4,12 @@
 
 class Player : public Object
 {
+	enum class eFiringType
+	{
+		NORMAL,
+		GUIDE,
+	};
+
 public:
 	typedef Object Super;
 
@@ -13,7 +19,7 @@ private:
 	int life;
 	int damage;
 	int level;
-	eBulletType bulletType;
+	eFiringType firingType;
 
 	// ** 스폰중인지
 	bool isSpawing;
@@ -54,7 +60,7 @@ public:
 	int GetLife() { return life; }
 
 	// ** 미사일 발사
-	void Fire(eBulletType _bulletType, int _power, int _damage);
+	void Fire(eFiringType _bulletType, int _power, int _damage);
 
 	// ** 데미지를 입힘
 	void ApplyDamage(Object* _pTarget, int _damage);

@@ -1,8 +1,7 @@
 #include "ExplosionEffect.h"
 
 ExplosionEffect::ExplosionEffect()
-	: segmentImageCount(0)
-	, offset(0)
+	: offset(0)
 	, delay(0)
 	, time(0)
 {
@@ -16,13 +15,9 @@ ExplosionEffect::~ExplosionEffect()
 
 void ExplosionEffect::Initialize()
 {
-	Super::Initialize();
-
-	if ( pImage )
-		segmentImageCount = static_cast<int>(pImage->GetScale().x / pImage->GetSegmentationScale().x);
-	else
-		segmentImageCount = 1;
-
+	Super::Initialize();	
+		
+	segmentImageCount = 1;
 	key = eBridgeKey::EFFECT_EXPLOSION;
 	time = GetTickCount64();
 	offset = 0;
@@ -32,11 +27,14 @@ void ExplosionEffect::Initialize()
 void ExplosionEffect::Update()
 {
 	Super::Update();
+
+	ReceiveInfoFromOwner();
+	SendInfoToOwner();
 }
 
 void ExplosionEffect::Render(HDC _hdc)
 {
-	Super::Render(_hdc);
+	Super::Render(_hdc);	
 
 	if ( !pImage )
 		return;	
@@ -64,7 +62,7 @@ void ExplosionEffect::Render(HDC _hdc)
 			offset = 0;
 			pOwner->SetStatus(eObjectStatus::DESTROYED);
 		}			
-	}
+	}	
 }
 
 void ExplosionEffect::Release()

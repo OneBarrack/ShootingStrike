@@ -61,4 +61,6 @@ void LifeUI::Render(HDC _hdc)
 void LifeUI::Release()
 {
 	Super::Release();
+
+	pPlayerImage = nullptr;
 }

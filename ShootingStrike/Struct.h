@@ -15,11 +15,11 @@ struct Vector3
 	Vector3 operator* (float _value) { return Vector3(x * _value, y * _value, z * _value); }
 	Vector3 operator/ (float _value) { return Vector3(x / _value, y / _value, z / _value); }
 
-	Vector3 operator+ (Vector3& _v) { return Vector3(x + _v.x, y + _v.y); }
-	Vector3 operator- (Vector3& _v) { return Vector3(x - _v.x, y - _v.y); }
-	Vector3 operator* (Vector3& _v) { return Vector3(x * _v.x, y * _v.y); }
-	Vector3 operator/ (Vector3& _v) { return Vector3(x / _v.x, y / _v.y); }
-	bool operator== (Vector3& _v) { return ((int)x == (int)_v.x && (int)y == (int)_v.y); }
+	Vector3 operator+ (Vector3 _v) { return Vector3(x + _v.x, y + _v.y); }
+	Vector3 operator- (Vector3 _v) { return Vector3(x - _v.x, y - _v.y); }
+	Vector3 operator* (Vector3 _v) { return Vector3(x * _v.x, y * _v.y); }
+	Vector3 operator/ (Vector3 _v) { return Vector3(x / _v.x, y / _v.y); }
+	bool operator== (Vector3 _v) { return ((int)x == (int)_v.x && (int)y == (int)_v.y); }
 };
 
 struct Transform

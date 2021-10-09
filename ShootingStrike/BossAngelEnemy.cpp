@@ -47,15 +47,28 @@ void BossAngelEnemy::Update()
 		else
 			animTypeIndex++;
 
-		if ( patternIndex == static_cast<int>(eBulletSpawnPattern::CIRCLE) )
+		if ( patternIndex == static_cast<int>(eBulletSpawnPattern::CIRCLE_GO_DELAY_SPREAD) )
 			patternIndex = 1;
 		else
 			patternIndex++;
-			
+
 		PlayAnimation(static_cast<AnimationType>(animTypeIndex), false);
-		bulletScript.ReadyToSpawn(static_cast<eBulletSpawnPattern>(patternIndex), collider.Position, 1);
+
+		Transform spawnTransInfo;
+		spawnTransInfo.Position = collider.Position;
+		spawnTransInfo.Scale = collider.Scale;
+		spawnTransInfo.Direction = Vector3(0.0f, 1.0f);
+
+		bulletScript.ReadyToSpawn(pOwner, static_cast<eBulletSpawnPattern>(patternIndex), spawnTransInfo, 1);
 		
 		//SpawnManager::SpawnEffect(transInfo, eBridgeKey::EFFECT_EXPLOSION);
+		//Bridge* pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::BULLET_SPREAD_AFTER_DELAY);
+		//static_cast<SpreadAfterDelayBullet*>(pBridge)->SetDelay(1000);
+		//static_cast<SpreadAfterDelayBullet*>(pBridge)->SetSpreadCount(3);
+		//static_cast<SpreadAfterDelayBullet*>(pBridge)->SetBulletCount(5);
+		//static_cast<SpreadAfterDelayBullet*>(pBridge)->SetIntervalAngle(30);
+
+		//SpawnManager::SpawnBullet(this, bulletTransInfo, bulletSpeed, _damage, pBridge);
 	}
 
 	//transInfo.Position.x += transInfo.Direction.x * Speed;

@@ -1,39 +1,46 @@
-#include "GuideBullet.h"
+#include "GoTargetAfterDelayBullet.h"
 #include "Object.h"
 #include "Bullet.h"
 #include "ObjectManager.h"
-#include "BitmapManager.h"
 #include "MathManager.h"
 
-GuideBullet::GuideBullet()
-	: distToTarget(0.0f)
+GoTargetAfterDelayBullet::GoTargetAfterDelayBullet()
+	: time(0)
+	, delay(0)
+	, bDelayOver(false)
 {
 }
 
-GuideBullet::~GuideBullet()
+GoTargetAfterDelayBullet::~GoTargetAfterDelayBullet()
 {
 }
 
 
-void GuideBullet::Initialize()
+void GoTargetAfterDelayBullet::Initialize()
 {
 	Super::Initialize();
 
-	key = eBridgeKey::BULLET_GUIDE;
+	key = eBridgeKey::BULLET_GO_TARGET_AFTER_DELAY;
 
-	speed = 3.0f;
-
-	distToTarget = 0.0f;
+	time = GetTickCount64();
+	delay = 1000;
+	bDelayOver = false;
 }
 
-void GuideBullet::Update()
+void GoTargetAfterDelayBullet::Update()
 {
 	Super::Update();
 
 	// ** Owner의 데이터를 받아옴
 	ReceiveInfoFromOwner();
 
-	CalcGuideDirection(transInfo.Position, transInfo.Direction);
+	if ( !bDelayOver && time + delay < GetTickCount64() )
+	{
+		if ( CalcGuideDirection(transInfo.Position, transInfo.Direction) )
+		{
+			bDelayOver = true;
+		}
+	}
 
 	transInfo.Position.x += transInfo.Direction.x * speed;
 	transInfo.Position.y += transInfo.Direction.y * speed;
@@ -43,32 +50,49 @@ void GuideBullet::Update()
 }
 
 
-void GuideBullet::Render(HDC _hdc)
+void GoTargetAfterDelayBullet::Render(HDC _hdc)
 {
 	Super::Render(_hdc);
 
-	if ( pImage )
-		RenderBullet(_hdc);
+	if ( !pImage )
+		return;
+
+	TransparentBlt(_hdc,
+		(int)(pOwner->GetPosition().x - (pOwner->GetScale().x * 0.5f)),
+		(int)(pOwner->GetPosition().y - (pOwner->GetScale().y * 0.5f)),
+		(int)(pOwner->GetScale().x),
+		(int)(pOwner->GetScale().y),
+		pOwner->GetImage()->GetMemDC(),
+		(int)(pImage->GetSegmentationScale().x * pOwner->GetImageOffsetOrder().x),
+		(int)(pImage->GetSegmentationScale().y * pOwner->GetImageOffsetOrder().y),
+		(int)(pImage->GetSegmentationScale().x),
+		(int)(pImage->GetSegmentationScale().y),
+		RGB(255, 0, 255));
 }
 
-void GuideBullet::Release()
+void GoTargetAfterDelayBullet::Release()
 {
 	Super::Release();
 }
 
-void GuideBullet::CalcGuideDirection(Vector3 _pos, Vector3& _rDirection)
+bool GoTargetAfterDelayBullet::CalcGuideDirection(Vector3 _pos, Vector3& _rDirection)
 {
 	// ** 가장 가까운 적 탐색
 	Object* target = FindTarget(_pos);
 
 	// ** 찾았다면 해당 적 방향으로 Direction 갱신
 	if ( target )
+	{
 		_rDirection = MathManager::GetDirection(_pos, target->GetPosition());
+		return true;
+	}
+
+	return false;
 }
 
-Object* GuideBullet::FindTarget(Vector3 _pos)
+Object* GoTargetAfterDelayBullet::FindTarget(Vector3 _pos)
 {
-	list<Object*> objectList; 
+	list<Object*> objectList;
 
 	// ** 현 Bullet의 Owner를 체크하여 상대되는 Object에 대한 리스트를 받아온다
 	eObjectKey OwnerObjectKey = static_cast<Bullet*>(pOwner)->GetOwner()->GetKey();
@@ -82,7 +106,7 @@ Object* GuideBullet::FindTarget(Vector3 _pos)
 			break;
 		default:
 			break;
-	}	
+	}
 
 	// ** 멀티맵을 만든다. Key = 거리, value = Object
 	multimap<float, Object*> findTargetList;
@@ -91,32 +115,14 @@ Object* GuideBullet::FindTarget(Vector3 _pos)
 	for ( Object* TargetObject : objectList )
 	{
 		// ** Current 와 Target 의 거리를 구해서 멀티맵에 추가한다.
-		float distance = MathManager::GetDistance(_pos, TargetObject->GetPosition());		
-		findTargetList.insert(make_pair(distance,TargetObject));
+		float distance = MathManager::GetDistance(_pos, TargetObject->GetPosition());
+		findTargetList.insert(make_pair(distance, TargetObject));
 	}
 
 	// ** 만약에 리스트에 아무것도 없다면....
 	if ( findTargetList.empty() )
 		return nullptr;
-		
-	// ** 가장 첫번째에 있 (가장 가까운) 오브젝트와의 거리 저장
-	distToTarget = findTargetList.begin()->first;
 
 	// ** 모든 오브젝트의 추가작업이 끝나면 가장 첫번째에 있는 오브젝트를 반환한다.
 	return findTargetList.begin()->second;
-}
-
-void GuideBullet::RenderBullet(HDC _hdc)
-{
-	TransparentBlt(_hdc,
-		(int)(pOwner->GetPosition().x - (pOwner->GetScale().x * 0.5f)),
-		(int)(pOwner->GetPosition().y - (pOwner->GetScale().y * 0.5f)),
-		(int)(pOwner->GetScale().x),
-		(int)(pOwner->GetScale().y),
-		pOwner->GetImage()->GetMemDC(),
-		(int)(pImage->GetSegmentationScale().x * pOwner->GetImageOffsetOrder().x),
-		(int)(pImage->GetSegmentationScale().y * pOwner->GetImageOffsetOrder().y),
-		(int)(pImage->GetSegmentationScale().x),
-		(int)(pImage->GetSegmentationScale().y),
-		RGB(255, 0, 255));
 }

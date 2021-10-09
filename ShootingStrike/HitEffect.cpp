@@ -1,8 +1,7 @@
 #include "HitEffect.h"
 
 HitEffect::HitEffect()
-	: segmentImageCount(0)
-	, offset(0)
+	: offset(0)
 	, delay(0)
 	, time(0)
 {
@@ -18,11 +17,7 @@ void HitEffect::Initialize()
 {
 	Super::Initialize();
 
-	if ( pImage )
-		segmentImageCount = static_cast<int>(pImage->GetScale().x / pImage->GetSegmentationScale().x);
-	else
-		segmentImageCount = 1;
-
+	segmentImageCount = 1;
 	key = eBridgeKey::EFFECT_HIT;
 	time = GetTickCount64();
 	offset = 0;
@@ -32,6 +27,9 @@ void HitEffect::Initialize()
 void HitEffect::Update()
 {
 	Super::Update();
+
+	ReceiveInfoFromOwner();
+	SendInfoToOwner();
 }
 
 void HitEffect::Render(HDC _hdc)

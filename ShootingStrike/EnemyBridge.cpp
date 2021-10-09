@@ -17,9 +17,10 @@ void EnemyBridge::Initialize()
 	{
 		pImage = pOwner->GetImage();
 		transInfo = pOwner->GetTransInfo();
-		speed = pOwner->GetSpeed();		
-		bulletScript.Initialize(pOwner);
+		speed = pOwner->GetSpeed();				
 	}
+
+	bulletScript.Initialize();
 }
 
 void EnemyBridge::Update()
@@ -40,6 +41,9 @@ void EnemyBridge::ReceiveInfoFromOwner()
 {
 	if ( pOwner )
 	{
+		if ( !pImage )
+			pImage = pOwner->GetImage();
+
 		transInfo = pOwner->GetTransInfo();
 		collider = pOwner->GetCollider();
 		speed = pOwner->GetSpeed();

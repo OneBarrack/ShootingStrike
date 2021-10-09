@@ -141,16 +141,41 @@ void Stage::Render(HDC _hdc)
 
 void Stage::Release()
 {
-	if ( pBackground )			 ObjectManager::GetInstance()->RecallObject(pBackground);
-	if ( pLeftSideBackground )	 ObjectManager::GetInstance()->RecallObject(pLeftSideBackground);
-	if ( pRightSideBackground )  ObjectManager::GetInstance()->RecallObject(pRightSideBackground);
-	if ( pScoreUI )				 ObjectManager::GetInstance()->RecallObject(pScoreUI);
-	if ( pScoreTextUI )			 ObjectManager::GetInstance()->RecallObject(pScoreTextUI);
-	if ( pScoreUI )				 ObjectManager::GetInstance()->RecallObject(pScoreUI);
-	if ( pLifeTextUI )			 ObjectManager::GetInstance()->RecallObject(pLifeTextUI);
-	if ( pLifeUI )				 ObjectManager::GetInstance()->RecallObject(pLifeUI);
-	if ( pBossAngelEnemy )		 ObjectManager::GetInstance()->RecallObject(pBossAngelEnemy);
-	if ( pBossEnemyProgressBar ) ObjectManager::GetInstance()->RecallObject(pBossEnemyProgressBar);
+	if ( pBackground )			 
+		ObjectManager::GetInstance()->RecallObject(pBackground);
+	pBackground = nullptr;
+
+	if ( pLeftSideBackground )	 
+		ObjectManager::GetInstance()->RecallObject(pLeftSideBackground);
+	pLeftSideBackground = nullptr;
+
+	if ( pRightSideBackground )  
+		ObjectManager::GetInstance()->RecallObject(pRightSideBackground);
+	pRightSideBackground = nullptr;
+
+	if ( pScoreUI )				 
+		ObjectManager::GetInstance()->RecallObject(pScoreUI);
+	pScoreUI = nullptr;
+
+	if ( pScoreTextUI )
+		ObjectManager::GetInstance()->RecallObject(pScoreTextUI);
+	pScoreTextUI = nullptr;
+
+	if ( pLifeTextUI )			
+		ObjectManager::GetInstance()->RecallObject(pLifeTextUI);
+	pLifeTextUI = nullptr;
+
+	if ( pLifeUI )				
+		ObjectManager::GetInstance()->RecallObject(pLifeUI);
+	pLifeUI = nullptr;
+
+	if ( pBossAngelEnemy )		 
+		ObjectManager::GetInstance()->RecallObject(pBossAngelEnemy);
+	pBossAngelEnemy = nullptr;
+
+	if ( pBossEnemyProgressBar )
+		ObjectManager::GetInstance()->RecallObject(pBossEnemyProgressBar);
+	pBossEnemyProgressBar = nullptr;
 }
 
 void Stage::Start()

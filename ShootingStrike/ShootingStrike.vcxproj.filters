@@ -172,6 +172,9 @@
     <Filter Include="소스 파일\02. Object\UI\UIBridge\ProgressBar">
       <UniqueIdentifier>{2868b1e7-74ab-49a0-9c02-f21eca09429c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\02. Object\Bullet\BulletBridge\SpreadAfterDelay">
+      <UniqueIdentifier>{62769f35-f898-4b14-b3ac-05c1d6125aef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers.h">
@@ -339,6 +342,12 @@
     <ClInclude Include="ProgressBarUI.h">
       <Filter>소스 파일\02. Object\UI\UIBridge\ProgressBar</Filter>
     </ClInclude>
+    <ClInclude Include="GoTargetAfterDelayBullet.h">
+      <Filter>소스 파일\02. Object\Bullet\BulletBridge\GoTargetAfterDelay</Filter>
+    </ClInclude>
+    <ClInclude Include="SpreadAfterDelayBullet.h">
+      <Filter>소스 파일\02. Object\Bullet\BulletBridge\SpreadAfterDelay</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ShootingStrike.cpp">
@@ -478,6 +487,12 @@
     </ClCompile>
     <ClCompile Include="ProgressBarUI.cpp">
       <Filter>소스 파일\02. Object\UI\UIBridge\ProgressBar</Filter>
+    </ClCompile>
+    <ClCompile Include="GoTargetAfterDelayBullet.cpp">
+      <Filter>소스 파일\02. Object\Bullet\BulletBridge\GoTargetAfterDelay</Filter>
+    </ClCompile>
+    <ClCompile Include="SpreadAfterDelayBullet.cpp">
+      <Filter>소스 파일\02. Object\Bullet\BulletBridge\SpreadAfterDelay</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

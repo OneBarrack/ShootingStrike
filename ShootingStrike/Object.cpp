@@ -99,7 +99,7 @@ void Object::SetBridge(Bridge* _pBridge)
 
 		// ** Bridge와 Owner 정보 입력
 		_pBridge->SetOwner(this);
-		_pBridge->Initialize();
+		_pBridge->ReceiveInfoFromOwner();
 		pBridge = _pBridge;
 	}
 }

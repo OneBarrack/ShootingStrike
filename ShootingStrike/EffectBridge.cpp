@@ -2,6 +2,7 @@
 
 EffectBridge::EffectBridge()
 	: pImage(nullptr)
+	, segmentImageCount(0)
 {
 }
 
@@ -13,7 +14,11 @@ void EffectBridge::Initialize()
 {
 	if ( pOwner )
 	{
-		pImage = pOwner->GetImage();
+		if ( !pImage )
+		{
+			pImage = pOwner->GetImage();			
+			segmentImageCount = static_cast<int>(pImage->GetScale().x / pImage->GetSegmentationScale().x);
+		}		
 	}
 }
 
@@ -33,6 +38,14 @@ void EffectBridge::Release()
 
 void EffectBridge::ReceiveInfoFromOwner()
 {
+	if ( pOwner )
+	{
+		if ( !pImage )
+		{
+			pImage = pOwner->GetImage();			
+			segmentImageCount = static_cast<int>(pImage->GetScale().x / pImage->GetSegmentationScale().x);
+		}		
+	}
 }
 
 void EffectBridge::SendInfoToOwner()

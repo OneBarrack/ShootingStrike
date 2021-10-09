@@ -33,6 +33,11 @@ void UIBridge::Release()
 
 void UIBridge::ReceiveInfoFromOwner()
 {	
+	if ( pOwner )
+	{
+		if ( !pImage )
+			pImage = pOwner->GetImage();
+	}
 }
 
 void UIBridge::SendInfoToOwner()

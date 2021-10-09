@@ -7,7 +7,6 @@ public:
 	typedef EffectBridge Super;
 
 private:
-	int segmentImageCount;
 	int offset;
 	int delay;
 	ULONGLONG time;

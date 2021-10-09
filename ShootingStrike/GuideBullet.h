@@ -6,6 +6,10 @@ class GuideBullet : public BulletBridge
 public:
 	typedef BulletBridge Super;
 
+private:
+	// ** 가장 가까운 오브젝트와의 거리
+	float distToTarget;
+
 public:
 	virtual void Initialize() override;
 	virtual void Update() override;
@@ -13,6 +17,10 @@ public:
 	virtual void Release() override;
 
 	virtual Bridge* Clone()override { return new GuideBullet(*this); }
+
+public:
+	// ** 가장 가까운 오브젝트와의 거리 반환
+	float GetDistToTarget() { return distToTarget; }
 
 private:
 	// ** 유도 미사일의 Direction 계산

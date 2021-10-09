@@ -91,7 +91,7 @@ private:
 	void CheckCollision();
 
 private:
-	ObjectManager() : pPlayer(nullptr) { }
+	ObjectManager() : pPrototypeObject(nullptr), pPlayer(nullptr) { }
 public:
 	~ObjectManager() { Release(); }
 };

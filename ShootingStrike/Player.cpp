@@ -9,11 +9,13 @@
 #include "SpawnManager.h"
 #include "Enemy.h"
 
+#include "SpreadAfterDelayBullet.h"
+
 Player::Player()
 	: life(0)
 	, damage(0)
 	, level(0)
-	, bulletType(eBulletType::NORMAL)
+	, firingType(eFiringType::NORMAL)
 	, isSpawing(false)
 	, bReSpawn(false)
 	, isDied(false)
@@ -44,12 +46,12 @@ void Player::Initialize()
 	oldPosition = transInfo.Position;
 	bGenerateCollisionEvent = true;
 
-	bulletScript.Initialize(this);
+	bulletScript.Initialize();
 
 	life = 3;
 	damage = 1;
 	level = 1;
-	bulletType = eBulletType::NORMAL;
+	firingType = eFiringType::NORMAL;
 
 	isSpawing = false;
 	isDied = false;
@@ -102,8 +104,8 @@ void Player::Update()
 		{
 			//bulletScript.ReadyToSpawn(eBulletSpawnPattern::SPIN, damage);
 			//bulletScript.ReadyToSpawn(eBulletSpawnPattern::MULTI_SPIN, damage);			
-
-			Fire(bulletType, level, damage);
+			firingType = eFiringType::NORMAL;
+			Fire(firingType, level, damage);
 		}
 	}
 
@@ -152,41 +154,76 @@ void Player::Render(HDC _hdc)
 	RenderPlayer(_hdc);	
 }
 
-void Player::Fire(eBulletType _firingType, int _level, int _damage)
+void Player::Fire(eFiringType _firingType, int _level, int _damage)
 {
 	Bridge* pBridge = nullptr;
 
 	switch ( _firingType )
 	{
-		case eBulletType::NORMAL:
+		case eFiringType::NORMAL:
 		{
-			// ** Level 만큼 총알 숫자를 늘리고, 상방 기준 총알 간 간격에 대한 각도를 설정하여
-			// ** 부채꼴 형태로 발사되도록 한다.
-			// ** angleGap : 총알간 간격 각도
-			int angleGap = 10;
-			int startAngle = 90 - static_cast<int>(angleGap * 0.5 * (_level - 1));
-			
+			int bulletGap = 10;
+
+			int startBulletOffset = static_cast<int>(-bulletGap * 0.5 * (_level - 1));
+
 			for ( int i = 0; i < _level; ++i )
 			{
 				// ** 상방 기준 현재 각도
-				int angle = startAngle + (angleGap * i);
+				int bulletOffset = startBulletOffset + (bulletGap * i);
 
 				// ** Bullet의 TransInfo 설정
 				Transform bulletTransInfo;
-				bulletTransInfo.Position  = transInfo.Position;
-				bulletTransInfo.Scale	  = Vector3(10.0f, 10.0f);
-				bulletTransInfo.Direction = Vector3(cosf(angle * PI / 180), -sinf(angle * PI / 180));
-				
+				bulletTransInfo.Position.x = transInfo.Position.x - bulletOffset;
+				bulletTransInfo.Position.y = transInfo.Position.y - (transInfo.Scale.y * 0.5f);
+				bulletTransInfo.Scale = Vector3(10.0f, 10.0f);
+				bulletTransInfo.Direction = Vector3(0.0f, -1.0f);
+
 				// ** Bullet의 Speed 설정
 				float bulletSpeed = 3.0f;
-				
+
 				// ** Bullet Spawn
-				SpawnManager::SpawnBullet(this, bulletTransInfo, bulletSpeed, _damage, _firingType);
+				SpawnManager::SpawnBullet(this, bulletTransInfo, bulletSpeed, _damage, eBridgeKey::BULLET_NORMAL);
 			}
+
+			// ** Level 만큼 총알 숫자를 늘리고, 상방 기준 총알 간 간격에 대한 각도를 설정하여
+			// ** 부채꼴 형태로 발사되도록 한다.
+			// ** angleGap : 총알간 간격 각도
+			//int angleGap = 10;
+			//int startAngle = 90 - static_cast<int>(angleGap * 0.5 * (_level - 1));
+			//
+			//for ( int i = 0; i < _level; ++i )
+			//{
+			//	// ** 상방 기준 현재 각도
+			//	int angle = startAngle + (angleGap * i);
+
+			//	// ** Bullet의 TransInfo 설정
+			//	Transform bulletTransInfo;
+			//	bulletTransInfo.Position  = transInfo.Position;
+			//	bulletTransInfo.Scale	  = Vector3(10.0f, 10.0f);
+			//	bulletTransInfo.Direction = Vector3(cosf(angle * PI / 180), -sinf(angle * PI / 180));
+			//	
+			//	// ** Bullet의 Speed 설정
+			//	float bulletSpeed = 3.0f;
+			//	
+			//	// ** Bullet Spawn
+			//	SpawnManager::SpawnBullet(this, bulletTransInfo, bulletSpeed, _damage, eBridgeKey::BULLET_NORMAL);
+			//}
 			break;
 		} 		
-		case eBulletType::GUIDE:
+		case eFiringType::GUIDE:
+		{
+			float bulletSpeed = 3.0f;
+
+			// ** Bullet의 TransInfo 설정
+			Transform bulletTransInfo;
+			bulletTransInfo.Position = transInfo.Position;
+			bulletTransInfo.Scale = Vector3(10.0f, 10.0f);
+			bulletTransInfo.Direction = Vector3(0.0f, -1.0f);			
+
+			// ** Bullet Spawn
+			SpawnManager::SpawnBullet(this, bulletTransInfo, bulletSpeed, _damage, eBridgeKey::BULLET_GUIDE);
 			break;
+		}
 		default:
 			break;
 	}	

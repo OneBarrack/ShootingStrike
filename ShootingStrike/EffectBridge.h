@@ -6,6 +6,9 @@ class EffectBridge : public Bridge
 protected:
 	Bitmap* pImage;
 
+	// ** 분할된 이미지 개수
+	int segmentImageCount;
+
 public:
 	virtual void Initialize() override;
 	virtual void Update() override;

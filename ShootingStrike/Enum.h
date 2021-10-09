@@ -51,6 +51,8 @@ enum class eBridgeKey
 	ENEMY_BOSS					,
 	BULLET_NORMAL				,
 	BULLET_GUIDE				,
+	BULLET_GO_TARGET_AFTER_DELAY,
+	BULLET_SPREAD_AFTER_DELAY	,
 	UI_BUTTON					,
 	UI_SCORE					,
 	UI_TEXT						,
@@ -96,19 +98,15 @@ enum class eCollisionType
 	RECT	,
 };
 
-enum class eBulletType
-{
-	NORMAL	,
-	GUIDE	,
-};
-
 enum class eBulletSpawnPattern
 {
-	NONE		,
-	SPIN		,
-	MULTI_SPIN	,
-	CIRCLE		,
-
+	NONE						,
+	SPIN_GO						,
+	MULTI_SPIN_GO				,
+	CIRCLE_GO					,
+	CIRCLE_GO_DELAY_GO_TARGET	,
+	CIRCLE_STOP_DELAY_GO_TARGET	,
+	CIRCLE_GO_DELAY_SPREAD		,
 };
 
 enum class eTagName

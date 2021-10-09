@@ -163,6 +163,8 @@ void ObjectManager::AddBridge(map<eBridgeKey, list<Bridge*>>& _targetList, Bridg
 
 void ObjectManager::CheckCollision()
 {
+	// ** 충돌이 가능한 전체 Object에 대해 충돌체크
+
 	auto enableList = ObjectManager::GetInstance()->GetEnableObjectList();
 	for ( auto listIter1 = enableList->begin(); listIter1 != enableList->end(); ++listIter1 )
 	{
@@ -170,8 +172,7 @@ void ObjectManager::CheckCollision()
 		{
 			if ( (*objIter1)->IsGeneratedCollisionEvent() == false )
 				continue;
-
-			// ** 전체 Object간 충돌체크
+			
 			auto listIter2 = listIter1;
 			for ( ++listIter2; listIter2 != enableList->end(); ++listIter2 )
 			{

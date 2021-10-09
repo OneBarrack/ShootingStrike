@@ -39,6 +39,9 @@ void BackgroundBridge::ReceiveInfoFromOwner()
 {	
 	if ( pOwner )
 	{
+		if ( !pImage )
+			pImage = pOwner->GetImage();
+
 		transInfo = pOwner->GetTransInfo();
 		speed = pOwner->GetSpeed();
 	}
