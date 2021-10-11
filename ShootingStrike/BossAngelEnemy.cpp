@@ -47,11 +47,11 @@ void BossAngelEnemy::Update()
 		else
 			animTypeIndex++;
 
-		if ( patternIndex == static_cast<int>(eBulletSpawnPattern::CIRCLE_GO_DELAY_SPREAD) )
-			patternIndex = 1;
-		else
-			patternIndex++;
-
+		//if ( patternIndex == static_cast<int>(eBulletSpawnPattern::CIRCLE_GO_DELAY_SPREAD) )
+		//	patternIndex = 1;
+		//else
+		//	patternIndex++;
+		patternIndex = static_cast<int>(eBulletSpawnPattern::N_POLYGON_GO);
 		PlayAnimation(static_cast<AnimationType>(animTypeIndex), false);
 
 		Transform spawnTransInfo;

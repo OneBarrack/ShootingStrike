@@ -97,7 +97,7 @@ void BulletSpawnPatternScript::Spawn()
 			}
 
 			// ** 패턴 종료 시 초기화
-			if ( maxCycleCount < cycleCount )
+			if ( maxCycleCount == cycleCount )
 			{
 				Initialize();
 			}
@@ -139,7 +139,90 @@ void BulletSpawnPatternScript::Spawn()
 			}
 
 			// ** 패턴 종료 시 초기화
-			if ( maxCycleCount < cycleCount )
+			if ( maxCycleCount == cycleCount )
+			{
+				Initialize();
+			}
+			break;
+		}
+		case eBulletSpawnPattern::N_POLYGON_GO:
+		{
+			//** N각형의 도형으로 총알 발사
+
+			int maxCycleCount = 1;	  // ** 최대 발동 횟수
+			int spawnCycleTime = 500; // ** 발동 시간 간격			
+			float bulletSpeed = 3.0f; // ** Bullet Speed
+
+			// ** N각형의 꼭짓점 개수
+			int vertex = 3;
+
+			// ** 발사될 총알개수. N의 배수만큼만 발동됨
+			int bulletCount = vertex * 10;
+
+			// ** 두 꼭짓점 사이 총알들로 인해 생길 동일한 길이의 간격 개수
+			int equalPartsCount = static_cast<int>(bulletCount / vertex);
+			
+			// ** Vertex간 간격 각도
+			int angleGapForVertex = static_cast<int>(360 / vertex);			
+			
+			// ** 꼭짓점을 담을 임시 벡터
+			vector<Transform> vertexList;
+
+			if ( spawnTime + spawnCycleTime < GetTickCount64() )
+			{
+				spawnTime = GetTickCount64();
+
+				// ** 꼭짓점
+				for ( int i = 0; i < vertex; ++i )
+				{
+					// ** 꼭짓점 각도
+					int angle = angleGapForVertex * i;
+
+					// ** 꼭짓점의 TransInfo 설정
+					Transform bulletTransInfo;
+					bulletTransInfo.Direction = MathManager::Rotate(spawnTransInfo.Direction, angle);
+					bulletTransInfo.Position.x = spawnTransInfo.Position.x + bulletTransInfo.Direction.x * spawnTransInfo.Scale.x * 0.5f;
+					bulletTransInfo.Position.y = spawnTransInfo.Position.y + bulletTransInfo.Direction.y * spawnTransInfo.Scale.x * 0.5f;
+					bulletTransInfo.Scale = Vector3(10.0f, 10.0f);
+					
+					// ** Bullet Spawn
+					SpawnManager::SpawnBullet(pOwner, bulletTransInfo, bulletSpeed, damage, eBridgeKey::BULLET_NORMAL);
+
+					vertexList.push_back(bulletTransInfo);
+				}
+
+				// 중심에서 Vertex까지의 거리
+				int distToVertex = static_cast<int>(MathManager::GetDistance(spawnTransInfo.Position, vertexList[0].Position));
+
+				for ( int i = 1; i < equalPartsCount; ++i )
+				{
+					for ( size_t j = 0; j < vertexList.size(); ++j )
+					{		
+						// ** 꼭짓점 사이 나뉘어진 간격만큼 이동시켜 위치를 잡기 위해 현재 꼭짓점과 다음 꼭짓점 인덱스를 설정
+						int curIndex = j;
+						int nextIndex = (curIndex < (int)vertexList.size() - 1) ? curIndex + 1 : 0;
+
+						// ** 꼭짓점 사이 Bullet의 TransInfo 설정						
+						Transform bulletTransInfo;
+						bulletTransInfo.Position = vertexList[curIndex].Position + (((vertexList[nextIndex].Position - vertexList[curIndex].Position) / (float)equalPartsCount) * (float)i);
+						bulletTransInfo.Direction = MathManager::GetDirection(spawnTransInfo.Position, bulletTransInfo.Position);
+						bulletTransInfo.Scale = Vector3(10.0f, 10.0f);
+
+						// ** Bullet의 Speed에 곱해줄 ratio를 구함 
+						// ** 중심에서 Vertex까지의 거리에 대한 중심에서 현재 bullet위치의 비율을 곱해준다
+						float curDist = MathManager::GetDistance(spawnTransInfo.Position, bulletTransInfo.Position);
+						float distRatio = curDist / distToVertex;
+
+						// ** Bullet Spawn
+						SpawnManager::SpawnBullet(pOwner, bulletTransInfo, bulletSpeed * distRatio, damage, eBridgeKey::BULLET_NORMAL);
+					}
+				}
+
+				++cycleCount;
+			}
+
+			// ** 패턴 종료 시 초기화
+			if ( maxCycleCount == cycleCount )
 			{
 				Initialize();
 			}
@@ -181,7 +264,7 @@ void BulletSpawnPatternScript::Spawn()
 			}
 
 			// ** 패턴 종료 시 초기화
-			if ( maxCycleCount < cycleCount )
+			if ( maxCycleCount == cycleCount )
 			{
 				Initialize();
 			}
@@ -226,7 +309,7 @@ void BulletSpawnPatternScript::Spawn()
 			}
 
 			// ** 패턴 종료 시 초기화
-			if ( maxCycleCount < cycleCount )
+			if ( maxCycleCount == cycleCount )
 			{
 				Initialize();
 			}
@@ -268,7 +351,7 @@ void BulletSpawnPatternScript::Spawn()
 			}
 
 			// ** 패턴 종료 시 초기화
-			if ( maxCycleCount < cycleCount )
+			if ( maxCycleCount == cycleCount )
 			{
 				Initialize();
 			}
@@ -309,7 +392,7 @@ void BulletSpawnPatternScript::Spawn()
 			}
 
 			// ** 패턴 종료 시 초기화
-			if ( maxCycleCount < cycleCount )
+			if ( maxCycleCount == cycleCount )
 			{
 				Initialize();
 			}

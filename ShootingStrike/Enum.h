@@ -103,6 +103,7 @@ enum class eBulletSpawnPattern
 	NONE						,
 	SPIN_GO						,
 	MULTI_SPIN_GO				,
+	N_POLYGON_GO				,
 	CIRCLE_GO					,
 	CIRCLE_GO_DELAY_GO_TARGET	,
 	CIRCLE_STOP_DELAY_GO_TARGET	,
