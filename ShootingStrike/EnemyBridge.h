@@ -9,6 +9,7 @@ protected:
 	Transform transInfo;
 	Transform collider;
 	float speed;
+	float acceleration;
 	BulletSpawnPatternScript bulletScript;
 
 public:

@@ -38,7 +38,7 @@ Stage::~Stage()
 void Stage::Initialize()
 {
 	Bridge* pBridge = nullptr;
-
+	
 	// ** Player
 	pPlayer = ObjectManager::GetInstance()->GetPlayer();
 
@@ -53,6 +53,7 @@ void Stage::Initialize()
 	pBackground->SetBridge(pBridge);
 	static_cast<ScrollVerticalBkg*>(pBridge)->StartBottom();
 	static_cast<ScrollVerticalBkg*>(pBridge)->ScrollUp();
+	static_cast<ScrollVerticalBkg*>(pBridge)->SetLoop(false);
 	
 	// ** Left Side Background
 	pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::BACKGROUND_BASIC);
@@ -121,6 +122,13 @@ void Stage::Initialize()
 	pBossEnemyProgressBar->SetScale(pBackground->GetScale().x - 30.0f, 50.0f);
 	pBossEnemyProgressBar->SetBridge(pBridge);
 
+	// ** Map Progress UI
+	pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::UI_MAP_PROGRESS);
+	pMapProgress = ObjectManager::GetInstance()->NewObject(eObjectKey::UI);
+	pMapProgress->SetPosition(50.0f, WINDOWS_HEIGHT * 0.5f);
+	pMapProgress->SetScale(40.0f, 500.0f);
+	pMapProgress->SetBridge(pBridge);
+
 	/******* Stage Start *******/
 	Start();	
 }
@@ -141,7 +149,7 @@ void Stage::Render(HDC _hdc)
 
 void Stage::Release()
 {
-	if ( pBackground )			 
+	if ( pBackground )	
 		ObjectManager::GetInstance()->RecallObject(pBackground);
 	pBackground = nullptr;
 
@@ -176,6 +184,10 @@ void Stage::Release()
 	if ( pBossEnemyProgressBar )
 		ObjectManager::GetInstance()->RecallObject(pBossEnemyProgressBar);
 	pBossEnemyProgressBar = nullptr;
+
+	if ( pMapProgress )
+		ObjectManager::GetInstance()->RecallObject(pMapProgress);
+	pMapProgress = nullptr;
 }
 
 void Stage::Start()

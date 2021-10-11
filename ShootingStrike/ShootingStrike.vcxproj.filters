@@ -175,6 +175,12 @@
     <Filter Include="소스 파일\02. Object\Bullet\BulletBridge\SpreadAfterDelay">
       <UniqueIdentifier>{62769f35-f898-4b14-b3ac-05c1d6125aef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\02. Object\Enemy\EnemyBridge\NormalGoEnemy">
+      <UniqueIdentifier>{990ce52a-df18-4236-a5b6-e2b137b06d0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\UI\UIBridge\MapProgress">
+      <UniqueIdentifier>{5d308e8e-9dc8-4932-8a15-f36cacf66a7d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers.h">
@@ -348,6 +354,12 @@
     <ClInclude Include="SpreadAfterDelayBullet.h">
       <Filter>소스 파일\02. Object\Bullet\BulletBridge\SpreadAfterDelay</Filter>
     </ClInclude>
+    <ClInclude Include="NormalGoEnemy.h">
+      <Filter>소스 파일\02. Object\Enemy\EnemyBridge\NormalGoEnemy</Filter>
+    </ClInclude>
+    <ClInclude Include="MapProgressUI.h">
+      <Filter>소스 파일\02. Object\UI\UIBridge\MapProgress</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ShootingStrike.cpp">
@@ -493,6 +505,12 @@
     </ClCompile>
     <ClCompile Include="SpreadAfterDelayBullet.cpp">
       <Filter>소스 파일\02. Object\Bullet\BulletBridge\SpreadAfterDelay</Filter>
+    </ClCompile>
+    <ClCompile Include="NormalGoEnemy.cpp">
+      <Filter>소스 파일\02. Object\Enemy\EnemyBridge\NormalGoEnemy</Filter>
+    </ClCompile>
+    <ClCompile Include="MapProgressUI.cpp">
+      <Filter>소스 파일\02. Object\UI\UIBridge\MapProgress</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

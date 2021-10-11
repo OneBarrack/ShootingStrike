@@ -7,6 +7,7 @@ protected:
 	Bitmap* pImage;
 	Transform transInfo;
 	float speed;
+	float mapProgressRatio;
 
 public:
 	virtual void Initialize() override;

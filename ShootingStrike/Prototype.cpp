@@ -12,6 +12,7 @@
 #include "BasicBkg.h"
 #include "ScrollHorizontalBkg.h"
 #include "ScrollVerticalBkg.h"
+#include "NormalGoEnemy.h"
 #include "BossAngelEnemy.h"
 #include "NormalBullet.h"
 #include "GuideBullet.h"
@@ -22,6 +23,7 @@
 #include "TextUI.h"
 #include "LifeUI.h"
 #include "ProgressBarUI.h"
+#include "MapProgressUI.h"
 #include "ExplosionEffect.h"
 #include "HitEffect.h"
 
@@ -52,6 +54,7 @@ void Prototype::CreatePrototype()
 	bridgePrototypeList[eBridgeKey::BACKGROUND_SCROLL_HORIZONTAL] = new ScrollHorizontalBkg;
 	bridgePrototypeList[eBridgeKey::BACKGROUND_SCROLL_VERTICAL]	  = new ScrollVerticalBkg;
 	bridgePrototypeList[eBridgeKey::ENEMY_BOSS]					  = new BossAngelEnemy;
+	bridgePrototypeList[eBridgeKey::ENEMY_NORMAL_GO]			  = new NormalGoEnemy;
 	bridgePrototypeList[eBridgeKey::BULLET_NORMAL]				  = new NormalBullet;
 	bridgePrototypeList[eBridgeKey::BULLET_GUIDE]				  = new GuideBullet;
 	bridgePrototypeList[eBridgeKey::BULLET_GO_TARGET_AFTER_DELAY] = new GoTargetAfterDelayBullet;
@@ -61,6 +64,7 @@ void Prototype::CreatePrototype()
 	bridgePrototypeList[eBridgeKey::UI_TEXT]					  = new TextUI;
 	bridgePrototypeList[eBridgeKey::UI_LIFE]					  = new LifeUI;
 	bridgePrototypeList[eBridgeKey::UI_PROGRESSBAR]				  = new ProgressBarUI;
+	bridgePrototypeList[eBridgeKey::UI_MAP_PROGRESS]			  = new MapProgressUI;
 	bridgePrototypeList[eBridgeKey::EFFECT_EXPLOSION]			  = new ExplosionEffect;
 	bridgePrototypeList[eBridgeKey::EFFECT_HIT]					  = new HitEffect;
 }

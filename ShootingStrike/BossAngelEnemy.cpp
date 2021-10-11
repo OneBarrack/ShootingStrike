@@ -36,6 +36,8 @@ void BossAngelEnemy::Update()
 	collider.Position = Vector3(transInfo.Position.x, transInfo.Position.y + (transInfo.Scale.y * 0.2f));
 	collider.Scale = Vector3(transInfo.Scale.x * 0.4f, transInfo.Scale.y * 0.5f);
 
+	speed *= acceleration;
+
 	// _Debug_ : Update 전체 테스트 중
 	if ( CHECK_KEYINPUT_STATE(eInputKey::KEY_LBUTTON, eKeyInputState::DOWN) )
 	{

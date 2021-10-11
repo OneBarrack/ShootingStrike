@@ -1,6 +1,7 @@
 #include "GameDataManager.h"
 #include "ObjectManager.h"
 #include "Player.h"
+#include "Background.h"
 
 GameDataManager* GameDataManager::pInstance = nullptr;
 
@@ -8,6 +9,7 @@ GameDataManager::GameDataManager()
 	: playerLife(0)
 	, score(0)
 	, FPS(0)
+	, mapProgressRatio(0.0f)
 {
 }
 
@@ -20,11 +22,18 @@ void GameDataManager::Initialize()
 	playerLife = 0;
 	score = 0;
 	FPS = 0;
+	mapProgressRatio = 0.0f;
 }
 
 void GameDataManager::Update()
 {
 	playerLife = static_cast<Player*>(ObjectManager::GetInstance()->GetPlayer())->GetLife();
+	
+	Object* pBkgObject = ObjectManager::GetInstance()->FindObjectWithTag(eTagName::STAGE_MAIN_BKG);
+	if ( pBkgObject )
+	mapProgressRatio = static_cast<Background*>(pBkgObject)->GetMapProgressRatio();
+
+	cout << mapProgressRatio << endl;
 	CalcFPS();
 }
 

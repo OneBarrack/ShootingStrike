@@ -27,7 +27,7 @@ public:
 	virtual void Render(HDC _hdc) override;
 	virtual void Release() override;
 
-	virtual BossAngelEnemy* Clone() override { return new BossAngelEnemy(*this); }
+	virtual Bridge* Clone() override { return new BossAngelEnemy(*this); }
 
 public:
 	void PlayAnimation(AnimationType _animType, bool _bLoop);

@@ -51,6 +51,9 @@ void Enemy::Update()
 {
 	Super::Update();
 
+	// ** 가속도 적용
+	speed += acceleration;
+	float aa = acceleration;
 	// ** Enemy Update 작업 필요
 	
 	// ** 스폰 중
@@ -77,13 +80,13 @@ void Enemy::Update()
 	//RenderEnemy(_hdc);
 
 	// ** Direction 저장
-	transInfo.Direction = MathManager::GetDirection(oldPosition, transInfo.Position);
+	//transInfo.Direction = MathManager::GetDirection(oldPosition, transInfo.Position);
 
 	// ** Stage 전장을 벗어났는지 체크
 	CheckPositionInBkgBoundary();
 
 	// ** 직전 위치 정보 저장
-	oldPosition = transInfo.Position;	
+	//oldPosition = transInfo.Position;	
 
 	// ** 충돌체 갱신은 브릿지에서
 	//SetCollider(transInfo);
@@ -103,15 +106,26 @@ void Enemy::Release()
 
 void Enemy::OnCollision(Object* _pObject)
 {
-	if ( _pObject->GetKey() == eObjectKey::BULLET &&
-		static_cast<Bullet*>(_pObject)->GetOwner()->GetKey() == eObjectKey::PLAYER )
+	switch ( _pObject->GetKey() )
 	{
-		// ** Hit 이펙트 스폰
-		Transform hitEffectTransInfo;
-		hitEffectTransInfo.Position = _pObject->GetPosition();
-		hitEffectTransInfo.Scale = Vector3(30.0f, 30.0f);
-		SpawnManager::SpawnEffect(hitEffectTransInfo, eBridgeKey::EFFECT_HIT);
-	}	
+		// ** Player와 충돌시 플레이어에 데미지 전달
+		case eObjectKey::PLAYER:
+			ApplyDamage(_pObject, 1);
+			break;
+		// ** Player의 총알과 충돌시 Hit이펙트 스폰
+		case eObjectKey::BULLET:
+			if ( static_cast<Bullet*>(_pObject)->GetOwner()->GetKey() == eObjectKey::PLAYER )
+			{
+				// ** Hit 이펙트 스폰
+				Transform hitEffectTransInfo;
+				hitEffectTransInfo.Position = _pObject->GetPosition();
+				hitEffectTransInfo.Scale = Vector3(30.0f, 30.0f);
+				SpawnManager::SpawnEffect(hitEffectTransInfo, eBridgeKey::EFFECT_HIT);
+			}
+			break;
+		default:
+			break;
+	}
 }
 
 void Enemy::Fire()

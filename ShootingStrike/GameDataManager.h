@@ -18,6 +18,7 @@ private:
 	int playerLife;
 	int score;
 	int FPS;
+	float mapProgressRatio;
 
 public:
 	void Initialize();
@@ -26,7 +27,8 @@ public:
 	int GetPlayerLife() { return playerLife; }
 	int GetScore() { return score; }
 	int GetFPS() { return FPS; }
-	
+	float GetMapProgressRatio() { return mapProgressRatio; }
+
 	void AddScore(int _score);
 
 private:

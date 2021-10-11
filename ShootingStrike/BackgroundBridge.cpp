@@ -1,9 +1,11 @@
 #include "BackgroundBridge.h"
+#include "Background.h"
 
 BackgroundBridge::BackgroundBridge()
 	: pImage(nullptr)
 	, transInfo(Transform())
 	, speed(0.0f)
+	, mapProgressRatio(0.0f)
 {
 }
 
@@ -53,5 +55,6 @@ void BackgroundBridge::SendInfoToOwner()
 	{
 		pOwner->SetTransInfo(transInfo);
 		pOwner->SetSpeed(speed);
+		static_cast<Background*>(pOwner)->setMapProgressRatio(mapProgressRatio);
 	}
 }

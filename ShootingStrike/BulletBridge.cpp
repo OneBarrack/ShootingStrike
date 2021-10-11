@@ -1,4 +1,5 @@
 #include "BulletBridge.h"
+#include "MathManager.h"
 
 BulletBridge::BulletBridge()
 	: pImage(nullptr)
@@ -51,6 +52,7 @@ void BulletBridge::SendInfoToOwner()
 {
 	if ( pOwner )
 	{
+		transInfo.Direction = MathManager::GetDirection(pOwner->GetTransInfo().Position, transInfo.Position);
 		pOwner->SetTransInfo(transInfo);
 		pOwner->SetSpeed(speed);
 	}

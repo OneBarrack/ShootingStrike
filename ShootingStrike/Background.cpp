@@ -2,6 +2,7 @@
 #include "Bridge.h"
 
 Background::Background()
+	: mapProgressRatio(0.0f)
 {
 }
 
@@ -18,6 +19,7 @@ void Background::Initialize()
 	status = eObjectStatus::ACTIVATED;
 	collisionType = eCollisionType::NONE;
 	bGenerateCollisionEvent = false;
+	mapProgressRatio = 0.0f;
 
 	pBridge = nullptr;
 }

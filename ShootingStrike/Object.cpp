@@ -14,8 +14,9 @@ Object::Object()
 	, key(eObjectKey::NONE)
 	, status(eObjectStatus::ACTIVATED)
 	, collisionType(eCollisionType::NONE)
-	, speed(0.0f)
 	, bGenerateCollisionEvent(false)
+	, speed(0.0f)
+	, acceleration(0.0f)
 {
 }
 
@@ -35,8 +36,9 @@ void Object::Initialize()
 	key = eObjectKey::NONE;
 	status = eObjectStatus::ACTIVATED;
 	collisionType = eCollisionType::NONE;
-	speed = 0.0f;
 	bGenerateCollisionEvent = false;
+	speed = 0.0f;
+	acceleration = 0.0f;
 }
 
 void Object::Update()

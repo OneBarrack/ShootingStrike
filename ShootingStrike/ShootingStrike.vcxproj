@@ -154,6 +154,8 @@
     <ClInclude Include="Effect.h" />
     <ClInclude Include="EffectBridge.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="MapProgressUI.h" />
+    <ClInclude Include="NormalGoEnemy.h" />
     <ClInclude Include="EnemyBridge.h" />
     <ClInclude Include="Enum.h" />
     <ClInclude Include="ExplosionEffect.h" />
@@ -211,6 +213,8 @@
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="EffectBridge.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="MapProgressUI.cpp" />
+    <ClCompile Include="NormalGoEnemy.cpp" />
     <ClCompile Include="EnemyBridge.cpp" />
     <ClCompile Include="ExplosionEffect.cpp" />
     <ClCompile Include="GameDataManager.cpp" />

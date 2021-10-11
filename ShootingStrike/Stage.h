@@ -16,6 +16,7 @@ private:
 	Object* pLifeUI;
 	Object* pBossAngelEnemy;
 	Object* pBossEnemyProgressBar;
+	Object* pMapProgress;
 
 public:
 	virtual void Initialize()override;

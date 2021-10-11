@@ -30,8 +30,11 @@ protected:
 	// ** 모든 오브젝트에 대한 충돌 체크가 필요한 오브젝트인지
 	bool bGenerateCollisionEvent;
 
-	// ** Object Speed
+	// ** Object 속도
 	float speed;
+
+	// ** Object 가속도
+	float acceleration;
 
 public:
 	virtual void Initialize();
@@ -87,6 +90,9 @@ public:
 	// ** 오브젝트의 속도 반환
 	float GetSpeed() { return speed; }
 
+	// ** 오브젝트의 가속도 반환
+	float GetAcceleration() { return acceleration; }
+
 	// ** 오든 오브젝트에 대한 충돌 체크가 필요한지 확인
 	bool IsGeneratedCollisionEvent() { return bGenerateCollisionEvent; }
 
@@ -135,11 +141,14 @@ public:
 	// ** 오브젝트의 활성화 상태 Setting 
 	void SetStatus(const eObjectStatus& _status);
 
+	// ** 모든 오브젝트에 대한 충돌 체크 필요여부 Setting
+	void SetGenerateCollisionEvent(bool _generateCollisionEvent) { bGenerateCollisionEvent = _generateCollisionEvent; }
+	
 	// ** 오브젝트의 속도 Setting
 	void SetSpeed(float _speed) { speed = _speed; }
 
-	// ** 모든 오브젝트에 대한 충돌 체크 필요여부 Setting
-	void SetGenerateCollisionEvent(bool _generateCollisionEvent) { bGenerateCollisionEvent = _generateCollisionEvent; }
+	// ** 오브젝트의 가속도 Setting
+	void SetAcceleration(float _acceleration) { acceleration = _acceleration; }
 
 public:
 	Object();

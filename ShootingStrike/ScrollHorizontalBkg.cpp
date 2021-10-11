@@ -100,6 +100,15 @@ void ScrollHorizontalBkg::Update()
 		}
 	}
 
+	// ** Map 전체 진행도 계산
+	if ( pImage )
+	{
+		if ( scrollDirection == eScrollDirection::LEFT )	
+			mapProgressRatio = imageOffset / (pImage->GetScale().x - transInfo.Scale.x);
+		else
+			mapProgressRatio = (pImage->GetScale().x - transInfo.Scale.x - imageOffset) / (pImage->GetScale().x - transInfo.Scale.x);
+	}
+
 	SendInfoToOwner();
 }
 

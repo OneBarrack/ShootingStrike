@@ -1,4 +1,5 @@
 #include "EnemyBridge.h"
+#include "MathManager.h"
 
 EnemyBridge::EnemyBridge()
 	: pImage(nullptr)
@@ -17,7 +18,8 @@ void EnemyBridge::Initialize()
 	{
 		pImage = pOwner->GetImage();
 		transInfo = pOwner->GetTransInfo();
-		speed = pOwner->GetSpeed();				
+		speed = pOwner->GetSpeed();
+		acceleration = pOwner->GetAcceleration();
 	}
 
 	bulletScript.Initialize();
@@ -47,6 +49,7 @@ void EnemyBridge::ReceiveInfoFromOwner()
 		transInfo = pOwner->GetTransInfo();
 		collider = pOwner->GetCollider();
 		speed = pOwner->GetSpeed();
+		acceleration = pOwner->GetAcceleration();
 	}
 }
 
@@ -54,8 +57,10 @@ void EnemyBridge::SendInfoToOwner()
 {
 	if ( pOwner )
 	{
+		transInfo.Direction = MathManager::GetDirection(pOwner->GetTransInfo().Position, transInfo.Position);
 		pOwner->SetTransInfo(transInfo);
 		pOwner->SetCollider(collider);
 		pOwner->SetSpeed(speed);
+		pOwner->SetAcceleration(acceleration);
 	}
 }
