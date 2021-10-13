@@ -72,9 +72,7 @@ void Logo::Initialize()
 }
 
 void Logo::Update()
-{
-	ObjectManager::GetInstance()->Update();
-	
+{	
 	if ( static_cast<ButtonUI*>(pPlayButton->GetBridgeObject())->OnClick() )
 	{	
 		// ** MENU 구현 필요. 임시로 Stage로 바로 넘어감
@@ -86,6 +84,8 @@ void Logo::Update()
 	// ** 임시 종료 테스트(ESC). 버튼 등 추가구현 필요
 	if ( CHECK_KEYINPUT_STATE(eInputKey::KEY_ESCAPE, eKeyInputState::DOWN) )
 		PostQuitMessage(NULL);
+
+	ObjectManager::GetInstance()->Update();
 }
 
 void Logo::Render(HDC _hdc)

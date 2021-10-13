@@ -23,6 +23,8 @@ MainUpdate::~MainUpdate()
 
 void MainUpdate::Initialize()
 {
+	srand(GetTickCount64());
+
 	mHdc = GetDC(g_hWnd);
 
 	SceneManager::GetInstance()->SetScene(eSCENEID::LOGO);

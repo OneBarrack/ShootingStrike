@@ -3,6 +3,9 @@
 #include "BitmapManager.h"
 #include "SpawnManager.h"
 #include "InputManager.h"
+#include "ObjectManager.h"
+#include "Background.h"
+#include "MathManager.h"
 
 BossAngelEnemy::BossAngelEnemy()
 	: animType(AnimationType::DEFAULT)
@@ -23,20 +26,71 @@ void BossAngelEnemy::Initialize()
 	key = eBridgeKey::ENEMY_BOSS;
 
 	animType = AnimationType::DEFAULT;
+	isSpawing = true;
 	bLoopPlayAnim = false;
+
+	Background* pStageBackground = static_cast<Background*>(
+		ObjectManager::GetInstance()->FindObjectWithTag(eTagName::STAGE_MAIN_BKG));
+	spawnStartPos.x = pStageBackground->GetPosition().x;
+	spawnStartPos.y = (pStageBackground->GetPosition().y - (pStageBackground->GetScale().y * 0.5f));
+	spawnDestPos.x = spawnStartPos.x;
+	spawnDestPos.y = (pStageBackground->GetPosition().y - (pStageBackground->GetScale().y * 0.5f)) + 150;
 }
 
 void BossAngelEnemy::Update()
 {
-	Super::Update();
 	// ** Owner의 데이터를 받아옴
 	ReceiveInfoFromOwner();
+
+	Super::Update();	
 	
+	// 스폰 중
+	if ( isSpawing )
+	{
+		static bool bSpawnStart = true;
+
+		// ** Spawn이 시작될 때 Spawn Start 위치로 이동 시킨다
+		if ( bSpawnStart )
+		{
+			transInfo.Position.x = spawnStartPos.x;
+			transInfo.Position.y = spawnStartPos.y;
+			transInfo.Direction = MathManager::GetDirection(spawnStartPos, spawnDestPos);
+
+			bSpawnStart = false;
+		}
+
+		// ** 이동 속도
+		float moveSpeed = 0.5f;
+
+		// ** 화면 위에서부터 일정 위치까지 서서히 내려가도록
+		if ( transInfo.Position.y + moveSpeed < spawnDestPos.y )
+		{
+			transInfo.Position.x += transInfo.Direction.x * moveSpeed;
+			transInfo.Position.y += transInfo.Direction.y * moveSpeed;
+		}
+		// ** 멈출 위치에 도달
+		else
+		{
+			// ** spawnDestPos로 위치 설정 및 Direction 0,0 로 변경
+			transInfo.Position = spawnDestPos;
+			transInfo.Direction = Vector3(0.0f, 0.0f);
+			isSpawing = false;
+			bSpawnStart = true;
+		}
+	}
+	else
+	{
+		// ** 목적지에 도달했을 경우 이동중지
+		if ( !bArrivedToDest )
+		{
+			transInfo.Position.x += transInfo.Direction.x * speed;
+			transInfo.Position.y += transInfo.Direction.y * speed;			
+		}
+	}
+
 	// 충돌체 조정
 	collider.Position = Vector3(transInfo.Position.x, transInfo.Position.y + (transInfo.Scale.y * 0.2f));
 	collider.Scale = Vector3(transInfo.Scale.x * 0.4f, transInfo.Scale.y * 0.5f);
-
-	speed *= acceleration;
 
 	// _Debug_ : Update 전체 테스트 중
 	if ( CHECK_KEYINPUT_STATE(eInputKey::KEY_LBUTTON, eKeyInputState::DOWN) )

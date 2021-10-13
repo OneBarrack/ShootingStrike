@@ -31,7 +31,6 @@ public:
 
 	// ** 패턴 실행
 	virtual void Run() override;
-	// 포지션, 디렉션, 미리 레디투스폰에서 받아야하는것?
 
 private:
 	// ** 오브젝트 스폰 패턴 

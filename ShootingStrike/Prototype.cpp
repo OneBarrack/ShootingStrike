@@ -12,8 +12,10 @@
 #include "BasicBkg.h"
 #include "ScrollHorizontalBkg.h"
 #include "ScrollVerticalBkg.h"
-#include "NormalGoEnemy.h"
 #include "BossAngelEnemy.h"
+#include "NormalEnemy.h"
+#include "BackAndForthEnemy.h"
+#include "GoAndSpinEnemy.h"
 #include "NormalBullet.h"
 #include "GuideBullet.h"
 #include "GoTargetAfterDelayBullet.h"
@@ -54,7 +56,9 @@ void Prototype::CreatePrototype()
 	bridgePrototypeList[eBridgeKey::BACKGROUND_SCROLL_HORIZONTAL] = new ScrollHorizontalBkg;
 	bridgePrototypeList[eBridgeKey::BACKGROUND_SCROLL_VERTICAL]	  = new ScrollVerticalBkg;
 	bridgePrototypeList[eBridgeKey::ENEMY_BOSS]					  = new BossAngelEnemy;
-	bridgePrototypeList[eBridgeKey::ENEMY_NORMAL_GO]			  = new NormalGoEnemy;
+	bridgePrototypeList[eBridgeKey::ENEMY_NORMAL]				  = new NormalEnemy;
+	bridgePrototypeList[eBridgeKey::ENEMY_BACK_AND_FORTH]		  = new BackAndForthEnemy;
+	bridgePrototypeList[eBridgeKey::ENEMY_GO_AND_SPIN]			  = new GoAndSpinEnemy;
 	bridgePrototypeList[eBridgeKey::BULLET_NORMAL]				  = new NormalBullet;
 	bridgePrototypeList[eBridgeKey::BULLET_GUIDE]				  = new GuideBullet;
 	bridgePrototypeList[eBridgeKey::BULLET_GO_TARGET_AFTER_DELAY] = new GoTargetAfterDelayBullet;

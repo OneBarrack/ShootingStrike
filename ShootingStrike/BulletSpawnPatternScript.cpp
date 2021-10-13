@@ -71,18 +71,18 @@ void BulletSpawnPatternScript::Spawn()
 
 			int maxCycleCount = 200; // ** 최대 발동 횟수
 			int spawnCycleTime = 10; // ** 발동 시간 간격
-			int angleGap = 13;		 // ** AngleGap : 총알간 간격(각도)
+			float angleGap = 13.0f;	 // ** AngleGap : 총알간 간격(각도)
 
 			if ( spawnTime + spawnCycleTime < GetTickCount64() )
 			{
 				spawnTime = GetTickCount64();				
 
 				// ** 상방 기준 현재 각도
-				int angle = angleGap * cycleCount;
+				float angle = angleGap * cycleCount;
 
 				// ** Bullet의 TransInfo 설정
 				Transform bulletTransInfo;								
-				bulletTransInfo.Direction = MathManager::Rotate(spawnTransInfo.Direction, angle);
+				bulletTransInfo.Direction = MathManager::RotateByDegree(spawnTransInfo.Direction, angle);
 				bulletTransInfo.Position.x = spawnTransInfo.Position.x + bulletTransInfo.Direction.x * spawnTransInfo.Scale.x * 0.5f;
 				bulletTransInfo.Position.y = spawnTransInfo.Position.y + bulletTransInfo.Direction.y * spawnTransInfo.Scale.x * 0.5f;
 				bulletTransInfo.Scale = Vector3(10.0f, 10.0f);
@@ -107,9 +107,9 @@ void BulletSpawnPatternScript::Spawn()
 		{
 			//** Multi Spin 패턴 : 360도 기준 일정 간격으로 시작지점들을 나누고 모든 시작지점에 Spin 패턴을 적용
 
-			int maxCycleCount = 100;		// ** 최대 발동 횟수
-			int spawnCycleTime = 50;		// ** 발동 시간 간격
-			int angleGap = 30;				// ** AngleGap : 총알간 간격(각도)
+			int maxCycleCount = 100; // ** 최대 발동 횟수
+			int spawnCycleTime = 50; // ** 발동 시간 간격
+			int angleGap = 30;	 // ** AngleGap : 총알간 간격(각도)
 
 			if ( spawnTime + spawnCycleTime < GetTickCount64() )
 			{
@@ -123,7 +123,7 @@ void BulletSpawnPatternScript::Spawn()
 
 					// ** Bullet의 TransInfo 설정
 					Transform bulletTransInfo;
-					bulletTransInfo.Direction = MathManager::Rotate(spawnTransInfo.Direction, angle);
+					bulletTransInfo.Direction = MathManager::RotateByDegree(spawnTransInfo.Direction, angle);
 					bulletTransInfo.Position.x = spawnTransInfo.Position.x + bulletTransInfo.Direction.x * spawnTransInfo.Scale.x * 0.5f;
 					bulletTransInfo.Position.y = spawnTransInfo.Position.y + bulletTransInfo.Direction.y * spawnTransInfo.Scale.x * 0.5f;
 					bulletTransInfo.Scale = Vector3(10.0f, 10.0f);
@@ -180,7 +180,7 @@ void BulletSpawnPatternScript::Spawn()
 
 					// ** 꼭짓점의 TransInfo 설정
 					Transform bulletTransInfo;
-					bulletTransInfo.Direction = MathManager::Rotate(spawnTransInfo.Direction, angle);
+					bulletTransInfo.Direction = MathManager::RotateByDegree(spawnTransInfo.Direction, angle);
 					bulletTransInfo.Position.x = spawnTransInfo.Position.x + bulletTransInfo.Direction.x * spawnTransInfo.Scale.x * 0.5f;
 					bulletTransInfo.Position.y = spawnTransInfo.Position.y + bulletTransInfo.Direction.y * spawnTransInfo.Scale.x * 0.5f;
 					bulletTransInfo.Scale = Vector3(10.0f, 10.0f);
@@ -233,22 +233,22 @@ void BulletSpawnPatternScript::Spawn()
 			//** 원 형태로 발사
 
 			int maxCycleCount = 5;		// ** 최대 발동 횟수
-			int spawnCycleTime = 500;		// ** 발동 시간 간격
-			int angleGap = 13;				// ** AngleGap : 총알간 간격(각도)
+			int spawnCycleTime = 500;	// ** 발동 시간 간격
+			float angleGap = 13.0f;		// ** AngleGap : 총알간 간격(각도)
 
 			if ( spawnTime + spawnCycleTime < GetTickCount64() )
 			{
 				spawnTime = GetTickCount64();
 
-				int bulletCount = 360 / angleGap + 1;
+				int bulletCount = static_cast<int>(360 / angleGap) + 1;
 				for ( int i = 0; i < bulletCount; ++i )
 				{
 					// ** 우측 기준 현재 각도
-					int angle = angleGap * i;
+					float angle = angleGap * i;
 
 					// ** Bullet의 TransInfo 설정
 					Transform bulletTransInfo;
-					bulletTransInfo.Direction = MathManager::Rotate(spawnTransInfo.Direction, angle);
+					bulletTransInfo.Direction = MathManager::RotateByDegree(spawnTransInfo.Direction, angle);
 					bulletTransInfo.Position.x = spawnTransInfo.Position.x + bulletTransInfo.Direction.x * spawnTransInfo.Scale.x * 0.5f;
 					bulletTransInfo.Position.y = spawnTransInfo.Position.y + bulletTransInfo.Direction.y * spawnTransInfo.Scale.x * 0.5f;
 					bulletTransInfo.Scale = Vector3(10.0f, 10.0f);
@@ -276,21 +276,21 @@ void BulletSpawnPatternScript::Spawn()
 
 			int maxCycleCount = 5;		// ** 최대 발동 횟수
 			int spawnCycleTime = 500;	// ** 발동 시간 간격
-			int angleGap = 13;			// ** AngleGap : 총알간 간격(각도)
+			float angleGap = 13.0f;		// ** AngleGap : 총알간 간격(각도)
 
 			if ( spawnTime + spawnCycleTime < GetTickCount64() )
 			{
 				spawnTime = GetTickCount64();
 
-				int bulletCount = 360 / angleGap + 1;
+				int bulletCount = static_cast<int>(360 / angleGap) + 1;
 				for ( int i = 0; i < bulletCount; ++i )
 				{
 					// ** 현재 각도
-					int angle = angleGap * i;
+					float angle = angleGap * i;
 
 					// ** Bullet의 TransInfo 설정
 					Transform bulletTransInfo;
-					bulletTransInfo.Direction = MathManager::Rotate(spawnTransInfo.Direction, angle);
+					bulletTransInfo.Direction = MathManager::RotateByDegree(spawnTransInfo.Direction, angle);
 					bulletTransInfo.Position.x = spawnTransInfo.Position.x + bulletTransInfo.Direction.x * spawnTransInfo.Scale.x * 0.5f;
 					bulletTransInfo.Position.y = spawnTransInfo.Position.y + bulletTransInfo.Direction.y * spawnTransInfo.Scale.x * 0.5f;
 					bulletTransInfo.Scale = Vector3(10.0f, 10.0f);
@@ -321,18 +321,18 @@ void BulletSpawnPatternScript::Spawn()
 
 			int maxCycleCount = 30;		// ** 최대 발동 횟수
 			int spawnCycleTime = 200;	// ** 발동 시간 간격
-			int angleGap = 60;			// ** AngleGap : 총알간 간격(각도)
+			float angleGap = 60;		// ** AngleGap : 총알간 간격(각도)
 
 			if ( spawnTime + spawnCycleTime < GetTickCount64() )
 			{
 				spawnTime = GetTickCount64();
 
 				// ** 현재 각도
-				int angle = angleGap * cycleCount;
+				float angle = angleGap * cycleCount;
 
 				// ** Bullet의 TransInfo 설정
 				Transform bulletTransInfo;
-				bulletTransInfo.Direction = MathManager::Rotate(spawnTransInfo.Direction, angle);
+				bulletTransInfo.Direction = MathManager::RotateByDegree(spawnTransInfo.Direction, angle);
 				bulletTransInfo.Position.x = spawnTransInfo.Position.x + bulletTransInfo.Direction.x * spawnTransInfo.Scale.x;
 				bulletTransInfo.Position.y = spawnTransInfo.Position.y + bulletTransInfo.Direction.y * spawnTransInfo.Scale.x;
 				bulletTransInfo.Scale = Vector3(10.0f, 10.0f);

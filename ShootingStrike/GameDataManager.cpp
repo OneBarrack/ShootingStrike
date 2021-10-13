@@ -19,6 +19,7 @@ GameDataManager::~GameDataManager()
 
 void GameDataManager::Initialize()
 {
+	playerPos = Vector3();
 	playerLife = 0;
 	score = 0;
 	FPS = 0;
@@ -27,13 +28,14 @@ void GameDataManager::Initialize()
 
 void GameDataManager::Update()
 {
-	playerLife = static_cast<Player*>(ObjectManager::GetInstance()->GetPlayer())->GetLife();
+	Player* pPlayer = static_cast<Player*>(ObjectManager::GetInstance()->GetPlayer());
+	playerPos = pPlayer->GetPosition();
+	playerLife = pPlayer->GetLife();
 	
 	Object* pBkgObject = ObjectManager::GetInstance()->FindObjectWithTag(eTagName::STAGE_MAIN_BKG);
 	if ( pBkgObject )
 	mapProgressRatio = static_cast<Background*>(pBkgObject)->GetMapProgressRatio();
-
-	cout << mapProgressRatio << endl;
+		
 	CalcFPS();
 }
 

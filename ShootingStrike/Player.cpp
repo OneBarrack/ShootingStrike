@@ -8,6 +8,7 @@
 #include "MathManager.h"
 #include "SpawnManager.h"
 #include "Enemy.h"
+#include "Background.h"
 
 #include "SpreadAfterDelayBullet.h"
 
@@ -71,6 +72,33 @@ void Player::Update()
 	// ** 현재 플레이어 상태 체크
 	CheckStatus();
 		
+	if ( isSpawing )
+	{
+		// ** 이동 속도
+		float moveSpeed = 0.5f;
+		
+		// ** 멈출 위치
+		Background* pStageBackground = static_cast<Background*>(
+			ObjectManager::GetInstance()->FindObjectWithTag(eTagName::STAGE_MAIN_BKG));
+		float stopPositionY = (pStageBackground->GetPosition().y + (pStageBackground->GetScale().y * 0.5f)) - 100;
+
+		// ** 화면 아래에서부터 일정 위치까지 서서히 올라오도록
+		if ( transInfo.Position.y - moveSpeed > stopPositionY )
+		{
+			transInfo.Position.y -= moveSpeed;
+			
+		}
+		// ** 멈출 위치에 도달
+		else
+		{
+			// ** Spawn 관련 플래그 모두 비활성화 및 키 입력 가능하도록 설정
+			transInfo.Position.y = stopPositionY;
+			isSpawing = false;
+			bReSpawn = false;
+			bCantAccessInput = false;
+		}
+	}
+
 	// ** 키 입력이 막힌 상태가 아니라면
 	if ( !bCantAccessInput )
 	{
@@ -134,13 +162,7 @@ void Player::Render(HDC _hdc)
 	// ** 스폰 중
 	if ( isSpawing )
 	{
-		// ** 스폰이 끝나면
-		if ( RenderSpawn(_hdc) )
-		{
-			isSpawing = false;
-			bReSpawn = false;
-		}
-
+		RenderSpawn(_hdc);		
 		return;
 	}
 
@@ -264,11 +286,19 @@ void Player::TakeDamage(int _damage)
 void Player::Spawn()
 {
 	isSpawing = true;
-	
+	status = eObjectStatus::ACTIVATED;
+
+	// ** 스타트 위치 설정
+	Background* pStageBackground = static_cast<Background*>(
+		ObjectManager::GetInstance()->FindObjectWithTag(eTagName::STAGE_MAIN_BKG));
+			
+	transInfo.Position.x = pStageBackground->GetPosition().x;
+	transInfo.Position.y = (pStageBackground->GetPosition().y + (pStageBackground->GetScale().y * 0.5f)) + 30;
+
 	// ** 키 입력을 막음
 	bCantAccessInput = true;
 	cantAccessInputTimer = GetTickCount64();
-	cantAccessInputDurationTime = 4000;
+	cantAccessInputDurationTime = 5000; // 스폰이 종료되면 키 입력 가능해지므로 여기서는 넉넉히 잡아둔다 
 
 	// ** 무적 설정
 	isInvicible = true;
@@ -334,6 +364,10 @@ void Player::CheckStatus()
 
 void Player::CheckPositionInBkgBoundary()
 {
+	// ** 스폰 중일 때는 체크 x
+	if ( isSpawing )
+		return;
+
 	// ** Stage 전장 배경
 	Object* pBackground = ObjectManager::GetInstance()->FindObjectWithTag(eObjectKey::BACKGROUND, eTagName::STAGE_MAIN_BKG);
 
@@ -357,27 +391,17 @@ void Player::CheckPositionInBkgBoundary()
 		transInfo.Position.y = bkgBoundary.Bottom - offset;
 }
 
-bool Player::RenderSpawn(HDC _hdc)
+void Player::RenderSpawn(HDC _hdc)
 {
-	if ( !pImage ) return false;
-
+	if ( !pImage ) 
+		return;
+	
 	// ** 그릴지 말지 판단
-	static bool bDraw = true;
-
-	// ** 이동 속도
-	float moveSpeed = 0.5f;
+	static bool bDraw = true;	
 	
 	// ** 리스폰 시 캐릭터의 깜빡임을 주기 위한 flicker 시간
 	static ULONGLONG flickerTime = GetTickCount64();
 	int flickerCycleTime = 200;
-
-	// ** 화면 아래에서부터 일정 위치까지 서서히 올라오도록 그림	
-	static float movePositionY = WINDOWS_HEIGHT + 30;	
-	float stopPositionY = WINDOWS_HEIGHT - 100;
-
-	// ** 위치 설정
-	transInfo.Position.x = WINDOWS_WIDTH * 0.5f;
-	transInfo.Position.y = movePositionY;
 
 	// ** 리스폰일 경우 
 	if ( bReSpawn ) 		
@@ -409,16 +433,6 @@ bool Player::RenderSpawn(HDC _hdc)
 			(int)pImage->GetSegmentationScale().y,
 			RGB(255, 0, 255));
 	}
-
-	if ( movePositionY < stopPositionY )
-	{
-		movePositionY = WINDOWS_HEIGHT + 30;
-		return true;
-	}
-
-	// ** Speed만큼 위치값 조정
-	movePositionY -= moveSpeed;
-	return false;
 }
 
 void Player::RenderPlayer(HDC _hdc)

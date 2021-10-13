@@ -139,9 +139,6 @@
     <Filter Include="소스 파일\04. Helper\SpawnPatternScript">
       <UniqueIdentifier>{358acaf1-9c8f-47ae-8526-1c6972a21a10}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\04. Helper\SpawnPatternScript\Bullet">
-      <UniqueIdentifier>{635da852-f16c-4e03-9500-a580fd16462e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\04. Helper\SpawnPatternScript\Enemy">
       <UniqueIdentifier>{0f12610f-4dc9-43e6-98e4-36401f32d754}</UniqueIdentifier>
     </Filter>
@@ -175,11 +172,20 @@
     <Filter Include="소스 파일\02. Object\Bullet\BulletBridge\SpreadAfterDelay">
       <UniqueIdentifier>{62769f35-f898-4b14-b3ac-05c1d6125aef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\02. Object\Enemy\EnemyBridge\NormalGoEnemy">
-      <UniqueIdentifier>{990ce52a-df18-4236-a5b6-e2b137b06d0b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\02. Object\UI\UIBridge\MapProgress">
       <UniqueIdentifier>{5d308e8e-9dc8-4932-8a15-f36cacf66a7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\Enemy\EnemyBridge\NormalEnemy">
+      <UniqueIdentifier>{990ce52a-df18-4236-a5b6-e2b137b06d0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\Enemy\EnemyBridge\BackAndForth">
+      <UniqueIdentifier>{92b8a78a-ba33-471e-9767-6a82d1824ce4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\Enemy\EnemyBridge\GoAndSpin">
+      <UniqueIdentifier>{aa78cbfd-7b62-4535-a1bb-a245967e3138}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\04. Helper\SpawnPatternScript\Bullet">
+      <UniqueIdentifier>{635da852-f16c-4e03-9500-a580fd16462e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -354,11 +360,20 @@
     <ClInclude Include="SpreadAfterDelayBullet.h">
       <Filter>소스 파일\02. Object\Bullet\BulletBridge\SpreadAfterDelay</Filter>
     </ClInclude>
-    <ClInclude Include="NormalGoEnemy.h">
-      <Filter>소스 파일\02. Object\Enemy\EnemyBridge\NormalGoEnemy</Filter>
+    <ClInclude Include="NormalEnemy.h">
+      <Filter>소스 파일\02. Object\Enemy\EnemyBridge\NormalEnemy</Filter>
     </ClInclude>
     <ClInclude Include="MapProgressUI.h">
       <Filter>소스 파일\02. Object\UI\UIBridge\MapProgress</Filter>
+    </ClInclude>
+    <ClInclude Include="BackAndForthEnemy.h">
+      <Filter>소스 파일\02. Object\Enemy\EnemyBridge\BackAndForth</Filter>
+    </ClInclude>
+    <ClInclude Include="GoAndSpinEnemy.h">
+      <Filter>소스 파일\02. Object\Enemy\EnemyBridge\GoAndSpin</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemySpawnPatternScript.h">
+      <Filter>소스 파일\04. Helper\SpawnPatternScript\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -421,9 +436,6 @@
     </ClCompile>
     <ClCompile Include="Background.cpp">
       <Filter>소스 파일\02. Object\Background</Filter>
-    </ClCompile>
-    <ClCompile Include="Bridge.cpp">
-      <Filter>소스 파일\04. Helper\Pattern\Bridge</Filter>
     </ClCompile>
     <ClCompile Include="BulletBridge.cpp">
       <Filter>소스 파일\02. Object\Bullet\BulletBridge</Filter>
@@ -506,11 +518,23 @@
     <ClCompile Include="SpreadAfterDelayBullet.cpp">
       <Filter>소스 파일\02. Object\Bullet\BulletBridge\SpreadAfterDelay</Filter>
     </ClCompile>
-    <ClCompile Include="NormalGoEnemy.cpp">
-      <Filter>소스 파일\02. Object\Enemy\EnemyBridge\NormalGoEnemy</Filter>
+    <ClCompile Include="NormalEnemy.cpp">
+      <Filter>소스 파일\02. Object\Enemy\EnemyBridge\NormalEnemy</Filter>
     </ClCompile>
     <ClCompile Include="MapProgressUI.cpp">
       <Filter>소스 파일\02. Object\UI\UIBridge\MapProgress</Filter>
+    </ClCompile>
+    <ClCompile Include="BackAndForthEnemy.cpp">
+      <Filter>소스 파일\02. Object\Enemy\EnemyBridge\BackAndForth</Filter>
+    </ClCompile>
+    <ClCompile Include="GoAndSpinEnemy.cpp">
+      <Filter>소스 파일\02. Object\Enemy\EnemyBridge\GoAndSpin</Filter>
+    </ClCompile>
+    <ClCompile Include="Bridge.cpp">
+      <Filter>소스 파일\04. Helper\Pattern\Bridge</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemySpawnPatternScript.cpp">
+      <Filter>소스 파일\04. Helper\SpawnPatternScript\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

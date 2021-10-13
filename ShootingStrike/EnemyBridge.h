@@ -11,6 +11,24 @@ protected:
 	float speed;
 	float acceleration;
 	BulletSpawnPatternScript bulletScript;
+	
+	// ** 스폰중인지
+	bool isSpawing;
+
+	// ** 주기적 Bullet 발사 간격
+	int fireBulletIntervalTime;
+
+	// ** 목적지
+	Vector3 destPosition;
+
+	// ** 목적지가 변경되었는지
+	bool bChangedDestPos;
+
+	// ** 목적지에서 멈추어야 하는지
+	bool bStopAtDest;
+
+	// ** 목적지에 도달 했는지
+	bool bArrivedToDest;
 
 public:
 	virtual void Initialize() override;

@@ -22,10 +22,10 @@ void Menu::Initialize()
 
 void Menu::Update()
 {
-	ObjectManager::GetInstance()->Update();
-
 	if (GetAsyncKeyState('S'))
 		SceneManager::GetInstance()->SetScene(eSCENEID::STAGE);
+
+	ObjectManager::GetInstance()->Update();
 }
 
 void Menu::Render(HDC _hdc)

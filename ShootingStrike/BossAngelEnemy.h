@@ -19,7 +19,10 @@ public:
 
 private:
 	AnimationType animType;
-	bool bLoopPlayAnim;
+	bool bLoopPlayAnim;	
+
+	Vector3 spawnStartPos;
+	Vector3 spawnDestPos;
 
 public:
 	virtual void Initialize() override;

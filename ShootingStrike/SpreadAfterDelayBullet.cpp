@@ -49,17 +49,17 @@ void SpreadAfterDelayBullet::Update()
 		// 총알을 퍼뜨리며 생성
 		if ( bulletCount > 0 )
 		{
-			int startAngle = static_cast<int>(-intervalAngle * 0.5 * (bulletCount - 1));
+			float startAngle = -intervalAngle * 0.5f * (bulletCount - 1);
 
 			for ( int i = 0; i < bulletCount; ++i )
 			{				
-				int angle = startAngle + (intervalAngle * i);
+				float angle = startAngle + (intervalAngle * i);
 
 				// ** Bullet의 TransInfo 설정
 				Transform bulletTransInfo;
 				bulletTransInfo.Position = transInfo.Position;
 				bulletTransInfo.Scale = transInfo.Scale;
-				bulletTransInfo.Direction = MathManager::Rotate(transInfo.Direction, angle);
+				bulletTransInfo.Direction = MathManager::RotateByDegree(transInfo.Direction, angle);
 
 				if ( spreadCount > 1 )
 				{

@@ -15,6 +15,7 @@ public:
 	}
 
 private:
+	Vector3 playerPos;
 	int playerLife;
 	int score;
 	int FPS;
@@ -24,6 +25,7 @@ public:
 	void Initialize();
 	void Update();
 
+	Vector3 GetPlayerPos() { return playerPos; }
 	int GetPlayerLife() { return playerLife; }
 	int GetScore() { return score; }
 	int GetFPS() { return FPS; }

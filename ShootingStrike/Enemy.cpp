@@ -7,6 +7,7 @@
 #include "ObjectManager.h"
 #include "CollisionManager.h"
 #include "SpawnManager.h"
+#include "InputManager.h"
 
 Enemy::Enemy()
 	: maxHP(0)
@@ -18,6 +19,10 @@ Enemy::Enemy()
 	, hitScore(0)
 	, deathScore(0)
 	, oldPosition(Vector3())
+	, fireBulletIntervalTime(0)
+	, bChangedDestPos(false)
+	, bStopAtDest(false)
+	, bArrivedToDest(false)
 {
 
 }
@@ -36,8 +41,8 @@ void Enemy::Initialize()
 	oldPosition = transInfo.Position;
 	bGenerateCollisionEvent = true;
 
-	maxHP = 50;
-	HP = 50;
+	maxHP = 1;
+	HP = 1;
 
 	bSpawing = false;
 	bAttacking = false;
@@ -45,17 +50,18 @@ void Enemy::Initialize()
 	bDied = false;
 
 	speed = 3.0f;
+	fireBulletIntervalTime = 0;
+	destPosition = Vector3();
+	bChangedDestPos = false;
+	bStopAtDest = false;
 }
 
 void Enemy::Update()
 {
 	Super::Update();
 
-	// ** 가속도 적용
-	speed += acceleration;
-	float aa = acceleration;
-	// ** Enemy Update 작업 필요
 	
+
 	// ** 스폰 중
 	//if ( bSpawing )
 	//{
@@ -157,6 +163,12 @@ void Enemy::TakeDamage(int _damage)
 	}	
 }
 
+void Enemy::Spawn()
+{
+	isSpawing = true;
+	status = eObjectStatus::ACTIVATED;
+}
+
 void Enemy::Die()
 {
 	// ** bDied flag true 세팅
@@ -167,6 +179,8 @@ void Enemy::Die()
 	explosionTransInfo.Position = transInfo.Position;
 	explosionTransInfo.Scale = transInfo.Scale;
 	SpawnManager::SpawnEffect(explosionTransInfo, eBridgeKey::EFFECT_EXPLOSION);
+
+	status = eObjectStatus::DESTROYED;
 }
 
 void Enemy::CheckPositionInBkgBoundary()

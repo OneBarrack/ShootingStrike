@@ -36,7 +36,7 @@ void TextUI::Render(HDC _hdc)
 
 	if ( pTextImage && isValidText )
 	{
-		for ( int textOrder = 0; textOrder < splitTextList.size(); ++textOrder )
+		for ( int textOrder = 0; textOrder < (int)splitTextList.size(); ++textOrder )
 		{			
 			eTextType textType = splitTextList[textOrder].first;
 			int segmentOffset = splitTextList[textOrder].second;
