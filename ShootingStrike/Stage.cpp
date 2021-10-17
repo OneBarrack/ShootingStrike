@@ -1,6 +1,7 @@
 #include "Stage.h"
 #include "SceneManager.h"
 #include "ObjectManager.h"
+#include "RenderManager.h"
 #include "Player.h"
 #include "Enemy.h"
 #include "EnemyHole.h"
@@ -40,6 +41,9 @@ Stage::~Stage()
 
 void Stage::Initialize()
 {
+	/******* Stage Start *******/
+	bSceneStart = true;
+
 	frame = 1;
 
 	Bridge* pBridge = nullptr;
@@ -77,19 +81,6 @@ void Stage::Initialize()
 	pRightSideBackground->SetScale((WINDOWS_WIDTH - pBackground->GetScale().x) * 0.5f, WINDOWS_HEIGHT);
 	pRightSideBackground->SetBridge(pBridge);
 
-	//// ** EnemyBoss
-	//pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::ENEMY_BOSS);
-	//pBossAngelEnemy = ObjectManager::GetInstance()->NewObject(eObjectKey::ENEMY);
-	//pBossAngelEnemy->SetImage(eImageKey::ANGEL);
-	//pBossAngelEnemy->SetTagName(eTagName::ENEMY_BOSS);
-	//pBossAngelEnemy->SetPosition(pBackground->GetPosition().x, pBackground->GetScale().y * 0.3f);
-	//pBossAngelEnemy->SetScale(224.0f, 320.0f);
-	//static_cast<Enemy*>(pBossAngelEnemy)->SetMaxHP(50);
-	//static_cast<Enemy*>(pBossAngelEnemy)->SetHP(50);
-	//static_cast<Enemy*>(pBossAngelEnemy)->SetHitPoint(10);
-	//static_cast<Enemy*>(pBossAngelEnemy)->SetDeathPoint(5000);
-	//pBossAngelEnemy->SetBridge(pBridge);
-
 	// ** Score Text UI
 	pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::UI_TEXT);
 	pScoreTextUI = ObjectManager::GetInstance()->NewObject(eObjectKey::UI);
@@ -120,13 +111,6 @@ void Stage::Initialize()
 	pLifeUI->SetScale(pRightSideBackground->GetScale().x - 20.0f, 50.0f);
 	pLifeUI->SetBridge(pBridge);
 
-	//// ** Boss Enemy HP ProgressBar UI
-	//pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::UI_PROGRESSBAR);
-	//pBossEnemyProgressBar = ObjectManager::GetInstance()->NewObject(eObjectKey::UI);
-	//pBossEnemyProgressBar->SetPosition(WINDOWS_WIDTH * 0.5f, 30.0f);
-	//pBossEnemyProgressBar->SetScale(pBackground->GetScale().x - 30.0f, 50.0f);
-	//pBossEnemyProgressBar->SetBridge(pBridge);
-
 	// ** Map Progress UI
 	pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::UI_MAP_PROGRESS);
 	pMapProgress = ObjectManager::GetInstance()->NewObject(eObjectKey::UI);
@@ -140,20 +124,20 @@ void Stage::Initialize()
 	// ** Initialized Enemy Spawn Pattern Timings.
 	InitEnemySpawnPatternTimings();
 
-	/******* Stage Start *******/
-	Start();	
+	// ** Spawn Player
+	SpawnManager::SpawnPlayer();
 }
 
 void Stage::Update()
 {	
-	int mapProgressPercentage = static_cast<int>(GameDataManager::GetInstance()->GetMapProgressRatio() * 100.0f);
-
+	float mapProgressPercentage = GameDataManager::GetInstance()->GetMapProgressRatio() * 100.0f;
+	
 	// ** Enemy Spawn Pattern 발동 타이밍 정보가 있다면
 	while ( !enemySpawnTimings.empty() )
 	{
 		// ** 발동 타이밍이 현재 맵 진행률과 일치하지 않으면 break
-		int spawnTiming = enemySpawnTimings.top().first;
-		if ( spawnTiming != mapProgressPercentage )
+		float spawnTiming = enemySpawnTimings.top().first;
+		if ( mapProgressPercentage < spawnTiming )
 			break;
 
 		// ** 현재 맵 진행률과 일치하면 패턴 Ready 후 해당 타이밍 정보 pop
@@ -163,7 +147,7 @@ void Stage::Update()
 	}
 
 	// ** 맵 진행도가 50%가 넘어가면 보스 소환
-	if ( mapProgressPercentage > 50 )
+	if ( mapProgressPercentage > 50.0f )
 	{
 		if ( !pBossAngelEnemy )
 		{
@@ -208,6 +192,16 @@ void Stage::Update()
 void Stage::Render(HDC _hdc)
 {
 	ObjectManager::GetInstance()->Render(_hdc);
+
+	if ( bSceneStart && RenderManager::FadeIn(_hdc) )
+	{
+		bSceneStart = false;
+	}
+
+	if ( bSceneEnd && RenderManager::FadeOut(_hdc) )
+	{
+		bSceneEnd = false;
+	}
 }
 
 void Stage::Release()
@@ -253,53 +247,45 @@ void Stage::Release()
 	pMapProgress = nullptr;
 }
 
-void Stage::Start()
-{
-	// ** Player 스폰
-	SpawnManager::SpawnPlayer();
-
-	// ...
-}
-
 void Stage::InitEnemySpawnPatternTimings()
 {
 	eEnemySpawnPattern enemySpawnPattern;
 
 	enemySpawnPattern = eEnemySpawnPattern::FALLDOWN_GO_RAND;
-	enemySpawnTimings.push(make_pair(4, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(8, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(12, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(16, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(20, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(24, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(28, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(32, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(36, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(40, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(4.0f, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(8.0f, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(12.0f, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(16.0f, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(20.0f, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(24.0f, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(28.0f, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(32.0f, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(36.0f, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(40.0f, enemySpawnPattern));
 
 	enemySpawnPattern = eEnemySpawnPattern::FALLDOWN_GO;
-	enemySpawnTimings.push(make_pair(10, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(20, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(10.0f, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(20.0f, enemySpawnPattern));
 
 	enemySpawnPattern = eEnemySpawnPattern::FALLDOWN_GO_AND_SPIN;
-	enemySpawnTimings.push(make_pair(60, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(80, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(100, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(60.0f, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(80.0f, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(100.0f, enemySpawnPattern));
 
 	enemySpawnPattern = eEnemySpawnPattern::FALLDOWN_BACK_AND_FORTH;
-	enemySpawnTimings.push(make_pair(30, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(40, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(30.0f, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(40.0f, enemySpawnPattern));
 
 	enemySpawnPattern = eEnemySpawnPattern::FALLDOWN_GO_ACCELERATION_RAND;
-	enemySpawnTimings.push(make_pair(60, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(64, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(68, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(72, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(76, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(80, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(84, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(88, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(92, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(96, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(100, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(60.0f, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(64.0f, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(68.0f, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(72.0f, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(76.0f, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(80.0f, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(84.0f, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(88.0f, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(92.0f, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(96.0f, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(100.0f, enemySpawnPattern));
 }

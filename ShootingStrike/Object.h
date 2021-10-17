@@ -111,6 +111,9 @@ public:
 	// ** Bridge를 Setting
 	void SetBridge(Bridge* _pBridge);
 
+	// ** 오브젝트의 Key 값을 Setting
+	void SetKey(eObjectKey _key)  { key = _key; }
+
 	// ** Transform 정보를 Setting (Transform)
 	void SetTransInfo(Transform _transInfo) { transInfo = _transInfo; }
 

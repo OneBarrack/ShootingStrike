@@ -537,8 +537,8 @@ void BossAngelEnemy::PlayAnimEvolution(HDC _hdc, ULONGLONG& _time, int& _offset)
 
 void BossAngelEnemy::PlayAnimAttacked(HDC _hdc, ULONGLONG& _time, int& _offset)
 {
-	int MaxSegmentCount = 1; // ** 해당 라인에서 분할된 이미지 수
-	int Delay = 200;
+	int maxSegmentCount = 1; // ** 해당 라인에서 분할된 이미지 수
+	int delay = 200;
 
 	TransparentBlt(_hdc,
 		(int)(pOwner->GetPosition().x - (pOwner->GetScale().x * 0.5f)),
@@ -553,10 +553,10 @@ void BossAngelEnemy::PlayAnimAttacked(HDC _hdc, ULONGLONG& _time, int& _offset)
 		RGB(147, 187, 236));
 
 	// ** Delay 시간 주기로 Offset 증가
-	if ( _time + Delay < GetTickCount64() )
+	if ( _time + delay < GetTickCount64() )
 	{
 		// ** Default는 항상 Loop 상태이므로 Offset을 0으로 세팅
-		if ( ++_offset == MaxSegmentCount )
+		if ( ++_offset == maxSegmentCount )
 		{
 			if ( bLoopPlayAnim )
 				_offset = 0;

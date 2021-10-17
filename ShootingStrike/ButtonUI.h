@@ -21,6 +21,8 @@ private:
 	bool bExistPressedImage;
 	bool bOnClick;
 
+	int buttonTypeIndex;
+
 public:
 	virtual void Initialize() override;
 	virtual void Update() override;
@@ -32,6 +34,8 @@ public:
 public:
 	// ** 클릭 되었는지
 	bool OnClick() { return bOnClick; }
+
+	void SetButtonTypeIndex(int _index) { buttonTypeIndex = _index; }
 
 public:
 	ButtonUI();

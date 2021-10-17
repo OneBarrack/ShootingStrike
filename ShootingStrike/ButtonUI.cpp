@@ -8,6 +8,7 @@ ButtonUI::ButtonUI()
 	, bExistPressedImage(false)
 	, buttonState(eButtonState::NORMAL)
 	, bOnClick(false)
+	, buttonTypeIndex(0)
 {
 
 }
@@ -22,10 +23,12 @@ void ButtonUI::Initialize()
 {
 	Super::Initialize();
 
-	buttonState = eButtonState::NORMAL;
-	bOnClick = false;
-
 	key = eBridgeKey::UI_BUTTON;
+	
+	buttonState = eButtonState::NORMAL;
+	bExistPressedImage = false;
+	bOnClick = false;
+	buttonTypeIndex = 0;
 }
 
 void ButtonUI::Update()
@@ -74,7 +77,7 @@ void ButtonUI::Render(HDC _hdc)
 		int(pOwner->GetScale().y),
 		pImage->GetMemDC(),
 		int(pImage->GetSegmentationScale().x * static_cast<int>(buttonState)),
-		0,
+		int(pImage->GetSegmentationScale().y * buttonTypeIndex),
 		int(pImage->GetSegmentationScale().x),
 		int(pImage->GetSegmentationScale().y),
 		RGB(255, 0, 255));

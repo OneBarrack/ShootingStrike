@@ -8,6 +8,7 @@ public:
 
 private:
 	float mapProgressRatio;
+	bool isForeBkg;
 
 public:
 	virtual void Initialize() override;
@@ -23,6 +24,6 @@ public:
 	void setMapProgressRatio(float _percentage) { mapProgressRatio = _percentage; }
 
 public:
-	Background();
+	Background(bool _isForeBkg = false);
 	virtual ~Background();
 };

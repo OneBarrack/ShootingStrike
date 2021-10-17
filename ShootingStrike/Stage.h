@@ -27,9 +27,9 @@ private:
 	// ** Enemy Spawn Pattern 발동 타이밍 정보
 	// ** First : Map Progress Percentage, Second : eEnemySpawnPattern
 	priority_queue<	
-		pair<int, eEnemySpawnPattern>, 
-		vector<pair<int, eEnemySpawnPattern>>, 
-		greater<pair<int, eEnemySpawnPattern>> > enemySpawnTimings;
+		pair<float, eEnemySpawnPattern>, 
+		vector<pair<float, eEnemySpawnPattern>>,
+		greater<pair<float, eEnemySpawnPattern>> > enemySpawnTimings;
 
 public:
 	virtual void Initialize()override;

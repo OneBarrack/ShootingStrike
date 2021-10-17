@@ -28,7 +28,7 @@ void Bitmap::Initialize()
 			imageScale = Vector3(WINDOWS_WIDTH, WINDOWS_HEIGHT);
 			segmentationScale = imageScale;
 			break;
-		case eImageKey::BACKGROUND:
+		case eImageKey::FADEBACK:
 			imageScale = Vector3(WINDOWS_WIDTH, WINDOWS_HEIGHT);
 			segmentationScale = imageScale;
 			break;
@@ -36,9 +36,13 @@ void Bitmap::Initialize()
 			imageScale = Vector3(923.0f, 350.0f);
 			segmentationScale = imageScale;
 			break;
-		case eImageKey::LOGOBACK:
-			imageScale = Vector3(1915.0f, 720.0f);
+		case eImageKey::LOGOBACK:			
+			imageScale = Vector3(1280.0f, 1809.0f);
 			segmentationScale = imageScale;
+			break;
+		case eImageKey::MENUBACK:
+			imageScale = Vector3(16740.0f, 304.0f);
+			segmentationScale = Vector3(540.0f, 304.0f);
 			break;
 		case eImageKey::STAGEBACK:
 			imageScale = Vector3(600.0f, 5527.0f);
@@ -61,8 +65,8 @@ void Bitmap::Initialize()
 			segmentationScale = Vector3(25.0f, 0.0f);
 			break;
 		case eImageKey::NUMBER:
-			imageScale = Vector3(130.0f, 14.0f);
-			segmentationScale = Vector3(13.0f, 0.0f);
+			imageScale = Vector3(140.0f, 14.0f);
+			segmentationScale = Vector3(14.0f, 0.0f);
 			break;
 		case eImageKey::PROGRESSBAR:
 			imageScale = Vector3(535.0f, 192.0f);
@@ -71,6 +75,10 @@ void Bitmap::Initialize()
 		case eImageKey::PLAYBUTTON:
 			imageScale = Vector3(450.0f, 70.0f);
 			segmentationScale = Vector3(150.0f, 70.0f);
+			break;
+		case eImageKey::PLAY_QUIT_BUTTON:
+			imageScale = Vector3(210.0f, 100.0f);
+			segmentationScale = Vector3(70.0f, 50.0f);
 			break;
 		case eImageKey::PLAYER:
 			imageScale = Vector3(131.0f, 141.0f);

@@ -44,12 +44,12 @@ void Prototype::CreatePrototype()
 {
 	// Create Object Prototype
 	objectPrototypeList[eObjectKey::BACKGROUND]	= new Background;
+	objectPrototypeList[eObjectKey::FOREGROUND] = new Background(true);
 	objectPrototypeList[eObjectKey::PLAYER]		= new Player;
 	objectPrototypeList[eObjectKey::ENEMY]		= new Enemy;
 	objectPrototypeList[eObjectKey::BULLET]		= new Bullet;	
 	objectPrototypeList[eObjectKey::UI]			= new UserInterface;
 	objectPrototypeList[eObjectKey::EFFECT]		= new Effect;
-	objectPrototypeList[eObjectKey::FOREGROUND] = objectPrototypeList[eObjectKey::BACKGROUND];
 
 	// Create Bridge Prototype
 	bridgePrototypeList[eBridgeKey::BACKGROUND_BASIC]			  = new BasicBkg;

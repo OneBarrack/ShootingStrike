@@ -37,9 +37,9 @@ enum class eObjectKey
 	PLAYER			,
 	ENEMY			,
 	BULLET			,
+	EFFECT			,
 	FOREGROUND		,
 	UI				,	
-	EFFECT			,
 };
 
 enum class eBridgeKey
@@ -68,24 +68,26 @@ enum class eBridgeKey
 
 enum class eImageKey
 {	
-	BUFFER		  ,
-	BACKGROUND	  ,
-	LOGO		  ,
-	LOGOBACK	  ,
-	STAGEBACK	  ,
-	STAGESIDEBACK ,
-	STAGECLOUD	  ,
-	TEXT		  ,
-	SCORE		  ,
-	NUMBER		  ,
-	PROGRESSBAR	  ,
-	PLAYBUTTON	  ,
-	PLAYER		  ,
-	BULLET		  ,
-	ANGEL		  ,
-	HIT			  ,
-	EXPLOSION	  ,	
-	KEYMAX		  ,
+	BUFFER			,
+	FADEBACK		,
+	LOGO			,
+	LOGOBACK		,
+	MENUBACK		,
+	STAGEBACK		,
+	STAGESIDEBACK	,
+	STAGECLOUD		,
+	TEXT			,
+	SCORE			,
+	NUMBER			,
+	PROGRESSBAR		,
+	PLAYBUTTON		,
+	PLAY_QUIT_BUTTON,
+	PLAYER			,
+	BULLET			,
+	ANGEL			,
+	HIT				,
+	EXPLOSION	  ,		
+	KEYMAX			,
 };
 
 enum class eObjectStatus

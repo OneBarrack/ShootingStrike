@@ -1,8 +1,9 @@
 #include "Background.h"
 #include "Bridge.h"
 
-Background::Background()
+Background::Background(bool _isForeBkg)
 	: mapProgressRatio(0.0f)
+	, isForeBkg(_isForeBkg)
 {
 }
 
@@ -15,7 +16,11 @@ void Background::Initialize()
 {
 	Super::Initialize();
 
-	key = eObjectKey::BACKGROUND;
+	if ( isForeBkg ) 
+		key = eObjectKey::FOREGROUND;
+	else
+		key = eObjectKey::BACKGROUND;
+	
 	status = eObjectStatus::ACTIVATED;
 	collisionType = eCollisionType::NONE;
 	bGenerateCollisionEvent = false;

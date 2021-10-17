@@ -47,7 +47,7 @@ void GoAndSpinEnemy::Update()
 			angle = -1.0f;
 		else // spinDirection == eSpinDirection::RIGHT
 			angle = 1.0f;
-
+ 
 		transInfo.Direction = MathManager::RotateByDegree(transInfo.Direction, angle);
 	}
 	

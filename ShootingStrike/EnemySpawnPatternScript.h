@@ -4,8 +4,8 @@
 class EnemySpawnPatternScript : public SpawnPatternScript
 {
 private:
-	// ** 준비된 패턴들을 모아놓은 Queue
-	queue<pair<Object*, eEnemySpawnPattern>> readyPatternQueue;
+	// ** 준비된 패턴들을 모아놓은 List
+	list<pair<Object*, eEnemySpawnPattern>> readyPatternList;
 
 public:
 	// ** 초기화

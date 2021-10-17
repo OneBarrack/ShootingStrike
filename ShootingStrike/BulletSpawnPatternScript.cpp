@@ -109,17 +109,17 @@ void BulletSpawnPatternScript::Spawn()
 
 			int maxCycleCount = 100; // ** 최대 발동 횟수
 			int spawnCycleTime = 50; // ** 발동 시간 간격
-			int angleGap = 30;	 // ** AngleGap : 총알간 간격(각도)
+			float angleGap = 30;	 // ** AngleGap : 총알간 간격(각도)
 
 			if ( spawnTime + spawnCycleTime < GetTickCount64() )
 			{
 				spawnTime = GetTickCount64();
 
-				int bulletCount = 360 / angleGap;
+				int bulletCount = static_cast<int>(360 / angleGap);
 				for ( int i = 0; i < bulletCount; ++i )
 				{
 					// ** 우측 기준 현재 각도
-					int angle = angleGap * i + (cycleCount * 7);
+					float angle = angleGap * i + (cycleCount * 7);
 
 					// ** Bullet의 TransInfo 설정
 					Transform bulletTransInfo;
@@ -163,7 +163,7 @@ void BulletSpawnPatternScript::Spawn()
 			int equalPartsCount = static_cast<int>(bulletCount / vertex);
 			
 			// ** Vertex간 간격 각도
-			int angleGapForVertex = static_cast<int>(360 / vertex);			
+			float angleGapForVertex = 360.0f / vertex;
 			
 			// ** 꼭짓점을 담을 임시 벡터
 			vector<Transform> vertexList;
@@ -176,7 +176,7 @@ void BulletSpawnPatternScript::Spawn()
 				for ( int i = 0; i < vertex; ++i )
 				{
 					// ** 꼭짓점 각도
-					int angle = angleGapForVertex * i;
+					float angle = angleGapForVertex * i;
 
 					// ** 꼭짓점의 TransInfo 설정
 					Transform bulletTransInfo;

@@ -50,10 +50,10 @@ void ScrollVerticalBkg::Update()
 		{
 			imageOffset -= speed;
 
-			// ** 이미지 최상단에 도달했다면
+			// ** 이미지 끝 도달했다면
 			if ( imageOffset < 0.0f )
 			{
-				// ** 이미지 최상단 Offset으로 고정
+				// ** 이미지 끝 Offset으로 고정
 				imageOffset = 0.0f;
 
 				// ** Loop 되어야 하는 상태라면

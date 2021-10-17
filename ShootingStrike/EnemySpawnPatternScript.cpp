@@ -19,12 +19,12 @@ EnemySpawnPatternScript::~EnemySpawnPatternScript()
 
 void EnemySpawnPatternScript::Initialize()
 {
-	readyPatternQueue = queue<pair<Object*, eEnemySpawnPattern>>();
+	readyPatternList = list<pair<Object*, eEnemySpawnPattern>>();
 }
 
 void EnemySpawnPatternScript::ReadyToSpawn(Object* _pOwner, eEnemySpawnPattern _spawnPattern)
 {
-	readyPatternQueue.push(make_pair(_pOwner, _spawnPattern));
+	readyPatternList.push_back(make_pair(_pOwner, _spawnPattern));
 }
 
 void EnemySpawnPatternScript::Run()
@@ -35,14 +35,18 @@ void EnemySpawnPatternScript::Run()
 
 void EnemySpawnPatternScript::Spawn()
 {
-	while ( !readyPatternQueue.empty() )
+	if ( readyPatternList.empty() )
+		return;
+
+	for ( auto listIter = readyPatternList.begin(); listIter != readyPatternList.end(); )
 	{
 		Bridge* pBridge = nullptr;
 		Object* pObject = nullptr;
 
-		Object* pOwner = readyPatternQueue.front().first;
-		eEnemySpawnPattern spawnPattern = readyPatternQueue.front().second;
-		readyPatternQueue.pop();		
+		Object* pOwner = listIter->first;
+		eEnemySpawnPattern spawnPattern = listIter->second;
+
+		bool bFinishedPattern = false;
 
 		switch ( spawnPattern )
 		{
@@ -87,6 +91,8 @@ void EnemySpawnPatternScript::Spawn()
 				pObject->SetBridge(pBridge);
 				static_cast<Enemy*>(pObject)->SetFireBulletIntervalTime(3000);
 				static_cast<Enemy*>(pObject)->SetDestPosition(Vector3(pObject->GetPosition().x, pObject->GetPosition().y + 100.0f));
+				
+				bFinishedPattern = true;
 				break;
 			}
 			case eEnemySpawnPattern::FALLDOWN_GO_RAND:
@@ -103,6 +109,8 @@ void EnemySpawnPatternScript::Spawn()
 				pObject->SetBridge(pBridge);
 				static_cast<Enemy*>(pObject)->SetFireBulletIntervalTime(3000);
 				static_cast<Enemy*>(pObject)->SetDestPosition(Vector3(destPosX, WINDOWS_HEIGHT * 0.75f));
+				
+				bFinishedPattern = true;
 				break;
 			}
 			case eEnemySpawnPattern::FALLDOWN_GO_ACCELERATION_RAND:
@@ -119,6 +127,8 @@ void EnemySpawnPatternScript::Spawn()
 				pObject->SetAcceleration(0.1f);
 				static_cast<Enemy*>(pObject)->SetFireBulletIntervalTime(3000);
 				static_cast<Enemy*>(pObject)->SetDestPosition(Vector3(pObject->GetPosition().x, pObject->GetPosition().y + 100.0f));
+				
+				bFinishedPattern = true;
 				break;
 			}
 			case eEnemySpawnPattern::FALLDOWN_GO_AND_SPIN:
@@ -170,6 +180,8 @@ void EnemySpawnPatternScript::Spawn()
 				static_cast<Enemy*>(pObject)->SetDestPosition(Vector3(pObject->GetPosition().x, pObject->GetPosition().y + 100.0f));
 				static_cast<Enemy*>(pObject)->SetStopAtDest(true);
 				static_cast<GoAndSpinEnemy*>(pBridge)->LeftSpin();
+				
+				bFinishedPattern = true;
 				break;
 			}
 			case eEnemySpawnPattern::FALLDOWN_BACK_AND_FORTH:
@@ -217,9 +229,17 @@ void EnemySpawnPatternScript::Spawn()
 				static_cast<Enemy*>(pObject)->SetFireBulletIntervalTime(3000);
 				static_cast<Enemy*>(pObject)->SetDestPosition(Vector3(pObject->GetPosition().x, pObject->GetPosition().y + 100.0f));
 				static_cast<BackAndForthEnemy*>(pBridge)->LeftSpin();
+				
+				bFinishedPattern = true;
 				break;
 			}
 		}		
+
+		// ** 해당 패턴이 종료되었다면 리스트에서 삭제
+		if ( bFinishedPattern )
+			readyPatternList.erase(listIter++);
+		else
+			++listIter;
 	}
 }
 
