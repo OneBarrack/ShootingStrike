@@ -134,37 +134,51 @@ void Stage::Initialize()
 }
 
 void Stage::Update()
-{	
-	static ULONGLONG bulletSpawnTime = GetTickCount64();
-	int bulletSpawnDelay = 2000;
-
-	if ( bulletSpawnTime + bulletSpawnDelay < GetTickCount64() )
-	{
-		bulletSpawnTime = GetTickCount64();
-
-		// ** 일정 시간마다 무작위로 Bullet을 스폰시킨다. (위에서 생성되어 아래로 가도록)
-		Vector3 startPos;
-		startPos.x = pBackground->GetPosition().x - (pBackground->GetScale().x * 0.5f) + (rand() % static_cast<int>(pBackground->GetScale().x));
-		startPos.y = pBackground->GetPosition().y - (pBackground->GetScale().y * 0.5f);
-
-		Vector3 destPos;
-		destPos.x = pBackground->GetPosition().x - (pBackground->GetScale().x * 0.5f) + (rand() % static_cast<int>(pBackground->GetScale().x));
-		destPos.y = pBackground->GetPosition().y + (pBackground->GetScale().y * 0.3f);
-
-		Transform bulletTransInfo;
-		bulletTransInfo.Position = startPos;
-		bulletTransInfo.Direction = MathManager::GetDirection(startPos, destPos);
-		bulletTransInfo.Scale = Vector3(10.0f, 10.0f);
-
-		// ** Bullet의 Speed 설정
-		float bulletSpeed = 2.0f;
-
-		// ** Bullet Spawn
-		SpawnManager::SpawnBullet(pStageDummyEnemy, bulletTransInfo, bulletSpeed, 1, eBridgeKey::BULLET_NORMAL);
-	}
-
+{
 	// ** 맵 진행도
 	float mapProgressPercentage = GameDataManager::GetInstance()->GetMapProgressRatio() * 100.0f;
+
+	// ** 일정 시간마다 무작위로 Bullet을 스폰시키기 위한 Time 변수와 Delay
+	static ULONGLONG bulletSpawnTime = GetTickCount64();
+	int bulletSpawnDelay;
+
+	// ** 일정 시간마다 무작위로 Bullet을 스폰시킨다. (위에서 생성되어 아래로 가도록)
+	{
+		// ** 맵 진행도가 50% 아래면 2초간격, 50%이상 진행시 1초간격으로 Bullet 스폰
+		if ( mapProgressPercentage < 50.0f )
+		{
+			bulletSpawnDelay = 2000;
+		}
+		else
+		{
+			bulletSpawnDelay = 1000;
+		}
+
+		if ( bulletSpawnTime + bulletSpawnDelay < GetTickCount64() )
+		{
+			bulletSpawnTime = GetTickCount64();
+			
+			Vector3 startPos;
+			startPos.x = pBackground->GetPosition().x - (pBackground->GetScale().x * 0.5f) + (rand() % static_cast<int>(pBackground->GetScale().x));
+			startPos.y = pBackground->GetPosition().y - (pBackground->GetScale().y * 0.5f);
+
+			Vector3 destPos;
+			destPos.x = pBackground->GetPosition().x - (pBackground->GetScale().x * 0.5f) + (rand() % static_cast<int>(pBackground->GetScale().x));
+			destPos.y = pBackground->GetPosition().y + (pBackground->GetScale().y * 0.3f);
+
+			Transform bulletTransInfo;
+			bulletTransInfo.Position = startPos;
+			bulletTransInfo.Direction = MathManager::GetDirection(startPos, destPos);
+			bulletTransInfo.Scale = Vector3(10.0f, 10.0f);
+
+			// ** Bullet의 Speed 설정
+			float bulletSpeed = 2.0f;
+
+			// ** Bullet Spawn
+			SpawnManager::SpawnBullet(pStageDummyEnemy, bulletTransInfo, bulletSpeed, 1, eBridgeKey::BULLET_NORMAL);
+		}
+	}
+	
 
 	// ** Enemy Spawn Pattern 발동 타이밍 정보가 있다면
 	while ( !enemySpawnTimings.empty() )

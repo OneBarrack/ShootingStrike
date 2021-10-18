@@ -39,7 +39,7 @@ void Player::Initialize()
 	transInfo.Scale = Vector3(42.0f, 47.0f);
 
 	collider.Position = Vector3(transInfo.Position.x + 3, transInfo.Position.y);
-	collider.Scale = Vector3(15.0f, 15.0f);
+	collider.Scale = Vector3(12.0f, 12.0f);
 
 	key = eObjectKey::PLAYER;
 	status = eObjectStatus::DEACTIVATED;
@@ -130,10 +130,16 @@ void Player::Update()
 		// ** 미사일 발사
 		if ( CHECK_KEYINPUT_STATE(eInputKey::KEY_SPACE, eKeyInputState::PRESSED) )
 		{
-			//bulletScript.ReadyToSpawn(eBulletSpawnPattern::SPIN, damage);
-			//bulletScript.ReadyToSpawn(eBulletSpawnPattern::MULTI_SPIN, damage);			
-			firingType = eFiringType::NORMAL;
-			Fire(firingType, level, damage);
+			static ULONGLONG fireTime = 0; 
+			int fireDelay = 100;
+
+			if ( fireTime + fireDelay < GetTickCount64() )
+			{
+				fireTime = GetTickCount64();
+
+				firingType = eFiringType::NORMAL;
+				Fire(firingType, level, damage);
+			}
 		}
 	}
 
@@ -147,7 +153,7 @@ void Player::Update()
 	oldPosition = transInfo.Position;
 
 	// ** 충돌체 갱신
-	SetCollider(Vector3(transInfo.Position.x + 1, transInfo.Position.y), Vector3(15.0f, 15.0f));
+	SetCollider(Vector3(transInfo.Position.x + 1, transInfo.Position.y), Vector3(12.0f, 12.0f));
 
 	// ** Bullet Spawn Pattern Script 실행
 	bulletScript.Run();
@@ -201,7 +207,7 @@ void Player::Fire(eFiringType _firingType, int _level, int _damage)
 				bulletTransInfo.Direction = Vector3(0.0f, -1.0f);
 
 				// ** Bullet의 Speed 설정
-				float bulletSpeed = 5.0f;
+				float bulletSpeed = 10.0f;
 
 				// ** Bullet Spawn
 				Object* pBullet = SpawnManager::SpawnBullet(this, bulletTransInfo, bulletSpeed, _damage, eBridgeKey::BULLET_NORMAL);
