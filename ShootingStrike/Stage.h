@@ -10,6 +10,7 @@ private:
 
 private:
 	Object* pPlayer;
+	Object* pStageDummyEnemy;
 	Object* pBackground;
 	Object* pLeftSideBackground;
 	Object* pRightSideBackground;

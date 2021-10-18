@@ -7,7 +7,11 @@ public:
 	typedef EnemyBridge Super;
 
 private:
-	ULONGLONG time;	
+	ULONGLONG bulletSpawnTime;	
+	ULONGLONG animationTime;
+	Vector3 imageOffset;
+	Vector3 imageScale;
+	int segmentationOffset;
 
 public:
 	virtual void Initialize() override;

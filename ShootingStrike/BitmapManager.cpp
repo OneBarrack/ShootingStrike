@@ -20,7 +20,8 @@ void BitmapManager::Initialize()
 	imageList[eImageKey::PLAYBUTTON]		= new Bitmap(eImageKey::PLAYBUTTON		, L"../Resource/UI_Button_Play.bmp");
 	imageList[eImageKey::PLAY_QUIT_BUTTON]  = new Bitmap(eImageKey::PLAY_QUIT_BUTTON, L"../Resource/UI_Button_Play_Quit.bmp");
 	imageList[eImageKey::BULLET]			= new Bitmap(eImageKey::BULLET			, L"../Resource/Projectile.bmp");
-	imageList[eImageKey::ANGEL]				= new Bitmap(eImageKey::ANGEL			, L"../Resource/Angel.bmp");
+	imageList[eImageKey::ENEMY_NORMAL]		= new Bitmap(eImageKey::ENEMY_NORMAL	, L"../Resource/Enemy_Normal.bmp");
+	imageList[eImageKey::ENEMY_ANGEL]		= new Bitmap(eImageKey::ENEMY_ANGEL		, L"../Resource/Angel.bmp");	
 	imageList[eImageKey::EXPLOSION]			= new Bitmap(eImageKey::EXPLOSION		, L"../Resource/Effect_Explosion.bmp");
 	imageList[eImageKey::HIT]				= new Bitmap(eImageKey::HIT				, L"../Resource/Effect_Hit.bmp");
 }

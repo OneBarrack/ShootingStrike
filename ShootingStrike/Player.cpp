@@ -128,7 +128,7 @@ void Player::Update()
 		}
 
 		// ** 미사일 발사
-		if ( CHECK_KEYINPUT_STATE(eInputKey::KEY_SPACE, eKeyInputState::DOWN) )
+		if ( CHECK_KEYINPUT_STATE(eInputKey::KEY_SPACE, eKeyInputState::PRESSED) )
 		{
 			//bulletScript.ReadyToSpawn(eBulletSpawnPattern::SPIN, damage);
 			//bulletScript.ReadyToSpawn(eBulletSpawnPattern::MULTI_SPIN, damage);			
@@ -201,10 +201,11 @@ void Player::Fire(eFiringType _firingType, int _level, int _damage)
 				bulletTransInfo.Direction = Vector3(0.0f, -1.0f);
 
 				// ** Bullet의 Speed 설정
-				float bulletSpeed = 3.0f;
+				float bulletSpeed = 5.0f;
 
 				// ** Bullet Spawn
-				SpawnManager::SpawnBullet(this, bulletTransInfo, bulletSpeed, _damage, eBridgeKey::BULLET_NORMAL);
+				Object* pBullet = SpawnManager::SpawnBullet(this, bulletTransInfo, bulletSpeed, _damage, eBridgeKey::BULLET_NORMAL);
+				pBullet->SetImageOffsetOrder(Point(1, 2));
 			}
 
 			// ** Level 만큼 총알 숫자를 늘리고, 상방 기준 총알 간 간격에 대한 각도를 설정하여

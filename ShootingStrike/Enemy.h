@@ -25,6 +25,8 @@ public:
 	typedef Object Super;
 
 private:
+	eEnemyType enemyType;
+
 	int maxHP;
 	int HP;	
 
@@ -51,6 +53,9 @@ private:
 	queue<pair<eMoveType, Vector3>> moveInfos;
 	eMoveState moveState;
 
+	// ** Move Spin 시 적용된 degree값의 합
+	float totalDegreeForSpin;
+
 public:
 	virtual void Initialize()override;
 	virtual void Update()override;
@@ -65,10 +70,10 @@ public:
 	void Fire();
 
 	// ** 데미지를 입힘
-	void ApplyDamage(Object* _pTarget, int _Damage);
+	void ApplyDamage(Object* _pTarget, int _damage);
 
 	// ** 데미지를 받음
-	void TakeDamage(int _Damage);
+	void TakeDamage(int _damage);
 
 	// ** 스폰
 	void Spawn(); 
@@ -81,6 +86,8 @@ public:
 
 	bool IsDead() { return bDied; }
 	bool IsSpawning() { return isSpawing; }
+
+	eEnemyType GetEnemyType() { return enemyType; }
 	int GetMaxHP() { return maxHP; }
 	int GetHP() { return HP; }
 	int GetHitPoint() { return hitScore; }
@@ -89,6 +96,7 @@ public:
 	Vector3 GetDestPosition() { return destPosition; }
 	bool isMoving();
 
+	void SetEnemyType(eEnemyType _enemyType);
 	void SetMaxHP(int _maxHP) { maxHP = _maxHP; }
 	void SetHP(int _HP) { HP = _HP; }
 	void SetHitPoint(int _point) { hitScore = _point; }

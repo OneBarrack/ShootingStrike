@@ -5,13 +5,16 @@
 class EnemyBridge : public Bridge
 {
 protected:
-	Bitmap* pImage;
+	Bitmap* pImage;	
 	Transform transInfo;
 	Transform collider;
 	float speed;
 	float acceleration;
 	BulletSpawnPatternScript bulletScript;
 	
+	// ** Enemy Type
+	eEnemyType enemyType;
+
 	// ** 스폰중인지
 	bool isSpawing;
 

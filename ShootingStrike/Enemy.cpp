@@ -10,7 +10,8 @@
 #include "InputManager.h"
 
 Enemy::Enemy()
-	: maxHP(0)
+	: enemyType(eEnemyType::ENEMY_BLUE_ELF)
+	, maxHP(0)
 	, HP(0)
 	, bSpawing(false)
 	, bAttacking(false)
@@ -20,6 +21,7 @@ Enemy::Enemy()
 	, deathScore(0)
 	, oldPosition(Vector3())
 	, fireBulletIntervalTime(0)
+	, totalDegreeForSpin(0.0f)
 {
 
 }
@@ -52,6 +54,9 @@ void Enemy::Initialize()
 	speed = 3.0f;
 	fireBulletIntervalTime = 0;
 	destPosition = Vector3();
+	totalDegreeForSpin = 0.0f;
+
+	SetEnemyType(eEnemyType::ENEMY_BLUE_ELF);
 
 	InitMoveInfo();
 }
@@ -67,7 +72,6 @@ void Enemy::Update()
 		eMoveType moveType = moveInfos.front().first;
 		destPosition = moveInfos.front().second;
 
-		static float totalDegree = 0.0f;
 		bool bLoop = false;
 
 		// **Ready 단계. 초기화 작업
@@ -81,10 +85,10 @@ void Enemy::Update()
 					transInfo.Direction = MathManager::GetDirection(transInfo.Position, destPosition);
 					break;
 				case eMoveType::SPIN_LEFT:
-					totalDegree = 0.0f;
+					totalDegreeForSpin = 0.0f;
 					break;
 				case eMoveType::SPIN_RIGHT:
-					totalDegree = 0.0f;
+					totalDegreeForSpin = 0.0f;
 					break;
 				case eMoveType::BACK_AND_FORTH_LEFT:
 					break;
@@ -104,9 +108,9 @@ void Enemy::Update()
 			case eMoveType::SPIN_LEFT:
 			{
 				float rotationDegree = -1.0f;
-				totalDegree += rotationDegree;
+				totalDegreeForSpin += rotationDegree;
 
-				if ( !bLoop && abs(totalDegree) >= 360 )
+				if ( !bLoop && abs(totalDegreeForSpin) >= 360 )
 				{
 					moveState = eMoveState::END;
 				}
@@ -120,9 +124,9 @@ void Enemy::Update()
 			case eMoveType::SPIN_RIGHT:
 			{
 				float rotationDegree = 1.0f;
-				totalDegree += rotationDegree;
+				totalDegreeForSpin += rotationDegree;
 
-				if ( !bLoop && abs(totalDegree) >= 360 )
+				if ( !bLoop && abs(totalDegreeForSpin) >= 360 )
 				{
 					moveState = eMoveState::END;
 				}
@@ -132,31 +136,31 @@ void Enemy::Update()
 			}
 			case eMoveType::BACK_AND_FORTH_LEFT:
 			{
-				float backAndForthDegree = 3.0f;
+				float backAndForthDegree = 1.0f;
 
 				// ** 수직 벡터를 구한다.
 				Vector3 perpendicularDirection;
 				perpendicularDirection.x = transInfo.Direction.y;
 				perpendicularDirection.y = -transInfo.Direction.x;
 
-				transInfo.Position.x += perpendicularDirection.x * (speed * 2) * sinf(MathManager::DegreeToRadian(totalDegree));
-				transInfo.Position.y += perpendicularDirection.y * (speed * 2) * sinf(MathManager::DegreeToRadian(totalDegree));
+				transInfo.Position.x += perpendicularDirection.x * (speed * 2) * sinf(MathManager::DegreeToRadian(totalDegreeForSpin));
+				transInfo.Position.y += perpendicularDirection.y * (speed * 2) * sinf(MathManager::DegreeToRadian(totalDegreeForSpin));
 
-				totalDegree += backAndForthDegree;
+				totalDegreeForSpin += backAndForthDegree;
 				break;
 			}
 			case eMoveType::BACK_AND_FORTH_RIGHT:
-				float backAndForthDegree = 3.0f;
+				float backAndForthDegree = 1.0f;
 
 				// ** 수직 벡터를 구한다.
 				Vector3 perpendicularDirection;
 				perpendicularDirection.x = -transInfo.Direction.y;
 				perpendicularDirection.y = transInfo.Direction.x;
 
-				transInfo.Position.x += perpendicularDirection.x * (speed * 2) * sinf(MathManager::DegreeToRadian(totalDegree));
-				transInfo.Position.y += perpendicularDirection.y * (speed * 2) * sinf(MathManager::DegreeToRadian(totalDegree));
+				transInfo.Position.x += perpendicularDirection.x * (speed * 2) * sinf(MathManager::DegreeToRadian(totalDegreeForSpin));
+				transInfo.Position.y += perpendicularDirection.y * (speed * 2) * sinf(MathManager::DegreeToRadian(totalDegreeForSpin));
 
-				totalDegree += backAndForthDegree;
+				totalDegreeForSpin += backAndForthDegree;
 				break;
 		}
 
@@ -314,6 +318,57 @@ bool Enemy::isMoving()
 	return false;
 }
 
+void Enemy::SetEnemyType(eEnemyType _enemyType)
+{
+	enemyType = _enemyType;
+
+	switch ( enemyType )
+	{
+		case eEnemyType::ENEMY_BLUE_ELF:
+			SetMaxHP(10);
+			SetHP(10);
+			SetHitPoint(10);
+			SetDeathPoint(100);
+			break;
+		case eEnemyType::ENEMY_RED_ELF:
+			SetMaxHP(20);
+			SetHP(20);
+			SetHitPoint(20);
+			SetDeathPoint(200);
+			break;
+		case eEnemyType::ENEMY_GREEN_ELF:
+			SetMaxHP(30);
+			SetHP(30);
+			SetHitPoint(30);
+			SetDeathPoint(300);
+			break;
+		case eEnemyType::ENEMY_WHITE_ELF:
+			SetMaxHP(50);
+			SetHP(50);
+			SetHitPoint(50);
+			SetDeathPoint(500);
+			break;
+		case eEnemyType::ENEMY_MIDDLE_BOSS:
+			SetMaxHP(500);
+			SetHP(500);
+			SetHitPoint(100);
+			SetDeathPoint(100000);
+			break;
+		case eEnemyType::ENEMY_BOSS_ANGEL:
+			SetMaxHP(2000);
+			SetHP(2000);
+			SetHitPoint(256);
+			SetDeathPoint(777777);
+			break;
+		default:
+			SetMaxHP(0);
+			SetHP(0);
+			SetHitPoint(0);
+			SetDeathPoint(0);
+			break;
+	}
+}
+
 void Enemy::MoveTo(Vector3 _destPosition)
 {
 	moveInfos.push(make_pair(eMoveType::MOVE_TO, _destPosition));
@@ -343,7 +398,7 @@ void Enemy::BackAndForthLeft(Vector3 _destPosition)
 }
 void Enemy::BackAndForthRight(Vector3 _destPosition)
 {
-	moveInfos.push(make_pair(eMoveType::BACK_AND_FORTH_LEFT, _destPosition));
+	moveInfos.push(make_pair(eMoveType::BACK_AND_FORTH_RIGHT, _destPosition));
 }
 
 void Enemy::CheckPositionInBkgBoundary()

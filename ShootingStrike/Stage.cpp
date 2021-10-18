@@ -16,10 +16,12 @@
 #include "TextUI.h"
 #include "ProgressBarUI.h"
 #include "GameDataManager.h"
+#include "MathManager.h"
 
 Stage::Stage() 
 	: frame(0)
 	, pPlayer(nullptr)
+	, pStageDummyEnemy(nullptr)
 	, pBackground(nullptr)
 	, pLeftSideBackground(nullptr)
 	, pRightSideBackground(nullptr)
@@ -61,8 +63,12 @@ void Stage::Initialize()
 	pBackground->SetBridge(pBridge);
 	static_cast<ScrollVerticalBkg*>(pBridge)->StartBottom();
 	static_cast<ScrollVerticalBkg*>(pBridge)->ScrollUp();
-	static_cast<ScrollVerticalBkg*>(pBridge)->SetLoop(3);
-	
+	static_cast<ScrollVerticalBkg*>(pBridge)->SetLoop(2);
+		
+	// ** 스테이지 내 Bullet 생성을 위한 Dummy Enemy. 비활성화 상태로 둔다
+	pStageDummyEnemy = ObjectManager::GetInstance()->NewObject(eObjectKey::ENEMY);
+	pStageDummyEnemy->SetStatus(eObjectStatus::DEACTIVATED);
+
 	// ** Left Side Background
 	pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::BACKGROUND_BASIC);
 	pLeftSideBackground = ObjectManager::GetInstance()->NewObject(eObjectKey::FOREGROUND);
@@ -129,8 +135,37 @@ void Stage::Initialize()
 
 void Stage::Update()
 {	
+	static ULONGLONG bulletSpawnTime = GetTickCount64();
+	int bulletSpawnDelay = 2000;
+
+	if ( bulletSpawnTime + bulletSpawnDelay < GetTickCount64() )
+	{
+		bulletSpawnTime = GetTickCount64();
+
+		// ** 일정 시간마다 무작위로 Bullet을 스폰시킨다. (위에서 생성되어 아래로 가도록)
+		Vector3 startPos;
+		startPos.x = pBackground->GetPosition().x - (pBackground->GetScale().x * 0.5f) + (rand() % static_cast<int>(pBackground->GetScale().x));
+		startPos.y = pBackground->GetPosition().y - (pBackground->GetScale().y * 0.5f);
+
+		Vector3 destPos;
+		destPos.x = pBackground->GetPosition().x - (pBackground->GetScale().x * 0.5f) + (rand() % static_cast<int>(pBackground->GetScale().x));
+		destPos.y = pBackground->GetPosition().y + (pBackground->GetScale().y * 0.3f);
+
+		Transform bulletTransInfo;
+		bulletTransInfo.Position = startPos;
+		bulletTransInfo.Direction = MathManager::GetDirection(startPos, destPos);
+		bulletTransInfo.Scale = Vector3(10.0f, 10.0f);
+
+		// ** Bullet의 Speed 설정
+		float bulletSpeed = 2.0f;
+
+		// ** Bullet Spawn
+		SpawnManager::SpawnBullet(pStageDummyEnemy, bulletTransInfo, bulletSpeed, 1, eBridgeKey::BULLET_NORMAL);
+	}
+
+	// ** 맵 진행도
 	float mapProgressPercentage = GameDataManager::GetInstance()->GetMapProgressRatio() * 100.0f;
-	
+
 	// ** Enemy Spawn Pattern 발동 타이밍 정보가 있다면
 	while ( !enemySpawnTimings.empty() )
 	{
@@ -145,8 +180,8 @@ void Stage::Update()
 		enemySpawnTimings.pop();
 	}
 
-	// ** 맵 진행도가 50%가 넘어가면 보스 소환
-	if ( mapProgressPercentage > 5.0f )
+	// ** 맵 진행도가 90%가 넘어가면 보스 소환
+	if ( mapProgressPercentage > 90.0f )
 	{
 		if ( !pBossAngelEnemy )
 		{
@@ -155,14 +190,11 @@ void Stage::Update()
 			// ** EnemyBoss
 			pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::ENEMY_BOSS);
 			pBossAngelEnemy = ObjectManager::GetInstance()->NewObject(eObjectKey::ENEMY);
-			pBossAngelEnemy->SetImage(eImageKey::ANGEL);
+			pBossAngelEnemy->SetImage(eImageKey::ENEMY_ANGEL);
 			pBossAngelEnemy->SetTagName(eTagName::ENEMY_BOSS);
 			pBossAngelEnemy->SetScale(224.0f, 320.0f);
-			static_cast<Enemy*>(pBossAngelEnemy)->SetMaxHP(50);
-			static_cast<Enemy*>(pBossAngelEnemy)->SetHP(50);
-			static_cast<Enemy*>(pBossAngelEnemy)->SetHitPoint(10);
-			static_cast<Enemy*>(pBossAngelEnemy)->SetDeathPoint(5000);
 			pBossAngelEnemy->SetBridge(pBridge);
+			static_cast<Enemy*>(pBossAngelEnemy)->SetEnemyType(eEnemyType::ENEMY_BOSS_ANGEL);			
 			static_cast<Enemy*>(pBossAngelEnemy)->Spawn();
 
 			// ** Boss Enemy HP ProgressBar UI
@@ -204,7 +236,11 @@ void Stage::Render(HDC _hdc)
 }
 
 void Stage::Release()
-{
+{	
+	if ( pStageDummyEnemy )
+		ObjectManager::GetInstance()->RecallObject(pStageDummyEnemy);
+	pStageDummyEnemy = nullptr;
+
 	if ( pBackground )	
 		ObjectManager::GetInstance()->RecallObject(pBackground);
 	pBackground = nullptr;
@@ -250,9 +286,27 @@ void Stage::InitEnemySpawnPatternTimings()
 {
 	eEnemySpawnPattern enemySpawnPattern;
 
-	enemySpawnPattern = eEnemySpawnPattern::FALLDOWN_GO;
-	enemySpawnTimings.push(make_pair(4.0f, enemySpawnPattern));
-	 
+	enemySpawnPattern = eEnemySpawnPattern::DOWN_BACK_AND_FORTH_RED_ELF_2;
+	enemySpawnTimings.push(make_pair(5.0f, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(15.0f, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(25.0f, enemySpawnPattern));
+
+	enemySpawnPattern = eEnemySpawnPattern::DOWN_BACK_AND_FORTH_RED_ELF_4;
+	enemySpawnTimings.push(make_pair(50.0f, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(60.0f, enemySpawnPattern));
+
+	enemySpawnPattern = eEnemySpawnPattern::LEFT_TOP_TO_RIGHT_BOTTOM_SPIN;
+	enemySpawnTimings.push(make_pair(30.0f, enemySpawnPattern));
+	
+	enemySpawnPattern = eEnemySpawnPattern::RIGHT_TOP_TO_LEFT_BOTTOM_SPIN;
+	enemySpawnTimings.push(make_pair(30.0f, enemySpawnPattern));
+
+	enemySpawnPattern = eEnemySpawnPattern::LEFT_BOTTOM_TO_RIGHT_TOP_SPIN;
+	enemySpawnTimings.push(make_pair(70.0f, enemySpawnPattern));
+
+	enemySpawnPattern = eEnemySpawnPattern::RIGHT_BOTTOM_TO_LEFT_TOP_SPIN;
+	enemySpawnTimings.push(make_pair(70.0f, enemySpawnPattern));
+
 	//enemySpawnPattern = eEnemySpawnPattern::FALLDOWN_GO_RAND;
 	//enemySpawnTimings.push(make_pair(4.0f, enemySpawnPattern));
 	//enemySpawnTimings.push(make_pair(8.0f, enemySpawnPattern));

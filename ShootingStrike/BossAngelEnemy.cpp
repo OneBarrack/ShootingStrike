@@ -688,32 +688,18 @@ void BossAngelEnemy::Action(eActionType _ActionType)
 
 					float bulletSpeed = 5.0f;
 
-					Transform bulletTransInfo;
-					bulletTransInfo.Direction = Vector3(0.0f, 1.0f);
-					bulletTransInfo.Position.x = collider.Position.x;
-					bulletTransInfo.Position.y = collider.Position.y;
-					bulletTransInfo.Scale = Vector3(10.0f, 10.0f);					
+					// 몸체 기준 좌우로 Scale 간격을 두고 5개의 Bullet 발사
+					for ( int offset = 0; offset < 5; ++offset )
+					{
+						Transform bulletTransInfo;
+						bulletTransInfo.Direction = Vector3(0.0f, 1.0f);
+						bulletTransInfo.Position.x = (collider.Position.x - collider.Scale.x) + ((collider.Scale.x * 0.5f) * offset);
+						bulletTransInfo.Position.y = collider.Position.y;
+						bulletTransInfo.Scale = Vector3(10.0f, 10.0f);
 
-					// ** Bullet Spawn
-					SpawnManager::SpawnBullet(pOwner, bulletTransInfo, bulletSpeed, 1, eBridgeKey::BULLET_NORMAL);
-
-					bulletTransInfo;
-					bulletTransInfo.Direction = Vector3(0.0f, 1.0f);
-					bulletTransInfo.Position.x = collider.Position.x - collider.Scale.x * 0.5f;
-					bulletTransInfo.Position.y = collider.Position.y;
-					bulletTransInfo.Scale = Vector3(10.0f, 10.0f);
-
-					// ** Bullet Spawn
-					SpawnManager::SpawnBullet(pOwner, bulletTransInfo, bulletSpeed, 1, eBridgeKey::BULLET_NORMAL);
-
-					bulletTransInfo;
-					bulletTransInfo.Direction = Vector3(0.0f, 1.0f);
-					bulletTransInfo.Position.x = collider.Position.x + collider.Scale.x * 0.5f;
-					bulletTransInfo.Position.y = collider.Position.y;
-					bulletTransInfo.Scale = Vector3(10.0f, 10.0f);
-
-					// ** Bullet Spawn
-					SpawnManager::SpawnBullet(pOwner, bulletTransInfo, bulletSpeed, 1, eBridgeKey::BULLET_NORMAL);
+						// ** Bullet Spawn
+						SpawnManager::SpawnBullet(pOwner, bulletTransInfo, bulletSpeed, 1, eBridgeKey::BULLET_NORMAL);
+					}
 				}
 
 				if ( !static_cast<Enemy*>(pOwner)->isMoving() )

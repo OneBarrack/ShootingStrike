@@ -54,7 +54,7 @@ void EnemyBridge::ReceiveInfoFromOwner()
 	{
 		if ( !pImage )
 			pImage = pOwner->GetImage();
-
+				
 		transInfo = pOwner->GetTransInfo();
 		collider = pOwner->GetCollider();
 		speed = pOwner->GetSpeed();
@@ -62,6 +62,7 @@ void EnemyBridge::ReceiveInfoFromOwner()
 		fireBulletIntervalTime = static_cast<Enemy*>(pOwner)->GetFireBulletIntervalTime();
 		destPosition = static_cast<Enemy*>(pOwner)->GetDestPosition();
 		isSpawing = static_cast<Enemy*>(pOwner)->IsSpawning();
+		enemyType = static_cast<Enemy*>(pOwner)->GetEnemyType();
 	}
 }
 
