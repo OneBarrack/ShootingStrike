@@ -12,6 +12,7 @@ BulletSpawnPatternScript::BulletSpawnPatternScript()
 	, spawnTransInfo(Transform())
 	, damage(0)	
 	, bReady(false)
+	, polygonVtxCount(0)
 {
 }
 
@@ -26,14 +27,16 @@ void BulletSpawnPatternScript::Initialize()
 	damage = 0;
 	spawnTransInfo = Transform();
 	bReady = false;
+	polygonVtxCount = 0;
 }
 
-void BulletSpawnPatternScript::ReadyToSpawn(Object* _pOwner, eBulletSpawnPattern _spawnPattern, Transform _spawnTransInfo, int _damage)
+void BulletSpawnPatternScript::ReadyToSpawn(Object* _pOwner, eBulletSpawnPattern _spawnPattern, Transform _spawnTransInfo, int _damage, int _polygonVtxCount)
 {
 	pOwner = _pOwner;
 	spawnPattern = _spawnPattern;
 	spawnTransInfo = _spawnTransInfo;
 	damage = _damage;
+	polygonVtxCount = _polygonVtxCount;
 
 	bReady = true;
 }
@@ -107,9 +110,9 @@ void BulletSpawnPatternScript::Spawn()
 		{
 			//** Multi Spin 패턴 : 360도 기준 일정 간격으로 시작지점들을 나누고 모든 시작지점에 Spin 패턴을 적용
 
-			int maxCycleCount = 100; // ** 최대 발동 횟수
+			int maxCycleCount = 150; // ** 최대 발동 횟수
 			int spawnCycleTime = 50; // ** 발동 시간 간격
-			float angleGap = 30;	 // ** AngleGap : 총알간 간격(각도)
+			float angleGap = 40;	 // ** AngleGap : 총알간 간격(각도)
 
 			if ( spawnTime + spawnCycleTime < GetTickCount64() )
 			{
@@ -154,7 +157,7 @@ void BulletSpawnPatternScript::Spawn()
 			float bulletSpeed = 3.0f; // ** Bullet Speed
 
 			// ** N각형의 꼭짓점 개수
-			int vertex = 3;
+			int vertex = polygonVtxCount == 0 ? 3 : polygonVtxCount;
 
 			// ** 발사될 총알개수. N의 배수만큼만 발동됨
 			int bulletCount = vertex * 10;

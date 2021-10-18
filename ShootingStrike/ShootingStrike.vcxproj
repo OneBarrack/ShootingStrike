@@ -139,7 +139,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="BackAndForthEnemy.h" />
     <ClInclude Include="BackgroundBridge.h" />
     <ClInclude Include="Bitmap.h" />
     <ClInclude Include="BitmapManager.h" />
@@ -156,7 +155,6 @@
     <ClInclude Include="EffectBridge.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemySpawnPatternScript.h" />
-    <ClInclude Include="GoAndSpinEnemy.h" />
     <ClInclude Include="MapProgressUI.h" />
     <ClInclude Include="NormalEnemy.h" />
     <ClInclude Include="EnemyBridge.h" />
@@ -203,7 +201,6 @@
     <ClInclude Include="UIBridge.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BackAndForthEnemy.cpp" />
     <ClCompile Include="BackgroundBridge.cpp" />
     <ClCompile Include="Bitmap.cpp" />
     <ClCompile Include="BitmapManager.cpp" />
@@ -218,7 +215,6 @@
     <ClCompile Include="EffectBridge.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemySpawnPatternScript.cpp" />
-    <ClCompile Include="GoAndSpinEnemy.cpp" />
     <ClCompile Include="MapProgressUI.cpp" />
     <ClCompile Include="NormalEnemy.cpp" />
     <ClCompile Include="EnemyBridge.cpp" />

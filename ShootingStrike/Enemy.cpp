@@ -20,9 +20,6 @@ Enemy::Enemy()
 	, deathScore(0)
 	, oldPosition(Vector3())
 	, fireBulletIntervalTime(0)
-	, bChangedDestPos(false)
-	, bStopAtDest(false)
-	, bArrivedToDest(false)
 {
 
 }
@@ -49,18 +46,138 @@ void Enemy::Initialize()
 	bTakeDamage = false;
 	bDied = false;
 
+	hitScore = 10;
+	deathScore = 100;
+
 	speed = 3.0f;
 	fireBulletIntervalTime = 0;
 	destPosition = Vector3();
-	bChangedDestPos = false;
-	bStopAtDest = false;
+
+	InitMoveInfo();
 }
 
 void Enemy::Update()
 {
 	Super::Update();
 
-	
+	speed += acceleration;
+
+	if ( !moveInfos.empty() )
+	{
+		eMoveType moveType = moveInfos.front().first;
+		destPosition = moveInfos.front().second;
+
+		static float totalDegree = 0.0f;
+		bool bLoop = false;
+
+		// **Ready 단계. 초기화 작업
+		if ( moveState == eMoveState::READY )
+		{
+			moveState = eMoveState::MOVING;
+			
+			switch ( moveType )
+			{
+				case eMoveType::MOVE_TO:
+					transInfo.Direction = MathManager::GetDirection(transInfo.Position, destPosition);
+					break;
+				case eMoveType::SPIN_LEFT:
+					totalDegree = 0.0f;
+					break;
+				case eMoveType::SPIN_RIGHT:
+					totalDegree = 0.0f;
+					break;
+				case eMoveType::BACK_AND_FORTH_LEFT:
+					break;
+				case eMoveType::BACK_AND_FORTH_RIGHT:
+					break;
+			}
+		}
+
+		// ** Moving 단계. Move 진행
+		switch ( moveType )
+		{
+			case eMoveType::MOVE_TO:
+				break;
+			case eMoveType::SPIN_LEFT_FOR_LOOP:
+				bLoop = true;
+				[[fallthrough]];
+			case eMoveType::SPIN_LEFT:
+			{
+				float rotationDegree = -1.0f;
+				totalDegree += rotationDegree;
+
+				if ( !bLoop && abs(totalDegree) >= 360 )
+				{
+					moveState = eMoveState::END;
+				}
+
+				transInfo.Direction = MathManager::RotateByDegree(transInfo.Direction, rotationDegree);				
+				break;
+			}			
+			case eMoveType::SPIN_RIGHT_FOR_LOOP:
+				bLoop = true;
+				[[fallthrough]];
+			case eMoveType::SPIN_RIGHT:
+			{
+				float rotationDegree = 1.0f;
+				totalDegree += rotationDegree;
+
+				if ( !bLoop && abs(totalDegree) >= 360 )
+				{
+					moveState = eMoveState::END;
+				}
+
+				transInfo.Direction = MathManager::RotateByDegree(transInfo.Direction, rotationDegree);				
+				break;
+			}
+			case eMoveType::BACK_AND_FORTH_LEFT:
+			{
+				float backAndForthDegree = 3.0f;
+
+				// ** 수직 벡터를 구한다.
+				Vector3 perpendicularDirection;
+				perpendicularDirection.x = transInfo.Direction.y;
+				perpendicularDirection.y = -transInfo.Direction.x;
+
+				transInfo.Position.x += perpendicularDirection.x * (speed * 2) * sinf(MathManager::DegreeToRadian(totalDegree));
+				transInfo.Position.y += perpendicularDirection.y * (speed * 2) * sinf(MathManager::DegreeToRadian(totalDegree));
+
+				totalDegree += backAndForthDegree;
+				break;
+			}
+			case eMoveType::BACK_AND_FORTH_RIGHT:
+				float backAndForthDegree = 3.0f;
+
+				// ** 수직 벡터를 구한다.
+				Vector3 perpendicularDirection;
+				perpendicularDirection.x = -transInfo.Direction.y;
+				perpendicularDirection.y = transInfo.Direction.x;
+
+				transInfo.Position.x += perpendicularDirection.x * (speed * 2) * sinf(MathManager::DegreeToRadian(totalDegree));
+				transInfo.Position.y += perpendicularDirection.y * (speed * 2) * sinf(MathManager::DegreeToRadian(totalDegree));
+
+				totalDegree += backAndForthDegree;
+				break;
+		}
+
+		transInfo.Position.x += transInfo.Direction.x * speed;
+		transInfo.Position.y += transInfo.Direction.y * speed;
+
+		// ** 다음 프레임에 목적지를 넘어가는 상태라면
+		if ( abs(destPosition.x - transInfo.Position.x) <= abs(transInfo.Direction.x * speed) &&
+			abs(destPosition.y - transInfo.Position.y) <= abs(transInfo.Direction.y * speed) )
+		{
+			// ** 목적지 도달
+			transInfo.Position = destPosition;
+			moveState = eMoveState::END;
+		}
+
+		if ( moveState == eMoveState::END )
+		{
+			moveInfos.pop();
+			moveState = eMoveState::READY;
+		}
+	}	
 
 	// ** 스폰 중
 	//if ( bSpawing )
@@ -181,6 +298,52 @@ void Enemy::Die()
 	SpawnManager::SpawnEffect(explosionTransInfo, eBridgeKey::EFFECT_EXPLOSION);
 
 	status = eObjectStatus::DESTROYED;
+}
+
+void Enemy::InitMoveInfo()
+{
+	moveInfos = queue<pair<eMoveType, Vector3>>();
+	moveState = eMoveState::READY;
+}
+
+bool Enemy::isMoving()
+{
+	if ( moveState == eMoveState::MOVING )
+		return true;
+
+	return false;
+}
+
+void Enemy::MoveTo(Vector3 _destPosition)
+{
+	moveInfos.push(make_pair(eMoveType::MOVE_TO, _destPosition));
+}
+
+void Enemy::SpinLeft(bool _bLoop)
+{
+	// ** Loop 체크
+	if ( _bLoop )
+		moveInfos.push(make_pair(eMoveType::SPIN_LEFT_FOR_LOOP, Vector3()));
+	else
+		moveInfos.push(make_pair(eMoveType::SPIN_LEFT, Vector3()));
+}
+
+void Enemy::SpinRight(bool _bLoop)
+{
+	// ** Loop 체크
+	if ( _bLoop )
+		moveInfos.push(make_pair(eMoveType::SPIN_RIGHT_FOR_LOOP, Vector3()));
+	else
+		moveInfos.push(make_pair(eMoveType::SPIN_RIGHT, Vector3()));
+}
+
+void Enemy::BackAndForthLeft(Vector3 _destPosition)
+{
+	moveInfos.push(make_pair(eMoveType::BACK_AND_FORTH_LEFT, _destPosition));
+}
+void Enemy::BackAndForthRight(Vector3 _destPosition)
+{
+	moveInfos.push(make_pair(eMoveType::BACK_AND_FORTH_LEFT, _destPosition));
 }
 
 void Enemy::CheckPositionInBkgBoundary()

@@ -45,11 +45,13 @@ void Bitmap::Initialize()
 			segmentationScale = Vector3(540.0f, 304.0f);
 			break;
 		case eImageKey::STAGEBACK:
-			imageScale = Vector3(600.0f, 5527.0f);
+			//imageScale = Vector3(600.0f, 5527.0f);
+			imageScale = Vector3(640.0f, 960.0f);
 			segmentationScale = imageScale;
 			break;
 		case eImageKey::STAGESIDEBACK:
-			imageScale = Vector3(608.0f, 800.0f);
+			//imageScale = Vector3(608.0f, 800.0f);
+			imageScale = Vector3(640.0f, 720.0f);
 			segmentationScale = Vector3(imageScale.x * 0.5f, imageScale.y);
 			break;
 		case eImageKey::STAGECLOUD:

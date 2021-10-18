@@ -5,8 +5,10 @@ ScrollHorizontalBkg::ScrollHorizontalBkg()
 	: scrollDirection(eScrollDirection::LEFT)
 	, imageOffset(0.0f)
 	, imageOffsetForRestart(0.0f)
-	, bLoop(false)
+	, maxLoopCount(0)
+	, curLoopCount(0)
 	, bDrawEachStartEnd(false)
+	, curMoveDist(0)
 {
 }
 
@@ -21,8 +23,10 @@ void ScrollHorizontalBkg::Initialize()
 	key = eBridgeKey::BACKGROUND_SCROLL_HORIZONTAL;
 	scrollDirection = eScrollDirection::LEFT;
 	imageOffset = 0.0f;
-	bLoop = false;
+	maxLoopCount = 0;
+	curLoopCount = 0;
 	bDrawEachStartEnd = false;
+	curMoveDist = 0;
 }
 
 void ScrollHorizontalBkg::Update()
@@ -57,7 +61,7 @@ void ScrollHorizontalBkg::Update()
 				imageOffset = 0.0f;
 
 				// ** Loop 되어야 하는 상태라면
-				if ( bLoop && !bDrawEachStartEnd )
+				if ( curLoopCount < maxLoopCount && !bDrawEachStartEnd )
 				{
 					imageOffsetForRestart = 0.0f;
 					bDrawEachStartEnd = true;
@@ -91,7 +95,7 @@ void ScrollHorizontalBkg::Update()
 				imageOffset = pImage->GetScale().x - transInfo.Scale.x;
 
 				// ** Loop 되어야 하는 상태라면
-				if ( bLoop && !bDrawEachStartEnd )
+				if ( curLoopCount < maxLoopCount && !bDrawEachStartEnd )
 				{
 					imageOffsetForRestart = transInfo.Scale.x;
 					bDrawEachStartEnd = true;
@@ -103,10 +107,12 @@ void ScrollHorizontalBkg::Update()
 	// ** Map 전체 진행도 계산
 	if ( pImage )
 	{
-		if ( scrollDirection == eScrollDirection::LEFT )	
-			mapProgressRatio = imageOffset / (pImage->GetScale().x - transInfo.Scale.x);
-		else
-			mapProgressRatio = (pImage->GetScale().x - transInfo.Scale.x - imageOffset) / (pImage->GetScale().x - transInfo.Scale.x);
+		float maxDist = pImage->GetScale().y + (pImage->GetScale().y * maxLoopCount) - WINDOWS_HEIGHT;
+
+		if ( curMoveDist < maxDist )
+			curMoveDist += speed;
+
+		mapProgressRatio = curMoveDist / maxDist;
 	}
 
 	SendInfoToOwner();
@@ -119,10 +125,17 @@ void ScrollHorizontalBkg::Render(HDC _hdc)
 	if ( !pImage ) 
 		return;
 
+	static bool isLoopPrevScroll = false;
+
 	// ** 이미지 시작과 끝 연결 구간
 	// ** Loop Scroll
-	if ( bLoop && bDrawEachStartEnd )
+	if ( curLoopCount < maxLoopCount && bDrawEachStartEnd )
 	{
+		if ( isLoopPrevScroll == false )
+		{
+			isLoopPrevScroll = true;
+		}
+
 		TransparentBlt(_hdc,
 			(int)(transInfo.Position.x - (transInfo.Scale.x * 0.5f)),
 			(int)(transInfo.Position.y - (transInfo.Scale.y * 0.5f)),
@@ -150,6 +163,12 @@ void ScrollHorizontalBkg::Render(HDC _hdc)
 	// ** 일반 Scroll
 	else
 	{
+		if ( isLoopPrevScroll == true )
+		{
+			++curLoopCount;
+			isLoopPrevScroll = false;
+		}
+
 		TransparentBlt(_hdc,
 			(int)(transInfo.Position.x - (transInfo.Scale.x * 0.5f)),
 			(int)(transInfo.Position.y - (transInfo.Scale.y * 0.5f)),

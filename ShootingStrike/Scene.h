@@ -4,8 +4,8 @@
 class Scene
 {
 public:
-	bool bSceneStart;
-	bool bSceneEnd;
+	bool isStartingScene;
+	bool isEndingScene;
 
 public:
 	virtual void Initialize() PURE;

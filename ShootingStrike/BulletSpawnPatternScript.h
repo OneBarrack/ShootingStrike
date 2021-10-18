@@ -19,12 +19,15 @@ private:
 	// ** Run 할 준비 되었는지
 	bool bReady;
 
+	// ** N각형 Polygon pattern에서 사용될 버텍스 수
+	int polygonVtxCount;
+
 public:	
 	// ** 초기화
 	void Initialize();
 
 	// ** Pattern 및 데미지 세팅
-	void ReadyToSpawn(Object* _pOwner, eBulletSpawnPattern _spawnPattern, Transform _spawnTransInfo, int _damage);
+	void ReadyToSpawn(Object* _pOwner, eBulletSpawnPattern _spawnPattern, Transform _spawnTransInfo, int _damage, int _polygonVtxCount = 0);
 
 	// ** 실행 중인지
 	bool IsRunning() { return !bReady; }

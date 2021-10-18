@@ -178,12 +178,6 @@
     <Filter Include="소스 파일\02. Object\Enemy\EnemyBridge\NormalEnemy">
       <UniqueIdentifier>{990ce52a-df18-4236-a5b6-e2b137b06d0b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\02. Object\Enemy\EnemyBridge\BackAndForth">
-      <UniqueIdentifier>{92b8a78a-ba33-471e-9767-6a82d1824ce4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\02. Object\Enemy\EnemyBridge\GoAndSpin">
-      <UniqueIdentifier>{aa78cbfd-7b62-4535-a1bb-a245967e3138}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\04. Helper\SpawnPatternScript\Bullet">
       <UniqueIdentifier>{635da852-f16c-4e03-9500-a580fd16462e}</UniqueIdentifier>
     </Filter>
@@ -366,12 +360,6 @@
     <ClInclude Include="MapProgressUI.h">
       <Filter>소스 파일\02. Object\UI\UIBridge\MapProgress</Filter>
     </ClInclude>
-    <ClInclude Include="BackAndForthEnemy.h">
-      <Filter>소스 파일\02. Object\Enemy\EnemyBridge\BackAndForth</Filter>
-    </ClInclude>
-    <ClInclude Include="GoAndSpinEnemy.h">
-      <Filter>소스 파일\02. Object\Enemy\EnemyBridge\GoAndSpin</Filter>
-    </ClInclude>
     <ClInclude Include="EnemySpawnPatternScript.h">
       <Filter>소스 파일\04. Helper\SpawnPatternScript\Enemy</Filter>
     </ClInclude>
@@ -523,12 +511,6 @@
     </ClCompile>
     <ClCompile Include="MapProgressUI.cpp">
       <Filter>소스 파일\02. Object\UI\UIBridge\MapProgress</Filter>
-    </ClCompile>
-    <ClCompile Include="BackAndForthEnemy.cpp">
-      <Filter>소스 파일\02. Object\Enemy\EnemyBridge\BackAndForth</Filter>
-    </ClCompile>
-    <ClCompile Include="GoAndSpinEnemy.cpp">
-      <Filter>소스 파일\02. Object\Enemy\EnemyBridge\GoAndSpin</Filter>
     </ClCompile>
     <ClCompile Include="Bridge.cpp">
       <Filter>소스 파일\04. Helper\Pattern\Bridge</Filter>

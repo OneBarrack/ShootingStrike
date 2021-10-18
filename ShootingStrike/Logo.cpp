@@ -39,7 +39,7 @@ void Logo::Initialize()
 	ObjectManager::GetInstance()->SetPlayer(
 		ObjectManager::GetInstance()->NewObject(eObjectKey::PLAYER));
 
-	bSceneStart = true;
+	isStartingScene = true;
 
 	Bridge* pBridge = nullptr;
 	
@@ -89,15 +89,19 @@ void Logo::Initialize()
 
 void Logo::Update()
 {	
-	// ** 메뉴로 이동할 임시 Play 버튼.
-	if ( static_cast<ButtonUI*>(pPlayButton->GetBridgeObject())->OnClick() )
-	{	
-		bSceneEnd = true;
-	}
+	// ** Scene 스타트 및 끝나는 시점이 아닌경우
+	if ( !isStartingScene && !isEndingScene )
+	{
+		// ** 메뉴로 이동할 임시 Play 버튼.
+		if ( static_cast<ButtonUI*>(pPlayButton->GetBridgeObject())->OnClick() )
+		{
+			isEndingScene = true;
+		}
 
-	// ** 임시 종료 테스트(ESC).
-	if ( CHECK_KEYINPUT_STATE(eInputKey::KEY_ESCAPE, eKeyInputState::DOWN) )
-		PostQuitMessage(NULL);
+		// ** 임시 종료 테스트(ESC).
+		if ( CHECK_KEYINPUT_STATE(eInputKey::KEY_ESCAPE, eKeyInputState::DOWN) )
+			PostQuitMessage(NULL);
+	}
 
 	ObjectManager::GetInstance()->Update();
 }
@@ -106,14 +110,14 @@ void Logo::Render(HDC _hdc)
 {
 	ObjectManager::GetInstance()->Render(_hdc);
 
-	if ( bSceneStart && RenderManager::FadeIn(_hdc) )
+	if ( isStartingScene && RenderManager::FadeIn(_hdc) )
 	{
-		bSceneStart = false;
+		isStartingScene = false;
 	}
 
-	if ( bSceneEnd && RenderManager::FadeOut(_hdc) )
+	if ( isEndingScene && RenderManager::FadeOut(_hdc) )
 	{
-		bSceneEnd = false;
+		isEndingScene = false;
 		SceneManager::GetInstance()->SetScene(eSCENEID::MENU);
 	}
 }

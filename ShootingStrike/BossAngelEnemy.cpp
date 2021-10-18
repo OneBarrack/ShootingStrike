@@ -1,5 +1,6 @@
 #include "BossAngelEnemy.h"
 #include "Object.h"
+#include "Enemy.h"
 #include "BitmapManager.h"
 #include "SpawnManager.h"
 #include "InputManager.h"
@@ -8,8 +9,12 @@
 #include "MathManager.h"
 
 BossAngelEnemy::BossAngelEnemy()
-	: animType(AnimationType::DEFAULT)
+	: pBackground(nullptr)
+	, curPhase(1)
+	, animType(eBossAnimationType::DEFAULT)
 	, bLoopPlayAnim(false)
+	, prevActionCompleteTime(0)
+	, actionState(eActionState::READY)
 {
 }
 
@@ -25,16 +30,22 @@ void BossAngelEnemy::Initialize()
 
 	key = eBridgeKey::ENEMY_BOSS;
 
-	animType = AnimationType::DEFAULT;
+	curPhase = 1;
+	animType = eBossAnimationType::DEFAULT;
 	isSpawing = true;
 	bLoopPlayAnim = false;
 
-	Background* pStageBackground = static_cast<Background*>(
+	pBackground = static_cast<Background*>(
 		ObjectManager::GetInstance()->FindObjectWithTag(eTagName::STAGE_MAIN_BKG));
-	spawnStartPos.x = pStageBackground->GetPosition().x;
-	spawnStartPos.y = (pStageBackground->GetPosition().y - (pStageBackground->GetScale().y * 0.5f));
+	spawnStartPos.x = pBackground->GetPosition().x;
+	spawnStartPos.y = (pBackground->GetPosition().y - (pBackground->GetScale().y * 0.5f));
 	spawnDestPos.x = spawnStartPos.x;
-	spawnDestPos.y = (pStageBackground->GetPosition().y - (pStageBackground->GetScale().y * 0.5f)) + 150;
+	spawnDestPos.y = (pBackground->GetPosition().y - (pBackground->GetScale().y * 0.5f)) + 150;
+
+	prevActionCompleteTime = GetTickCount64();
+	actionState = eActionState::READY;
+
+	InitActionInfo();
 }
 
 void BossAngelEnemy::Update()
@@ -44,6 +55,9 @@ void BossAngelEnemy::Update()
 
 	Super::Update();	
 	
+	// Phase 체크
+	CheckPhase();
+
 	// 스폰 중
 	if ( isSpawing )
 	{
@@ -52,6 +66,9 @@ void BossAngelEnemy::Update()
 		// ** Spawn이 시작될 때 Spawn Start 위치로 이동 시킨다
 		if ( bSpawnStart )
 		{
+			// ** 스폰중일 시 무적상태 (충돌 비활성화)
+			static_cast<Enemy*>(pOwner)->SetGenerateCollisionEvent(false);
+
 			transInfo.Position.x = spawnStartPos.x;
 			transInfo.Position.y = spawnStartPos.y;
 			transInfo.Direction = MathManager::GetDirection(spawnStartPos, spawnDestPos);
@@ -76,15 +93,45 @@ void BossAngelEnemy::Update()
 			transInfo.Direction = Vector3(0.0f, 0.0f);
 			isSpawing = false;
 			bSpawnStart = true;
+
+			prevActionCompleteTime = GetTickCount64();
+
+			// ** 스폰이 끝나면 충돌을 활성화 시켜준다
+			static_cast<Enemy*>(pOwner)->SetGenerateCollisionEvent(true);
 		}
 	}
 	else
 	{
-		// ** 목적지에 도달했을 경우 이동중지
-		if ( !bArrivedToDest )
+		// ** Action Info가 있으면 수행
+		if ( !actionInfos.empty() )
 		{
-			transInfo.Position.x += transInfo.Direction.x * speed;
-			transInfo.Position.y += transInfo.Direction.y * speed;			
+			eActionType actionType = actionInfos.front().first;
+			float delay = actionInfos.front().second;		
+
+			switch ( actionState )
+			{
+				case eActionState::READY:
+					if ( prevActionCompleteTime + delay < GetTickCount64() )
+					{
+						Action(actionType);
+						actionState = eActionState::WORKING;
+					}
+					break;
+				case eActionState::WORKING:
+					Action(actionType);
+					break;
+				case eActionState::END:
+					prevActionCompleteTime = GetTickCount64();
+					actionInfos.pop();
+
+					actionState = eActionState::READY;
+					break;
+			}
+		}
+		else
+		{
+			// ** Action Info가 없으면 초기화 패턴 반복
+			InitActionInfo();
 		}
 	}
 
@@ -98,7 +145,7 @@ void BossAngelEnemy::Update()
 		static int animTypeIndex = 0;
 		static int patternIndex = 0;
 
-		if ( animTypeIndex == static_cast<int>(AnimationType::EVOLUTION) )
+		if ( animTypeIndex == static_cast<int>(eBossAnimationType::EVOLUTION) )
 			animTypeIndex = 0;
 		else
 			animTypeIndex++;
@@ -108,7 +155,7 @@ void BossAngelEnemy::Update()
 		//else
 		//	patternIndex++;
 		patternIndex = static_cast<int>(eBulletSpawnPattern::N_POLYGON_GO);
-		PlayAnimation(static_cast<AnimationType>(animTypeIndex), false);
+		PlayAnimation(static_cast<eBossAnimationType>(animTypeIndex), false);
 
 		Transform spawnTransInfo;
 		spawnTransInfo.Position = collider.Position;
@@ -143,7 +190,7 @@ void BossAngelEnemy::Render(HDC _hdc)
 	if ( !pImage )
 		return;
 
-	static AnimationType oldAnimType = AnimationType::DEFAULT;
+	static eBossAnimationType oldAnimType = eBossAnimationType::DEFAULT;
 	static ULONGLONG time = GetTickCount64();
 	static int offset = 0;
 	bool bFinishPlay = false;
@@ -159,12 +206,12 @@ void BossAngelEnemy::Render(HDC _hdc)
 
 	switch ( animType )
 	{
-		case AnimationType::DEFAULT:	PlayAnimDefault(_hdc, time, offset);	break;
-		case AnimationType::ATTACK1:	PlayAnimAttack1(_hdc, time, offset);	break;
-		case AnimationType::ATTACK2:	PlayAnimAttack2(_hdc, time, offset);	break;
-		case AnimationType::ATTACK3:	PlayAnimAttack3(_hdc, time, offset);	break;
-		case AnimationType::EVOLUTION:	PlayAnimEvolution(_hdc, time, offset);	break;
-		case AnimationType::ATTACKED: break;
+		case eBossAnimationType::DEFAULT:	PlayAnimDefault(_hdc, time, offset);	break;
+		case eBossAnimationType::ATTACK1:	PlayAnimAttack1(_hdc, time, offset);	break;
+		case eBossAnimationType::ATTACK2:	PlayAnimAttack2(_hdc, time, offset);	break;
+		case eBossAnimationType::ATTACK3:	PlayAnimAttack3(_hdc, time, offset);	break;
+		case eBossAnimationType::EVOLUTION:	PlayAnimEvolution(_hdc, time, offset);	break;
+		case eBossAnimationType::ATTACKED: break;
 		default:
 			break;
 	}
@@ -175,7 +222,7 @@ void BossAngelEnemy::Release()
 	Super::Release();
 }
 
-void BossAngelEnemy::PlayAnimation(AnimationType _AnimType, bool _bLoop)
+void BossAngelEnemy::PlayAnimation(eBossAnimationType _AnimType, bool _bLoop)
 {
 	animType = _AnimType;
 	bLoopPlayAnim = _bLoop;
@@ -290,7 +337,7 @@ void BossAngelEnemy::PlayAnimAttack1(HDC _hdc, ULONGLONG& _time, int& _offset)
 				if ( bLoopPlayAnim )
 					_offset = 0;
 				else
-					PlayAnimation(AnimationType::DEFAULT, true);
+					PlayAnimation(eBossAnimationType::DEFAULT, true);
 			}
 			else
 			{
@@ -388,7 +435,7 @@ void BossAngelEnemy::PlayAnimAttack2(HDC _hdc, ULONGLONG& _time, int& _offset)
 				if ( bLoopPlayAnim )
 					_offset = 0;
 				else
-					PlayAnimation(AnimationType::DEFAULT, true);
+					PlayAnimation(eBossAnimationType::DEFAULT, true);
 			}
 			else
 			{
@@ -486,7 +533,7 @@ void BossAngelEnemy::PlayAnimAttack3(HDC _hdc, ULONGLONG& _time, int& _offset)
 				if ( bLoopPlayAnim )
 					_offset = 0;
 				else
-					PlayAnimation(AnimationType::DEFAULT, true);
+					PlayAnimation(eBossAnimationType::DEFAULT, true);
 			}
 			else
 			{
@@ -529,7 +576,7 @@ void BossAngelEnemy::PlayAnimEvolution(HDC _hdc, ULONGLONG& _time, int& _offset)
 			if ( bLoopPlayAnim ) 
 				_offset = 0;
 			else
-				PlayAnimation(AnimationType::DEFAULT, true);
+				PlayAnimation(eBossAnimationType::DEFAULT, true);
 		}
 		_time = GetTickCount64();
 	}
@@ -561,9 +608,294 @@ void BossAngelEnemy::PlayAnimAttacked(HDC _hdc, ULONGLONG& _time, int& _offset)
 			if ( bLoopPlayAnim )
 				_offset = 0;
 			else
-				PlayAnimation(AnimationType::DEFAULT, true);
+				PlayAnimation(eBossAnimationType::DEFAULT, true);
 		}
 
 		_time = GetTickCount64();
+	}
+}
+
+void BossAngelEnemy::InitActionInfo()
+{
+	// ** Move info 초기화
+	if ( pOwner )
+	{
+		static_cast<Enemy*>(pOwner)->InitMoveInfo();
+	}
+
+	// ** Action Info 초기화
+	actionInfos = queue<pair<eActionType, float>>();	
+
+	vector<float> delayTimes = { 3000.0f, 2000.0f, 1000.0f };
+
+	actionInfos.push(make_pair(eActionType::MOVE_SPAWN_POS, 0.0f));
+	actionInfos.push(make_pair(eActionType::FIRE_FALLDOWN_BACK_AND_FORTH, delayTimes[curPhase - 1]));
+	actionInfos.push(make_pair(eActionType::FIRE_TRIANGLE, delayTimes[curPhase - 1]));
+	actionInfos.push(make_pair(eActionType::FIRE_DIAMOND, delayTimes[curPhase - 1]));
+	actionInfos.push(make_pair(eActionType::FIRE_MULTI_SPIN, delayTimes[curPhase - 1]));
+}
+
+void BossAngelEnemy::Action(eActionType _ActionType)
+{
+	Vector3 bkgPos = pBackground->GetPosition();
+	Vector3 bkgScale = pBackground->GetScale();
+	
+	static ULONGLONG actionTime = GetTickCount64();
+	static int moveCount = 0;
+	
+	switch ( _ActionType )
+	{
+		case eActionType::MOVE_SPAWN_POS:
+			if ( actionState == eActionState::READY )
+			{
+				speed = 0.75f;
+				static_cast<Enemy*>(pOwner)->MoveTo(spawnDestPos);
+
+				moveCount = 1;
+			
+			}
+			else // actionState == eActionState::WORKING
+			{
+				if ( !static_cast<Enemy*>(pOwner)->isMoving() )
+					actionState = eActionState::END;
+			}
+			break;
+		case eActionType::FIRE_FALLDOWN_BACK_AND_FORTH:
+			if ( actionState == eActionState::READY )
+			{
+				actionTime = GetTickCount64();
+				speed = 3.0f;
+				moveCount = 5;
+
+				static_cast<Enemy*>(pOwner)->MoveTo(
+					Vector3(bkgPos.x - bkgScale.x * 0.4f, spawnDestPos.y));
+				static_cast<Enemy*>(pOwner)->MoveTo(
+					Vector3(bkgPos.x + bkgScale.x * 0.4f, spawnDestPos.y));
+				static_cast<Enemy*>(pOwner)->MoveTo(
+					Vector3(bkgPos.x - bkgScale.x * 0.4f, spawnDestPos.y));
+				static_cast<Enemy*>(pOwner)->MoveTo(
+					Vector3(bkgPos.x + bkgScale.x * 0.4f, spawnDestPos.y));
+				static_cast<Enemy*>(pOwner)->MoveTo(Vector3(spawnDestPos));				
+
+				PlayAnimation(eBossAnimationType::ATTACK1, true);
+			}			
+			else
+			{
+				int bulletSpawnDelay = 200;
+				if ( actionTime + bulletSpawnDelay < GetTickCount64() )
+				{
+					actionTime = GetTickCount64();
+
+					float bulletSpeed = 5.0f;
+
+					Transform bulletTransInfo;
+					bulletTransInfo.Direction = Vector3(0.0f, 1.0f);
+					bulletTransInfo.Position.x = collider.Position.x;
+					bulletTransInfo.Position.y = collider.Position.y;
+					bulletTransInfo.Scale = Vector3(10.0f, 10.0f);					
+
+					// ** Bullet Spawn
+					SpawnManager::SpawnBullet(pOwner, bulletTransInfo, bulletSpeed, 1, eBridgeKey::BULLET_NORMAL);
+
+					bulletTransInfo;
+					bulletTransInfo.Direction = Vector3(0.0f, 1.0f);
+					bulletTransInfo.Position.x = collider.Position.x - collider.Scale.x * 0.5f;
+					bulletTransInfo.Position.y = collider.Position.y;
+					bulletTransInfo.Scale = Vector3(10.0f, 10.0f);
+
+					// ** Bullet Spawn
+					SpawnManager::SpawnBullet(pOwner, bulletTransInfo, bulletSpeed, 1, eBridgeKey::BULLET_NORMAL);
+
+					bulletTransInfo;
+					bulletTransInfo.Direction = Vector3(0.0f, 1.0f);
+					bulletTransInfo.Position.x = collider.Position.x + collider.Scale.x * 0.5f;
+					bulletTransInfo.Position.y = collider.Position.y;
+					bulletTransInfo.Scale = Vector3(10.0f, 10.0f);
+
+					// ** Bullet Spawn
+					SpawnManager::SpawnBullet(pOwner, bulletTransInfo, bulletSpeed, 1, eBridgeKey::BULLET_NORMAL);
+				}
+
+				if ( !static_cast<Enemy*>(pOwner)->isMoving() )
+				{
+					--moveCount;
+					if ( moveCount == 0 )
+					{
+						actionState = eActionState::END;
+						PlayAnimation(eBossAnimationType::DEFAULT, true);
+					}
+				}
+			}
+			break;
+		case eActionType::FIRE_TRIANGLE:
+			if ( actionState == eActionState::READY )
+			{
+				actionTime = GetTickCount64();
+				speed = 3.0f;
+				moveCount = 6;
+
+				static_cast<Enemy*>(pOwner)->MoveTo(
+					Vector3(bkgPos.x - bkgScale.x * 0.24f, bkgPos.y - bkgScale.y * 0.48f));
+				static_cast<Enemy*>(pOwner)->MoveTo(
+					Vector3(bkgPos.x + bkgScale.x * 0.24f, bkgPos.y - bkgScale.y * 0.48f));
+				static_cast<Enemy*>(pOwner)->MoveTo(Vector3(spawnDestPos));
+				static_cast<Enemy*>(pOwner)->MoveTo(
+					Vector3(bkgPos.x - bkgScale.x * 0.24f, bkgPos.y - bkgScale.y * 0.48f));
+				static_cast<Enemy*>(pOwner)->MoveTo(
+					Vector3(bkgPos.x + bkgScale.x * 0.24f, bkgPos.y - bkgScale.y * 0.48f));
+				static_cast<Enemy*>(pOwner)->MoveTo(Vector3(spawnDestPos));
+				
+				
+
+				PlayAnimation(eBossAnimationType::ATTACK1, true);
+			}
+			else
+			{
+				int bulletSpawnDelay = 500;
+				if ( actionTime + bulletSpawnDelay < GetTickCount64() )
+				{
+					actionTime = GetTickCount64();
+
+					Transform spawnTransInfo;
+					spawnTransInfo.Position = collider.Position;
+					spawnTransInfo.Scale = collider.Scale;
+					spawnTransInfo.Direction = Vector3(0.0f, 1.0f);
+
+					bulletScript.ReadyToSpawn(pOwner, static_cast<eBulletSpawnPattern>(eBulletSpawnPattern::N_POLYGON_GO), spawnTransInfo, 1, 3);
+				}
+
+				if ( !static_cast<Enemy*>(pOwner)->isMoving() )
+				{
+					--moveCount;
+					if ( moveCount == 0 )
+					{
+						actionState = eActionState::END;
+						PlayAnimation(eBossAnimationType::DEFAULT, true);
+					}
+				}
+			}
+			break;
+		case eActionType::FIRE_DIAMOND:
+			if ( actionState == eActionState::READY )
+			{
+				actionTime = GetTickCount64();
+				speed = 3.0f;
+				moveCount = 9;
+
+				static_cast<Enemy*>(pOwner)->MoveTo(
+					Vector3(bkgPos.x, bkgPos.y));
+				static_cast<Enemy*>(pOwner)->MoveTo(
+					Vector3(bkgPos.x - bkgScale.x * 0.24f, bkgPos.y - bkgScale.y * 0.24f));
+				static_cast<Enemy*>(pOwner)->MoveTo(
+					Vector3(bkgPos.x, bkgPos.y - bkgScale.y * 0.48f));
+				static_cast<Enemy*>(pOwner)->MoveTo(
+					Vector3(bkgPos.x + bkgScale.x * 0.24f, bkgPos.y - bkgScale.y * 0.24f));
+				static_cast<Enemy*>(pOwner)->MoveTo(
+					Vector3(bkgPos.x, bkgPos.y));
+				static_cast<Enemy*>(pOwner)->MoveTo(
+					Vector3(bkgPos.x - bkgScale.x * 0.24f, bkgPos.y - bkgScale.y * 0.24f));
+				static_cast<Enemy*>(pOwner)->MoveTo(
+					Vector3(bkgPos.x, bkgPos.y - bkgScale.y * 0.48f));
+				static_cast<Enemy*>(pOwner)->MoveTo(
+					Vector3(bkgPos.x + bkgScale.x * 0.24f, bkgPos.y - bkgScale.y * 0.24f));
+				static_cast<Enemy*>(pOwner)->MoveTo(Vector3(spawnDestPos));
+
+				PlayAnimation(eBossAnimationType::ATTACK2, true);
+			}
+			else
+			{
+				int bulletSpawnDelay = 500;
+				if ( actionTime + bulletSpawnDelay < GetTickCount64() )
+				{
+					actionTime = GetTickCount64();
+
+					Transform spawnTransInfo;
+					spawnTransInfo.Position = collider.Position;
+					spawnTransInfo.Scale = collider.Scale;
+					spawnTransInfo.Direction = Vector3(0.0f, 1.0f);
+
+					bulletScript.ReadyToSpawn(pOwner, static_cast<eBulletSpawnPattern>(eBulletSpawnPattern::N_POLYGON_GO), spawnTransInfo, 1, 4);
+				}
+
+				if ( !static_cast<Enemy*>(pOwner)->isMoving() )
+				{
+					--moveCount;
+					if ( moveCount == 0 )
+					{
+						actionState = eActionState::END;
+						PlayAnimation(eBossAnimationType::DEFAULT, true);
+					}
+				}
+			}
+			break;
+		case eActionType::FIRE_MULTI_SPIN:
+			if ( actionState == eActionState::READY )
+			{
+				actionTime = GetTickCount64();
+				speed = 3.0f;
+				moveCount = 1;
+
+				static_cast<Enemy*>(pOwner)->MoveTo(Vector3(spawnDestPos));
+
+				Transform spawnTransInfo;
+				spawnTransInfo.Position = collider.Position;
+				spawnTransInfo.Scale = collider.Scale;
+				spawnTransInfo.Direction = Vector3(0.0f, 1.0f);
+
+				bulletScript.ReadyToSpawn(pOwner, static_cast<eBulletSpawnPattern>(eBulletSpawnPattern::MULTI_SPIN_GO), spawnTransInfo, 1);
+
+				PlayAnimation(eBossAnimationType::ATTACK2, true);
+			}
+			else
+			{
+				int actionDelayTime = 10000;
+
+				if ( actionTime + actionDelayTime < GetTickCount64() )
+				{
+					if ( !static_cast<Enemy*>(pOwner)->isMoving() )
+					{
+						--moveCount;
+						if ( moveCount == 0 )
+						{
+							actionState = eActionState::END;
+							PlayAnimation(eBossAnimationType::DEFAULT, true);
+						}
+					}
+				}
+			}
+			break;
+	}
+}
+
+void BossAngelEnemy::CheckPhase()
+{
+	int maxHP = static_cast<Enemy*>(pOwner)->GetMaxHP();
+	int HP = static_cast<Enemy*>(pOwner)->GetHP();
+	float HpRatio = HP / static_cast<float>(maxHP);
+
+	// 체력이 33% 미만일 시 페이즈 3
+	if ( HpRatio < 0.33f )
+	{
+		// 최초 페이즈 변경 시 
+		if ( curPhase == 2 )
+		{
+			curPhase = 3;
+			InitActionInfo();
+		} 		
+	}
+	// 체력이 66% 미만일 시 페이즈 3
+	else if ( HpRatio < 0.66f )
+	{
+		// 최초 페이즈 변경 시 
+		if ( curPhase == 1 )
+		{
+			curPhase = 2;
+			InitActionInfo();
+		}		
+	}
+	// 기본 페이즈 1
+	else
+	{
+		curPhase = 1;
 	}
 }

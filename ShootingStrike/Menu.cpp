@@ -23,7 +23,7 @@ Menu::~Menu()
 void Menu::Initialize()
 {
 	/******* Menu Start *******/
-	bSceneStart = true;
+	isStartingScene = true;
 
 	Bridge* pBridge = nullptr;
 
@@ -58,19 +58,23 @@ void Menu::Initialize()
 
 void Menu::Update()
 {
-	// ** Play : Stage로 이동
-	if ( static_cast<ButtonUI*>(pPlayButton->GetBridgeObject())->OnClick() )
+	// ** Scene 스타트 및 끝나는 시점이 아닌경우
+	if ( !isStartingScene && !isEndingScene )
 	{
-		static_cast<BasicBkg*>(pBackground->GetBridgeObject())->StopAnimation();
-		bSceneEnd = true;
+		// ** Play : Stage로 이동
+		if ( static_cast<ButtonUI*>(pPlayButton->GetBridgeObject())->OnClick() )
+		{
+			static_cast<BasicBkg*>(pBackground->GetBridgeObject())->StopAnimation();
+			isEndingScene = true;
+		}
+
+		// ** Quit : 종료
+		if ( static_cast<ButtonUI*>(pQuitButton->GetBridgeObject())->OnClick() )
+		{
+			PostQuitMessage(NULL);
+		}
 	}
-	
-	// ** Quit : 종료
-	if ( static_cast<ButtonUI*>(pQuitButton->GetBridgeObject())->OnClick() )
-	{
-		PostQuitMessage(NULL);
-	}
-	
+
 	ObjectManager::GetInstance()->Update();
 }
 
@@ -78,15 +82,15 @@ void Menu::Render(HDC _hdc)
 {
 	ObjectManager::GetInstance()->Render(_hdc);
 
-	if ( bSceneStart && RenderManager::FadeIn(_hdc) )
+	if ( isStartingScene && RenderManager::FadeIn(_hdc) )
 	{
-		bSceneStart = false;
+		isStartingScene = false;
 		static_cast<BasicBkg*>(pBackground->GetBridgeObject())->PlayAnimation();
 	}
 
-	if ( bSceneEnd && RenderManager::FadeOut(_hdc) )
+	if ( isEndingScene && RenderManager::FadeOut(_hdc) )
 	{
-		bSceneEnd = false;
+		isEndingScene = false;
 		SceneManager::GetInstance()->SetScene(eSCENEID::STAGE);
 	}
 }

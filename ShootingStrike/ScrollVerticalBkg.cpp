@@ -5,8 +5,10 @@ ScrollVerticalBkg::ScrollVerticalBkg()
 	: scrollDirection(eScrollDirection::DOWN)
 	, imageOffset(0.0f)
 	, imageOffsetForRestart(0.0f)
-	, bLoop(false)
+	, maxLoopCount(0)
+	, curLoopCount(0)
 	, bDrawEachStartEnd(false)
+	, curMoveDist(0.0f)
 {	
 }
 
@@ -21,8 +23,10 @@ void ScrollVerticalBkg::Initialize()
 	key = eBridgeKey::BACKGROUND_SCROLL_VERTICAL;
 	scrollDirection = eScrollDirection::DOWN;
 	imageOffset = 0.0f;
-	bLoop = false;
+	maxLoopCount = 0;
+	curLoopCount = 0;
 	bDrawEachStartEnd = false;
+	curMoveDist = 0.0f;
 }
 
 void ScrollVerticalBkg::Update()
@@ -57,7 +61,7 @@ void ScrollVerticalBkg::Update()
 				imageOffset = 0.0f;
 
 				// ** Loop 되어야 하는 상태라면
-				if ( bLoop && !bDrawEachStartEnd )
+				if ( curLoopCount < maxLoopCount && !bDrawEachStartEnd )
 				{					
 					imageOffsetForRestart = 0.0f;
 					bDrawEachStartEnd = true;
@@ -91,22 +95,24 @@ void ScrollVerticalBkg::Update()
 				imageOffset = pImage->GetScale().y - transInfo.Scale.y;
 
 				// ** Loop 되어야 하는 상태라면
-				if ( bLoop && !bDrawEachStartEnd )
+				if ( curLoopCount < maxLoopCount && !bDrawEachStartEnd )
 				{
 					imageOffsetForRestart = pOwner->GetScale().y;
 					bDrawEachStartEnd = true;
 				}
 			}
 		}
-	}
+	}	
 
 	// ** Map 전체 진행도 계산
 	if ( pImage )
 	{
-		if ( scrollDirection == eScrollDirection::UP )
-			mapProgressRatio = (pImage->GetScale().y - transInfo.Scale.y - imageOffset) / (pImage->GetScale().y - transInfo.Scale.y);
-		else // scrollDirection == eScrollDirection::DOWN
-			mapProgressRatio = imageOffset / (pImage->GetScale().y - transInfo.Scale.y);
+		float maxDist = pImage->GetScale().y + (pImage->GetScale().y * maxLoopCount) - WINDOWS_HEIGHT;
+
+		if ( curMoveDist < maxDist )
+			curMoveDist += speed;
+
+		mapProgressRatio = curMoveDist / maxDist;
 	}
 
 	SendInfoToOwner();
@@ -119,10 +125,17 @@ void ScrollVerticalBkg::Render(HDC _hdc)
 	if ( !pImage )
 		return;
 
+	static bool isLoopPrevScroll = false;
+
 	// ** 이미지 시작과 끝 연결 구간
 	// ** Loop Scroll
-	if (bLoop && bDrawEachStartEnd )
+	if ( curLoopCount < maxLoopCount && bDrawEachStartEnd )
 	{
+		if ( isLoopPrevScroll == false )
+		{
+			isLoopPrevScroll = true;
+		}
+
 		TransparentBlt(_hdc,
 			(int)(transInfo.Position.x - (transInfo.Scale.x * 0.5f)),
 			(int)(transInfo.Position.y - (transInfo.Scale.y * 0.5f)),
@@ -146,10 +159,18 @@ void ScrollVerticalBkg::Render(HDC _hdc)
 			(int)(pImage->GetSegmentationScale().x),
 			(int)(transInfo.Scale.y - imageOffsetForRestart),
 			RGB(255, 0, 255));
+
+		
 	}
 	// ** 일반 Scroll
 	else
 	{
+		if ( isLoopPrevScroll == true )
+		{
+			++curLoopCount;
+			isLoopPrevScroll = false;
+		}		
+
 		TransparentBlt(_hdc,
 			(int)(transInfo.Position.x - (transInfo.Scale.x * 0.5f)),
 			(int)(transInfo.Position.y - (transInfo.Scale.y * 0.5f)),
@@ -169,7 +190,7 @@ void ScrollVerticalBkg::Release()
 	Super::Release();
 }
 
-void ScrollVerticalBkg::StartTop() 
+void ScrollVerticalBkg::StartTop()
 { 
 	imageOffset = 0.0f;
 }

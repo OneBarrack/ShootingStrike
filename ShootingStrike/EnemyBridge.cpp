@@ -8,9 +8,6 @@ EnemyBridge::EnemyBridge()
 	, speed(0.0f)
 	, fireBulletIntervalTime(0)
 	, destPosition(Vector3())
-	, bChangedDestPos(false)
-	, bStopAtDest(false)
-	, bArrivedToDest(false)
 	, isSpawing(false)
 {
 }
@@ -28,9 +25,6 @@ void EnemyBridge::Initialize()
 		speed = pOwner->GetSpeed();
 		acceleration = pOwner->GetAcceleration();
 		destPosition = static_cast<Enemy*>(pOwner)->GetDestPosition();
-		bChangedDestPos = static_cast<Enemy*>(pOwner)->GetChangedDestPos();
-		bStopAtDest = static_cast<Enemy*>(pOwner)->GetStopAtDest();
-		bArrivedToDest = static_cast<Enemy*>(pOwner)->GetArrivedToDest();
 		isSpawing = static_cast<Enemy*>(pOwner)->IsSpawning();
 	}
 
@@ -42,26 +36,6 @@ void EnemyBridge::Update()
 	// ** 가속도 적용
 	speed += acceleration;
 
-	// ** 목적지 변경시 Direction 변경
-	if ( bChangedDestPos )
-	{
-		transInfo.Direction = MathManager::GetDirection(transInfo.Position, destPosition);
-		bChangedDestPos = false;
-		bArrivedToDest = false;
-	}
-
-	// ** 목적지 도착 전이라면 목적지까지 거리 체크
-	if ( !bArrivedToDest )
-	{
-		// ** 다음 프레임에 목적지를 넘어가는 상태라면
-		if ( abs(destPosition.x - transInfo.Position.x) <= abs(transInfo.Direction.x * speed) &&
-			abs(destPosition.y - transInfo.Position.y) <= abs(transInfo.Direction.y * speed) )
-		{
-			// ** 목적지 도달
-			transInfo.Position = destPosition;
-			bArrivedToDest = true;
-		}
-	}
 }
 
 void EnemyBridge::Render(HDC _hdc)
@@ -87,9 +61,6 @@ void EnemyBridge::ReceiveInfoFromOwner()
 		acceleration = pOwner->GetAcceleration();
 		fireBulletIntervalTime = static_cast<Enemy*>(pOwner)->GetFireBulletIntervalTime();
 		destPosition = static_cast<Enemy*>(pOwner)->GetDestPosition();
-		bChangedDestPos = static_cast<Enemy*>(pOwner)->GetChangedDestPos();
-		bStopAtDest = static_cast<Enemy*>(pOwner)->GetStopAtDest();
-		bArrivedToDest = static_cast<Enemy*>(pOwner)->GetArrivedToDest();
 		isSpawing = static_cast<Enemy*>(pOwner)->IsSpawning();
 	}
 }
@@ -103,10 +74,6 @@ void EnemyBridge::SendInfoToOwner()
 		pOwner->SetSpeed(speed);
 		pOwner->SetAcceleration(acceleration);
 		static_cast<Enemy*>(pOwner)->SetFireBulletIntervalTime(fireBulletIntervalTime);
-		static_cast<Enemy*>(pOwner)->SetDestPosition(destPosition);
-		static_cast<Enemy*>(pOwner)->SetChangedDestPos(bChangedDestPos);
-		static_cast<Enemy*>(pOwner)->SetStopAtDest(bStopAtDest);
-		static_cast<Enemy*>(pOwner)->SetArrivedToDest(bArrivedToDest);
 		static_cast<Enemy*>(pOwner)->SetSpawnStatus(isSpawing);
 	}
 }

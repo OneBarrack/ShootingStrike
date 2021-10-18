@@ -16,7 +16,6 @@
 #include "TextUI.h"
 #include "ProgressBarUI.h"
 #include "GameDataManager.h"
-#include "GoAndSpinEnemy.h"
 
 Stage::Stage() 
 	: frame(0)
@@ -42,7 +41,7 @@ Stage::~Stage()
 void Stage::Initialize()
 {
 	/******* Stage Start *******/
-	bSceneStart = true;
+	isStartingScene = true;
 
 	frame = 1;
 
@@ -62,7 +61,7 @@ void Stage::Initialize()
 	pBackground->SetBridge(pBridge);
 	static_cast<ScrollVerticalBkg*>(pBridge)->StartBottom();
 	static_cast<ScrollVerticalBkg*>(pBridge)->ScrollUp();
-	static_cast<ScrollVerticalBkg*>(pBridge)->SetLoop(false);
+	static_cast<ScrollVerticalBkg*>(pBridge)->SetLoop(3);
 	
 	// ** Left Side Background
 	pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::BACKGROUND_BASIC);
@@ -147,7 +146,7 @@ void Stage::Update()
 	}
 
 	// ** 맵 진행도가 50%가 넘어가면 보스 소환
-	if ( mapProgressPercentage > 50.0f )
+	if ( mapProgressPercentage > 5.0f )
 	{
 		if ( !pBossAngelEnemy )
 		{
@@ -193,14 +192,14 @@ void Stage::Render(HDC _hdc)
 {
 	ObjectManager::GetInstance()->Render(_hdc);
 
-	if ( bSceneStart && RenderManager::FadeIn(_hdc) )
+	if ( isStartingScene && RenderManager::FadeIn(_hdc) )
 	{
-		bSceneStart = false;
+		isStartingScene = false;
 	}
 
-	if ( bSceneEnd && RenderManager::FadeOut(_hdc) )
+	if ( isEndingScene && RenderManager::FadeOut(_hdc) )
 	{
-		bSceneEnd = false;
+		isEndingScene = false;
 	}
 }
 
@@ -251,41 +250,44 @@ void Stage::InitEnemySpawnPatternTimings()
 {
 	eEnemySpawnPattern enemySpawnPattern;
 
-	enemySpawnPattern = eEnemySpawnPattern::FALLDOWN_GO_RAND;
-	enemySpawnTimings.push(make_pair(4.0f, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(8.0f, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(12.0f, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(16.0f, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(20.0f, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(24.0f, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(28.0f, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(32.0f, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(36.0f, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(40.0f, enemySpawnPattern));
-
 	enemySpawnPattern = eEnemySpawnPattern::FALLDOWN_GO;
-	enemySpawnTimings.push(make_pair(10.0f, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(20.0f, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(4.0f, enemySpawnPattern));
+	 
+	//enemySpawnPattern = eEnemySpawnPattern::FALLDOWN_GO_RAND;
+	//enemySpawnTimings.push(make_pair(4.0f, enemySpawnPattern));
+	//enemySpawnTimings.push(make_pair(8.0f, enemySpawnPattern));
+	//enemySpawnTimings.push(make_pair(12.0f, enemySpawnPattern));
+	//enemySpawnTimings.push(make_pair(16.0f, enemySpawnPattern));
+	//enemySpawnTimings.push(make_pair(20.0f, enemySpawnPattern));
+	//enemySpawnTimings.push(make_pair(24.0f, enemySpawnPattern));
+	//enemySpawnTimings.push(make_pair(28.0f, enemySpawnPattern));
+	//enemySpawnTimings.push(make_pair(32.0f, enemySpawnPattern));
+	//enemySpawnTimings.push(make_pair(36.0f, enemySpawnPattern));
+	//enemySpawnTimings.push(make_pair(40.0f, enemySpawnPattern));
 
-	enemySpawnPattern = eEnemySpawnPattern::FALLDOWN_GO_AND_SPIN;
-	enemySpawnTimings.push(make_pair(60.0f, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(80.0f, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(100.0f, enemySpawnPattern));
+	//enemySpawnPattern = eEnemySpawnPattern::FALLDOWN_GO;
+	//enemySpawnTimings.push(make_pair(10.0f, enemySpawnPattern));
+	//enemySpawnTimings.push(make_pair(20.0f, enemySpawnPattern));
 
-	enemySpawnPattern = eEnemySpawnPattern::FALLDOWN_BACK_AND_FORTH;
-	enemySpawnTimings.push(make_pair(30.0f, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(40.0f, enemySpawnPattern));
+	//enemySpawnPattern = eEnemySpawnPattern::FALLDOWN_GO_AND_SPIN;
+	//enemySpawnTimings.push(make_pair(60.0f, enemySpawnPattern));
+	//enemySpawnTimings.push(make_pair(80.0f, enemySpawnPattern));
+	//enemySpawnTimings.push(make_pair(100.0f, enemySpawnPattern));
 
-	enemySpawnPattern = eEnemySpawnPattern::FALLDOWN_GO_ACCELERATION_RAND;
-	enemySpawnTimings.push(make_pair(60.0f, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(64.0f, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(68.0f, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(72.0f, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(76.0f, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(80.0f, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(84.0f, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(88.0f, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(92.0f, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(96.0f, enemySpawnPattern));
-	enemySpawnTimings.push(make_pair(100.0f, enemySpawnPattern));
+	//enemySpawnPattern = eEnemySpawnPattern::FALLDOWN_BACK_AND_FORTH;
+	//enemySpawnTimings.push(make_pair(30.0f, enemySpawnPattern));
+	//enemySpawnTimings.push(make_pair(40.0f, enemySpawnPattern));
+
+	//enemySpawnPattern = eEnemySpawnPattern::FALLDOWN_GO_ACCELERATION_RAND;
+	//enemySpawnTimings.push(make_pair(60.0f, enemySpawnPattern));
+	//enemySpawnTimings.push(make_pair(64.0f, enemySpawnPattern));
+	//enemySpawnTimings.push(make_pair(68.0f, enemySpawnPattern));
+	//enemySpawnTimings.push(make_pair(72.0f, enemySpawnPattern));
+	//enemySpawnTimings.push(make_pair(76.0f, enemySpawnPattern));
+	//enemySpawnTimings.push(make_pair(80.0f, enemySpawnPattern));
+	//enemySpawnTimings.push(make_pair(84.0f, enemySpawnPattern));
+	//enemySpawnTimings.push(make_pair(88.0f, enemySpawnPattern));
+	//enemySpawnTimings.push(make_pair(92.0f, enemySpawnPattern));
+	//enemySpawnTimings.push(make_pair(96.0f, enemySpawnPattern));
+	//enemySpawnTimings.push(make_pair(100.0f, enemySpawnPattern));
 }
