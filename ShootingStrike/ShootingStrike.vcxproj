@@ -163,7 +163,6 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="GameDataManager.h" />
     <ClInclude Include="GameDebugManager.h" />
-    <ClInclude Include="GoTargetAfterDelayBullet.h" />
     <ClInclude Include="GuideBullet.h" />
     <ClInclude Include="Headers.h" />
     <ClInclude Include="HitEffect.h" />
@@ -221,7 +220,6 @@
     <ClCompile Include="ExplosionEffect.cpp" />
     <ClCompile Include="GameDataManager.cpp" />
     <ClCompile Include="GameDebugManager.cpp" />
-    <ClCompile Include="GoTargetAfterDelayBullet.cpp" />
     <ClCompile Include="GuideBullet.cpp" />
     <ClCompile Include="HitEffect.cpp" />
     <ClCompile Include="InputManager.cpp" />

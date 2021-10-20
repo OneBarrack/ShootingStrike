@@ -16,7 +16,6 @@
 #include "NormalEnemy.h"
 #include "NormalBullet.h"
 #include "GuideBullet.h"
-#include "GoTargetAfterDelayBullet.h"
 #include "SpreadAfterDelayBullet.h"
 #include "ButtonUI.h"
 #include "ScoreUI.h"
@@ -57,7 +56,6 @@ void Prototype::CreatePrototype()
 	bridgePrototypeList[eBridgeKey::ENEMY_NORMAL]				  = new NormalEnemy;
 	bridgePrototypeList[eBridgeKey::BULLET_NORMAL]				  = new NormalBullet;
 	bridgePrototypeList[eBridgeKey::BULLET_GUIDE]				  = new GuideBullet;
-	bridgePrototypeList[eBridgeKey::BULLET_GO_TARGET_AFTER_DELAY] = new GoTargetAfterDelayBullet;
 	bridgePrototypeList[eBridgeKey::BULLET_SPREAD_AFTER_DELAY]	  = new SpreadAfterDelayBullet;
 	bridgePrototypeList[eBridgeKey::UI_BUTTON]					  = new ButtonUI;
 	bridgePrototypeList[eBridgeKey::UI_SCORE]					  = new ScoreUI;

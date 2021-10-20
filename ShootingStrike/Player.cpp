@@ -9,14 +9,12 @@
 #include "SpawnManager.h"
 #include "Enemy.h"
 #include "Background.h"
-
-#include "SpreadAfterDelayBullet.h"
+#include "GuideBullet.h"
 
 Player::Player()
 	: life(0)
 	, damage(0)
 	, level(0)
-	, firingType(eFiringType::NORMAL)
 	, isSpawing(false)
 	, bReSpawn(false)
 	, isDied(false)
@@ -52,7 +50,6 @@ void Player::Initialize()
 	life = 3;
 	damage = 1;
 	level = 1;
-	firingType = eFiringType::NORMAL;
 
 	isSpawing = false;
 	isDied = false;
@@ -137,8 +134,7 @@ void Player::Update()
 			{
 				fireTime = GetTickCount64();
 
-				firingType = eFiringType::NORMAL;
-				Fire(firingType, level, damage);
+				Fire(level, damage);
 			}
 		}
 	}
@@ -182,19 +178,42 @@ void Player::Render(HDC _hdc)
 	RenderPlayer(_hdc);	
 }
 
-void Player::Fire(eFiringType _firingType, int _level, int _damage)
+void Player::Fire(int _power, int _damage)
 {
+	Object* pObject = nullptr;
 	Bridge* pBridge = nullptr;
 
-	switch ( _firingType )
+	// ** Bullet 간격 각도
+	int bulletGap = 15;
+
+	// ** 가장 좌측 Bullet의 x Offet
+	int startBulletOffsetX = static_cast<int>(-bulletGap * 0.5 * (_power - 1));
+
+	switch ( _power )
 	{
-		case eFiringType::NORMAL:
+		case 1:
 		{
-			int bulletGap = 10;
+			// ** Bullet의 TransInfo 설정
+			Transform bulletTransInfo;
+			bulletTransInfo.Position.x = transInfo.Position.x;
+			bulletTransInfo.Position.y = transInfo.Position.y - (transInfo.Scale.y * 0.5f);
+			bulletTransInfo.Scale = Vector3(15.0f, 15.0f);
+			bulletTransInfo.Direction = Vector3(0.0f, -1.0f);
 
-			int startBulletOffset = static_cast<int>(-bulletGap * 0.5 * (_level - 1));
+			// ** Bullet의 Speed 설정
+			float bulletSpeed = 10.0f;
 
-			for ( int i = 0; i < _level; ++i )
+			// ** Bullet Spawn
+			pObject = SpawnManager::SpawnBullet(this, bulletTransInfo, bulletSpeed, _damage, eBridgeKey::BULLET_NORMAL);
+			pObject->SetImageOffsetOrder(Point(1, 2));
+			break;
+		}
+		case 2:
+		{
+			int bulletGap = 15;
+			int startBulletOffset = static_cast<int>(-bulletGap * 0.5 * (_power - 1));
+
+			for ( int i = 0; i < 2; ++i )
 			{
 				// ** 상방 기준 현재 각도
 				int bulletOffset = startBulletOffset + (bulletGap * i);
@@ -203,59 +222,158 @@ void Player::Fire(eFiringType _firingType, int _level, int _damage)
 				Transform bulletTransInfo;
 				bulletTransInfo.Position.x = transInfo.Position.x - bulletOffset;
 				bulletTransInfo.Position.y = transInfo.Position.y - (transInfo.Scale.y * 0.5f);
-				bulletTransInfo.Scale = Vector3(10.0f, 10.0f);
+				bulletTransInfo.Scale = Vector3(15.0f, 15.0f);
 				bulletTransInfo.Direction = Vector3(0.0f, -1.0f);
 
 				// ** Bullet의 Speed 설정
 				float bulletSpeed = 10.0f;
 
 				// ** Bullet Spawn
-				Object* pBullet = SpawnManager::SpawnBullet(this, bulletTransInfo, bulletSpeed, _damage, eBridgeKey::BULLET_NORMAL);
-				pBullet->SetImageOffsetOrder(Point(1, 2));
+				pObject = SpawnManager::SpawnBullet(this, bulletTransInfo, bulletSpeed, _damage, eBridgeKey::BULLET_NORMAL);
+				pObject->SetImageOffsetOrder(Point(1, 2));
 			}
-
-			// ** Level 만큼 총알 숫자를 늘리고, 상방 기준 총알 간 간격에 대한 각도를 설정하여
-			// ** 부채꼴 형태로 발사되도록 한다.
-			// ** angleGap : 총알간 간격 각도
-			//int angleGap = 10;
-			//int startAngle = 90 - static_cast<int>(angleGap * 0.5 * (_level - 1));
-			//
-			//for ( int i = 0; i < _level; ++i )
-			//{
-			//	// ** 상방 기준 현재 각도
-			//	int angle = startAngle + (angleGap * i);
-
-			//	// ** Bullet의 TransInfo 설정
-			//	Transform bulletTransInfo;
-			//	bulletTransInfo.Position  = transInfo.Position;
-			//	bulletTransInfo.Scale	  = Vector3(10.0f, 10.0f);
-			//	bulletTransInfo.Direction = Vector3(cosf(angle * PI / 180), -sinf(angle * PI / 180));
-			//	
-			//	// ** Bullet의 Speed 설정
-			//	float bulletSpeed = 3.0f;
-			//	
-			//	// ** Bullet Spawn
-			//	SpawnManager::SpawnBullet(this, bulletTransInfo, bulletSpeed, _damage, eBridgeKey::BULLET_NORMAL);
-			//}
-			break;
-		} 		
-		case eFiringType::GUIDE:
-		{
-			float bulletSpeed = 3.0f;
-
-			// ** Bullet의 TransInfo 설정
-			Transform bulletTransInfo;
-			bulletTransInfo.Position = transInfo.Position;
-			bulletTransInfo.Scale = Vector3(10.0f, 10.0f);
-			bulletTransInfo.Direction = Vector3(0.0f, -1.0f);			
-
-			// ** Bullet Spawn
-			SpawnManager::SpawnBullet(this, bulletTransInfo, bulletSpeed, _damage, eBridgeKey::BULLET_GUIDE);
 			break;
 		}
-		default:
+		case 3:
+		{
+			// ** 3개의 Bullet 발사
+			for ( int i = 0; i < 3; ++i )
+			{
+				// ** 상방 기준 현재 각도
+				int bulletOffset = startBulletOffsetX + (bulletGap * i);
+
+				// ** Bullet의 TransInfo 설정
+				Transform bulletTransInfo;
+				bulletTransInfo.Position.x = transInfo.Position.x - bulletOffset;												
+
+				// ** 좌측과 우측 Bullet의 Position은 센터기준 살짝 뒤로 잡는다
+				if ( i == 0 || i == 2 ) // ** 좌/우
+					bulletTransInfo.Position.y = transInfo.Position.y - (transInfo.Scale.y * 0.3f);
+				else // ** 센터
+					bulletTransInfo.Position.y = transInfo.Position.y - (transInfo.Scale.y * 0.5f);
+							
+				bulletTransInfo.Scale = Vector3(15.0f, 15.0f);
+				bulletTransInfo.Direction = Vector3(0.0f, -1.0f);
+
+				// ** Bullet의 Speed 설정
+				float bulletSpeed = 10.0f;
+
+				// ** Bullet Spawn
+				pObject = SpawnManager::SpawnBullet(this, bulletTransInfo, bulletSpeed, _damage, eBridgeKey::BULLET_NORMAL);
+				pObject->SetImageOffsetOrder(Point(1, 2));
+			}			
 			break;
-	}	
+		}
+		case 4:
+		{
+			// ** 4개의 Bullet 발사
+			for ( int i = 0; i < 4; ++i )
+			{
+				// ** 상방 기준 현재 각도
+				int bulletOffset = startBulletOffsetX + (bulletGap * i);
+
+				// ** Bullet의 TransInfo 설정
+				Transform bulletTransInfo;
+				bulletTransInfo.Position.x = transInfo.Position.x - bulletOffset;
+
+				// ** 좌측과 우측 Bullet의 Position은 센터기준 살짝 뒤로 잡는다
+				if ( i == 0 || i == 3 ) // ** 좌/우
+					bulletTransInfo.Position.y = transInfo.Position.y - (transInfo.Scale.y * 0.3f);
+				else // ** 센터
+					bulletTransInfo.Position.y = transInfo.Position.y - (transInfo.Scale.y * 0.5f);
+
+				bulletTransInfo.Scale = Vector3(15.0f, 15.0f);
+				bulletTransInfo.Direction = Vector3(0.0f, -1.0f);
+
+				// ** Bullet의 Speed 설정
+				float bulletSpeed = 10.0f;
+
+				// ** Bullet Spawn
+				pObject = SpawnManager::SpawnBullet(this, bulletTransInfo, bulletSpeed, _damage, eBridgeKey::BULLET_NORMAL);
+				pObject->SetImageOffsetOrder(Point(1, 2));
+			}
+			break;
+		}
+		case 5:
+		{
+			// ** 4개의 Bullet 발사
+			for ( int i = 0; i < 4; ++i )
+			{
+				// ** 상방 기준 현재 각도
+				int bulletOffset = startBulletOffsetX + (bulletGap * i);
+
+				// ** Bullet의 TransInfo 설정
+				Transform bulletTransInfo;
+				bulletTransInfo.Position.x = transInfo.Position.x - bulletOffset;
+
+				// ** 좌측과 우측 Bullet의 Position은 센터기준 살짝 뒤로 잡는다
+				if ( i == 0 || i == 3 ) // ** 좌/우
+					bulletTransInfo.Position.y = transInfo.Position.y - (transInfo.Scale.y * 0.3f);
+				else // ** 센터
+					bulletTransInfo.Position.y = transInfo.Position.y - (transInfo.Scale.y * 0.5f);
+
+				bulletTransInfo.Scale = Vector3(15.0f, 15.0f);
+				bulletTransInfo.Direction = Vector3(0.0f, -1.0f);
+
+				// ** Bullet의 Speed 설정
+				float bulletSpeed = 10.0f;
+
+				// ** Bullet Spawn
+				pObject = SpawnManager::SpawnBullet(this, bulletTransInfo, bulletSpeed, _damage, eBridgeKey::BULLET_NORMAL);
+				pObject->SetImageOffsetOrder(Point(1, 2));
+			}
+
+			// ** 좌우로 Guide Bullet 생성
+			{
+				static ULONGLONG guideBulletSpawnTime = 0;
+				int guideBulletSpawnDelay = 500;
+
+				float bulletSpeed = 3.0f;
+
+				if ( guideBulletSpawnTime + guideBulletSpawnDelay < GetTickCount64() )
+				{
+					guideBulletSpawnTime = GetTickCount64();
+
+					// ** Delay Time과 이후 필요한 방향, 속도, 최대속도, 가속도 설정
+					int guideDelay = 200;
+					Vector3 directionAfterDelay = Vector3(0.0, -1.0f);
+					float speedAfterDelay = 1.0f;
+					float maxSpeed = 10.0f;
+					float accelerationAfterDelay = 0.3f;					
+
+					// ** Bullet의 TransInfo 설정
+					Transform bulletTransInfo;
+					bulletTransInfo.Position.x = transInfo.Position.x - (transInfo.Scale.x * 0.5f);
+					bulletTransInfo.Position.y = transInfo.Position.y;
+					bulletTransInfo.Scale = Vector3(15.0f, 15.0f);
+					bulletTransInfo.Direction = Vector3(-1.0f, 0.0f);
+
+					// ** Bullet Spawn
+					pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::BULLET_GUIDE);
+					static_cast<GuideBullet*>(pBridge)->SetDelay(directionAfterDelay, speedAfterDelay, maxSpeed, accelerationAfterDelay, guideDelay);
+					static_cast<GuideBullet*>(pBridge)->SetLoopGuide(true);
+
+					pObject = SpawnManager::SpawnBullet(this, bulletTransInfo, bulletSpeed, _damage, pBridge);
+					pObject->SetImageOffsetOrder(Point(0, 1));
+
+					// ** Bullet의 TransInfo 설정
+					bulletTransInfo.Position.x = transInfo.Position.x + (transInfo.Scale.x * 0.5f);
+					bulletTransInfo.Position.y = transInfo.Position.y;
+					bulletTransInfo.Scale = Vector3(15.0f, 15.0f);
+					bulletTransInfo.Direction = Vector3(1.0f, 0.0f);
+
+					// ** Bullet Spawn
+					pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::BULLET_GUIDE);
+					static_cast<GuideBullet*>(pBridge)->SetDelay(directionAfterDelay, speedAfterDelay, maxSpeed, accelerationAfterDelay, guideDelay);
+					static_cast<GuideBullet*>(pBridge)->SetLoopGuide(true);
+
+					pObject = SpawnManager::SpawnBullet(this, bulletTransInfo, bulletSpeed, _damage, pBridge);
+					pObject->SetImageOffsetOrder(Point(0, 1));
+				}
+			}
+			break;
+		}
+	}
 }
 
 void Player::ApplyDamage(Object* _pTarget, int _damage)

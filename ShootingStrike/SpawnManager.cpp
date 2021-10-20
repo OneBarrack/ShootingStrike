@@ -30,8 +30,6 @@ Object* SpawnManager::SpawnBullet(Object* _pOwner, Transform _transInfo, float _
 		case eBridgeKey::BULLET_GUIDE:
 			pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::BULLET_GUIDE);
 			break;
-		case eBridgeKey::BULLET_GO_TARGET_AFTER_DELAY:
-			pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::BULLET_GO_TARGET_AFTER_DELAY);
 			break;
 		default:
 			return pBullet;
@@ -55,8 +53,7 @@ Object* SpawnManager::SpawnBullet(Object* _pOwner, Transform _transInfo, float _
 	eBridgeKey bridgeKey = _pBridge->GetKey();
 
 	if ( bridgeKey == eBridgeKey::BULLET_NORMAL ||
-		bridgeKey == eBridgeKey::BULLET_GUIDE ||
-		bridgeKey == eBridgeKey::BULLET_GO_TARGET_AFTER_DELAY )
+		bridgeKey == eBridgeKey::BULLET_GUIDE )
 	{
 		pBullet = static_cast<Bullet*>(ObjectManager::GetInstance()->NewObject(eObjectKey::BULLET));
 		pBullet->SetImage(eImageKey::BULLET);

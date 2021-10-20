@@ -24,7 +24,7 @@ void SpreadAfterDelayBullet::Initialize()
 {
 	Super::Initialize();
 
-	key = eBridgeKey::BULLET_GO_TARGET_AFTER_DELAY;
+	key = eBridgeKey::BULLET_SPREAD_AFTER_DELAY;
 
 	time = GetTickCount64();
 	delay = 1000;

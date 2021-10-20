@@ -9,6 +9,8 @@ public:
 private:
 	ULONGLONG time;
 	int delay;
+
+	// ** 타겟 방향으로 1회만 설정하기 위한 Flag
 	bool bDelayOver;
 
 public:
@@ -21,6 +23,8 @@ public:
 
 public:
 	void SetDelay(int _milliSeconds) { delay = _milliSeconds; }
+
+private:
 	bool CalcGuideDirection(Vector3 _pos, Vector3& _rDirection);
 	Object* FindTarget(Vector3 _pos);
 

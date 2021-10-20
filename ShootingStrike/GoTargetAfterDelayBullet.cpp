@@ -34,9 +34,10 @@ void GoTargetAfterDelayBullet::Update()
 	// ** Owner의 데이터를 받아옴
 	ReceiveInfoFromOwner();
 
-	if ( !bDelayOver && time + delay < GetTickCount64() )
+	if ( !bDelayOver )
 	{
-		if ( CalcGuideDirection(transInfo.Position, transInfo.Direction) )
+		if ( time + delay < GetTickCount64() && 
+			CalcGuideDirection(transInfo.Position, transInfo.Direction) )
 		{
 			bDelayOver = true;
 		}

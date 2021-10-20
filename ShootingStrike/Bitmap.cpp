@@ -87,8 +87,10 @@ void Bitmap::Initialize()
 			segmentationScale = Vector3(42.0f, 47.0f);
 			break;
 		case eImageKey::BULLET:
-			imageScale = Vector3(450.0f, 70.0f);
-			segmentationScale = Vector3(230.0f, 230.0f);
+			//imageScale = Vector3(450.0f, 70.0f);
+			//segmentationScale = Vector3(230.0f, 230.0f);
+			imageScale = Vector3(472.0f, 702.0f);
+			segmentationScale = Vector3(236.0f, 234.0f);
 			break;			
 		case eImageKey::ENEMY_NORMAL:
 			imageScale = Vector3(512.0f, 512.0f);

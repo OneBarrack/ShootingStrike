@@ -3,7 +3,7 @@
 #include "ObjectManager.h"
 #include "SpawnManager.h"
 #include "MathManager.h"
-#include "GoTargetAfterDelayBullet.h"
+#include "GuideBullet.h"
 #include "SpreadAfterDelayBullet.h"
 
 BulletSpawnPatternScript::BulletSpawnPatternScript()
@@ -301,8 +301,9 @@ void BulletSpawnPatternScript::Spawn()
 					// ** Bullet의 Speed 설정
 					float bulletSpeed = 3.0f;
 
-					Bridge* pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::BULLET_GO_TARGET_AFTER_DELAY);
-					static_cast<GoTargetAfterDelayBullet*>(pBridge)->SetDelay(1000);
+					Bridge* pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::BULLET_GUIDE);
+					static_cast<GuideBullet*>(pBridge)->SetDelay(bulletTransInfo.Direction, bulletSpeed, 10.0f, 0.0f, 1000);
+					static_cast<GuideBullet*>(pBridge)->SetLoopGuide(false);
 
 					// ** Bullet Spawn
 					SpawnManager::SpawnBullet(pOwner, bulletTransInfo, bulletSpeed, damage, pBridge);
@@ -344,8 +345,9 @@ void BulletSpawnPatternScript::Spawn()
 				// ** Bullet의 Speed 설정
 				float bulletSpeed = 3.0f;
 
-				Bridge* pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::BULLET_GO_TARGET_AFTER_DELAY);
-				static_cast<GoTargetAfterDelayBullet*>(pBridge)->SetDelay(1000);
+				Bridge* pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::BULLET_GUIDE);
+				static_cast<GuideBullet*>(pBridge)->SetDelay(bulletTransInfo.Direction, bulletSpeed, 10.0f, 0.0f, 1000);
+				static_cast<GuideBullet*>(pBridge)->SetLoopGuide(false);
 
 				// ** Bullet Spawn
 				SpawnManager::SpawnBullet(pOwner, bulletTransInfo, bulletSpeed, damage, pBridge);
