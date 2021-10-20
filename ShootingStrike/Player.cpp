@@ -8,13 +8,16 @@
 #include "MathManager.h"
 #include "SpawnManager.h"
 #include "Enemy.h"
+#include "Item.h"
 #include "Background.h"
 #include "GuideBullet.h"
 
 Player::Player()
-	: life(0)
-	, damage(0)
-	, level(0)
+	: damage(0)
+	, life(0)
+	, maxLife(0)
+	, power(0)
+	, maxPower(0)
 	, isSpawing(false)
 	, bReSpawn(false)
 	, isDied(false)
@@ -39,17 +42,19 @@ void Player::Initialize()
 	collider.Position = Vector3(transInfo.Position.x + 3, transInfo.Position.y);
 	collider.Scale = Vector3(12.0f, 12.0f);
 
-	key = eObjectKey::PLAYER;
-	status = eObjectStatus::DEACTIVATED;
+	objectKey = eObjectKey::PLAYER;
+	objectStatus = eObjectStatus::DEACTIVATED;
 	collisionType = eCollisionType::ELLIPSE;
 	oldPosition = transInfo.Position;
 	bGenerateCollisionEvent = true;
 
 	bulletScript.Initialize();
 
-	life = 3;
 	damage = 1;
-	level = 1;
+	life = 3;
+	maxLife = 10;
+	power = 1;
+	maxPower = 5;
 
 	isSpawing = false;
 	isDied = false;
@@ -103,7 +108,7 @@ void Player::Update()
 		// _Debug_
 		if ( CHECK_KEYINPUT_STATE(eInputKey::KEY_ENTER, eKeyInputState::DOWN) )
 		{
-			level++;
+			PowerUp();
 		}
 		#endif // GAME_DEBUG_MODE
 
@@ -134,7 +139,7 @@ void Player::Update()
 			{
 				fireTime = GetTickCount64();
 
-				Fire(level, damage);
+				Fire(power, damage);
 			}
 		}
 	}
@@ -176,6 +181,38 @@ void Player::Render(HDC _hdc)
 
 	// ** 일반 출력
 	RenderPlayer(_hdc);	
+}
+
+void Player::PowerUp(bool _bMax)
+{	
+	++power;
+
+	if ( _bMax || maxPower < power )
+		power = maxPower;
+}
+
+void Player::PowerDown(bool _bMin)
+{
+	--power;
+
+	if ( _bMin || power < 1 )
+		power = 1;
+}
+
+void Player::LifeUp(bool _bMax)
+{
+	life++;
+
+	if ( _bMax || maxLife < life )
+		life = maxLife;
+}
+
+void Player::LifeDown(bool _bMin)
+{
+	--life;
+
+	if ( _bMin || life < 0 )
+		life = 0;
 }
 
 void Player::Fire(int _power, int _damage)
@@ -411,14 +448,17 @@ void Player::TakeDamage(int _damage)
 void Player::Spawn()
 {
 	isSpawing = true;
-	status = eObjectStatus::ACTIVATED;
+	objectStatus = eObjectStatus::ACTIVATED;
+
+	// ** Power 초기화
+	power = 1;
 
 	// ** 스타트 위치 설정
 	Background* pStageBackground = static_cast<Background*>(
 		ObjectManager::GetInstance()->FindObjectWithTag(eTagName::STAGE_MAIN_BKG));
 			
 	transInfo.Position.x = pStageBackground->GetPosition().x;
-	transInfo.Position.y = (pStageBackground->GetPosition().y + (pStageBackground->GetScale().y * 0.5f)) + 30;
+	transInfo.Position.y = (pStageBackground->GetPosition().y + (pStageBackground->GetScale().y * 0.5f)) + 30;	
 
 	// ** 키 입력을 막음
 	bCantAccessInput = true;
@@ -428,7 +468,7 @@ void Player::Spawn()
 	// ** 무적 설정
 	isInvicible = true;
 	invincibleTimer = GetTickCount64();
-	invicibleDurationTime = 5500;
+	invicibleDurationTime = 5500;	
 }
 
 void Player::ReSpawn()
@@ -447,6 +487,18 @@ void Player::Die()
 	explosionTransInfo.Position = transInfo.Position;
 	explosionTransInfo.Scale = transInfo.Scale * 2.0f;
 	SpawnManager::SpawnEffect(explosionTransInfo, eBridgeKey::EFFECT_EXPLOSION);
+
+	// ** 보스 단계에서 죽은 것이라면 Power Max Item 스폰
+	if ( ObjectManager::GetInstance()->FindObjectWithTag(eTagName::ENEMY_BOSS) )
+	{
+		Bridge* pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::ITEM_BOUNCE_ON_WALL);
+		Object* pObject = ObjectManager::GetInstance()->NewObject(eObjectKey::ITEM);
+		pObject->SetPosition(transInfo.Position);
+		pObject->SetScale(Vector3(40.0f, 40.0f));
+		pObject->SetSpeed(2.0f);
+		pObject->SetBridge(pBridge);
+		static_cast<Item*>(pObject)->SetItemType(eItemType::POWER_MAX);
+	}
 }
 
 void Player::CheckStatus()
@@ -455,7 +507,7 @@ void Player::CheckStatus()
 	if ( isDied )
 	{
 		// ** 체력과 레벨 초기화		
-		level = 1;
+		power = 1;
 
 		// ** 리 스폰
 		isDied = false;
@@ -594,4 +646,15 @@ void Player::Release()
 
 void Player::OnCollision(Object* _pObject)
 {
+	// ** Item 과 충돌 시
+	if ( _pObject->GetKey() == eObjectKey::ITEM )
+	{
+		eItemType itemType = static_cast<Item*>(_pObject)->GetItemType();
+		switch ( itemType )
+		{
+			case eItemType::POWER_MAX: PowerUp(true); break;
+			case eItemType::POWER_UP:  PowerUp();	  break;
+			case eItemType::LIFE_UP:   LifeUp();	  break;
+		}
+	}
 }

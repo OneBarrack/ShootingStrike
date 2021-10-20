@@ -8,15 +8,18 @@
 #include "CollisionManager.h"
 #include "SpawnManager.h"
 #include "InputManager.h"
+#include "BounceOnWallItem.h"
+#include "Item.h"
 
 Enemy::Enemy()
 	: enemyType(eEnemyType::ENEMY_BLUE_ELF)
+	, dropItemType(eItemType::NONE)
 	, maxHP(0)
 	, HP(0)
-	, bSpawing(false)
-	, bAttacking(false)
-	, bTakeDamage(false)
-	, bDied(false)
+	, isSpawing(false)
+	, isAttacking(false)
+	, isTakeDamage(false)
+	, isDied(false)
 	, hitScore(0)
 	, deathScore(0)
 	, oldPosition(Vector3())
@@ -34,19 +37,21 @@ void Enemy::Initialize()
 {
 	Super::Initialize();
 
-	key = eObjectKey::ENEMY;
-	status = eObjectStatus::ACTIVATED;
+	objectKey = eObjectKey::ENEMY;
+	objectStatus = eObjectStatus::ACTIVATED;
 	collisionType = eCollisionType::RECT;
 	oldPosition = transInfo.Position;
 	bGenerateCollisionEvent = true;
 
+	enemyType = eEnemyType::NONE;
+	dropItemType = eItemType::NONE;
 	maxHP = 1;
 	HP = 1;
 
-	bSpawing = false;
-	bAttacking = false;
-	bTakeDamage = false;
-	bDied = false;
+	isSpawing = false;
+	isAttacking = false;
+	isTakeDamage = false;
+	isDied = false;
 
 	hitScore = 10;
 	deathScore = 100;
@@ -55,8 +60,6 @@ void Enemy::Initialize()
 	fireBulletIntervalTime = 0;
 	destPosition = Vector3();
 	totalDegreeForSpin = 0.0f;
-
-	SetEnemyType(eEnemyType::ENEMY_BLUE_ELF);
 
 	InitMoveInfo();
 }
@@ -275,9 +278,9 @@ void Enemy::ApplyDamage(Object* _pTarget, int _damage)
 void Enemy::TakeDamage(int _damage)
 {
 	HP -= _damage;
-	bTakeDamage = true;
+	isTakeDamage = true;
 
-	if ( HP <= 0 )
+	if ( !isDied && HP <= 0 )
 	{
 		HP = 0;
 		Die();
@@ -287,21 +290,33 @@ void Enemy::TakeDamage(int _damage)
 void Enemy::Spawn()
 {
 	isSpawing = true;
-	status = eObjectStatus::ACTIVATED;
+	objectStatus = eObjectStatus::ACTIVATED;
 }
 
 void Enemy::Die()
 {
 	// ** bDied flag true 세팅
-	bDied = true;
+	isDied = true;
 
 	// ** 폭발 이펙트 스폰
 	Transform explosionTransInfo;
 	explosionTransInfo.Position = transInfo.Position;
 	explosionTransInfo.Scale = transInfo.Scale;
-	SpawnManager::SpawnEffect(explosionTransInfo, eBridgeKey::EFFECT_EXPLOSION);
+	SpawnManager::SpawnEffect(explosionTransInfo, eBridgeKey::EFFECT_EXPLOSION);	
 
-	status = eObjectStatus::DESTROYED;
+	// ** 아이템 스폰
+	if ( dropItemType != eItemType::NONE )
+	{		
+		Bridge* pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::ITEM_BOUNCE_ON_WALL);
+		Object* pObject = ObjectManager::GetInstance()->NewObject(eObjectKey::ITEM);
+		pObject->SetPosition(transInfo.Position);
+		pObject->SetScale(Vector3(40.0f, 40.0f));
+		pObject->SetSpeed(2.0f);
+		pObject->SetBridge(pBridge);
+		static_cast<Item*>(pObject)->SetItemType(dropItemType);
+	}
+
+	objectStatus = eObjectStatus::DESTROYED;
 }
 
 void Enemy::InitMoveInfo()

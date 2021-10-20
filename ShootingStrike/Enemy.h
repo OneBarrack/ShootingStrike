@@ -26,15 +26,11 @@ public:
 
 private:
 	eEnemyType enemyType;
+	eItemType dropItemType;
 
 	int maxHP;
 	int HP;	
-
-	bool bSpawing;
-	bool bAttacking;
-	bool bTakeDamage;
-	bool bDied;
-
+	
 	int hitScore;
 	int deathScore;
 
@@ -42,6 +38,15 @@ private:
 
 	// ** 스폰중인지
 	bool isSpawing;
+
+	// ** 공격 중인지
+	bool isAttacking;
+
+	// ** 공격 당했는지
+	bool isTakeDamage;
+
+	// ** 죽었는지
+	bool isDied;
 
 	// ** 주기적 Bullet 발사 간격
 	int fireBulletIntervalTime;
@@ -84,10 +89,11 @@ public:
 	// ** Move Info 초기화
 	void InitMoveInfo();
 
-	bool IsDead() { return bDied; }
+	bool IsDead() { return isDied; }
 	bool IsSpawning() { return isSpawing; }
 
 	eEnemyType GetEnemyType() { return enemyType; }
+	eItemType GetDropItemType() { return dropItemType; }
 	int GetMaxHP() { return maxHP; }
 	int GetHP() { return HP; }
 	int GetHitPoint() { return hitScore; }
@@ -97,6 +103,7 @@ public:
 	bool isMoving();
 
 	void SetEnemyType(eEnemyType _enemyType);
+	void SetDropItemType(eItemType _itemType) { dropItemType = _itemType; }
 	void SetMaxHP(int _maxHP) { maxHP = _maxHP; }
 	void SetHP(int _HP) { HP = _HP; }
 	void SetHitPoint(int _point) { hitScore = _point; }

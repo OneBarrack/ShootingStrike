@@ -4,8 +4,6 @@
 #include "Player.h"
 #include "Bullet.h"
 #include "Enemy.h"
-#include "EnemyHole.h"
-#include "HammerEffect.h"
 #include "Effect.h"
 #include "UserInterface.h"
 
@@ -17,6 +15,9 @@
 #include "NormalBullet.h"
 #include "GuideBullet.h"
 #include "SpreadAfterDelayBullet.h"
+#include "Item.h"
+#include "BounceOnWallItem.h"
+#include "StayInPlaceItem.h"
 #include "ButtonUI.h"
 #include "ScoreUI.h"
 #include "TextUI.h"
@@ -25,6 +26,7 @@
 #include "MapProgressUI.h"
 #include "ExplosionEffect.h"
 #include "HitEffect.h"
+#include "WarningEffect.h"
 
 Prototype::Prototype()
 {
@@ -47,6 +49,7 @@ void Prototype::CreatePrototype()
 	objectPrototypeList[eObjectKey::BULLET]		= new Bullet;	
 	objectPrototypeList[eObjectKey::UI]			= new UserInterface;
 	objectPrototypeList[eObjectKey::EFFECT]		= new Effect;
+	objectPrototypeList[eObjectKey::ITEM]		= new Item;
 
 	// Create Bridge Prototype
 	bridgePrototypeList[eBridgeKey::BACKGROUND_BASIC]			  = new BasicBkg;
@@ -57,6 +60,8 @@ void Prototype::CreatePrototype()
 	bridgePrototypeList[eBridgeKey::BULLET_NORMAL]				  = new NormalBullet;
 	bridgePrototypeList[eBridgeKey::BULLET_GUIDE]				  = new GuideBullet;
 	bridgePrototypeList[eBridgeKey::BULLET_SPREAD_AFTER_DELAY]	  = new SpreadAfterDelayBullet;
+	bridgePrototypeList[eBridgeKey::ITEM_BOUNCE_ON_WALL]		  = new BounceOnWallItem;
+	bridgePrototypeList[eBridgeKey::ITEM_STAY_IN_PLACE]			  = new StayInPlaceItem;
 	bridgePrototypeList[eBridgeKey::UI_BUTTON]					  = new ButtonUI;
 	bridgePrototypeList[eBridgeKey::UI_SCORE]					  = new ScoreUI;
 	bridgePrototypeList[eBridgeKey::UI_TEXT]					  = new TextUI;
@@ -65,6 +70,7 @@ void Prototype::CreatePrototype()
 	bridgePrototypeList[eBridgeKey::UI_MAP_PROGRESS]			  = new MapProgressUI;
 	bridgePrototypeList[eBridgeKey::EFFECT_EXPLOSION]			  = new ExplosionEffect;
 	bridgePrototypeList[eBridgeKey::EFFECT_HIT]					  = new HitEffect;
+	bridgePrototypeList[eBridgeKey::EFFECT_WARNING]				  = new WarningEffect;
 }
 
 Object* Prototype::FindPrototypeObject(eObjectKey _key)

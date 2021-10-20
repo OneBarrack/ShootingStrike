@@ -16,8 +16,8 @@ void Effect::Initialize()
 {
 	Super::Initialize();	
 
-	key = eObjectKey::EFFECT;
-	status = eObjectStatus::ACTIVATED;
+	objectKey = eObjectKey::EFFECT;
+	objectStatus = eObjectStatus::ACTIVATED;
 	collisionType = eCollisionType::NONE;
 
 	bGenerateCollisionEvent = false;

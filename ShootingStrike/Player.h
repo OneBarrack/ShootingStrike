@@ -10,9 +10,11 @@ public:
 private:
 	BulletSpawnPatternScript bulletScript;
 
-	int life;
 	int damage;
-	int level;
+	int life;
+	int maxLife;
+	int power;
+	int maxPower;
 
 	// ** 스폰중인지
 	bool isSpawing;
@@ -51,6 +53,12 @@ public:
 public:
 	// ** Life 반환
 	int GetLife() { return life; }
+
+	// ** Power,Life Up / Down
+	void PowerUp(bool _bMax = false);
+	void PowerDown(bool _bMin = false);
+	void LifeUp(bool _bMax = false);
+	void LifeDown(bool _bMin = false);
 
 	// ** 미사일 발사
 	void Fire(int _power, int _damage);

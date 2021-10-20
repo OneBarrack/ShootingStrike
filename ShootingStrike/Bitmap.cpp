@@ -28,7 +28,11 @@ void Bitmap::Initialize()
 			imageScale = Vector3(WINDOWS_WIDTH, WINDOWS_HEIGHT);
 			segmentationScale = imageScale;
 			break;
-		case eImageKey::FADEBACK:
+		case eImageKey::FADEBACK_BLACK:
+			imageScale = Vector3(WINDOWS_WIDTH, WINDOWS_HEIGHT);
+			segmentationScale = imageScale;
+			break;
+		case eImageKey::FADEBACK_RED:
 			imageScale = Vector3(WINDOWS_WIDTH, WINDOWS_HEIGHT);
 			segmentationScale = imageScale;
 			break;
@@ -54,9 +58,9 @@ void Bitmap::Initialize()
 			imageScale = Vector3(640.0f, 720.0f);
 			segmentationScale = Vector3(imageScale.x * 0.5f, imageScale.y);
 			break;
-		case eImageKey::STAGECLOUD:
-			//ImageScale = Vector3(1915.0f, 720.0f);
-			//SegmentationScale = ImageScale;
+		case eImageKey::WARNING:
+			imageScale = Vector3(382.0f, 100.0f);
+			segmentationScale = imageScale;
 			break;
 		case eImageKey::TEXT:
 			imageScale = Vector3(416.0f, 48.0f);
@@ -87,11 +91,13 @@ void Bitmap::Initialize()
 			segmentationScale = Vector3(42.0f, 47.0f);
 			break;
 		case eImageKey::BULLET:
-			//imageScale = Vector3(450.0f, 70.0f);
-			//segmentationScale = Vector3(230.0f, 230.0f);
 			imageScale = Vector3(472.0f, 702.0f);
 			segmentationScale = Vector3(236.0f, 234.0f);
-			break;			
+			break;
+		case eImageKey::ITEM:
+			imageScale = Vector3(490.0f, 140.0f);
+			segmentationScale = Vector3(70.0f, 70.0f);
+			break;
 		case eImageKey::ENEMY_NORMAL:
 			imageScale = Vector3(512.0f, 512.0f);
 			segmentationScale = imageScale;

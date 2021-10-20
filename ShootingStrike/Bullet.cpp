@@ -25,8 +25,8 @@ void Bullet::Initialize()
 	// ** 임시 빨간색 총알
 	imageOffsetOrder = { 1, 0 };
 
-	key = eObjectKey::BULLET;
-	status = eObjectStatus::ACTIVATED;
+	objectKey = eObjectKey::BULLET;
+	objectStatus = eObjectStatus::ACTIVATED;
 	collisionType = eCollisionType::ELLIPSE;
 	bGenerateCollisionEvent = true;
 
@@ -59,20 +59,26 @@ void Bullet::OnCollision(Object* _pObject)
 {
 	if ( pBridge )
 	{		
-		if ( pOwner->GetKey() == _pObject->GetKey() )
+		// ** 같은 Object거나 Item과 충돌시 충돌처리 하지 않음
+		if ( _pObject->GetKey() == pOwner->GetKey() || 
+			_pObject->GetKey() == eObjectKey::ITEM )
 			return;
 
 		// ** Bullet의 주체 Object의 데미지를 충돌된 Object에 전달
 		switch ( pOwner->GetKey() )
 		{
-			case eObjectKey::PLAYER: static_cast<Player*>(pOwner)->ApplyDamage(_pObject, damage); break;
-			case eObjectKey::ENEMY: static_cast<Enemy*>(pOwner)->ApplyDamage(_pObject, damage);	break;
+			case eObjectKey::PLAYER: 
+				static_cast<Player*>(pOwner)->ApplyDamage(_pObject, damage); 
+				SetStatus(eObjectStatus::DESTROYED); 
+				break;
+			case eObjectKey::ENEMY: 
+				static_cast<Enemy*>(pOwner)->ApplyDamage(_pObject, damage);	
+				SetStatus(eObjectStatus::DESTROYED); 
+				break;
 			default: 
 				break;
 		}
-	}
-
-	SetStatus(eObjectStatus::DESTROYED);
+	}	
 }
 
 void Bullet::CheckPositionInBkgBoundary()

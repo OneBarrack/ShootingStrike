@@ -23,8 +23,8 @@ protected:
 	// ** 충돌체의  기본 Transform
 	Transform collider;
 
-	eObjectKey key;
-	eObjectStatus status;
+	eObjectKey objectKey;
+	eObjectStatus objectStatus;
 	eCollisionType collisionType;
 
 	// ** 모든 오브젝트에 대한 충돌 체크가 필요한 오브젝트인지
@@ -60,10 +60,10 @@ public:
 	Bridge* GetBridgeObject() { return pBridge; }
 
 	// ** 오브젝트의 Key 값을 out
-	eObjectKey GetKey() const { return key; }
+	eObjectKey GetKey() const { return objectKey; }
 
 	// ** 오브젝트의 활성화 상태 반환
-	eObjectStatus GetStatus() const { return status; }	
+	eObjectStatus GetStatus() const { return objectStatus; }	
 
 	// ** 오브젝트의 충돌체 타입 반환
 	eCollisionType GetCollisionType() const { return collisionType; }
@@ -112,7 +112,7 @@ public:
 	void SetBridge(Bridge* _pBridge);
 
 	// ** 오브젝트의 Key 값을 Setting
-	void SetKey(eObjectKey _key)  { key = _key; }
+	void SetKey(eObjectKey _key)  { objectKey = _key; }
 
 	// ** Transform 정보를 Setting (Transform)
 	void SetTransInfo(Transform _transInfo) { transInfo = _transInfo; }

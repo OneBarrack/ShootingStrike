@@ -81,7 +81,7 @@ void Logo::Initialize()
 	pPlayButton->SetPosition(WINDOWS_WIDTH * 0.5f, WINDOWS_HEIGHT * 0.75f);
 	pPlayButton->SetScale(150.0f, 70.0f);
 	pPlayButton->SetCollider(pPlayButton->GetTransInfo());
-	pPlayButton->SetBridge(pBridge);
+	pPlayButton->SetBridge(pBridge);	
 
 	/******* Logo Start *******/
 	Start();

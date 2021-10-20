@@ -4,8 +4,7 @@
 #include "RenderManager.h"
 #include "Player.h"
 #include "Enemy.h"
-#include "EnemyHole.h"
-#include "HammerEffect.h"
+#include "WarningEffect.h"
 #include "ObjectFactory.h"
 #include "CollisionManager.h"
 #include "Background.h"
@@ -130,7 +129,7 @@ void Stage::Initialize()
 	InitEnemySpawnPatternTimings();
 
 	// ** Spawn Player
-	SpawnManager::SpawnPlayer();
+	SpawnManager::SpawnPlayer();	
 }
 
 void Stage::Update()
@@ -217,6 +216,14 @@ void Stage::Update()
 			pBossEnemyProgressBar->SetPosition(WINDOWS_WIDTH * 0.5f, 30.0f);
 			pBossEnemyProgressBar->SetScale(pBackground->GetScale().x - 30.0f, 50.0f);
 			pBossEnemyProgressBar->SetBridge(pBridge);
+
+			// ** Warning Effect
+			pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::EFFECT_WARNING);
+			Object* pObject = ObjectManager::GetInstance()->NewObject(eObjectKey::EFFECT);
+			pObject->SetImage(eImageKey::FADEBACK_RED);
+			pObject->SetPosition(WINDOWS_WIDTH * 0.5f, WINDOWS_HEIGHT * 0.25f);
+			pObject->SetScale(382.0f, 100.0f);
+			pObject->SetBridge(pBridge);
 		}
 
 		if ( pBossAngelEnemy && pBossEnemyProgressBar )

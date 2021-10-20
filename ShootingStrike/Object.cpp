@@ -11,8 +11,8 @@ Object::Object()
 	, pBridge(nullptr)
 	, transInfo(Transform())
 	, collider(Transform())
-	, key(eObjectKey::NONE)
-	, status(eObjectStatus::ACTIVATED)
+	, objectKey(eObjectKey::NONE)
+	, objectStatus(eObjectStatus::ACTIVATED)
 	, collisionType(eCollisionType::NONE)
 	, bGenerateCollisionEvent(false)
 	, speed(0.0f)
@@ -33,8 +33,8 @@ void Object::Initialize()
 	pBridge = nullptr;
 	transInfo = Transform();
 	collider = Transform();
-	key = eObjectKey::NONE;
-	status = eObjectStatus::ACTIVATED;
+	objectKey = eObjectKey::NONE;
+	objectStatus = eObjectStatus::ACTIVATED;
 	collisionType = eCollisionType::NONE;
 	bGenerateCollisionEvent = false;
 	speed = 0.0f;
@@ -108,10 +108,10 @@ void Object::SetBridge(Bridge* _pBridge)
 
 void Object::SetStatus(const eObjectStatus& _status)
 {	
-	status = _status;
+	objectStatus = _status;
 	
 	// ** ACTIVATED 상태가 아니라면 충돌 체크가 필요하지 않음
-	if ( status != eObjectStatus::ACTIVATED )
+	if ( objectStatus != eObjectStatus::ACTIVATED )
 	{
 		SetGenerateCollisionEvent(false);
 	}

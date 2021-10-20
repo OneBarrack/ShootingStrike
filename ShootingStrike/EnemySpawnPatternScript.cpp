@@ -59,7 +59,7 @@ void EnemySpawnPatternScript::Spawn()
 				pObject->SetDirection(0.0f, 1.0f);
 				pObject->SetSpeed(0.75f);
 				pObject->SetBridge(pBridge);
-				static_cast<Enemy*>(pObject)->SetEnemyType(eEnemyType::ENEMY_RED_ELF);
+				static_cast<Enemy*>(pObject)->SetEnemyType(eEnemyType::ENEMY_RED_ELF);				
 				static_cast<Enemy*>(pObject)->SetFireBulletIntervalTime(3000);
 				static_cast<Enemy*>(pObject)->BackAndForthLeft();
 
@@ -73,6 +73,7 @@ void EnemySpawnPatternScript::Spawn()
 				pObject->SetSpeed(0.75f);
 				pObject->SetBridge(pBridge);
 				static_cast<Enemy*>(pObject)->SetEnemyType(eEnemyType::ENEMY_RED_ELF);
+				static_cast<Enemy*>(pObject)->SetDropItemType(eItemType::POWER_UP);
 				static_cast<Enemy*>(pObject)->SetFireBulletIntervalTime(3000);
 				static_cast<Enemy*>(pObject)->BackAndForthRight();
 
@@ -239,19 +240,40 @@ void EnemySpawnPatternScript::Spawn()
 				// ** Spawn Count가 남았고 delay 시간이 지날때마다 스폰
 				if ( spawnCount < maxSpawnCount && spawnDelayTime + delay < GetTickCount64() )
 				{
-					pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::ENEMY_NORMAL);
-					pObject = ObjectManager::GetInstance()->NewObject(eObjectKey::ENEMY);
-					pObject->SetTagName(eTagName::ENEMY_GREEN_ELF);
-					pObject->SetPosition(leftBottomPos);
-					pObject->SetScale(40.0f, 40.0f);
-					pObject->SetDirection(0.0f, 1.0f);
-					pObject->SetSpeed(2.5f);
-					pObject->SetBridge(pBridge);
-					static_cast<Enemy*>(pObject)->SetEnemyType(eEnemyType::ENEMY_GREEN_ELF);
-					static_cast<Enemy*>(pObject)->SetFireBulletIntervalTime(3000);
-					static_cast<Enemy*>(pObject)->MoveTo(centerPos);
-					static_cast<Enemy*>(pObject)->SpinLeft();
-					static_cast<Enemy*>(pObject)->MoveTo(rightTopPos);
+					// ** 마지막 위치에 WHITE_ELF Enemy를 넣어줌
+					if ( spawnCount == maxSpawnCount - 1 )
+					{
+						pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::ENEMY_NORMAL);
+						pObject = ObjectManager::GetInstance()->NewObject(eObjectKey::ENEMY);
+						pObject->SetTagName(eTagName::ENEMY_WHITE_ELF);
+						pObject->SetPosition(leftBottomPos);
+						pObject->SetScale(60.0f, 60.0f);
+						pObject->SetDirection(0.0f, 1.0f);
+						pObject->SetSpeed(2.5f);
+						pObject->SetBridge(pBridge);
+						static_cast<Enemy*>(pObject)->SetEnemyType(eEnemyType::ENEMY_WHITE_ELF);
+						static_cast<Enemy*>(pObject)->SetDropItemType(eItemType::POWER_MAX);
+						static_cast<Enemy*>(pObject)->SetFireBulletIntervalTime(3000);
+						static_cast<Enemy*>(pObject)->MoveTo(centerPos);
+						static_cast<Enemy*>(pObject)->SpinLeft();
+						static_cast<Enemy*>(pObject)->MoveTo(rightTopPos);
+					}
+					else
+					{
+						pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::ENEMY_NORMAL);
+						pObject = ObjectManager::GetInstance()->NewObject(eObjectKey::ENEMY);
+						pObject->SetTagName(eTagName::ENEMY_GREEN_ELF);
+						pObject->SetPosition(leftBottomPos);
+						pObject->SetScale(40.0f, 40.0f);
+						pObject->SetDirection(0.0f, 1.0f);
+						pObject->SetSpeed(2.5f);
+						pObject->SetBridge(pBridge);
+						static_cast<Enemy*>(pObject)->SetEnemyType(eEnemyType::ENEMY_GREEN_ELF);
+						static_cast<Enemy*>(pObject)->SetFireBulletIntervalTime(3000);
+						static_cast<Enemy*>(pObject)->MoveTo(centerPos);
+						static_cast<Enemy*>(pObject)->SpinLeft();
+						static_cast<Enemy*>(pObject)->MoveTo(rightTopPos);
+					}
 
 					++spawnCount;
 					spawnDelayTime = GetTickCount64();
@@ -294,6 +316,7 @@ void EnemySpawnPatternScript::Spawn()
 						pObject->SetSpeed(2.5f);
 						pObject->SetBridge(pBridge);
 						static_cast<Enemy*>(pObject)->SetEnemyType(eEnemyType::ENEMY_WHITE_ELF);
+						static_cast<Enemy*>(pObject)->SetDropItemType(eItemType::LIFE_UP);
 						static_cast<Enemy*>(pObject)->SetFireBulletIntervalTime(3000);
 						static_cast<Enemy*>(pObject)->MoveTo(centerPos);
 						static_cast<Enemy*>(pObject)->SpinRight();

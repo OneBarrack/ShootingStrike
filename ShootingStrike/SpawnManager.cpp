@@ -7,6 +7,7 @@
 #include "NormalBullet.h"
 #include "GuideBullet.h"
 #include "ExplosionEffect.h"
+#include "BitmapManager.h"
 
 Object* SpawnManager::SpawnPlayer()
 {
@@ -29,7 +30,6 @@ Object* SpawnManager::SpawnBullet(Object* _pOwner, Transform _transInfo, float _
 			break;
 		case eBridgeKey::BULLET_GUIDE:
 			pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::BULLET_GUIDE);
-			break;
 			break;
 		default:
 			return pBullet;
@@ -67,10 +67,27 @@ Object* SpawnManager::SpawnBullet(Object* _pOwner, Transform _transInfo, float _
 	return pBullet;
 }
 
-
-Object* SpawnManager::SpawnEnemy(Transform _transInfo, eBridgeKey _bridgeKey)
+Object* SpawnManager::SpawnEnemy(eTagName _tagName, Transform _transInfo, float _speed, Bridge* _pBridge)
 {
 	Enemy* pEnemy = nullptr;
+	eBridgeKey bridgeKey = _pBridge->GetKey();
+
+	eImageKey imageKey;
+	switch ( bridgeKey )
+	{
+		case eBridgeKey::ENEMY_NORMAL:	imageKey = eImageKey::ENEMY_NORMAL;	break;
+		case eBridgeKey::ENEMY_BOSS:	imageKey = eImageKey::ENEMY_ANGEL;	break;
+		default:
+			return nullptr;
+			break;
+	}
+
+	pEnemy = static_cast<Enemy*>(ObjectManager::GetInstance()->NewObject(eObjectKey::ENEMY));
+	pEnemy->SetImage(imageKey);
+	pEnemy->SetTransInfo(_transInfo);
+	pEnemy->SetSpeed(_speed);
+	pEnemy->SetTagName(_tagName);
+	pEnemy->SetBridge(_pBridge);
 
 	return pEnemy;
 }

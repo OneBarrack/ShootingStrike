@@ -1,12 +1,16 @@
 #include "RenderManager.h"
 
-void RenderManager::DrawRect(HDC _hdc, Transform _transInfo, COLORREF _color)
+void RenderManager::DrawRect(HDC _hdc, Transform _transInfo, COLORREF _color, bool _bFillInside)
 {
 	HPEN hPen = CreatePen(PS_SOLID, 2, _color);
 	HGDIOBJ hOldPen = SelectObject(_hdc, hPen);
 
-	//HBRUSH hBrush = CreateSolidBrush(_Color); // ** 색상 넣기
-	HBRUSH hBrush = (HBRUSH)GetStockObject(NULL_BRUSH);	// ** 투명
+	HBRUSH hBrush;	
+	if ( _bFillInside )
+		hBrush = CreateSolidBrush(_color); // ** 색상 넣기
+	else
+		hBrush = (HBRUSH)GetStockObject(NULL_BRUSH); // ** 투명
+
 	HGDIOBJ hOldBrush = SelectObject(_hdc, hBrush);
 	
 	Rectangle(_hdc,
@@ -21,13 +25,17 @@ void RenderManager::DrawRect(HDC _hdc, Transform _transInfo, COLORREF _color)
 	DeleteObject(hBrush);
 }
 
-void RenderManager::DrawEllipse(HDC _hdc, Transform _transInfo, COLORREF _color)
+void RenderManager::DrawEllipse(HDC _hdc, Transform _transInfo, COLORREF _color, bool _bFillInside)
 {
 	HPEN hPen = CreatePen(PS_SOLID, 2, _color);
 	HGDIOBJ hOldPen = SelectObject(_hdc, hPen);
 
-	//HBRUSH hBrush = CreateSolidBrush(_Color); // ** 색상 넣기
-	HBRUSH hBrush = (HBRUSH)GetStockObject(NULL_BRUSH);	// ** 투명
+	HBRUSH hBrush;
+	if ( _bFillInside )
+		hBrush = CreateSolidBrush(_color); // ** 색상 넣기
+	else
+		hBrush = (HBRUSH)GetStockObject(NULL_BRUSH); // ** 투명
+
 	HGDIOBJ hOldBrush = SelectObject(_hdc, hBrush);
 
 	Ellipse(_hdc,
@@ -58,7 +66,7 @@ bool RenderManager::FadeAnimation(HDC _hdc, eFadeStatus fadeStatus)
 
 	// ** Fade Background 이미지를 바탕으로 Fade 효과 부여
 	AlphaBlend(_hdc, 0, 0, WINDOWS_WIDTH, WINDOWS_HEIGHT,
-		BitmapManager::GetInstance()->GetImage(eImageKey::FADEBACK)->GetMemDC(),
+		BitmapManager::GetInstance()->GetImage(eImageKey::FADEBACK_BLACK)->GetMemDC(),
 		0, 0, WINDOWS_WIDTH, WINDOWS_HEIGHT, bf);
 
 	// ** alpha가 0 또는 255라면 Fade Animation이 끝난것.

@@ -37,9 +37,10 @@ enum class eObjectKey
 	PLAYER			,
 	ENEMY			,
 	BULLET			,
-	EFFECT			,
 	FOREGROUND		,
-	UI				,	
+	ITEM			,
+	EFFECT			,
+	UI				,
 };
 
 enum class eBridgeKey
@@ -53,26 +54,30 @@ enum class eBridgeKey
 	BULLET_NORMAL				,
 	BULLET_GUIDE				,
 	BULLET_SPREAD_AFTER_DELAY	,
+	ITEM_BOUNCE_ON_WALL			,
+	ITEM_STAY_IN_PLACE			,
 	UI_BUTTON					,
 	UI_SCORE					,
 	UI_TEXT						,
 	UI_LIFE						,
 	UI_PROGRESSBAR				,
-	UI_MAP_PROGRESS			,
+	UI_MAP_PROGRESS				,
 	EFFECT_EXPLOSION			,
 	EFFECT_HIT					,
+	EFFECT_WARNING				,
 };
 
 enum class eImageKey
 {	
 	BUFFER			,
-	FADEBACK		,
+	FADEBACK_BLACK	,
+	FADEBACK_RED	,
 	LOGO			,
 	LOGOBACK		,
 	MENUBACK		,
 	STAGEBACK		,
 	STAGESIDEBACK	,
-	STAGECLOUD		,
+	WARNING			,
 	TEXT			,
 	SCORE			,
 	NUMBER			,
@@ -80,6 +85,7 @@ enum class eImageKey
 	PLAYBUTTON		,
 	PLAY_QUIT_BUTTON,
 	PLAYER			,
+	ITEM			,
 	BULLET			,
 	ENEMY_NORMAL	,
 	ENEMY_ANGEL		,
@@ -145,10 +151,20 @@ enum class eTagName
 
 enum class eEnemyType
 {
+	NONE			 ,
 	ENEMY_BLUE_ELF	 ,
 	ENEMY_RED_ELF	 ,
 	ENEMY_GREEN_ELF	 ,
 	ENEMY_WHITE_ELF  ,
 	ENEMY_MIDDLE_BOSS,
-	ENEMY_BOSS_ANGEL		 ,
+	ENEMY_BOSS_ANGEL ,
+};
+
+enum class eItemType
+{
+	NONE	 ,
+	POWER_MAX,
+	POWER_UP ,
+	LIFE_UP	 ,
+	COIN	 ,
 };

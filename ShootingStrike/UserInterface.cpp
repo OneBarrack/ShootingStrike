@@ -14,8 +14,8 @@ void UserInterface::Initialize()
 {
 	Super::Initialize();
 
-	key = eObjectKey::UI;
-	status = eObjectStatus::ACTIVATED;
+	objectKey = eObjectKey::UI;
+	objectStatus = eObjectStatus::ACTIVATED;
 	collisionType = eCollisionType::NONE;
 
 	bGenerateCollisionEvent = false;

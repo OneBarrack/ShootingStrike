@@ -17,11 +17,11 @@ void Background::Initialize()
 	Super::Initialize();
 
 	if ( isForeBkg ) 
-		key = eObjectKey::FOREGROUND;
+		objectKey = eObjectKey::FOREGROUND;
 	else
-		key = eObjectKey::BACKGROUND;
+		objectKey = eObjectKey::BACKGROUND;
 	
-	status = eObjectStatus::ACTIVATED;
+	objectStatus = eObjectStatus::ACTIVATED;
 	collisionType = eCollisionType::NONE;
 	bGenerateCollisionEvent = false;
 	mapProgressRatio = 0.0f;

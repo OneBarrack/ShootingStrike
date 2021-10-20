@@ -178,6 +178,21 @@
     <Filter Include="소스 파일\04. Helper\SpawnPatternScript\Bullet">
       <UniqueIdentifier>{635da852-f16c-4e03-9500-a580fd16462e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\02. Object\Item">
+      <UniqueIdentifier>{f11ce4df-8b89-4cd3-8ad0-4af266789102}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\Item\ItemBridge">
+      <UniqueIdentifier>{81985985-78b0-417d-afd7-7b4f25fbc3e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\Item\ItemBridge\BounceOnWallItem">
+      <UniqueIdentifier>{45c8cd85-6917-414a-afe4-7a0a7b6adc41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\Item\ItemBridge\StayInPlaceItem">
+      <UniqueIdentifier>{ff24fc6e-b5fc-4368-8b81-d9623519171e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Object\Effect\EffectBridge\Warning">
+      <UniqueIdentifier>{e5d76f43-fd75-407b-984f-fbd93c76d7ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers.h">
@@ -357,6 +372,21 @@
     <ClInclude Include="EnemySpawnPatternScript.h">
       <Filter>소스 파일\04. Helper\SpawnPatternScript\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>소스 파일\02. Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemBridge.h">
+      <Filter>소스 파일\02. Object\Item\ItemBridge</Filter>
+    </ClInclude>
+    <ClInclude Include="StayInPlaceItem.h">
+      <Filter>소스 파일\02. Object\Item\ItemBridge\StayInPlaceItem</Filter>
+    </ClInclude>
+    <ClInclude Include="BounceOnWallItem.h">
+      <Filter>소스 파일\02. Object\Item\ItemBridge\BounceOnWallItem</Filter>
+    </ClInclude>
+    <ClInclude Include="WarningEffect.h">
+      <Filter>소스 파일\02. Object\Effect\EffectBridge\Warning</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ShootingStrike.cpp">
@@ -508,6 +538,21 @@
     </ClCompile>
     <ClCompile Include="EnemySpawnPatternScript.cpp">
       <Filter>소스 파일\04. Helper\SpawnPatternScript\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>소스 파일\02. Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemBridge.cpp">
+      <Filter>소스 파일\02. Object\Item\ItemBridge</Filter>
+    </ClCompile>
+    <ClCompile Include="StayInPlaceItem.cpp">
+      <Filter>소스 파일\02. Object\Item\ItemBridge\StayInPlaceItem</Filter>
+    </ClCompile>
+    <ClCompile Include="BounceOnWallItem.cpp">
+      <Filter>소스 파일\02. Object\Item\ItemBridge\BounceOnWallItem</Filter>
+    </ClCompile>
+    <ClCompile Include="WarningEffect.cpp">
+      <Filter>소스 파일\02. Object\Effect\EffectBridge\Warning</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
