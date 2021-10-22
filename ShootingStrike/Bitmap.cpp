@@ -74,6 +74,10 @@ void Bitmap::Initialize()
 			imageScale = Vector3(140.0f, 14.0f);
 			segmentationScale = Vector3(14.0f, 0.0f);
 			break;
+		case eImageKey::GAMEOVER:
+			imageScale = Vector3(640.0f, 720.0f);
+			segmentationScale = imageScale;
+			break;
 		case eImageKey::PROGRESSBAR:
 			imageScale = Vector3(535.0f, 192.0f);
 			segmentationScale = Vector3(535.0f, 96.0f);
@@ -83,6 +87,7 @@ void Bitmap::Initialize()
 			segmentationScale = Vector3(150.0f, 70.0f);
 			break;
 		case eImageKey::PLAY_QUIT_BUTTON:
+		case eImageKey::YES_NO_BUTTON:
 			imageScale = Vector3(210.0f, 100.0f);
 			segmentationScale = Vector3(70.0f, 50.0f);
 			break;

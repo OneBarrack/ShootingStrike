@@ -26,6 +26,7 @@ enum class eKeyInputState
 
 enum class eSCENEID
 {
+	NONE ,
 	LOGO ,
 	MENU ,
 	STAGE,
@@ -59,6 +60,7 @@ enum class eBridgeKey
 	ITEM_BOUNCE_ON_WALL			,
 	ITEM_GO_TO_PLAYER			,
 	UI_BUTTON					,
+	UI_GAMEOVER					,
 	UI_SCORE					,
 	UI_TEXT						,
 	UI_LIFE						,
@@ -84,16 +86,18 @@ enum class eImageKey
 	TEXT			,
 	SCORE			,
 	NUMBER			,
+	GAMEOVER		,
 	PROGRESSBAR		,
 	PLAYBUTTON		,
 	PLAY_QUIT_BUTTON,
+	YES_NO_BUTTON	,
 	PLAYER			,
 	ITEM			,
 	BULLET			,
 	ENEMY_NORMAL	,
 	ENEMY_ANGEL		,
 	HIT				,
-	EXPLOSION		,		
+	EXPLOSION		,
 	KEYMAX			,
 };
 

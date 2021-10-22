@@ -2,9 +2,11 @@
 #include "BitmapManager.h"
 #include "RenderManager.h"
 #include "GameDataManager.h"
+#include "ObjectManager.h"
 
 MapProgressUI::MapProgressUI()
-	: pPlayerImage(nullptr)
+	: pBkgImage(nullptr)
+	, pPlayerImage(nullptr)
 	, mapProgressRatio(0.0f)
 {
 
@@ -19,6 +21,7 @@ void MapProgressUI::Initialize()
 {
 	Super::Initialize();
 
+	pBkgImage = ObjectManager::GetInstance()->FindObjectWithTag(eTagName::STAGE_MAIN_BKG)->GetImage();
 	pPlayerImage = BitmapManager::GetInstance()->GetImage(eImageKey::PLAYER);
 	mapProgressRatio = 0.0f;
 
@@ -37,11 +40,63 @@ void MapProgressUI::Render(HDC _hdc)
 	Super::Render(_hdc);
 
 	if ( !pPlayerImage )
-		return;
+		return;	
 	
+	// ** Bkg image
+	TransparentBlt(_hdc,
+		int(pOwner->GetPosition().x - (pOwner->GetScale().x * 0.5f)),
+		int(pOwner->GetPosition().y - (pOwner->GetScale().y * 0.5f)),
+		int(pOwner->GetScale().x),
+		int(pOwner->GetScale().y * 0.25f),
+		pBkgImage->GetMemDC(),
+		int(0),
+		int(0),
+		int(pBkgImage->GetSegmentationScale().x),
+		int(pBkgImage->GetSegmentationScale().y),
+		RGB(255, 0, 255));
+
+	TransparentBlt(_hdc,
+		int(pOwner->GetPosition().x - (pOwner->GetScale().x * 0.5f)),
+		int(pOwner->GetPosition().y - (pOwner->GetScale().y * 0.25f)),
+		int(pOwner->GetScale().x),
+		int(pOwner->GetScale().y * 0.25f),
+		pBkgImage->GetMemDC(),
+		int(0),
+		int(0),
+		int(pBkgImage->GetSegmentationScale().x),
+		int(pBkgImage->GetSegmentationScale().y),
+		RGB(255, 0, 255));
+
+	TransparentBlt(_hdc,
+		int(pOwner->GetPosition().x - (pOwner->GetScale().x * 0.5f)),
+		int(pOwner->GetPosition().y),
+		int(pOwner->GetScale().x),
+		int(pOwner->GetScale().y * 0.25f),
+		pBkgImage->GetMemDC(),
+		int(0),
+		int(0),
+		int(pBkgImage->GetSegmentationScale().x),
+		int(pBkgImage->GetSegmentationScale().y),
+		RGB(255, 0, 255));
+
+	TransparentBlt(_hdc,
+		int(pOwner->GetPosition().x - (pOwner->GetScale().x * 0.5f)),
+		int(pOwner->GetPosition().y + (pOwner->GetScale().y * 0.25f)),
+		int(pOwner->GetScale().x),
+		int(pOwner->GetScale().y * 0.25f),
+		pBkgImage->GetMemDC(),
+		int(0),
+		int(0),
+		int(pBkgImage->GetSegmentationScale().x),
+		int(pBkgImage->GetSegmentationScale().y),
+		RGB(255, 0, 255));
+
 	// ** Box
-	RenderManager::DrawRect(_hdc, pOwner->GetTransInfo(), RGB(255, 0, 0));
-	
+	Transform boxTransInfo = pOwner->GetTransInfo();
+	boxTransInfo.Scale = boxTransInfo.Scale + 1.0f;
+	RenderManager::DrawRect(_hdc, boxTransInfo, RGB(53, 53, 53));
+
+	// ** Player Image
 	TransparentBlt(_hdc,
 		int(pOwner->GetPosition().x - 40.0f),
 		int((pOwner->GetPosition().y - (pOwner->GetScale().y * 0.5f) - 40.0f) +

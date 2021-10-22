@@ -12,6 +12,7 @@
 Object* SpawnManager::SpawnPlayer()
 {
 	Player* pPlayer = static_cast<Player*>(ObjectManager::GetInstance()->GetPlayer());
+	pPlayer->Initialize();
 	pPlayer->SetStatus(eObjectStatus::ACTIVATED);
 	pPlayer->Spawn();
 

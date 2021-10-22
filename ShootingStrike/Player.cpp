@@ -74,6 +74,9 @@ void Player::Initialize()
 
 void Player::Update()
 {
+	if ( life == 0 )
+		return;
+
 	Super::Update();
 
 	// ** 현재 플레이어 상태 체크
@@ -166,6 +169,9 @@ void Player::Update()
 
 void Player::Render(HDC _hdc)
 {
+	if ( life == 0 )
+		return;
+
 	Super::Render(_hdc);
 
 	// ** 스폰 중
@@ -442,7 +448,7 @@ void Player::ActivateBomb()
 		list<Object*> enemyList = ObjectManager::GetInstance()->GetObjectList(eObjectKey::ENEMY);
 		for ( Object* pEnemy : enemyList )
 		{
-			// ** Boss Enemy가 아니라면 
+			// ** Boss Enemy가 아닌 Enemy라면 
 			if ( static_cast<Enemy*>(pEnemy)->GetEnemyType() != eEnemyType::NONE &&
 				static_cast<Enemy*>(pEnemy)->GetEnemyType() != eEnemyType::ENEMY_BOSS_ANGEL )
 			{
@@ -456,8 +462,7 @@ void Player::ActivateBomb()
 				pObject->SetAcceleration(0.1f);
 				pObject->SetBridge(pBridge);
 				static_cast<Item*>(pObject)->SetItemType(eItemType::COIN);
-
-				pEnemy->SetStatus(eObjectStatus::DESTROYED);
+				static_cast<Enemy*>(pEnemy)->Die();
 			}
 		}
 

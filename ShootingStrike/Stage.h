@@ -18,6 +18,7 @@ private:
 	Object* pScoreUI;
 	Object* pLifeTextUI;
 	Object* pLifeUI;
+	Object* pGameOverUI;
 	Object* pBombTextUI;
 	Object* pBombUI;
 	Object* pBossAngelEnemy;

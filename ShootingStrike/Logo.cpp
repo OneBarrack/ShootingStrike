@@ -29,8 +29,16 @@ void Logo::Initialize()
 	GameDataManager::GetInstance()->Initialize();
 	GameDebugManager::GetInstance()->Initialize();
 
-	ObjectManager::GetInstance()->SetPlayer(
-		ObjectManager::GetInstance()->NewObject(eObjectKey::PLAYER));
+	Object* pPlayer = ObjectManager::GetInstance()->GetPlayer();
+	if ( pPlayer )
+	{
+		pPlayer->Initialize();
+	}
+	else
+	{
+		pPlayer = ObjectManager::GetInstance()->NewObject(eObjectKey::PLAYER);
+		ObjectManager::GetInstance()->SetPlayer(pPlayer);
+	}	
 
 	hVideo = MCIWndCreate(g_hWnd, NULL,
 		MCIWNDF_NOPLAYBAR | WS_VISIBLE | WS_CHILD, L"../Resource/Video/Intro.wmv");
@@ -49,10 +57,12 @@ void Logo::Update()
 {	
 	ObjectManager::GetInstance()->Update();
 
-	// ** video play time이 끝나거나 Enter 또는 Space를 누를 경우 다음 Scene으로 이동
+	// ** video play time이 끝나거나 Enter, Space, Z, X를 누를 경우 다음 Scene으로 이동
 	if ( tickTime + videoPlayTime < GetTickCount64() ||
 		CHECK_KEYINPUT_STATE(eInputKey::KEY_ENTER, eKeyInputState::DOWN) ||
-		CHECK_KEYINPUT_STATE(eInputKey::KEY_SPACE, eKeyInputState::DOWN) )
+		CHECK_KEYINPUT_STATE(eInputKey::KEY_SPACE, eKeyInputState::DOWN) ||
+		CHECK_KEYINPUT_STATE(eInputKey::KEY_Z, eKeyInputState::DOWN) ||
+		CHECK_KEYINPUT_STATE(eInputKey::KEY_X, eKeyInputState::DOWN) )
 	{
 		SceneManager::GetInstance()->SetScene(eSCENEID::MENU);
 	}

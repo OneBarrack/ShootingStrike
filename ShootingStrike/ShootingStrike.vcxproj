@@ -157,6 +157,7 @@
     <ClInclude Include="EffectBridge.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemySpawnPatternScript.h" />
+    <ClInclude Include="GameOverUI.h" />
     <ClInclude Include="Intro.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemBridge.h" />
@@ -223,6 +224,7 @@
     <ClCompile Include="EffectBridge.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemySpawnPatternScript.cpp" />
+    <ClCompile Include="GameOverUI.cpp" />
     <ClCompile Include="Intro.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemBridge.cpp" />

@@ -29,6 +29,7 @@ Stage::Stage()
 	, pScoreUI(nullptr)
 	, pLifeTextUI(nullptr)
 	, pLifeUI(nullptr)
+	, pGameOverUI(nullptr)
 	, pBombUI(nullptr)
 	, pBossAngelEnemy(nullptr)
 	, pBossEnemyProgressBar(nullptr)
@@ -137,7 +138,7 @@ void Stage::Initialize()
 	pMapProgress = ObjectManager::GetInstance()->NewObject(eObjectKey::UI);
 	pMapProgress->SetPosition(50.0f, WINDOWS_HEIGHT * 0.5f);
 	pMapProgress->SetScale(40.0f, 500.0f);
-	pMapProgress->SetBridge(pBridge);	
+	pMapProgress->SetBridge(pBridge);		
 
 	// ** Initialized Enemy Spawn Pattern Script
 	enemyScript.Initialize();
@@ -242,6 +243,20 @@ void Stage::Update()
 		}
 	}
 
+	// ** Player Life가 0이면 GameOver UI를 띄움
+	if ( static_cast<Player*>(pPlayer)->GetLife() == 0 )
+	{
+		if ( !pGameOverUI )
+		{
+			// ** GameOver UI
+			Bridge* pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::UI_GAMEOVER);
+			pGameOverUI = ObjectManager::GetInstance()->NewObject(eObjectKey::UI);
+			pGameOverUI->SetPosition(pBackground->GetPosition());
+			pGameOverUI->SetScale(pBackground->GetScale());
+			pGameOverUI->SetBridge(pBridge);
+		}
+	}
+
 	++frame;
 
 	enemyScript.Run();
@@ -294,6 +309,10 @@ void Stage::Release()
 		ObjectManager::GetInstance()->RecallObject(pLifeTextUI);
 	pLifeTextUI = nullptr;
 
+	if ( pGameOverUI )
+		ObjectManager::GetInstance()->RecallObject(pGameOverUI);
+	pGameOverUI = nullptr;
+	
 	if ( pLifeUI )				
 		ObjectManager::GetInstance()->RecallObject(pLifeUI);
 	pLifeUI = nullptr;

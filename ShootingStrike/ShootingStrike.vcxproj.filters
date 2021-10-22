@@ -402,6 +402,9 @@
     <ClInclude Include="BombUI.h">
       <Filter>소스 파일\02. Object\UI\UIBridge\BombUI</Filter>
     </ClInclude>
+    <ClInclude Include="GameOverUI.h">
+      <Filter>소스 파일\02. Object\UI\UIBridge\GameOverUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ShootingStrike.cpp">
@@ -574,6 +577,9 @@
     </ClCompile>
     <ClCompile Include="BombUI.cpp">
       <Filter>소스 파일\02. Object\UI\UIBridge\BombUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverUI.cpp">
+      <Filter>소스 파일\02. Object\UI\UIBridge\GameOverUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -17,9 +17,11 @@ void BitmapManager::Initialize()
 	imageList[eImageKey::TEXT]				= new Bitmap(eImageKey::TEXT			, L"../Resource/Text.bmp");
 	imageList[eImageKey::SCORE]				= new Bitmap(eImageKey::SCORE			, L"../Resource/Score.bmp");
 	imageList[eImageKey::NUMBER]			= new Bitmap(eImageKey::NUMBER			, L"../Resource/Number.bmp");
+	imageList[eImageKey::GAMEOVER]			= new Bitmap(eImageKey::GAMEOVER		, L"../Resource/GameOver.bmp");
 	imageList[eImageKey::PROGRESSBAR]		= new Bitmap(eImageKey::PROGRESSBAR		, L"../Resource/UI_ProgressBar.bmp");
 	imageList[eImageKey::PLAYBUTTON]		= new Bitmap(eImageKey::PLAYBUTTON		, L"../Resource/UI_Button_Play.bmp");
 	imageList[eImageKey::PLAY_QUIT_BUTTON]  = new Bitmap(eImageKey::PLAY_QUIT_BUTTON, L"../Resource/UI_Button_Play_Quit.bmp");
+	imageList[eImageKey::YES_NO_BUTTON]		= new Bitmap(eImageKey::YES_NO_BUTTON	, L"../Resource/UI_YES_NO.bmp");
 	imageList[eImageKey::BULLET]			= new Bitmap(eImageKey::BULLET			, L"../Resource/Projectile.bmp");
 	imageList[eImageKey::ITEM]				= new Bitmap(eImageKey::ITEM			, L"../Resource/Item.bmp");
 	imageList[eImageKey::ENEMY_NORMAL]		= new Bitmap(eImageKey::ENEMY_NORMAL	, L"../Resource/Enemy_Normal.bmp");

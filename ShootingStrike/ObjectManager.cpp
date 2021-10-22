@@ -10,8 +10,11 @@ ObjectManager* ObjectManager::pInstance = nullptr;
 
 void ObjectManager::Initialize()
 {
+	Release();
+
 	pPrototypeObject = new Prototype;
 	pPrototypeObject->CreatePrototype();
+	pPlayer = nullptr;
 }
 
 void ObjectManager::Update()
@@ -369,8 +372,12 @@ Object* ObjectManager::FindObjectWithTag(eObjectKey _objectKey, eTagName _tagNam
 
 void ObjectManager::Release()
 {
+	// ** Delete PrototypeObject
+	Safe_Delete(pPrototypeObject);
+
 	// ** Recall Player
-	RecallObject(pPlayer);
+	if ( pPlayer )
+		RecallObject(pPlayer);	
 	
 	/** 
 	* Object / Bridge EnableList에 대한 Recall 처리.
@@ -428,5 +435,5 @@ void ObjectManager::Release()
 		}
 		listIter->second.clear();
 	}
-	disableBridgeList.clear();
+	disableBridgeList.clear();	
 }

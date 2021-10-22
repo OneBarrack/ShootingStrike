@@ -7,6 +7,7 @@ public:
 	typedef UIBridge Super;
 
 private:
+	Bitmap* pBkgImage;
 	Bitmap* pPlayerImage;
 	float mapProgressRatio;
 
