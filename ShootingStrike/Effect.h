@@ -17,7 +17,6 @@ public:
 
 public:
 	Effect();
-	Effect(const Transform& _rTransInfo) : Object(_rTransInfo) {}
 	virtual ~Effect();
 };
 

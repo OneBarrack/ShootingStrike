@@ -24,7 +24,13 @@ Player::Player()
 	, isSpawing(false)
 	, bReSpawn(false)
 	, isDied(false)
+	, isInvicible(false)
+	, bCantAccessInput(false)
 	, oldPosition(Vector3())
+	, cantAccessInputTimer(0)
+	, cantAccessInputDurationTime(0)
+	, invincibleTimer(0)
+	, invicibleDurationTime(0)
 {
 }
 

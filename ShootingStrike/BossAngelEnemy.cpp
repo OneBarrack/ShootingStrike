@@ -626,7 +626,7 @@ void BossAngelEnemy::Action(eActionType _ActionType)
 			if ( actionState == eActionState::READY )
 			{
 				actionTime = GetTickCount64();
-				speed = 2.5f;
+				speed = 3.0f;
 				moveCount = 5;
 
 				static_cast<Enemy*>(pOwner)->MoveTo(
@@ -648,7 +648,7 @@ void BossAngelEnemy::Action(eActionType _ActionType)
 				{
 					actionTime = GetTickCount64();
 
-					float bulletSpeed = 5.0f;
+					float bulletSpeed = 4.0f;
 
 					// 몸체 기준 좌우로 Scale 간격을 두고 5개의 Bullet 발사
 					for ( int offset = 0; offset < 5; ++offset )

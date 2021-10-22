@@ -24,7 +24,6 @@ public:
 
 public:
 	Item();
-	Item(const Transform& _rTransInfo) : Object(_rTransInfo) {}
 	virtual ~Item();
 };
 

@@ -79,7 +79,6 @@ void SpreadAfterDelayBullet::Update()
 		}
 		bDelayOver = true;
 
-		cout << spreadCount << endl;
 		// 총알을 퍼뜨려 생성 후 삭제
 		pOwner->SetStatus(eObjectStatus::DESTROYED);
 	}

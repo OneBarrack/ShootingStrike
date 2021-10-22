@@ -155,6 +155,5 @@ public:
 
 public:
 	Object();
-	Object(const Transform& _rTransInfo) : transInfo(_rTransInfo) { }
 	virtual ~Object();
 };

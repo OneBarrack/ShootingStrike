@@ -24,6 +24,7 @@ Enemy::Enemy()
 	, deathScore(0)
 	, oldPosition(Vector3())
 	, fireBulletIntervalTime(0)
+	, moveState(eMoveState::READY)
 	, totalDegreeForSpin(0.0f)
 {
 
@@ -59,6 +60,7 @@ void Enemy::Initialize()
 	speed = 3.0f;
 	fireBulletIntervalTime = 0;
 	destPosition = Vector3();
+	moveState = eMoveState::READY;
 	totalDegreeForSpin = 0.0f;
 
 	InitMoveInfo();

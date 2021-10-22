@@ -17,7 +17,6 @@ public:
 
 public:
 	UserInterface();
-	UserInterface(const Transform& _rTransInfo) : Object(_rTransInfo) {}
 	virtual ~UserInterface();
 };
 

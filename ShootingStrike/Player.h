@@ -108,7 +108,6 @@ private:
 
 public:
 	Player();
-	Player(const Transform& _rTransInfo) : Object(_rTransInfo) { }
 	virtual ~Player();
 };
 

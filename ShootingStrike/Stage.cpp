@@ -34,9 +34,12 @@ Stage::Stage()
 	, pLifeTextUI(nullptr)
 	, pLifeUI(nullptr)
 	, pGameOverUI(nullptr)
+	, pGameClearUI(nullptr)
+	, pBombTextUI(nullptr)
 	, pBombUI(nullptr)
 	, pBossAngelEnemy(nullptr)
 	, pBossEnemyProgressBar(nullptr)	
+	, pMapProgress(nullptr)
 {
 
 }

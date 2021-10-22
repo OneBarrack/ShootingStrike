@@ -128,6 +128,5 @@ private:
 
 public:
 	Enemy();
-	Enemy(const Transform& _rTransInfo) : Object(_rTransInfo) { }
 	virtual ~Enemy();
 };

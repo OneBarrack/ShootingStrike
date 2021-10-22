@@ -32,7 +32,6 @@ private:
 
 public:
 	Bullet();
-	Bullet(const Transform& _rTransInfo) : Object(_rTransInfo) { }
 	virtual ~Bullet();
 };
 
