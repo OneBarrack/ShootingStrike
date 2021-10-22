@@ -11,6 +11,7 @@
 #include "Item.h"
 #include "Background.h"
 #include "GuideBullet.h"
+#include "Bullet.h"
 
 Player::Player()
 	: damage(0)
@@ -18,6 +19,8 @@ Player::Player()
 	, maxLife(0)
 	, power(0)
 	, maxPower(0)
+	, bomb(0)
+	, maxBomb(0)
 	, isSpawing(false)
 	, bReSpawn(false)
 	, isDied(false)
@@ -55,6 +58,8 @@ void Player::Initialize()
 	maxLife = 10;
 	power = 1;
 	maxPower = 5;
+	bomb = 2;
+	maxBomb = 2;
 
 	isSpawing = false;
 	isDied = false;
@@ -104,14 +109,6 @@ void Player::Update()
 	// ** 키 입력이 막힌 상태가 아니라면
 	if ( !bCantAccessInput )
 	{
-		#ifdef GAME_DEBUG_MODE
-		// _Debug_
-		if ( CHECK_KEYINPUT_STATE(eInputKey::KEY_ENTER, eKeyInputState::DOWN) )
-		{
-			PowerUp();
-		}
-		#endif // GAME_DEBUG_MODE
-
 		if ( CHECK_KEYINPUT_STATE(eInputKey::KEY_LEFT, eKeyInputState::PRESSED) )
 		{
 			transInfo.Position.x -= 3;
@@ -130,7 +127,7 @@ void Player::Update()
 		}
 
 		// ** 미사일 발사
-		if ( CHECK_KEYINPUT_STATE(eInputKey::KEY_SPACE, eKeyInputState::PRESSED) )
+		if ( CHECK_KEYINPUT_STATE(eInputKey::KEY_Z, eKeyInputState::PRESSED) )
 		{
 			static ULONGLONG fireTime = 0; 
 			int fireDelay = 100;
@@ -141,6 +138,11 @@ void Player::Update()
 
 				Fire(power, damage);
 			}
+		}
+
+		if ( CHECK_KEYINPUT_STATE(eInputKey::KEY_X, eKeyInputState::DOWN) )
+		{
+			ActivateBomb();
 		}
 	}
 
@@ -213,6 +215,22 @@ void Player::LifeDown(bool _bMin)
 
 	if ( _bMin || life < 0 )
 		life = 0;
+}
+
+void Player::BombUp(bool _bMax)
+{
+	bomb++;
+
+	if ( _bMax || maxBomb < bomb )
+		bomb = maxBomb;
+}
+
+void Player::BombDown(bool _bMin)
+{
+	--bomb;
+
+	if ( _bMin || bomb < 0 )
+		bomb = 0;
 }
 
 void Player::Fire(int _power, int _damage)
@@ -413,6 +431,63 @@ void Player::Fire(int _power, int _damage)
 	}
 }
 
+void Player::ActivateBomb()
+{
+	// ** Bomb가 남아있다면
+	if ( bomb > 0 )
+	{
+		// ** Player의 Bullet과 None/Boss Enemy를 제외한 Bullet들을 모두 Coin Item으로 변환시킨다.
+		
+		// ** 모든 Enemy를 탐색한다.
+		list<Object*> enemyList = ObjectManager::GetInstance()->GetObjectList(eObjectKey::ENEMY);
+		for ( Object* pEnemy : enemyList )
+		{
+			// ** Boss Enemy가 아니라면 
+			if ( static_cast<Enemy*>(pEnemy)->GetEnemyType() != eEnemyType::NONE &&
+				static_cast<Enemy*>(pEnemy)->GetEnemyType() != eEnemyType::ENEMY_BOSS_ANGEL )
+			{
+				// ** Bullet을 Coin Item으로 변환시킨다.
+				Bridge* pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::ITEM_GO_TO_PLAYER);
+				Object* pObject = ObjectManager::GetInstance()->NewObject(eObjectKey::ITEM);
+				pObject->SetPosition(pEnemy->GetPosition());
+				pObject->SetScale(20.0f, 20.0f);
+				pObject->SetDirection(Vector3(0.0f, -1.0f));
+				pObject->SetSpeed(3.0f);
+				pObject->SetAcceleration(0.1f);
+				pObject->SetBridge(pBridge);
+				static_cast<Item*>(pObject)->SetItemType(eItemType::COIN);
+
+				pEnemy->SetStatus(eObjectStatus::DESTROYED);
+			}
+		}
+
+		// ** 모든 Bullet을 탐색한다.
+		list<Object*> bulletList = ObjectManager::GetInstance()->GetObjectList(eObjectKey::BULLET);
+		for ( Object* pBullet : bulletList )
+		{
+			// ** Player의 Bullet이 아니라면 
+			if ( static_cast<Bullet*>(pBullet)->GetOwner()->GetKey() != eObjectKey::PLAYER )
+			{
+				// ** Bullet을 Coin Item으로 변환시킨다.
+				Bridge* pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::ITEM_GO_TO_PLAYER);
+				Object* pObject = ObjectManager::GetInstance()->NewObject(eObjectKey::ITEM);
+				pObject->SetPosition(pBullet->GetPosition());
+				pObject->SetScale(20.0f, 20.0f);
+				pObject->SetDirection(Vector3(0.0f, -1.0f));
+				pObject->SetSpeed(3.0f);
+				pObject->SetAcceleration(0.1f);
+				pObject->SetBridge(pBridge);
+				static_cast<Item*>(pObject)->SetItemType(eItemType::COIN);
+
+				pBullet->SetStatus(eObjectStatus::DESTROYED);
+			}
+		}
+
+		// ** Bomb 감소
+		BombDown();
+	}
+}
+
 void Player::ApplyDamage(Object* _pTarget, int _damage)
 {
 	// ** 데미지를 가함
@@ -449,8 +524,9 @@ void Player::Spawn()
 	isSpawing = true;
 	objectStatus = eObjectStatus::ACTIVATED;
 
-	// ** Power 초기화
-	power = 1;
+	// ** Power, Bomb 초기화
+	PowerDown(true);
+	BombUp(true);
 
 	// ** 스타트 위치 설정
 	Background* pStageBackground = static_cast<Background*>(
@@ -653,6 +729,7 @@ void Player::OnCollision(Object* _pObject)
 			case eItemType::POWER_MAX: PowerUp(true); break;
 			case eItemType::POWER_UP:  PowerUp();	  break;
 			case eItemType::LIFE_UP:   LifeUp();	  break;
+			case eItemType::COIN: GameDataManager::GetInstance()->AddScore(258); break;
 		}
 	}
 }

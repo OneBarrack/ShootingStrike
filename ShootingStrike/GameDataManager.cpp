@@ -9,6 +9,7 @@ GameDataManager::GameDataManager()
 	: playerLife(0)
 	, score(0)
 	, FPS(0)
+	, frame(0)
 	, mapProgressRatio(0.0f)
 {
 }
@@ -23,11 +24,14 @@ void GameDataManager::Initialize()
 	playerLife = 0;
 	score = 0;
 	FPS = 0;
+	frame = 0;
 	mapProgressRatio = 0.0f;
 }
 
 void GameDataManager::Update()
 {
+	++frame;
+	
 	Player* pPlayer = static_cast<Player*>(ObjectManager::GetInstance()->GetPlayer());
 	playerPos = pPlayer->GetPosition();
 	playerLife = pPlayer->GetLife();
@@ -52,14 +56,14 @@ void GameDataManager::CalcFPS()
 {
 	// ** FPS °è»ê
 	static ULONGLONG Time = GetTickCount64();
-	static int frame = 0;
+	static int fps = 0;
 
-	++frame;
+	++fps;
 
 	if ( Time + 1000 < GetTickCount64() )
 	{
-		FPS = frame;
+		FPS = fps;
 		Time = GetTickCount64();
-		frame = 0;
+		fps = 0;
 	}
 }

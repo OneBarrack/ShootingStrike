@@ -16,6 +16,7 @@
 #include "ProgressBarUI.h"
 #include "GameDataManager.h"
 #include "MathManager.h"
+#include "BounceOnWallItem.h"
 
 Stage::Stage() 
 	: frame(0)
@@ -28,6 +29,7 @@ Stage::Stage()
 	, pScoreUI(nullptr)
 	, pLifeTextUI(nullptr)
 	, pLifeUI(nullptr)
+	, pBombUI(nullptr)
 	, pBossAngelEnemy(nullptr)
 	, pBossEnemyProgressBar(nullptr)
 {
@@ -114,6 +116,21 @@ void Stage::Initialize()
 	pLifeUI->SetPosition(pRightSideBackground->GetPosition().x, 163.0f);
 	pLifeUI->SetScale(pRightSideBackground->GetScale().x - 20.0f, 50.0f);
 	pLifeUI->SetBridge(pBridge);
+
+	// ** Bomb Text UI
+	pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::UI_TEXT);
+	pBombTextUI = ObjectManager::GetInstance()->NewObject(eObjectKey::UI);
+	pBombTextUI->SetPosition(pRightSideBackground->GetPosition().x, 210.0f);
+	pBombTextUI->SetScale(pRightSideBackground->GetScale().x - 30.0f, 20.0f);
+	pBombTextUI->SetBridge(pBridge);
+	static_cast<TextUI*>(pBridge)->SetText("BOMB", 23);
+
+	// ** Bomb UI
+	pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::UI_BOMB);
+	pBombUI = ObjectManager::GetInstance()->NewObject(eObjectKey::UI);
+	pBombUI->SetPosition(pRightSideBackground->GetPosition().x, 253.0f);
+	pBombUI->SetScale(pRightSideBackground->GetScale().x - 20.0f, 50.0f);
+	pBombUI->SetBridge(pBridge);
 
 	// ** Map Progress UI
 	pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::UI_MAP_PROGRESS);
@@ -281,6 +298,10 @@ void Stage::Release()
 		ObjectManager::GetInstance()->RecallObject(pLifeUI);
 	pLifeUI = nullptr;
 
+	if ( pBombUI )
+		ObjectManager::GetInstance()->RecallObject(pBombUI);
+	pLifeUI = nullptr;
+
 	if ( pBossAngelEnemy )		 
 		ObjectManager::GetInstance()->RecallObject(pBossAngelEnemy);
 	pBossAngelEnemy = nullptr;
@@ -321,42 +342,4 @@ void Stage::InitEnemySpawnPatternTimings()
 
 	enemySpawnPattern = eEnemySpawnPattern::RIGHT_BOTTOM_TO_LEFT_TOP_SPIN;
 	enemySpawnTimings.push(make_pair(50.0f, enemySpawnPattern));
-
-	//enemySpawnPattern = eEnemySpawnPattern::FALLDOWN_GO_RAND;
-	//enemySpawnTimings.push(make_pair(4.0f, enemySpawnPattern));
-	//enemySpawnTimings.push(make_pair(8.0f, enemySpawnPattern));
-	//enemySpawnTimings.push(make_pair(12.0f, enemySpawnPattern));
-	//enemySpawnTimings.push(make_pair(16.0f, enemySpawnPattern));
-	//enemySpawnTimings.push(make_pair(20.0f, enemySpawnPattern));
-	//enemySpawnTimings.push(make_pair(24.0f, enemySpawnPattern));
-	//enemySpawnTimings.push(make_pair(28.0f, enemySpawnPattern));
-	//enemySpawnTimings.push(make_pair(32.0f, enemySpawnPattern));
-	//enemySpawnTimings.push(make_pair(36.0f, enemySpawnPattern));
-	//enemySpawnTimings.push(make_pair(40.0f, enemySpawnPattern));
-
-	//enemySpawnPattern = eEnemySpawnPattern::FALLDOWN_GO;
-	//enemySpawnTimings.push(make_pair(10.0f, enemySpawnPattern));
-	//enemySpawnTimings.push(make_pair(20.0f, enemySpawnPattern));
-
-	//enemySpawnPattern = eEnemySpawnPattern::FALLDOWN_GO_AND_SPIN;
-	//enemySpawnTimings.push(make_pair(60.0f, enemySpawnPattern));
-	//enemySpawnTimings.push(make_pair(80.0f, enemySpawnPattern));
-	//enemySpawnTimings.push(make_pair(100.0f, enemySpawnPattern));
-
-	//enemySpawnPattern = eEnemySpawnPattern::FALLDOWN_BACK_AND_FORTH;
-	//enemySpawnTimings.push(make_pair(30.0f, enemySpawnPattern));
-	//enemySpawnTimings.push(make_pair(40.0f, enemySpawnPattern));
-
-	//enemySpawnPattern = eEnemySpawnPattern::FALLDOWN_GO_ACCELERATION_RAND;
-	//enemySpawnTimings.push(make_pair(60.0f, enemySpawnPattern));
-	//enemySpawnTimings.push(make_pair(64.0f, enemySpawnPattern));
-	//enemySpawnTimings.push(make_pair(68.0f, enemySpawnPattern));
-	//enemySpawnTimings.push(make_pair(72.0f, enemySpawnPattern));
-	//enemySpawnTimings.push(make_pair(76.0f, enemySpawnPattern));
-	//enemySpawnTimings.push(make_pair(80.0f, enemySpawnPattern));
-	//enemySpawnTimings.push(make_pair(84.0f, enemySpawnPattern));
-	//enemySpawnTimings.push(make_pair(88.0f, enemySpawnPattern));
-	//enemySpawnTimings.push(make_pair(92.0f, enemySpawnPattern));
-	//enemySpawnTimings.push(make_pair(96.0f, enemySpawnPattern));
-	//enemySpawnTimings.push(make_pair(100.0f, enemySpawnPattern));
 }

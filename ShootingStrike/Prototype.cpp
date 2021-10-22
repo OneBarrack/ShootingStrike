@@ -17,11 +17,12 @@
 #include "SpreadAfterDelayBullet.h"
 #include "Item.h"
 #include "BounceOnWallItem.h"
-#include "StayInPlaceItem.h"
+#include "GoToPlayerItem.h"
 #include "ButtonUI.h"
 #include "ScoreUI.h"
 #include "TextUI.h"
 #include "LifeUI.h"
+#include "BombUI.h"
 #include "ProgressBarUI.h"
 #include "MapProgressUI.h"
 #include "ExplosionEffect.h"
@@ -61,11 +62,12 @@ void Prototype::CreatePrototype()
 	bridgePrototypeList[eBridgeKey::BULLET_GUIDE]				  = new GuideBullet;
 	bridgePrototypeList[eBridgeKey::BULLET_SPREAD_AFTER_DELAY]	  = new SpreadAfterDelayBullet;
 	bridgePrototypeList[eBridgeKey::ITEM_BOUNCE_ON_WALL]		  = new BounceOnWallItem;
-	bridgePrototypeList[eBridgeKey::ITEM_STAY_IN_PLACE]			  = new StayInPlaceItem;
+	bridgePrototypeList[eBridgeKey::ITEM_GO_TO_PLAYER]			  = new GoToPlayerItem;
 	bridgePrototypeList[eBridgeKey::UI_BUTTON]					  = new ButtonUI;
 	bridgePrototypeList[eBridgeKey::UI_SCORE]					  = new ScoreUI;
 	bridgePrototypeList[eBridgeKey::UI_TEXT]					  = new TextUI;
 	bridgePrototypeList[eBridgeKey::UI_LIFE]					  = new LifeUI;
+	bridgePrototypeList[eBridgeKey::UI_BOMB]					  = new BombUI;
 	bridgePrototypeList[eBridgeKey::UI_PROGRESSBAR]				  = new ProgressBarUI;
 	bridgePrototypeList[eBridgeKey::UI_MAP_PROGRESS]			  = new MapProgressUI;
 	bridgePrototypeList[eBridgeKey::EFFECT_EXPLOSION]			  = new ExplosionEffect;

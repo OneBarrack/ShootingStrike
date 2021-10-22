@@ -19,6 +19,8 @@ InputManager::InputManager()
 	AddOverlapKey(eInputKey::KEY_ESCAPE, VK_ESCAPE);
 	AddOverlapKey(eInputKey::KEY_SPACE, VK_SPACE);
 	AddOverlapKey(eInputKey::KEY_ENTER, VK_RETURN);
+	AddOverlapKey(eInputKey::KEY_Z, 'Z');
+	AddOverlapKey(eInputKey::KEY_X, 'X');
 	AddOverlapKey(eInputKey::KEY_LBUTTON, VK_LBUTTON);
 	AddOverlapKey(eInputKey::KEY_F8, VK_F8);
 }

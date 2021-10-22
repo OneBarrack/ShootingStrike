@@ -9,6 +9,8 @@ enum class eInputKey
 	KEY_ESCAPE	,
 	KEY_SPACE	,
 	KEY_ENTER	,
+	KEY_Z		,
+	KEY_X		,
 	KEY_LBUTTON	, // ** 마우스 좌측 키 입력 확인.
 	KEY_F8		,
 	KEY_MAX		, // ** 총 Key 개수.
@@ -55,11 +57,12 @@ enum class eBridgeKey
 	BULLET_GUIDE				,
 	BULLET_SPREAD_AFTER_DELAY	,
 	ITEM_BOUNCE_ON_WALL			,
-	ITEM_STAY_IN_PLACE			,
+	ITEM_GO_TO_PLAYER			,
 	UI_BUTTON					,
 	UI_SCORE					,
 	UI_TEXT						,
 	UI_LIFE						,
+	UI_BOMB						,
 	UI_PROGRESSBAR				,
 	UI_MAP_PROGRESS				,
 	EFFECT_EXPLOSION			,

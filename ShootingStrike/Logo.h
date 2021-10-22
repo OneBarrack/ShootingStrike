@@ -5,9 +5,9 @@ class Object;
 class Logo : public Scene
 {
 private:
-	Object* pBackground;
-	Object* pLogoTitle;
-	Object* pPlayButton;
+	HWND hVideo;
+	ULONGLONG tickTime;
+	int videoPlayTime;
 
 public:
 	virtual void Initialize()override;

@@ -41,12 +41,13 @@ void MainUpdate::Update()
 void MainUpdate::Render()
 {
 	// ** Buffer DC
-	HDC bufferDC = RenderManager::GetBufferDC();	
+	HDC bufferDC = RenderManager::GetBufferDC();
 	SceneManager::GetInstance()->Render(bufferDC);	
 	GameDebugManager::GetInstance()->Render(bufferDC);
 
-	// ** HDC
-	RenderManager::RenderToScreen(mHdc);
+	// ** Logo Page를 제외하고 HDC 렌더링
+	if ( SceneManager::GetInstance()->GetCurrentSceneID() != eSCENEID::LOGO)	
+		RenderManager::RenderToScreen(mHdc);
 }
 
 void MainUpdate::Release()

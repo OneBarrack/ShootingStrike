@@ -15,6 +15,8 @@ private:
 	int maxLife;
 	int power;
 	int maxPower;
+	int bomb;
+	int maxBomb;
 
 	// ** 스폰중인지
 	bool isSpawing;
@@ -56,15 +58,21 @@ public:
 
 	// ** Life 반환
 	int GetLife() { return life; }
+	int GetBomb() { return bomb; }
 
 	// ** Power,Life Up / Down
 	void PowerUp(bool _bMax = false);
 	void PowerDown(bool _bMin = false);
 	void LifeUp(bool _bMax = false);
 	void LifeDown(bool _bMin = false);
+	void BombUp(bool _bMax = false);
+	void BombDown(bool _bMin = false);
 
 	// ** 미사일 발사
 	void Fire(int _power, int _damage);
+
+	// ** Bomb Skill 발동
+	void ActivateBomb();
 
 	// ** 데미지를 입힘
 	void ApplyDamage(Object* _pTarget, int _damage);

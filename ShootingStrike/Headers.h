@@ -18,8 +18,12 @@ using namespace std;
 #include "Define.h"
 #include "Bitmap.h"
 
+// ** Image
 #pragma comment(lib, "msimg32.lib")
 
+// ** Video
+#include <Vfw.h>
+#pragma comment(lib, "vfw32.lib")
 
 extern HWND g_hWnd;
 

@@ -142,6 +142,7 @@
     <ClInclude Include="BackgroundBridge.h" />
     <ClInclude Include="Bitmap.h" />
     <ClInclude Include="BitmapManager.h" />
+    <ClInclude Include="BombUI.h" />
     <ClInclude Include="BossAngelEnemy.h" />
     <ClInclude Include="BounceOnWallItem.h" />
     <ClInclude Include="Bridge.h" />
@@ -156,6 +157,7 @@
     <ClInclude Include="EffectBridge.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemySpawnPatternScript.h" />
+    <ClInclude Include="Intro.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemBridge.h" />
     <ClInclude Include="MapProgressUI.h" />
@@ -173,7 +175,7 @@
     <ClInclude Include="LifeUI.h" />
     <ClInclude Include="ProgressBarUI.h" />
     <ClInclude Include="SpreadAfterDelayBullet.h" />
-    <ClInclude Include="StayInPlaceItem.h" />
+    <ClInclude Include="GoToPlayerItem.h" />
     <ClInclude Include="TextUI.h" />
     <ClInclude Include="Logo.h" />
     <ClInclude Include="ScoreUI.h" />
@@ -208,6 +210,7 @@
     <ClCompile Include="BackgroundBridge.cpp" />
     <ClCompile Include="Bitmap.cpp" />
     <ClCompile Include="BitmapManager.cpp" />
+    <ClCompile Include="BombUI.cpp" />
     <ClCompile Include="BossAngelEnemy.cpp" />
     <ClCompile Include="BounceOnWallItem.cpp" />
     <ClCompile Include="Bridge.cpp" />
@@ -220,6 +223,7 @@
     <ClCompile Include="EffectBridge.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemySpawnPatternScript.cpp" />
+    <ClCompile Include="Intro.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemBridge.cpp" />
     <ClCompile Include="MapProgressUI.cpp" />
@@ -234,7 +238,7 @@
     <ClCompile Include="LifeUI.cpp" />
     <ClCompile Include="ProgressBarUI.cpp" />
     <ClCompile Include="SpreadAfterDelayBullet.cpp" />
-    <ClCompile Include="StayInPlaceItem.cpp" />
+    <ClCompile Include="GoToPlayerItem.cpp" />
     <ClCompile Include="TextUI.cpp" />
     <ClCompile Include="Logo.cpp" />
     <ClCompile Include="ScoreUI.cpp" />

@@ -19,6 +19,7 @@ private:
 	int playerLife;
 	int score;
 	int FPS;
+	ULONGLONG frame;
 	float mapProgressRatio;
 
 public:
@@ -29,6 +30,7 @@ public:
 	int GetPlayerLife() { return playerLife; }
 	int GetScore() { return score; }
 	int GetFPS() { return FPS; }
+	ULONGLONG GetFrame() { return frame; }
 	float GetMapProgressRatio() { return mapProgressRatio; }
 
 	void AddScore(int _score);

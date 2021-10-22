@@ -6,11 +6,17 @@
 SceneManager* SceneManager::pInstance = nullptr;
 
 
+eSCENEID SceneManager::GetCurrentSceneID()
+{
+	return sceneId;
+}
+
 void SceneManager::SetScene(eSCENEID _sceneID)
 {
 	::Safe_Delete(pSceneState);
-	
-	switch (_sceneID)
+	sceneId = _sceneID;
+
+	switch ( sceneId )
 	{
 	case eSCENEID::LOGO:
 		pSceneState = new Logo;
