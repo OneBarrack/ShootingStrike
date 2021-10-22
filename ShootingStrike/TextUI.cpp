@@ -68,6 +68,10 @@ bool TextUI::SetText(string _text, int _textSize)
 {
 	textSize = _textSize;
 
+	// ** textList가 있다면 비워주고 다시 채운다
+	if ( !splitTextList.empty() )
+		splitTextList.clear();
+
 	for ( char c : _text )
 	{
 		if ( isalpha(c) )
@@ -83,7 +87,7 @@ bool TextUI::SetText(string _text, int _textSize)
 		}
 		else if ( isdigit(c) )
 		{
-			splitTextList.push_back(make_pair(eTextType::NUMBER, c));
+			splitTextList.push_back(make_pair(eTextType::NUMBER, c - '0'));
 		}
 		else
 		{

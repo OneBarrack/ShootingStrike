@@ -437,7 +437,7 @@ void Player::Fire(int _power, int _damage)
 	}
 }
 
-void Player::ActivateBomb()
+void Player::ActivateBomb(bool _bPlayAnimation)
 {
 	// ** Bomb가 남아있다면
 	if ( bomb > 0 )
@@ -503,8 +503,27 @@ void Player::ApplyDamage(Object* _pTarget, int _damage)
 			Enemy* pEnemy = static_cast<Enemy*>(_pTarget);
 			pEnemy->TakeDamage(_damage);
 			
-			// ** Enemy가 죽었다면 DeathPoint, Hit만 했다면 HitPoint Score를 받아온다.			
-			int score = pEnemy->IsDead() ? pEnemy->GetDeathPoint() : pEnemy->GetHitPoint();
+			int score = 0;
+
+			// ** Enemy가 죽었다면 DeathPoint, Hit만 했다면 HitPoint Score를 받아온다.
+			if ( pEnemy->IsDied() )
+			{
+				score = pEnemy->GetDeathPoint();
+
+				// ** Enemy가 Boss 였다면
+				if ( pEnemy->GetEnemyType() == eEnemyType::ENEMY_BOSS_ANGEL )
+				{
+					// ** Bomb Skill을 애니메이션 없이 발동시켜 
+					// ** 남아있는 Bullet들을 Coin으로 처리하여 정리한다.
+					BombUp();
+					ActivateBomb(false);
+				}
+			}
+			else
+			{
+				score = pEnemy->GetHitPoint();
+			}
+			
 			GameDataManager::GetInstance()->AddScore(score);
 			break;
 		}		
@@ -527,7 +546,10 @@ void Player::TakeDamage(int _damage)
 void Player::Spawn()
 {
 	isSpawing = true;
-	objectStatus = eObjectStatus::ACTIVATED;
+	
+	// ** 플레이어 오브젝트 활성화 및 충돌 활성화
+	SetStatus(eObjectStatus::ACTIVATED);
+	bGenerateCollisionEvent = true;
 
 	// ** Power, Bomb 초기화
 	PowerDown(true);
@@ -538,7 +560,7 @@ void Player::Spawn()
 		ObjectManager::GetInstance()->FindObjectWithTag(eTagName::STAGE_MAIN_BKG));
 			
 	transInfo.Position.x = pStageBackground->GetPosition().x;
-	transInfo.Position.y = (pStageBackground->GetPosition().y + (pStageBackground->GetScale().y * 0.5f)) + 30;	
+	transInfo.Position.y = (pStageBackground->GetPosition().y + (pStageBackground->GetScale().y * 0.5f)) + 30;
 
 	// ** 키 입력을 막음
 	bCantAccessInput = true;
@@ -561,6 +583,9 @@ void Player::Die()
 {
 	// ** bDied flag true 세팅
 	isDied = true;
+
+	// ** 충돌 비활성화
+	bGenerateCollisionEvent = false;
 
 	// ** Life 감소
 	LifeDown();

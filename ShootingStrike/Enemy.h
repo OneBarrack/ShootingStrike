@@ -89,7 +89,7 @@ public:
 	// ** Move Info √ ±‚»≠
 	void InitMoveInfo();
 
-	bool IsDead() { return isDied; }
+	bool IsDied() { return isDied; }
 	bool IsSpawning() { return isSpawing; }
 
 	eEnemyType GetEnemyType() { return enemyType; }

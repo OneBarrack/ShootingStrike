@@ -12,6 +12,9 @@ private:
 	Object* pYesButton;
 	Object* pNoButton;
 
+	// ** Object가 초기화 되었는지
+	bool bInitializedObjects;
+
 	// ** AlphaBlend시 사용할 데이터
 	BYTE alpha;
 	int fadeSpeed;

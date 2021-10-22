@@ -21,6 +21,7 @@ private:
 	int FPS;
 	ULONGLONG frame;
 	float mapProgressRatio;
+	ULONGLONG playTime;
 
 public:
 	void Initialize();
@@ -32,6 +33,8 @@ public:
 	int GetFPS() { return FPS; }
 	ULONGLONG GetFrame() { return frame; }
 	float GetMapProgressRatio() { return mapProgressRatio; }
+	ULONGLONG GetPlayTime() { return playTime; }
+	string GetPlayTimeStrFormat();
 
 	void AddScore(int _score);
 

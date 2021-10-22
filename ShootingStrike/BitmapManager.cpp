@@ -8,6 +8,7 @@ void BitmapManager::Initialize()
 	imageList[eImageKey::BUFFER]			= new Bitmap(eImageKey::BUFFER			, L"../Resource/Buffer.bmp");
 	imageList[eImageKey::FADEBACK_BLACK]	= new Bitmap(eImageKey::FADEBACK_BLACK	, L"../Resource/FadeBack_Black.bmp");
 	imageList[eImageKey::FADEBACK_RED]		= new Bitmap(eImageKey::FADEBACK_RED	, L"../Resource/FadeBack_Red.bmp");
+	imageList[eImageKey::FADEBACK_WHITE]	= new Bitmap(eImageKey::FADEBACK_WHITE	, L"../Resource/FadeBack_White.bmp");
 	imageList[eImageKey::LOGO]				= new Bitmap(eImageKey::LOGO			, L"../Resource/Logo.bmp");
 	imageList[eImageKey::LOGOBACK]			= new Bitmap(eImageKey::LOGOBACK		, L"../Resource/LogoBack.bmp");
 	imageList[eImageKey::MENUBACK]			= new Bitmap(eImageKey::MENUBACK		, L"../Resource/MenuBack.bmp");
@@ -18,6 +19,7 @@ void BitmapManager::Initialize()
 	imageList[eImageKey::SCORE]				= new Bitmap(eImageKey::SCORE			, L"../Resource/Score.bmp");
 	imageList[eImageKey::NUMBER]			= new Bitmap(eImageKey::NUMBER			, L"../Resource/Number.bmp");
 	imageList[eImageKey::GAMEOVER]			= new Bitmap(eImageKey::GAMEOVER		, L"../Resource/GameOver.bmp");
+	imageList[eImageKey::GAMECLEAR]			= new Bitmap(eImageKey::GAMECLEAR		, L"../Resource/GameClear.bmp");
 	imageList[eImageKey::PROGRESSBAR]		= new Bitmap(eImageKey::PROGRESSBAR		, L"../Resource/UI_ProgressBar.bmp");
 	imageList[eImageKey::PLAYBUTTON]		= new Bitmap(eImageKey::PLAYBUTTON		, L"../Resource/UI_Button_Play.bmp");
 	imageList[eImageKey::PLAY_QUIT_BUTTON]  = new Bitmap(eImageKey::PLAY_QUIT_BUTTON, L"../Resource/UI_Button_Play_Quit.bmp");

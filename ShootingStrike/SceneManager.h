@@ -23,7 +23,8 @@ private:
 	eSCENEID nextSceneId;
 
 public:
-	eSCENEID GetCurrentSceneID();
+	eSCENEID GetCurrentSceneID() { return curSceneId; }
+	Scene* GetScene() { return pSceneState; }
 	void SetScene(eSCENEID _sceneID);
 	
 	void Update();
@@ -34,8 +35,8 @@ private:
 	void SceneStart(eSCENEID _sceneID);
 
 private:
-	SceneManager() : pSceneState(nullptr) {}
+	SceneManager();
 public:
-	~SceneManager() { Release(); }
+	~SceneManager();
 };
 

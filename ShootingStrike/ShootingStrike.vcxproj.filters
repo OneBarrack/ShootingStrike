@@ -202,6 +202,9 @@
     <Filter Include="소스 파일\02. Object\UI\UIBridge\GameOverUI">
       <UniqueIdentifier>{9cb468a0-c0c6-4b70-a61b-0cfaed048e71}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\02. Object\UI\UIBridge\GameClearUI">
+      <UniqueIdentifier>{4c28f9c4-f95e-42cc-b80e-9864e00f2b77}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers.h">
@@ -405,6 +408,9 @@
     <ClInclude Include="GameOverUI.h">
       <Filter>소스 파일\02. Object\UI\UIBridge\GameOverUI</Filter>
     </ClInclude>
+    <ClInclude Include="GameClearUI.h">
+      <Filter>소스 파일\02. Object\UI\UIBridge\GameClearUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ShootingStrike.cpp">
@@ -580,6 +586,9 @@
     </ClCompile>
     <ClCompile Include="GameOverUI.cpp">
       <Filter>소스 파일\02. Object\UI\UIBridge\GameOverUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameClearUI.cpp">
+      <Filter>소스 파일\02. Object\UI\UIBridge\GameClearUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -11,6 +11,7 @@ GameOverUI::GameOverUI()
 	, pFadeBackImage(nullptr)
 	, pYesButton(nullptr)
 	, pNoButton(nullptr)
+	, bInitializedObjects(false)
 	, alpha(0)
 	, fadeSpeed(0)
 {
@@ -26,13 +27,14 @@ void GameOverUI::Initialize()
 {
 	Super::Initialize();
 	
-	key = eBridgeKey::UI_GAMEOVER;
-
-	alpha = 0;
-	fadeSpeed = 3;
+	key = eBridgeKey::UI_GAMEOVER;	
 
 	pGameOverImage = BitmapManager::GetInstance()->GetImage(eImageKey::GAMEOVER);
-	pFadeBackImage = BitmapManager::GetInstance()->GetImage(eImageKey::FADEBACK_RED);
+	pFadeBackImage = BitmapManager::GetInstance()->GetImage(eImageKey::FADEBACK_RED);	
+	
+	bInitializedObjects = false;
+	alpha = 0;
+	fadeSpeed = 3;
 
 	InitButton();
 }
@@ -41,7 +43,7 @@ void GameOverUI::Update()
 {
 	Super::Update();
 
-	if ( pYesButton && pNoButton )
+	if ( bInitializedObjects )
 	{
 		// ** Yes : Logo∑Œ ¿Ãµø
 		if ( static_cast<ButtonUI*>(pYesButton->GetBridgeObject())->OnClick() )
@@ -120,9 +122,9 @@ void GameOverUI::InitButton()
 		pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::UI_BUTTON);
 		pYesButton = ObjectManager::GetInstance()->NewObject(eObjectKey::UI);
 		pYesButton->SetImage(eImageKey::YES_NO_BUTTON);
-		pYesButton->SetPosition(pOwner->GetPosition().x - (pOwner->GetScale().x * 0.11f),
-								 pOwner->GetPosition().y + (pOwner->GetScale().y * 0.2f));
-		pYesButton->SetScale(100.0f, 50.0f);
+		pYesButton->SetPosition(Vector3(pOwner->GetPosition().x - (pOwner->GetScale().x * 0.11f),
+								 pOwner->GetPosition().y + (pOwner->GetScale().y * 0.2f)));
+		pYesButton->SetScale(Vector3(100.0f, 50.0f));
 		pYesButton->SetCollider(pYesButton->GetTransInfo());
 		pYesButton->SetBridge(pBridge);
 
@@ -130,12 +132,14 @@ void GameOverUI::InitButton()
 		pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::UI_BUTTON);
 		pNoButton = ObjectManager::GetInstance()->NewObject(eObjectKey::UI);
 		pNoButton->SetImage(eImageKey::YES_NO_BUTTON);
-		pNoButton->SetPosition(pOwner->GetPosition().x + (pOwner->GetScale().x * 0.09f),
-								 pOwner->GetPosition().y + (pOwner->GetScale().y * 0.2f));
-		pNoButton->SetScale(100.0f, 50.0f);
+		pNoButton->SetPosition(Vector3(pOwner->GetPosition().x + (pOwner->GetScale().x * 0.09f),
+									 pOwner->GetPosition().y + (pOwner->GetScale().y * 0.2f)));
+		pNoButton->SetScale(Vector3(100.0f, 50.0f));
 		pNoButton->SetCollider(pNoButton->GetTransInfo());
 		pNoButton->SetBridge(pBridge);
 		static_cast<ButtonUI*>(pBridge)->SetButtonTypeIndex(1);
+
+		bInitializedObjects = true;
 	}
 	else
 	{

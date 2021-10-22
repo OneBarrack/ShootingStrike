@@ -94,7 +94,7 @@ void MapProgressUI::Render(HDC _hdc)
 	// ** Box
 	Transform boxTransInfo = pOwner->GetTransInfo();
 	boxTransInfo.Scale = boxTransInfo.Scale + 1.0f;
-	RenderManager::DrawRect(_hdc, boxTransInfo, RGB(53, 53, 53));
+	RenderManager::DrawRect(_hdc, boxTransInfo, RGB(128, 65, 217));
 
 	// ** Player Image
 	TransparentBlt(_hdc,

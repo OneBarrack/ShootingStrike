@@ -20,11 +20,15 @@
 
 Stage::Stage() 
 	: frame(0)
+	, startTime(0)
+	, currentTime(0)
+	, bSpawnedBossEnemy(false)
 	, pPlayer(nullptr)
 	, pStageDummyEnemy(nullptr)
 	, pBackground(nullptr)
 	, pLeftSideBackground(nullptr)
 	, pRightSideBackground(nullptr)
+	, pPlayTimeTextUI(nullptr)
 	, pScoreTextUI(nullptr)
 	, pScoreUI(nullptr)
 	, pLifeTextUI(nullptr)
@@ -32,7 +36,7 @@ Stage::Stage()
 	, pGameOverUI(nullptr)
 	, pBombUI(nullptr)
 	, pBossAngelEnemy(nullptr)
-	, pBossEnemyProgressBar(nullptr)
+	, pBossEnemyProgressBar(nullptr)	
 {
 
 }
@@ -47,8 +51,17 @@ void Stage::Initialize()
 	/******* Stage Start *******/
 	isStartingScene = true;
 
+	// ** Init Frame
 	frame = 1;
 
+	// ** Init Stage Time 
+	startTime = GetTickCount64();
+	currentTime = GetTickCount64();
+
+	// ** Init spawned boss enemy
+	bSpawnedBossEnemy = false;
+
+	// ***** Start Init Objects ***** //
 	Bridge* pBridge = nullptr;
 	
 	// ** Player
@@ -87,6 +100,16 @@ void Stage::Initialize()
 	pRightSideBackground->SetPosition(WINDOWS_WIDTH - pLeftSideBackground->GetPosition().x, WINDOWS_HEIGHT * 0.5f);
 	pRightSideBackground->SetScale((WINDOWS_WIDTH - pBackground->GetScale().x) * 0.5f, WINDOWS_HEIGHT);
 	pRightSideBackground->SetBridge(pBridge);
+
+	// ** Play Time Text UI
+	pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::UI_TEXT);
+	pPlayTimeTextUI = ObjectManager::GetInstance()->NewObject(eObjectKey::UI);
+	pPlayTimeTextUI->SetPosition(
+		pBackground->GetPosition().x - (pBackground->GetScale().x * 0.05f),
+		pBackground->GetPosition().y - (pBackground->GetScale().y * 0.45f));
+	pPlayTimeTextUI->SetScale(100.0f, 50.0f);
+	pPlayTimeTextUI->SetBridge(pBridge);
+	static_cast<TextUI*>(pBridge)->SetText("00:00:00", 20);
 
 	// ** Score Text UI
 	pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::UI_TEXT);
@@ -138,7 +161,9 @@ void Stage::Initialize()
 	pMapProgress = ObjectManager::GetInstance()->NewObject(eObjectKey::UI);
 	pMapProgress->SetPosition(50.0f, WINDOWS_HEIGHT * 0.5f);
 	pMapProgress->SetScale(40.0f, 500.0f);
-	pMapProgress->SetBridge(pBridge);		
+	pMapProgress->SetBridge(pBridge);	
+
+	// ***** End Init Objects ***** //
 
 	// ** Initialized Enemy Spawn Pattern Script
 	enemyScript.Initialize();
@@ -152,10 +177,13 @@ void Stage::Initialize()
 
 void Stage::Update()
 {
+	// ** 현재 진행 시간 갱신
+	currentTime = GetTickCount64();
+	
 	// ** 일정 시간마다 무작위로 Bullet을 스폰시키기 위한 Time 변수와 Delay
 	static ULONGLONG bulletSpawnTime = GetTickCount64();
 	int bulletSpawnDelay;
-
+	
 	// ** 1초간격으로 시간마다 무작위로 Bullet을 스폰시킨다. (위에서 생성되어 아래로 가도록)
 	{
 		bulletSpawnDelay = 1000;
@@ -183,8 +211,15 @@ void Stage::Update()
 			// ** Bullet Spawn
 			SpawnManager::SpawnBullet(pStageDummyEnemy, bulletTransInfo, bulletSpeed, 1, eBridgeKey::BULLET_NORMAL);
 		}
-	}
+	}	
 	
+	// ** Play Time
+	if ( pPlayTimeTextUI )
+	{
+		static_cast<TextUI*>(pPlayTimeTextUI->GetBridgeObject())->SetText(
+			GameDataManager::GetInstance()->GetPlayTimeStrFormat(), 20);
+	}
+
 	// ** 맵 진행도
 	float mapProgressPercentage = GameDataManager::GetInstance()->GetMapProgressRatio() * 100.0f;
 
@@ -203,43 +238,71 @@ void Stage::Update()
 	}
 
 	// ** 맵 진행도가 90%가 넘어가면 보스 소환
-	if ( mapProgressPercentage > 90.0f )
+	if ( mapProgressPercentage > 90.0f && !bSpawnedBossEnemy )
 	{
-		if ( !pBossAngelEnemy )
+		bSpawnedBossEnemy = true;
+
+		Bridge* pBridge;
+
+		// ** EnemyBoss
+		pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::ENEMY_BOSS);
+		pBossAngelEnemy = ObjectManager::GetInstance()->NewObject(eObjectKey::ENEMY);
+		pBossAngelEnemy->SetImage(eImageKey::ENEMY_ANGEL);
+		pBossAngelEnemy->SetTagName(eTagName::ENEMY_BOSS);
+		pBossAngelEnemy->SetScale(224.0f, 320.0f);
+		pBossAngelEnemy->SetBridge(pBridge);
+		static_cast<Enemy*>(pBossAngelEnemy)->SetEnemyType(eEnemyType::ENEMY_BOSS_ANGEL);			
+		static_cast<Enemy*>(pBossAngelEnemy)->Spawn();
+
+		// ** Boss Enemy HP ProgressBar UI
+		pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::UI_PROGRESSBAR);
+		pBossEnemyProgressBar = ObjectManager::GetInstance()->NewObject(eObjectKey::UI);
+		pBossEnemyProgressBar->SetPosition(WINDOWS_WIDTH * 0.5f, 30.0f);
+		pBossEnemyProgressBar->SetScale(pBackground->GetScale().x - 30.0f, 50.0f);
+		pBossEnemyProgressBar->SetBridge(pBridge);
+
+		// ** Warning Effect
+		pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::EFFECT_WARNING);
+		Object* pObject = ObjectManager::GetInstance()->NewObject(eObjectKey::EFFECT);
+		pObject->SetImage(eImageKey::FADEBACK_RED);
+		pObject->SetPosition(WINDOWS_WIDTH * 0.5f, WINDOWS_HEIGHT * 0.25f);
+		pObject->SetScale(382.0f, 100.0f);
+		pObject->SetBridge(pBridge);
+	}
+
+	// ** 보스가 스폰 되었다면
+	if ( bSpawnedBossEnemy )
+	{		
+		Object* pBossEnemy = ObjectManager::GetInstance()->FindObjectWithTag(eTagName::ENEMY_BOSS);
+
+		// ** 보스가 생존중이면
+		if ( pBossEnemy )
 		{
-			Bridge* pBridge;
-
-			// ** EnemyBoss
-			pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::ENEMY_BOSS);
-			pBossAngelEnemy = ObjectManager::GetInstance()->NewObject(eObjectKey::ENEMY);
-			pBossAngelEnemy->SetImage(eImageKey::ENEMY_ANGEL);
-			pBossAngelEnemy->SetTagName(eTagName::ENEMY_BOSS);
-			pBossAngelEnemy->SetScale(224.0f, 320.0f);
-			pBossAngelEnemy->SetBridge(pBridge);
-			static_cast<Enemy*>(pBossAngelEnemy)->SetEnemyType(eEnemyType::ENEMY_BOSS_ANGEL);			
-			static_cast<Enemy*>(pBossAngelEnemy)->Spawn();
-
-			// ** Boss Enemy HP ProgressBar UI
-			pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::UI_PROGRESSBAR);
-			pBossEnemyProgressBar = ObjectManager::GetInstance()->NewObject(eObjectKey::UI);
-			pBossEnemyProgressBar->SetPosition(WINDOWS_WIDTH * 0.5f, 30.0f);
-			pBossEnemyProgressBar->SetScale(pBackground->GetScale().x - 30.0f, 50.0f);
-			pBossEnemyProgressBar->SetBridge(pBridge);
-
-			// ** Warning Effect
-			pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::EFFECT_WARNING);
-			Object* pObject = ObjectManager::GetInstance()->NewObject(eObjectKey::EFFECT);
-			pObject->SetImage(eImageKey::FADEBACK_RED);
-			pObject->SetPosition(WINDOWS_WIDTH * 0.5f, WINDOWS_HEIGHT * 0.25f);
-			pObject->SetScale(382.0f, 100.0f);
-			pObject->SetBridge(pBridge);
-		}
-
-		if ( pBossAngelEnemy && pBossEnemyProgressBar )
-		{
-			int bossMaxHP = static_cast<Enemy*>(pBossAngelEnemy)->GetMaxHP();
-			int bossHP = static_cast<Enemy*>(pBossAngelEnemy)->GetHP();
+			// ** 보스 체력 프로그래스 바 갱신
+			int bossMaxHP = static_cast<Enemy*>(pBossEnemy)->GetMaxHP();
+			int bossHP = static_cast<Enemy*>(pBossEnemy)->GetHP();
 			static_cast<ProgressBarUI*>(pBossEnemyProgressBar->GetBridgeObject())->SetValue(bossHP, bossMaxHP);
+		}
+		// ** 보스가 죽은상태라면
+		else
+		{
+			// ** 보스 체력 프로그래스 바 삭제
+			if ( pBossEnemyProgressBar )
+			{
+				pBossEnemyProgressBar->SetStatus(eObjectStatus::DESTROYED);
+				pBossEnemyProgressBar = nullptr;
+			}
+
+			// ** 게임 클리어 UI를 띄움
+			if ( !pGameClearUI )
+			{
+				// ** GameClear UI
+				Bridge* pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::UI_GAMECLEAR);
+				pGameClearUI = ObjectManager::GetInstance()->NewObject(eObjectKey::UI);
+				pGameClearUI->SetPosition(pBackground->GetPosition());
+				pGameClearUI->SetScale(pBackground->GetScale());
+				pGameClearUI->SetBridge(pBridge);
+			}
 		}
 	}
 
@@ -297,6 +360,10 @@ void Stage::Release()
 		ObjectManager::GetInstance()->RecallObject(pRightSideBackground);
 	pRightSideBackground = nullptr;
 
+	if ( pPlayTimeTextUI )
+		ObjectManager::GetInstance()->RecallObject(pPlayTimeTextUI);
+	pPlayTimeTextUI = nullptr;
+
 	if ( pScoreUI )				 
 		ObjectManager::GetInstance()->RecallObject(pScoreUI);
 	pScoreUI = nullptr;
@@ -313,6 +380,10 @@ void Stage::Release()
 		ObjectManager::GetInstance()->RecallObject(pGameOverUI);
 	pGameOverUI = nullptr;
 	
+	if ( pGameClearUI )
+		ObjectManager::GetInstance()->RecallObject(pGameClearUI);
+	pGameClearUI = nullptr;
+
 	if ( pLifeUI )				
 		ObjectManager::GetInstance()->RecallObject(pLifeUI);
 	pLifeUI = nullptr;

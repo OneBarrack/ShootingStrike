@@ -29,10 +29,8 @@ void Bitmap::Initialize()
 			segmentationScale = imageScale;
 			break;
 		case eImageKey::FADEBACK_BLACK:
-			imageScale = Vector3(WINDOWS_WIDTH, WINDOWS_HEIGHT);
-			segmentationScale = imageScale;
-			break;
 		case eImageKey::FADEBACK_RED:
+		case eImageKey::FADEBACK_WHITE:
 			imageScale = Vector3(WINDOWS_WIDTH, WINDOWS_HEIGHT);
 			segmentationScale = imageScale;
 			break;
@@ -75,6 +73,7 @@ void Bitmap::Initialize()
 			segmentationScale = Vector3(14.0f, 0.0f);
 			break;
 		case eImageKey::GAMEOVER:
+		case eImageKey::GAMECLEAR:
 			imageScale = Vector3(640.0f, 720.0f);
 			segmentationScale = imageScale;
 			break;

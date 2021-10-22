@@ -25,10 +25,11 @@
 #include "BombUI.h"
 #include "ProgressBarUI.h"
 #include "MapProgressUI.h"
+#include "GameOverUI.h"
+#include "GameClearUI.h"
 #include "ExplosionEffect.h"
 #include "HitEffect.h"
 #include "WarningEffect.h"
-#include "GameOverUI.h"
 
 Prototype::Prototype()
 {
@@ -69,6 +70,7 @@ void Prototype::CreatePrototype()
 	bridgePrototypeList[eBridgeKey::UI_TEXT]					  = new TextUI;
 	bridgePrototypeList[eBridgeKey::UI_LIFE]					  = new LifeUI;
 	bridgePrototypeList[eBridgeKey::UI_GAMEOVER]				  = new GameOverUI;
+	bridgePrototypeList[eBridgeKey::UI_GAMECLEAR]				  = new GameClearUI;
 	bridgePrototypeList[eBridgeKey::UI_BOMB]					  = new BombUI;
 	bridgePrototypeList[eBridgeKey::UI_PROGRESSBAR]				  = new ProgressBarUI;
 	bridgePrototypeList[eBridgeKey::UI_MAP_PROGRESS]			  = new MapProgressUI;

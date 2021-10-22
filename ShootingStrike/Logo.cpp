@@ -47,7 +47,7 @@ void Logo::Initialize()
 	MCIWndPlay(hVideo);
 	
 	tickTime = GetTickCount64();
-	videoPlayTime = 10000;
+	videoPlayTime = 15000;
 
 	/******* Logo Start *******/
 	Start();

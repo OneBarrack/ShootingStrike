@@ -5,10 +5,17 @@
 
 SceneManager* SceneManager::pInstance = nullptr;
 
-
-eSCENEID SceneManager::GetCurrentSceneID()
+SceneManager::SceneManager()
+	: pSceneState(nullptr)
+	, curSceneId(eSCENEID::NONE)
+	, nextSceneId(eSCENEID::NONE)
 {
-	return curSceneId;
+
+}
+
+SceneManager::~SceneManager()
+{
+	Release();
 }
 
 void SceneManager::SceneStart(eSCENEID _sceneID)

@@ -626,7 +626,7 @@ void BossAngelEnemy::Action(eActionType _ActionType)
 			if ( actionState == eActionState::READY )
 			{
 				actionTime = GetTickCount64();
-				speed = 3.0f;
+				speed = 2.5f;
 				moveCount = 5;
 
 				static_cast<Enemy*>(pOwner)->MoveTo(

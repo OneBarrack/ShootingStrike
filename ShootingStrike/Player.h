@@ -56,6 +56,9 @@ public:
 	// ** 무적 상태인지
 	bool IsInvicible() { return isInvicible; }
 
+	// ** 죽었는지
+	bool IsDied() { return isDied; }
+
 	// ** Life 반환
 	int GetLife() { return life; }
 	int GetBomb() { return bomb; }
@@ -72,7 +75,7 @@ public:
 	void Fire(int _power, int _damage);
 
 	// ** Bomb Skill 발동
-	void ActivateBomb();
+	void ActivateBomb(bool _bPlayAnimation = true);
 
 	// ** 데미지를 입힘
 	void ApplyDamage(Object* _pTarget, int _damage);
