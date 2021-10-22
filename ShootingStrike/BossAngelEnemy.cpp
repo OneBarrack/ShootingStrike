@@ -139,44 +139,6 @@ void BossAngelEnemy::Update()
 	collider.Position = Vector3(transInfo.Position.x, transInfo.Position.y + (transInfo.Scale.y * 0.2f));
 	collider.Scale = Vector3(transInfo.Scale.x * 0.4f, transInfo.Scale.y * 0.5f);
 
-	// _Debug_ : Update 전체 테스트 중
-	if ( CHECK_KEYINPUT_STATE(eInputKey::KEY_LBUTTON, eKeyInputState::DOWN) )
-	{
-		static int animTypeIndex = 0;
-		static int patternIndex = 0;
-
-		if ( animTypeIndex == static_cast<int>(eBossAnimationType::EVOLUTION) )
-			animTypeIndex = 0;
-		else
-			animTypeIndex++;
-
-		//if ( patternIndex == static_cast<int>(eBulletSpawnPattern::CIRCLE_GO_DELAY_SPREAD) )
-		//	patternIndex = 1;
-		//else
-		//	patternIndex++;
-		patternIndex = static_cast<int>(eBulletSpawnPattern::N_POLYGON_GO);
-		PlayAnimation(static_cast<eBossAnimationType>(animTypeIndex), false);
-
-		Transform spawnTransInfo;
-		spawnTransInfo.Position = collider.Position;
-		spawnTransInfo.Scale = collider.Scale;
-		spawnTransInfo.Direction = Vector3(0.0f, 1.0f);
-
-		bulletScript.ReadyToSpawn(pOwner, static_cast<eBulletSpawnPattern>(patternIndex), spawnTransInfo, 1);
-		
-		//SpawnManager::SpawnEffect(transInfo, eBridgeKey::EFFECT_EXPLOSION);
-		//Bridge* pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::BULLET_SPREAD_AFTER_DELAY);
-		//static_cast<SpreadAfterDelayBullet*>(pBridge)->SetDelay(1000);
-		//static_cast<SpreadAfterDelayBullet*>(pBridge)->SetSpreadCount(3);
-		//static_cast<SpreadAfterDelayBullet*>(pBridge)->SetBulletCount(5);
-		//static_cast<SpreadAfterDelayBullet*>(pBridge)->SetIntervalAngle(30);
-
-		//SpawnManager::SpawnBullet(this, bulletTransInfo, bulletSpeed, _damage, pBridge);
-	}
-
-	//transInfo.Position.x += transInfo.Direction.x * Speed;
-	//transInfo.Position.y += transInfo.Direction.y * Speed;	
-
 	// ** Owner로 가공된 데이터 전달
 	SendInfoToOwner();
 
@@ -862,22 +824,12 @@ void BossAngelEnemy::CheckPhase()
 	// 체력이 33% 미만일 시 페이즈 3
 	if ( HpRatio < 0.33f )
 	{
-		// 최초 페이즈 변경 시 
-		if ( curPhase == 2 )
-		{
-			curPhase = 3;
-			InitActionInfo();
-		} 		
+		curPhase = 3;
 	}
-	// 체력이 66% 미만일 시 페이즈 3
+	// 체력이 66% 미만일 시 페이즈 2
 	else if ( HpRatio < 0.66f )
 	{
-		// 최초 페이즈 변경 시 
-		if ( curPhase == 1 )
-		{
-			curPhase = 2;
-			InitActionInfo();
-		}		
+		curPhase = 2;
 	}
 	// 기본 페이즈 1
 	else

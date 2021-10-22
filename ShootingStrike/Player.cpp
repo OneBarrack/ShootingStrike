@@ -439,8 +439,7 @@ void Player::TakeDamage(int _damage)
 	
 	// Die
 	if ( !isDied )
-	{
-		life--;
+	{		
 		Die();
 	}
 }
@@ -481,6 +480,9 @@ void Player::Die()
 {
 	// ** bDied flag true 세팅
 	isDied = true;
+
+	// ** Life 감소
+	LifeDown();
 
 	// ** 폭발 이펙트 스폰
 	Transform explosionTransInfo;
@@ -527,14 +529,10 @@ void Player::CheckStatus()
 	// ** 무적일 시 
 	if ( isInvicible )
 	{
-		// ** 충돌 비활성화
-		bGenerateCollisionEvent = false;
-		
-		// ** 일정 딜레이 후 무적 해제 및 충돌 활성화
+		// ** 일정 딜레이 후 무적 해제
 		if ( invincibleTimer + invicibleDurationTime < GetTickCount64() )
 		{
 			isInvicible = false;
-			bGenerateCollisionEvent = true;
 		}		
 	}
 }

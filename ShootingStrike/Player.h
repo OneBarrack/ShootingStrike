@@ -51,6 +51,9 @@ public:
 	virtual Object* Clone() override { return new Player(*this); }
 
 public:
+	// ** 무적 상태인지
+	bool IsInvicible() { return isInvicible; }
+
 	// ** Life 반환
 	int GetLife() { return life; }
 

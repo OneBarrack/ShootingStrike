@@ -186,40 +186,8 @@ void Enemy::Update()
 		}
 	}	
 
-	// ** 스폰 중
-	//if ( bSpawing )
-	//{
-	//	// SpawnEnemy
-	//	return;
-	//}
-
-	//// ** 죽음
-	//if ( bDied )
-	//{
-	//	bDied = false;
-	//	//return;
-	//}
-
-	//// ** 피해를 입었을 시
-	//if ( bTakeDamage )
-	//{
-
-	//}
-
-	// ** 일반 출력
-	//RenderEnemy(_hdc);
-
-	// ** Direction 저장
-	//transInfo.Direction = MathManager::GetDirection(oldPosition, transInfo.Position);
-
 	// ** Stage 전장을 벗어났는지 체크
 	CheckPositionInBkgBoundary();
-
-	// ** 직전 위치 정보 저장
-	//oldPosition = transInfo.Position;	
-
-	// ** 충돌체 갱신은 브릿지에서
-	//SetCollider(transInfo);
 
 	return;
 }
@@ -238,9 +206,13 @@ void Enemy::OnCollision(Object* _pObject)
 {
 	switch ( _pObject->GetKey() )
 	{
-		// ** Player와 충돌시 플레이어에 데미지 전달
+		// ** Player와 충돌시 
 		case eObjectKey::PLAYER:
-			ApplyDamage(_pObject, 1);
+			// ** 플레이어가 무적상태가 아니라면 데미지 전달
+			if ( static_cast<Player*>(_pObject)->IsInvicible() == false )
+			{
+				ApplyDamage(_pObject, 1);
+			}
 			break;
 		// ** Player의 총알과 충돌시 Hit이펙트 스폰
 		case eObjectKey::BULLET:
@@ -340,26 +312,26 @@ void Enemy::SetEnemyType(eEnemyType _enemyType)
 	switch ( enemyType )
 	{
 		case eEnemyType::ENEMY_BLUE_ELF:
-			SetMaxHP(10);
-			SetHP(10);
+			SetMaxHP(15);
+			SetHP(15);
 			SetHitPoint(10);
 			SetDeathPoint(100);
 			break;
 		case eEnemyType::ENEMY_RED_ELF:
-			SetMaxHP(20);
-			SetHP(20);
+			SetMaxHP(10);
+			SetHP(10);
 			SetHitPoint(20);
 			SetDeathPoint(200);
 			break;
 		case eEnemyType::ENEMY_GREEN_ELF:
-			SetMaxHP(30);
-			SetHP(30);
+			SetMaxHP(20);
+			SetHP(20);
 			SetHitPoint(30);
 			SetDeathPoint(300);
 			break;
 		case eEnemyType::ENEMY_WHITE_ELF:
-			SetMaxHP(50);
-			SetHP(50);
+			SetMaxHP(30);
+			SetHP(30);
 			SetHitPoint(50);
 			SetDeathPoint(500);
 			break;
@@ -370,8 +342,8 @@ void Enemy::SetEnemyType(eEnemyType _enemyType)
 			SetDeathPoint(100000);
 			break;
 		case eEnemyType::ENEMY_BOSS_ANGEL:
-			SetMaxHP(2000);
-			SetHP(2000);
+			SetMaxHP(2500);
+			SetHP(2500);
 			SetHitPoint(256);
 			SetDeathPoint(777777);
 			break;

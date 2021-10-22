@@ -134,24 +134,13 @@ void Stage::Initialize()
 
 void Stage::Update()
 {
-	// ** 맵 진행도
-	float mapProgressPercentage = GameDataManager::GetInstance()->GetMapProgressRatio() * 100.0f;
-
 	// ** 일정 시간마다 무작위로 Bullet을 스폰시키기 위한 Time 변수와 Delay
 	static ULONGLONG bulletSpawnTime = GetTickCount64();
 	int bulletSpawnDelay;
 
-	// ** 일정 시간마다 무작위로 Bullet을 스폰시킨다. (위에서 생성되어 아래로 가도록)
+	// ** 1초간격으로 시간마다 무작위로 Bullet을 스폰시킨다. (위에서 생성되어 아래로 가도록)
 	{
-		// ** 맵 진행도가 50% 아래면 2초간격, 50%이상 진행시 1초간격으로 Bullet 스폰
-		if ( mapProgressPercentage < 50.0f )
-		{
-			bulletSpawnDelay = 2000;
-		}
-		else
-		{
-			bulletSpawnDelay = 1000;
-		}
+		bulletSpawnDelay = 1000;
 
 		if ( bulletSpawnTime + bulletSpawnDelay < GetTickCount64() )
 		{
@@ -178,6 +167,8 @@ void Stage::Update()
 		}
 	}
 	
+	// ** 맵 진행도
+	float mapProgressPercentage = GameDataManager::GetInstance()->GetMapProgressRatio() * 100.0f;
 
 	// ** Enemy Spawn Pattern 발동 타이밍 정보가 있다면
 	while ( !enemySpawnTimings.empty() )
@@ -313,20 +304,23 @@ void Stage::InitEnemySpawnPatternTimings()
 	enemySpawnTimings.push(make_pair(25.0f, enemySpawnPattern));
 
 	enemySpawnPattern = eEnemySpawnPattern::DOWN_BACK_AND_FORTH_RED_ELF_4;
-	enemySpawnTimings.push(make_pair(50.0f, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(20.0f, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(40.0f, enemySpawnPattern));
 	enemySpawnTimings.push(make_pair(60.0f, enemySpawnPattern));
 
 	enemySpawnPattern = eEnemySpawnPattern::LEFT_TOP_TO_RIGHT_BOTTOM_SPIN;
 	enemySpawnTimings.push(make_pair(30.0f, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(70.0f, enemySpawnPattern));
 	
 	enemySpawnPattern = eEnemySpawnPattern::RIGHT_TOP_TO_LEFT_BOTTOM_SPIN;
 	enemySpawnTimings.push(make_pair(30.0f, enemySpawnPattern));
-
-	enemySpawnPattern = eEnemySpawnPattern::LEFT_BOTTOM_TO_RIGHT_TOP_SPIN;
 	enemySpawnTimings.push(make_pair(70.0f, enemySpawnPattern));
+
+	enemySpawnPattern = eEnemySpawnPattern::LEFT_BOTTOM_TO_RIGHT_TOP_SPIN;	
+	enemySpawnTimings.push(make_pair(50.0f, enemySpawnPattern));
 
 	enemySpawnPattern = eEnemySpawnPattern::RIGHT_BOTTOM_TO_LEFT_TOP_SPIN;
-	enemySpawnTimings.push(make_pair(70.0f, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(50.0f, enemySpawnPattern));
 
 	//enemySpawnPattern = eEnemySpawnPattern::FALLDOWN_GO_RAND;
 	//enemySpawnTimings.push(make_pair(4.0f, enemySpawnPattern));

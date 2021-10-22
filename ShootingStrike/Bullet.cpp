@@ -59,17 +59,20 @@ void Bullet::OnCollision(Object* _pObject)
 {
 	if ( pBridge )
 	{		
-		// ** 같은 Object거나 Item과 충돌시 충돌처리 하지 않음
+		// ** 충돌처리 하지 않는 예외처리
+		// ** 같은 Object거나 Item과 충돌시
+		// ** 또는 플레이어와 충돌하였으나 플레이어가 무적상태일경우 
 		if ( _pObject->GetKey() == pOwner->GetKey() || 
-			_pObject->GetKey() == eObjectKey::ITEM )
+			 _pObject->GetKey() == eObjectKey::ITEM || 
+			(_pObject->GetKey() == eObjectKey::PLAYER && static_cast<Player*>(_pObject)->IsInvicible()) )
 			return;
 
 		// ** Bullet의 주체 Object의 데미지를 충돌된 Object에 전달
 		switch ( pOwner->GetKey() )
 		{
 			case eObjectKey::PLAYER: 
-				static_cast<Player*>(pOwner)->ApplyDamage(_pObject, damage); 
-				SetStatus(eObjectStatus::DESTROYED); 
+				static_cast<Player*>(pOwner)->ApplyDamage(_pObject, damage);
+				SetStatus(eObjectStatus::DESTROYED);
 				break;
 			case eObjectKey::ENEMY: 
 				static_cast<Enemy*>(pOwner)->ApplyDamage(_pObject, damage);	
