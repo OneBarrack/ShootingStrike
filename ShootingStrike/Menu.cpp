@@ -3,6 +3,7 @@
 #include "BitmapManager.h"
 #include "InputManager.h"
 #include "ObjectManager.h"
+#include "SoundManager.h"
 #include "ScrollHorizontalBkg.h"
 #include "ScrollVerticalBkg.h"
 #include "BasicBkg.h"
@@ -11,6 +12,8 @@
 
 Menu::Menu()
 	: pBackground(nullptr)
+	, pPlayButton(nullptr)
+	, pQuitButton(nullptr)
 {
 
 }
@@ -54,6 +57,9 @@ void Menu::Initialize()
 	pQuitButton->SetCollider(pQuitButton->GetTransInfo());
 	pQuitButton->SetBridge(pBridge);
 	static_cast<ButtonUI*>(pBridge)->SetButtonTypeIndex(1);	
+
+	// ** Play BGM Sound
+	SoundManager::GetInstance()->Play(eSoundKey::BGM_MENU);
 }
 
 void Menu::Update()
@@ -97,6 +103,8 @@ void Menu::Render(HDC _hdc)
 
 void Menu::Release()
 {
+	SoundManager::GetInstance()->Stop(eSoundKey::ALL);
+
 	if ( pBackground )
 		ObjectManager::GetInstance()->RecallObject(pBackground);
 	pBackground = nullptr;
@@ -105,5 +113,5 @@ void Menu::Release()
 	pPlayButton = nullptr;
 	if ( pQuitButton )
 		ObjectManager::GetInstance()->RecallObject(pQuitButton);
-	pQuitButton = nullptr;
+	pQuitButton = nullptr;	
 }

@@ -1,5 +1,22 @@
 #pragma once
 
+enum class eSoundKey
+{
+	ALL					,
+	BGM_MENU			,
+	BGM_STAGE			,
+	BGM_STAGE_BOSS		,
+	BGM_STAGE_CLEAR		,
+	BGM_GAMEOVER		,
+	EFFECT_WARNING		,
+	EFFECT_GET_ITEM		,
+	EFFECT_EXPLOSION	,
+	EFFECT_PLAYER_FIRE	,
+	EFFECT_PLAYER_BOMB	,
+	EFFECT_PLAYER_DIE	,
+	EFFECT_BOSS_FIRE	,
+};
+
 enum class eInputKey
 {
 	KEY_UP		,
@@ -11,6 +28,8 @@ enum class eInputKey
 	KEY_ENTER	,
 	KEY_Z		,
 	KEY_X		,
+	KEY_PLUS	,
+	KEY_MINUS	,
 	KEY_LBUTTON	, // ** 마우스 좌측 키 입력 확인.
 	KEY_F8		,
 	KEY_MAX		, // ** 총 Key 개수.

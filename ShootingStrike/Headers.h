@@ -12,12 +12,6 @@
 
 using namespace std;
 
-#include "Struct.h"
-#include "Enum.h"
-#include "Constant.h"
-#include "Define.h"
-#include "Bitmap.h"
-
 // ** Image
 #pragma comment(lib, "msimg32.lib")
 
@@ -25,9 +19,17 @@ using namespace std;
 #include <Vfw.h>
 #pragma comment(lib, "vfw32.lib")
 
+// ** Sound
+#pragma comment(lib, "fmod_vc.lib")
+#include <fmod.hpp>
+
+#include "Struct.h"
+#include "Enum.h"
+#include "Constant.h"
+#include "Define.h"
+#include "Bitmap.h"
+
 extern HWND g_hWnd;
-
-
 
 template <typename T>
 inline void Safe_Delete(T& _pObj)

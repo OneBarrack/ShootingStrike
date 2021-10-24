@@ -7,7 +7,7 @@
 #include "InputManager.h"
 #include "RenderManager.h"
 #include "ObjectManager.h"
-
+#include "SoundManager.h"
 
 MainUpdate::MainUpdate()
 	: mHdc(NULL)
@@ -26,13 +26,14 @@ void MainUpdate::Initialize()
 	srand(GetTickCount64());
 
 	mHdc = GetDC(g_hWnd);
-
+		
 	SceneManager::GetInstance()->SetScene(eSCENEID::LOGO);
 }
 
 void MainUpdate::Update()
 {
 	InputManager::GetInstance()->CheckKeyInput();	
+	SoundManager::GetInstance()->Update();
 	SceneManager::GetInstance()->Update();
 	GameDataManager::GetInstance()->Update();	
 	GameDebugManager::GetInstance()->Update();
@@ -55,4 +56,5 @@ void MainUpdate::Release()
 	SceneManager::GetInstance()->Release();
 	GameDebugManager::GetInstance()->Release();
 	ObjectManager::GetInstance()->Release();
+	SoundManager::GetInstance()->Release();
 }

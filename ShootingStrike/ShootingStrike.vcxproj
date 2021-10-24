@@ -72,6 +72,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Program Files %28x86%29\FMOD SoundSystem\FMOD Studio API Windows\api\core\inc;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\FMOD SoundSystem\FMOD Studio API Windows\api\core\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -159,7 +161,6 @@
     <ClInclude Include="EnemySpawnPatternScript.h" />
     <ClInclude Include="GameClearUI.h" />
     <ClInclude Include="GameOverUI.h" />
-    <ClInclude Include="Intro.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemBridge.h" />
     <ClInclude Include="MapProgressUI.h" />
@@ -176,6 +177,7 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LifeUI.h" />
     <ClInclude Include="ProgressBarUI.h" />
+    <ClInclude Include="SoundManager.h" />
     <ClInclude Include="SpreadAfterDelayBullet.h" />
     <ClInclude Include="GoToPlayerItem.h" />
     <ClInclude Include="TextUI.h" />
@@ -227,7 +229,6 @@
     <ClCompile Include="EnemySpawnPatternScript.cpp" />
     <ClCompile Include="GameClearUI.cpp" />
     <ClCompile Include="GameOverUI.cpp" />
-    <ClCompile Include="Intro.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemBridge.cpp" />
     <ClCompile Include="MapProgressUI.cpp" />
@@ -241,6 +242,7 @@
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LifeUI.cpp" />
     <ClCompile Include="ProgressBarUI.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="SpreadAfterDelayBullet.cpp" />
     <ClCompile Include="GoToPlayerItem.cpp" />
     <ClCompile Include="TextUI.cpp" />

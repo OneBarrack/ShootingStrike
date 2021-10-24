@@ -2,6 +2,7 @@
 #include "SceneManager.h"
 #include "ObjectManager.h"
 #include "BitmapManager.h"
+#include "SoundManager.h"
 #include "GameDataManager.h"
 #include "GameDebugManager.h"
 #include "InputManager.h"
@@ -24,6 +25,7 @@ Logo::~Logo()
 void Logo::Initialize()
 {
 	// ** Initialize
+	SoundManager::GetInstance()->Initialize();
 	BitmapManager::GetInstance()->Initialize();
 	ObjectManager::GetInstance()->Initialize();
 	GameDataManager::GetInstance()->Initialize();

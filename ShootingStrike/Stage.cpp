@@ -2,6 +2,7 @@
 #include "SceneManager.h"
 #include "ObjectManager.h"
 #include "RenderManager.h"
+#include "SoundManager.h"
 #include "Player.h"
 #include "Enemy.h"
 #include "WarningEffect.h"
@@ -23,6 +24,8 @@ Stage::Stage()
 	, startTime(0)
 	, currentTime(0)
 	, bSpawnedBossEnemy(false)
+	, bStageClear(false)
+	, bGameOver(false)
 	, pPlayer(nullptr)
 	, pStageDummyEnemy(nullptr)
 	, pBackground(nullptr)
@@ -63,6 +66,10 @@ void Stage::Initialize()
 
 	// ** Init spawned boss enemy
 	bSpawnedBossEnemy = false;
+
+	// ** Stage clear state
+	bStageClear = false;
+	bGameOver = false;
 
 	// ***** Start Init Objects ***** //
 	Bridge* pBridge = nullptr;
@@ -175,7 +182,10 @@ void Stage::Initialize()
 	InitEnemySpawnPatternTimings();
 
 	// ** Spawn Player
-	SpawnManager::SpawnPlayer();	
+	SpawnManager::SpawnPlayer();
+
+	// ** Play BGM Sound
+	SoundManager::GetInstance()->Play(eSoundKey::BGM_STAGE);
 }
 
 void Stage::Update()
@@ -187,10 +197,12 @@ void Stage::Update()
 	static ULONGLONG bulletSpawnTime = GetTickCount64();
 	int bulletSpawnDelay;
 	
-	// ** 1초간격으로 시간마다 무작위로 Bullet을 스폰시킨다. (위에서 생성되어 아래로 가도록)
+	// ** 아직 스테이지 클리어 되지 않았다면
+	if ( !bStageClear )
 	{
-		bulletSpawnDelay = 1000;
-
+		// ** 1초간격으로 시간마다 무작위로 Bullet을 스폰시킨다. 
+		// ** (위쪽의 랜덤한 위치에서 생성되어 아래쪽 랜덤한 위치로 이동하는 Bullet 생성)
+		bulletSpawnDelay = 1000;		
 		if ( bulletSpawnTime + bulletSpawnDelay < GetTickCount64() )
 		{
 			bulletSpawnTime = GetTickCount64();
@@ -245,6 +257,13 @@ void Stage::Update()
 	{
 		bSpawnedBossEnemy = true;
 
+		// ** Stop play all sound
+		SoundManager::GetInstance()->Stop(eSoundKey::ALL);
+
+		// ** Play warning / stage boss sound
+		SoundManager::GetInstance()->Play(eSoundKey::EFFECT_WARNING);
+		SoundManager::GetInstance()->Play(eSoundKey::BGM_STAGE_BOSS);
+
 		Bridge* pBridge;
 
 		// ** EnemyBoss
@@ -297,8 +316,16 @@ void Stage::Update()
 			}
 
 			// ** 게임 클리어 UI를 띄움
-			if ( !pGameClearUI )
+			if ( !bStageClear )
 			{
+				bStageClear = true;
+
+				// ** Stop play all sound
+				SoundManager::GetInstance()->Stop(eSoundKey::ALL);
+
+				// ** Play stage clear sound
+				SoundManager::GetInstance()->Play(eSoundKey::BGM_STAGE_CLEAR);
+
 				// ** GameClear UI
 				Bridge* pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::UI_GAMECLEAR);
 				pGameClearUI = ObjectManager::GetInstance()->NewObject(eObjectKey::UI);
@@ -312,8 +339,16 @@ void Stage::Update()
 	// ** Player Life가 0이면 GameOver UI를 띄움
 	if ( static_cast<Player*>(pPlayer)->GetLife() == 0 )
 	{
-		if ( !pGameOverUI )
+		if ( !bGameOver )
 		{
+			bGameOver = true;
+
+			// ** Stop play all sound
+			SoundManager::GetInstance()->Stop(eSoundKey::ALL);
+
+			// ** Play game over sound
+			SoundManager::GetInstance()->Play(eSoundKey::BGM_GAMEOVER);
+
 			// ** GameOver UI
 			Bridge* pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::UI_GAMEOVER);
 			pGameOverUI = ObjectManager::GetInstance()->NewObject(eObjectKey::UI);
@@ -347,6 +382,8 @@ void Stage::Render(HDC _hdc)
 
 void Stage::Release()
 {	
+	SoundManager::GetInstance()->Stop(eSoundKey::ALL);
+
 	if ( pStageDummyEnemy )
 		ObjectManager::GetInstance()->RecallObject(pStageDummyEnemy);
 	pStageDummyEnemy = nullptr;

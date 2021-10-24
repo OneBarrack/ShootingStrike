@@ -190,9 +190,6 @@
     <Filter Include="소스 파일\02. Object\Effect\EffectBridge\Warning">
       <UniqueIdentifier>{e5d76f43-fd75-407b-984f-fbd93c76d7ba}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\01. Scene\Intro">
-      <UniqueIdentifier>{358ebeb0-d212-41a6-85e1-fd68bc9803b4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\02. Object\UI\UIBridge\Life">
       <UniqueIdentifier>{94be3240-4e4b-459b-9380-863d1417d21f}</UniqueIdentifier>
     </Filter>
@@ -204,6 +201,9 @@
     </Filter>
     <Filter Include="소스 파일\02. Object\UI\UIBridge\GameClearUI">
       <UniqueIdentifier>{4c28f9c4-f95e-42cc-b80e-9864e00f2b77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\99. Manager\SoundManager">
+      <UniqueIdentifier>{5ee19090-f7d6-43f8-877a-4725a2e898c1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -399,9 +399,6 @@
     <ClInclude Include="WarningEffect.h">
       <Filter>소스 파일\02. Object\Effect\EffectBridge\Warning</Filter>
     </ClInclude>
-    <ClInclude Include="Intro.h">
-      <Filter>소스 파일\01. Scene\Intro</Filter>
-    </ClInclude>
     <ClInclude Include="BombUI.h">
       <Filter>소스 파일\02. Object\UI\UIBridge\BombUI</Filter>
     </ClInclude>
@@ -410,6 +407,9 @@
     </ClInclude>
     <ClInclude Include="GameClearUI.h">
       <Filter>소스 파일\02. Object\UI\UIBridge\GameClearUI</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundManager.h">
+      <Filter>소스 파일\99. Manager\SoundManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -578,9 +578,6 @@
     <ClCompile Include="WarningEffect.cpp">
       <Filter>소스 파일\02. Object\Effect\EffectBridge\Warning</Filter>
     </ClCompile>
-    <ClCompile Include="Intro.cpp">
-      <Filter>소스 파일\01. Scene\Intro</Filter>
-    </ClCompile>
     <ClCompile Include="BombUI.cpp">
       <Filter>소스 파일\02. Object\UI\UIBridge\BombUI</Filter>
     </ClCompile>
@@ -589,6 +586,9 @@
     </ClCompile>
     <ClCompile Include="GameClearUI.cpp">
       <Filter>소스 파일\02. Object\UI\UIBridge\GameClearUI</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundManager.cpp">
+      <Filter>소스 파일\99. Manager\SoundManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

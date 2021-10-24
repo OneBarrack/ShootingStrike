@@ -1,9 +1,10 @@
 #include "Player.h"
+#include "Bridge.h"
 #include "InputManager.h"
 #include "ObjectManager.h"
 #include "BitmapManager.h"
 #include "GameDataManager.h"
-#include "Bridge.h"
+#include "SoundManager.h"
 #include "NormalBullet.h"
 #include "MathManager.h"
 #include "SpawnManager.h"
@@ -247,6 +248,9 @@ void Player::BombDown(bool _bMin)
 
 void Player::Fire(int _power, int _damage)
 {
+	// ** Play Player Fire Sound
+	SoundManager::GetInstance()->Play(eSoundKey::EFFECT_PLAYER_FIRE);
+
 	Object* pObject = nullptr;
 	Bridge* pBridge = nullptr;
 
@@ -448,6 +452,9 @@ void Player::ActivateBomb(bool _bPlayAnimation)
 	// ** Bomb가 남아있다면
 	if ( bomb > 0 )
 	{
+		// ** Play Bomb Sound
+		SoundManager::GetInstance()->Play(eSoundKey::EFFECT_PLAYER_BOMB);
+
 		// ** Player의 Bullet과 None/Boss Enemy를 제외한 Bullet들을 모두 Coin Item으로 변환시킨다.
 		
 		// ** 모든 Enemy를 탐색한다.
@@ -587,6 +594,9 @@ void Player::ReSpawn()
 
 void Player::Die()
 {
+	// ** Play player die sound
+	SoundManager::GetInstance()->Play(eSoundKey::EFFECT_PLAYER_DIE);
+
 	// ** bDied flag true 세팅
 	isDied = true;
 
@@ -760,12 +770,16 @@ void Player::OnCollision(Object* _pObject)
 	if ( _pObject->GetKey() == eObjectKey::ITEM )
 	{
 		eItemType itemType = static_cast<Item*>(_pObject)->GetItemType();
-		switch ( itemType )
+		if ( itemType != eItemType::NONE )
 		{
-			case eItemType::POWER_MAX: PowerUp(true); break;
-			case eItemType::POWER_UP:  PowerUp();	  break;
-			case eItemType::LIFE_UP:   LifeUp();	  break;
-			case eItemType::COIN: GameDataManager::GetInstance()->AddScore(258); break;
+			SoundManager::GetInstance()->Play(eSoundKey::EFFECT_GET_ITEM);
+			switch ( itemType )
+			{
+				case eItemType::POWER_MAX: PowerUp(true); break;
+				case eItemType::POWER_UP:  PowerUp();	  break;
+				case eItemType::LIFE_UP:   LifeUp();	  break;
+				case eItemType::COIN: GameDataManager::GetInstance()->AddScore(258); break;
+			}
 		}
 	}
 }

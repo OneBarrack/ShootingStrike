@@ -7,6 +7,7 @@
 #include "ObjectManager.h"
 #include "Background.h"
 #include "MathManager.h"
+#include "SoundManager.h"
 
 BossAngelEnemy::BossAngelEnemy()
 	: pBackground(nullptr)
@@ -113,6 +114,12 @@ void BossAngelEnemy::Update()
 				case eActionState::READY:
 					if ( prevActionCompleteTime + delay < GetTickCount64() )
 					{
+						// ** Play Boss Fire Sound
+						if ( SoundManager::GetInstance()->IsPlaying(eSoundKey::EFFECT_BOSS_FIRE) )
+							SoundManager::GetInstance()->Stop(eSoundKey::EFFECT_BOSS_FIRE);
+
+						SoundManager::GetInstance()->Play(eSoundKey::EFFECT_BOSS_FIRE);
+
 						Action(actionType);
 						actionState = eActionState::WORKING;
 					}

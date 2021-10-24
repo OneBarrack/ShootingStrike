@@ -31,6 +31,10 @@ private:
 	// ** 보스가 소환 되었는지
 	bool bSpawnedBossEnemy;
 
+	// ** 스테이지 클리어 / 게임오버 되었는지
+	bool bStageClear;
+	bool bGameOver;
+
 	// ** Enemy Spawn Script
 	EnemySpawnPatternScript enemyScript;
 

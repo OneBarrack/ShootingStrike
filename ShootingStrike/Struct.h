@@ -88,3 +88,10 @@ struct RectF
 	RectF(float _left, float _top, float _right, float _bottom) : 
 		Left(_left), Top(_top), Right(_right), Bottom(_bottom) {}
 };
+
+struct SoundInfo
+{
+	FMOD::Sound* soundObj;
+	FMOD::Channel* soundChannel;
+	int channelId;
+};

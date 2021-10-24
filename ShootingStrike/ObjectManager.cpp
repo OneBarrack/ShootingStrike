@@ -11,7 +11,7 @@ ObjectManager* ObjectManager::pInstance = nullptr;
 void ObjectManager::Initialize()
 {
 	Release();
-
+	
 	pPrototypeObject = new Prototype;
 	pPrototypeObject->CreatePrototype();
 	pPlayer = nullptr;

@@ -2,6 +2,7 @@
 #include "Bridge.h"
 #include "Player.h"
 #include "Bullet.h"
+#include "SoundManager.h"
 #include "BitmapManager.h"
 #include "MathManager.h"
 #include "ObjectManager.h"
@@ -269,6 +270,9 @@ void Enemy::Spawn()
 
 void Enemy::Die()
 {
+	// ** Play explosion sound
+	SoundManager::GetInstance()->Play(eSoundKey::EFFECT_EXPLOSION);
+
 	// ** bDied flag true ¼¼ÆÃ
 	isDied = true;
 
