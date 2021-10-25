@@ -348,8 +348,8 @@ void Enemy::SetEnemyType(eEnemyType _enemyType)
 			SetDeathPoint(100000);
 			break;
 		case eEnemyType::ENEMY_BOSS_ANGEL:
-			SetMaxHP(2500);
-			SetHP(2500);
+			SetMaxHP(1500);
+			SetHP(1500);
 			SetHitPoint(256);
 			SetDeathPoint(777777);
 			break;
