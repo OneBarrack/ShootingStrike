@@ -453,6 +453,7 @@ void Stage::InitEnemySpawnPatternTimings()
 	enemySpawnTimings.push(make_pair(5.0f, enemySpawnPattern));
 	enemySpawnTimings.push(make_pair(15.0f, enemySpawnPattern));
 	enemySpawnTimings.push(make_pair(25.0f, enemySpawnPattern));
+	enemySpawnTimings.push(make_pair(35.0f, enemySpawnPattern));
 
 	enemySpawnPattern = eEnemySpawnPattern::DOWN_BACK_AND_FORTH_RED_ELF_4;
 	enemySpawnTimings.push(make_pair(20.0f, enemySpawnPattern));
