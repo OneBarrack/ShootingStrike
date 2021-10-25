@@ -152,7 +152,16 @@ void Player::Update()
 
 		if ( CHECK_KEYINPUT_STATE(eInputKey::KEY_X, eKeyInputState::DOWN) )
 		{
-			ActivateBomb();
+
+			static ULONGLONG bombTime = 0;
+			int bombDelay = 1500;
+
+			if ( bombTime + bombDelay < GetTickCount64() )
+			{
+				bombTime = GetTickCount64();
+
+				ActivateBomb();
+			}			
 		}
 	}
 
