@@ -261,18 +261,21 @@ void Player::Fire(int _power, int _damage)
 	SoundManager::GetInstance()->Play(eSoundKey::EFFECT_PLAYER_FIRE);
 
 	Object* pObject = nullptr;
-	Bridge* pBridge = nullptr;
-
-	// ** Bullet 간격 각도
-	int bulletGap = 15;
-
-	// ** 가장 좌측 Bullet의 x Offet
-	int startBulletOffsetX = static_cast<int>(-bulletGap * 0.5 * (_power - 1));
+	Bridge* pBridge = nullptr;	
 
 	switch ( _power )
 	{
 		case 1:
 		{
+			// ** 한 번에 발사될 Normal Bullet 개수
+			int normalBulletCount = 1;
+
+			// ** Bullet 간격 각도
+			int bulletGap = 15;
+
+			// ** 가장 좌측 Bullet의 x Offet
+			int startBulletOffsetX = static_cast<int>(-bulletGap * 0.5 * (normalBulletCount - 1));
+
 			// ** Bullet의 TransInfo 설정
 			Transform bulletTransInfo;
 			bulletTransInfo.Position.x = transInfo.Position.x;
@@ -290,13 +293,20 @@ void Player::Fire(int _power, int _damage)
 		}
 		case 2:
 		{
-			int bulletGap = 15;
-			int startBulletOffset = static_cast<int>(-bulletGap * 0.5 * (_power - 1));
+			// ** 한 번에 발사될 Normal Bullet 개수
+			int normalBulletCount = 2;
 
-			for ( int i = 0; i < 2; ++i )
+			// ** Bullet 간격 각도
+			int bulletGap = 15;
+
+			// ** 가장 좌측 Bullet의 x Offet
+			int startBulletOffsetX = static_cast<int>(-bulletGap * 0.5 * (normalBulletCount - 1));
+
+			// ** 2개의 Normal Bullet 발사
+			for ( int i = 0; i < normalBulletCount; ++i )
 			{
 				// ** 상방 기준 현재 각도
-				int bulletOffset = startBulletOffset + (bulletGap * i);
+				int bulletOffset = startBulletOffsetX + (bulletGap * i);
 
 				// ** Bullet의 TransInfo 설정
 				Transform bulletTransInfo;
@@ -316,8 +326,17 @@ void Player::Fire(int _power, int _damage)
 		}
 		case 3:
 		{
-			// ** 3개의 Bullet 발사
-			for ( int i = 0; i < 3; ++i )
+			// ** 한 번에 발사될 Normal Bullet 개수
+			int normalBulletCount = 3;
+
+			// ** Bullet 간격 각도
+			int bulletGap = 15;
+
+			// ** 가장 좌측 Bullet의 x Offet
+			int startBulletOffsetX = static_cast<int>(-bulletGap * 0.5 * (normalBulletCount - 1));
+
+			// ** 3개의 Noamal Bullet 발사
+			for ( int i = 0; i < normalBulletCount; ++i )
 			{
 				// ** 상방 기준 현재 각도
 				int bulletOffset = startBulletOffsetX + (bulletGap * i);
@@ -346,8 +365,17 @@ void Player::Fire(int _power, int _damage)
 		}
 		case 4:
 		{
-			// ** 4개의 Bullet 발사
-			for ( int i = 0; i < 4; ++i )
+			// ** 한 번에 발사될 Normal Bullet 개수
+			int normalBulletCount = 4;
+
+			// ** Bullet 간격 각도
+			int bulletGap = 15;
+
+			// ** 가장 좌측 Bullet의 x Offet
+			int startBulletOffsetX = static_cast<int>(-bulletGap * 0.5 * (normalBulletCount - 1));
+
+			// ** 4개의 Normal Bullet 발사
+			for ( int i = 0; i < normalBulletCount; ++i )
 			{
 				// ** 상방 기준 현재 각도
 				int bulletOffset = startBulletOffsetX + (bulletGap * i);
@@ -376,8 +404,17 @@ void Player::Fire(int _power, int _damage)
 		}
 		case 5:
 		{
-			// ** 4개의 Bullet 발사
-			for ( int i = 0; i < 4; ++i )
+			// ** 한 번에 발사될 Normal Bullet 개수
+			int normalBulletCount = 4;
+
+			// ** Bullet 간격 각도
+			int bulletGap = 15;
+
+			// ** 가장 좌측 Bullet의 x Offet
+			int startBulletOffsetX = static_cast<int>(-bulletGap * 0.5 * (normalBulletCount - 1));
+
+			// ** 4개의 Normal Bullet 발사
+			for ( int i = 0; i < normalBulletCount; ++i )
 			{
 				// ** 상방 기준 현재 각도
 				int bulletOffset = startBulletOffsetX + (bulletGap * i);
