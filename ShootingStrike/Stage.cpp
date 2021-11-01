@@ -279,7 +279,7 @@ void Stage::Update()
 		// ** Boss Enemy HP ProgressBar UI
 		pBridge = ObjectManager::GetInstance()->NewBridge(eBridgeKey::UI_PROGRESSBAR);
 		pBossEnemyProgressBar = ObjectManager::GetInstance()->NewObject(eObjectKey::UI);
-		pBossEnemyProgressBar->SetPosition(WINDOWS_WIDTH * 0.5f, 30.0f);
+		pBossEnemyProgressBar->SetPosition(WINDOWS_WIDTH * 0.5f, 60.0f);
 		pBossEnemyProgressBar->SetScale(pBackground->GetScale().x - 30.0f, 50.0f);
 		pBossEnemyProgressBar->SetBridge(pBridge);
 

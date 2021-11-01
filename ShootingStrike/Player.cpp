@@ -150,9 +150,9 @@ void Player::Update()
 			}
 		}
 
+		// ** Bomb Skill ¹ßµ¿
 		if ( CHECK_KEYINPUT_STATE(eInputKey::KEY_X, eKeyInputState::DOWN) )
 		{
-
 			static ULONGLONG bombTime = 0;
 			int bombDelay = 1500;
 
@@ -732,6 +732,10 @@ void Player::CheckPositionInBkgBoundary()
 	// ** ÇÏ
 	if ( transInfo.Position.y > bkgBoundary.Bottom - offset )
 		transInfo.Position.y = bkgBoundary.Bottom - offset;
+
+	cout << "pos: " << transInfo.Position.x << ", " << transInfo.Position.y << endl;
+	cout << "boundary: " << bkgBoundary.Left << ", " << bkgBoundary.Top 
+		<< ", " << bkgBoundary.Right << ", " << bkgBoundary.Bottom << endl;
 }
 
 void Player::RenderSpawn(HDC _hdc)
