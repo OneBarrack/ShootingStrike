@@ -732,10 +732,6 @@ void Player::CheckPositionInBkgBoundary()
 	// ** го
 	if ( transInfo.Position.y > bkgBoundary.Bottom - offset )
 		transInfo.Position.y = bkgBoundary.Bottom - offset;
-
-	cout << "pos: " << transInfo.Position.x << ", " << transInfo.Position.y << endl;
-	cout << "boundary: " << bkgBoundary.Left << ", " << bkgBoundary.Top 
-		<< ", " << bkgBoundary.Right << ", " << bkgBoundary.Bottom << endl;
 }
 
 void Player::RenderSpawn(HDC _hdc)
