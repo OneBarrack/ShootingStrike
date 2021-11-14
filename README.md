@@ -1,4 +1,4 @@
-# HJW_ShootingStrike
+# ShootingStrike
 * A shooting game similar to strikers 1945. * Made for study and portfolio.
 
 프로젝트명 : Shooting Strike  
