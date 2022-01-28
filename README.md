@@ -6,7 +6,7 @@
 개발 환경 : C++ / WINAPI / Github  
 개발 인원 : 1명  
 URL	Video : https://youtu.be/ef5NdgWSevY  
-Git Repository :  https://dev.azure.com/wnsdd1/_git/ActionRPGProject  
+Git Repository :  https://github.com/OneBarrack/ShootingStrike
 
 요약 설명  
 ㆍ2D 종스크롤 슈팅 게임으로 스테이지에 등장하는 몬스터들을 모두 처치하는 PC게임  
