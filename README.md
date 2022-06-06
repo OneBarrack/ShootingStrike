@@ -2,7 +2,7 @@
 * A shooting game similar to strikers 1945. * Made for study and portfolio.
 
 프로젝트명 : Shooting Strike  
-개발 기간 : 6주  
+개발 기간 : 8주  
 개발 환경 : C++ / WINAPI / Github  
 개발 인원 : 1명  
 URL	Video : https://youtu.be/ef5NdgWSevY  
