@@ -26,7 +26,7 @@ bool CollisionManager::IsCollision(Object* _pObj1, Object* _pObj2)
 }
 
 bool CollisionManager::EllipseCollision(Object* _pObj1, Object* _pObj2)
-{
+{	
 	// ** 플레이어 충돌체 반지름과 Target 충돌체 반지름의 합을 구함.
 	float radiusSum = (_pObj1->GetColliderScale().x * 0.5f) + (_pObj2->GetColliderScale().x * 0.5f);
 
@@ -40,15 +40,15 @@ bool CollisionManager::EllipseCollision(Object* _pObj1, Object* _pObj2)
 	//**   x
 	float deltaX = _pObj1->GetColliderPosition().x - _pObj2->GetColliderPosition().x;
 	float deltaY = _pObj1->GetColliderPosition().y - _pObj2->GetColliderPosition().y;
-	float distance = sqrt((deltaX * deltaX) + (deltaY * deltaY));
 
-	return (radiusSum > distance);
+	// 두 원의 중점간의 거리가 두 원의 반지름 합보다 작다면 충돌 (sqrt를 사용하지 않는 식)
+	return ((deltaX * deltaX) + (deltaY * deltaY)) < (radiusSum * radiusSum);
 }
 
 bool CollisionManager::EllipseCollision(Transform _TransInfo1, Transform _TransInfo2)
 {
 	// ** 플레이어의 반지름과 Target의 반지름의 합을 구함.
-	float RadiusSum = (_TransInfo1.Scale.x * 0.5f) + (_TransInfo2.Scale.x * 0.5f);
+	float radiusSum = (_TransInfo1.Scale.x * 0.5f) + (_TransInfo2.Scale.x * 0.5f);
 
 	// ** 거리를 구하는 공식
 	// ** 먼저 기준 Object와 Target Object의 x, y 값을 구함.
@@ -58,11 +58,11 @@ bool CollisionManager::EllipseCollision(Transform _TransInfo1, Transform _TransI
 	//**  /  | y
 	//** /___|
 	//**   x
-	float DeltaX = _TransInfo1.Position.x - _TransInfo2.Position.x;
-	float DeltaY = _TransInfo1.Position.y - _TransInfo2.Position.y;
-	float Distance = sqrt((DeltaX * DeltaX) + (DeltaY * DeltaY));
+	float deltaX = _TransInfo1.Position.x - _TransInfo2.Position.x;
+	float deltaY = _TransInfo1.Position.y - _TransInfo2.Position.y;
 
-	return (RadiusSum > Distance);
+	// 두 원의 중점간의 거리가 두 원의 반지름 합보다 작다면 충돌 (sqrt를 사용하지 않는 식)
+	return ((deltaX * deltaX) + (deltaY * deltaY)) < (radiusSum * radiusSum);
 }
 
 bool CollisionManager::RectCollision(Object* _pObj1, Object* _pObj2)
