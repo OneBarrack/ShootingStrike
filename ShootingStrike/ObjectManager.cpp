@@ -166,32 +166,85 @@ void ObjectManager::AddBridge(map<eBridgeKey, list<Bridge*>>& _targetList, Bridg
 
 void ObjectManager::CheckCollision()
 {
-	// ** 충돌이 가능한 전체 Object에 대해 충돌체크
-
-	auto enableList = ObjectManager::GetInstance()->GetEnableObjectList();
-	for ( auto listIter1 = enableList->begin(); listIter1 != enableList->end(); ++listIter1 )
+	/** 캐릭터와 총알, 아이템간 충돌체크 **/
+	// Bullet - Character 충돌체크
+	list<Object*> enableBulletList = enableObjectList[eObjectKey::BULLET];
+	for ( auto bulltetIter = enableBulletList.begin(); bulltetIter != enableBulletList.end(); ++bulltetIter )
 	{
-		for ( auto objIter1 = listIter1->second.begin(); objIter1 != listIter1->second.end(); ++objIter1 )
-		{
-			if ( (*objIter1)->IsGeneratedCollisionEvent() == false )
-				continue;
-			
-			auto listIter2 = listIter1;
-			for ( ++listIter2; listIter2 != enableList->end(); ++listIter2 )
-			{
-				for ( auto objIter2 = listIter2->second.begin(); objIter2 != listIter2->second.end(); ++objIter2 )
-				{
-					if ( (*objIter2)->IsGeneratedCollisionEvent() == false )
-						continue;
+		Object* pBulletObject = *bulltetIter;
+		if ( pBulletObject->IsGeneratedCollisionEvent() == false )
+			continue;
 
-					if ( CollisionManager::IsCollision(*objIter1, *objIter2) )
+		switch ( static_cast<Bullet*>(pBulletObject)->GetOwner()->GetKey() )
+		{
+			case eObjectKey::PLAYER:
+			{
+				list<Object*> enableEnemyList = enableObjectList[eObjectKey::ENEMY];
+				for ( auto EnemyIter = enableEnemyList.begin(); EnemyIter != enableEnemyList.end(); ++EnemyIter )
+				{
+					Object* pEnemyObject = *EnemyIter;
+					if ( CollisionManager::IsCollision(pEnemyObject, pBulletObject) )
 					{
 						// 충돌 트리거 발동
-						(*objIter1)->OnCollision(*objIter2);
-						(*objIter2)->OnCollision(*objIter1);
+						pEnemyObject->OnCollision(pBulletObject);
+						pBulletObject->OnCollision(pEnemyObject);
 					}
-				}
+				}				
+				break;
 			}
+			case eObjectKey::ENEMY:
+			{
+				if ( CollisionManager::IsCollision(pPlayer, pBulletObject) )
+				{
+					// 충돌 트리거 발동
+					pPlayer->OnCollision(pBulletObject);
+					pBulletObject->OnCollision(pPlayer);
+				}
+				break;
+			}
+		}	
+	}
+
+	// Item - Character 충돌체크
+	list<Object*> enableItemList = enableObjectList[eObjectKey::ITEM];
+	for ( auto itemIter = enableItemList.begin(); itemIter != enableItemList.end(); ++itemIter )
+	{
+		Object* pItemObject = *itemIter;
+		if ( pItemObject->IsGeneratedCollisionEvent() == false )
+			continue;
+
+		list<Object*> enableEnemyList = enableObjectList[eObjectKey::ENEMY];
+		for ( auto EnemyIter = enableEnemyList.begin(); EnemyIter != enableEnemyList.end(); ++EnemyIter )
+		{
+			Object* pEnemyObject = *EnemyIter;
+			if ( CollisionManager::IsCollision(pEnemyObject, pItemObject) )
+			{
+				// 충돌 트리거 발동
+				pEnemyObject->OnCollision(pItemObject);
+				pItemObject->OnCollision(pEnemyObject);
+			}
+		}
+		if ( CollisionManager::IsCollision(pPlayer, pItemObject) )
+		{
+			// 충돌 트리거 발동
+			pPlayer->OnCollision(pItemObject);
+			pItemObject->OnCollision(pPlayer);
+		}
+	}
+
+	// Character(Player - Enemy) 충돌체크
+	list<Object*> enableEnemyList = enableObjectList[eObjectKey::ENEMY];
+	for ( auto enemyIter = enableEnemyList.begin(); enemyIter != enableEnemyList.end(); ++enemyIter )
+	{
+		Object* pEnemyObject = *enemyIter;
+		if ( pEnemyObject->IsGeneratedCollisionEvent() == false )
+			continue;
+
+		if ( CollisionManager::IsCollision(pPlayer, pEnemyObject) )
+		{
+			// 충돌 트리거 발동
+			pPlayer->OnCollision(pEnemyObject);
+			pEnemyObject->OnCollision(pPlayer);
 		}
 	}
 }
