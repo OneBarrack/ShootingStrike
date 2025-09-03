@@ -8,6 +8,9 @@
 URL	Video : https://youtu.be/ef5NdgWSevY  
 Git Repository :  https://github.com/OneBarrack/ShootingStrike
 
+<img src="https://github.com/user-attachments/assets/698be46f-c311-43ad-8b7e-31606b0e095e" width="400" height="225"/> &nbsp;
+<img src="https://github.com/user-attachments/assets/710de0ef-552d-4dde-b8f7-499ea9e140c9" width="400" height="225"/>
+
 요약 설명  
 ㆍ2D 종스크롤 슈팅 게임으로 스테이지에 등장하는 몬스터들을 모두 처치하는 PC게임  
 ㆍ자체 엔진으로 게임을 제작 해 보며 엔진의 간단한 기능 및 구성들을 간소화하여 구현 해보는 학습 목적  
